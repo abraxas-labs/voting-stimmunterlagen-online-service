@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="$(AutoMapperVersion)" />
+    <PackageReference Include="CsvHelper" Version="31.0.2" />
+    <PackageReference Include="Voting.Lib.Iam" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.Eventing" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.DmDoc" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.DocPipe" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.Scheduler" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.ObjectStorage" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.DokConnector" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.ImageProcessing" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.Grpc" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.Rest" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Basis.Eventing.Proto" Version="1.97.0" />
+    <PackageReference Include="Voting.Stimmregister.Service.Proto" Version="2.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Voting.Stimmunterlagen.Data\Voting.Stimmunterlagen.Data.csproj" />
+    <ProjectReference Include="..\Voting.Stimmunterlagen.Ech\Voting.Stimmunterlagen.Ech.csproj" />
+    <ProjectReference Include="..\Voting.Stimmunterlagen.EVoting\Voting.Stimmunterlagen.EVoting.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <Compile Remove="**\*Mock.cs" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(Configuration)' != 'Release'">
+    <None Update="Mocks\example.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,85 @@
+{
+  "data": {
+    "contest": {
+      "date": "2020-01-12T00:00:00Z",
+      "order_number": "950003"
+    },
+    "voters": [
+      {
+        "id": "a3f28dd4-d61a-434a-9f30-d1e0f520631c",
+        "salutation": "Mister",
+        "title": "",
+        "first_name": "Frank",
+        "last_name": "Müller",
+        "address_line_1": "",
+        "address_line_2": "",
+        "street": "Via Pestariso",
+        "house_number": "36",
+        "post_office_box_text": "Postfach A",
+        "dwelling_number": "",
+        "locality": "",
+        "town": "St. Erhard",
+        "swiss_zip_code": 6212,
+        "foreign_zip_code": "",
+        "zip_code": "6212",
+        "date_of_birth": "1991-03-10",
+        "person_id": "00000000001",
+        "country": {
+          "iso2": "CH",
+          "name": "Schweiz"
+        },
+        "shipment_number": "000000003",
+        "send_voting_cards_to_domain_of_influence_return_address": true
+      }
+    ],
+    "domain_of_influence": {
+      "name": "Gemeinde Arnegg",
+      "short_name": "MU-AG",
+      "secure_connect_id": "SC-MU-AG",
+      "return_address": {
+        "address_line1": "Gemeinde Andwil-Arnegg",
+        "address_line2": "",
+        "street": "Lätschenstrasse 7",
+        "address_addition": "",
+        "zip_code": "9204",
+        "city": "Andwil",
+        "country": "Schweiz"
+      },
+      "print_data": {
+        "shipping_away": "A",
+        "shipping_return": "A",
+        "shipping_method": "OnlyPrintingPackagingToMunicipality",
+        "shipping_voting_cards_to_delivery_address": false
+      },
+      "swiss_post_data": {
+        "invoice_reference_number": "333994573",
+        "franking_licence_return_number": "339302122"
+      },
+      "voting_card_color": {
+        "name": "Green",
+        "cyan": 15,
+        "magenta": 0,
+        "yellow": 15,
+        "key": 0
+      }
+    },
+    "data_stimmunterlagen": {
+      "bricks_version": ""
+    },
+    "adresse_empfaenger": {
+      "first_name": "",
+      "last_name": ""
+    },
+    "e_voting": {
+      "domain": "",
+      "e_voting": ""
+    },
+    "urne": {
+      "standort": "",
+      "zeit": ""
+    },
+    "urnengang": {
+      "urnengang_datum": ""
+    }
+  }
+}

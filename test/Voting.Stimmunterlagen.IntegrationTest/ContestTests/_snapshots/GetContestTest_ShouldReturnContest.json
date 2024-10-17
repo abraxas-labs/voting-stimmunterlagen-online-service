@@ -1,0 +1,32 @@
+{
+  "Id": "f3393e32-ff61-4007-99f8-51dc7aae52c8",
+  "Date": {
+    "Seconds": 1578700800,
+    "Nanos": 0
+  },
+  "Description": "Contest 002 (BundFuture) de",
+  "DomainOfInfluence": {
+    "Id": "2f6a94d3-83ee-5518-8ed5-2394c9a18e08",
+    "Name": "Bund",
+    "ShortName": "CH",
+    "AuthorityName": "Abraxas Informatik AG",
+    "Type": 1,
+    "SecureConnectId": "SC-ABX",
+    "ResponsibleForVotingCards": false,
+    "ExternalPrintingCenter": false,
+    "ExternalPrintingCenterEaiMessageType": "",
+    "PrintData": null,
+    "ElectoralRegistrationEnabled": true,
+    "AllowManualVoterListUpload": false,
+    "CanManuallyUploadVoterList": false,
+    "LastVoterUpdate": null
+  },
+  "Approved": null,
+  "IsApproved": false,
+  "PrintingCenterSignUpDeadline": null,
+  "AttachmentDeliveryDeadline": null,
+  "State": 1,
+  "IsSingleAttendeeContest": false,
+  "GenerateVotingCardsDeadline": null,
+  "IsPoliticalAssembly": false
+}

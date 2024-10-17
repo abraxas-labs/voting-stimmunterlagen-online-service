@@ -1,0 +1,110 @@
+{
+  "Entries": [
+    {
+      "DomainOfInfluence": {
+        "Id": "c7c84fe4-565e-5d85-8ca7-2b9e1facbf48",
+        "Name": "Gemeinde Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": true,
+        "CanManuallyUploadVoterList": true,
+        "LastVoterUpdate": null
+      },
+      "AttachmentCategorySummaries": [
+        {
+          "Category": 8,
+          "Attachments": [
+            {
+              "Id": "bad9a4b6-f5de-4120-9be6-89c5b861358c",
+              "Name": "Arnegg Umschlag",
+              "Format": 2,
+              "Color": "Blue",
+              "Supplier": "Kyburz AG",
+              "DeliveryPlannedOn": {
+                "Seconds": 1577750400,
+                "Nanos": 0
+              },
+              "DeliveryReceivedOn": null,
+              "DomainOfInfluence": {
+                "Id": "c7c84fe4-565e-5d85-8ca7-2b9e1facbf48",
+                "Name": "Gemeinde Arnegg",
+                "ShortName": "MU-AG",
+                "AuthorityName": "Gemeinde Arnegg",
+                "Type": 4,
+                "SecureConnectId": "SC-MU-AG",
+                "ResponsibleForVotingCards": true,
+                "ExternalPrintingCenter": false,
+                "ExternalPrintingCenterEaiMessageType": "",
+                "PrintData": {
+                  "ShippingAway": 3,
+                  "ShippingReturn": 3,
+                  "ShippingMethod": 3
+                },
+                "ElectoralRegistrationEnabled": true,
+                "AllowManualVoterListUpload": true,
+                "CanManuallyUploadVoterList": true,
+                "LastVoterUpdate": null
+              },
+              "PoliticalBusinessIds": [
+                "87732104-e226-4e74-9311-f86f1ee56b7d"
+              ],
+              "State": 1,
+              "DomainOfInfluenceAttachmentRequiredCount": 2000,
+              "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+              "TotalRequiredCount": 2000,
+              "TotalRequiredForVoterListsCount": 0,
+              "Station": null,
+              "OrderedCount": 2000,
+              "Category": 8
+            }
+          ],
+          "TotalOrderedCount": 2000,
+          "TotalRequiredCount": 2000,
+          "TotalRequiredForVoterListsCount": 0
+        }
+      ],
+      "PoliticalBusinesses": [
+        {
+          "Id": "87732104-e226-4e74-9311-f86f1ee56b7d",
+          "PoliticalBusinessNumber": "V001",
+          "OfficialDescription": "bund future vote V001 (official) de",
+          "ShortDescription": "bund future vote V001 (short) de",
+          "DomainOfInfluence": {
+            "Id": "c7c84fe4-565e-5d85-8ca7-2b9e1facbf48",
+            "Name": "Gemeinde Arnegg",
+            "ShortName": "MU-AG",
+            "AuthorityName": "Gemeinde Arnegg",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 3
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": true,
+            "CanManuallyUploadVoterList": true,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": false,
+          "Approved": true
+        }
+      ]
+    }
+  ]
+}

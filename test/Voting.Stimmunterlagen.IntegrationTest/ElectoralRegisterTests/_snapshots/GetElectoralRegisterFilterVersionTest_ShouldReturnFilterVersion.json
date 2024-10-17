@@ -1,0 +1,22 @@
+{
+  "Filter": {
+    "Id": "3fc82cb1-b638-4a61-a2e9-ca47a9e6a9e0",
+    "Name": "CH OK",
+    "Description": "Schweizer mit Stimmrecht"
+  },
+  "Version": {
+    "Id": "65d05d9c-8543-40c1-9cdb-f81fd5c2f26c",
+    "Name": "V1 01.08.2023",
+    "Deadline": {
+      "Seconds": 1690848000,
+      "Nanos": 0
+    },
+    "NumberOfPersons": 5,
+    "NumberOfInvalidPersons": 1,
+    "CreatedAt": {
+      "Seconds": 1677665712,
+      "Nanos": 0
+    },
+    "CreatedByName": "Rudolf Meier"
+  }
+}

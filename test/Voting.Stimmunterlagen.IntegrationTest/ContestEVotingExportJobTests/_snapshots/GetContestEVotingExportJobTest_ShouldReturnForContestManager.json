@@ -1,0 +1,15 @@
+{
+  "Id": "16887688-dc9d-4a9f-aa17-3e61f5505c28",
+  "FileName": "file-name.zip",
+  "Started": {
+    "Seconds": 1579093930,
+    "Nanos": 200000000
+  },
+  "Completed": {
+    "Seconds": 1579101130,
+    "Nanos": 200000000
+  },
+  "Failed": null,
+  "State": 4,
+  "FileHash": "WsoKmJdM8ACdxPXmvlKYpdUUNQZXPkC6vyVt4+0+i4yMFHQYHcahbb9MRxYn7teAlff0mue4kuqCt1CcKvpAVw=="
+}

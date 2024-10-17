@@ -1,0 +1,85 @@
+{
+  "Jobs": [
+    {
+      "Id": "8c93d7d7-4e08-43d4-9715-b9e1ba4b53d8",
+      "Created": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "CreatedBy": {
+        "SecureConnectId": "50897bca-86c2-4a65-a01e-c620baafa323",
+        "UserName": "UXRA0",
+        "FirstName": "Ruedi",
+        "LastName": "von der Arnegg"
+      },
+      "Voter": {
+        "VotingCardType": 1,
+        "Salutation": 0,
+        "Title": "",
+        "FirstName": "Laura",
+        "LastName": "Ebersbach",
+        "AddressLine1": "",
+        "AddressLine2": "",
+        "Street": "Üerklisweg",
+        "HouseNumber": "68",
+        "DwellingNumber": "",
+        "Locality": "",
+        "Town": "Arnegg",
+        "SwissZipCode": 5600,
+        "HasSwissZipCode": true,
+        "ForeignZipCode": "",
+        "HasForeignZipCode": false,
+        "Country": {
+          "Iso2": "CH",
+          "Name": "Schweiz"
+        },
+        "LanguageOfCorrespondence": "de",
+        "PersonId": "",
+        "DateOfBirth": null,
+        "ZipCodeCase": 13
+      }
+    },
+    {
+      "Id": "f2ce7a05-3ad6-4f16-bbd4-941dbea7b827",
+      "Created": {
+        "Seconds": 1578402730,
+        "Nanos": 200000000
+      },
+      "CreatedBy": {
+        "SecureConnectId": "50897bca-86c2-4a65-a01e-c620baafa323",
+        "UserName": "UXRA0",
+        "FirstName": "Ruedi",
+        "LastName": "von der Arnegg"
+      },
+      "Voter": {
+        "VotingCardType": 1,
+        "Salutation": 2,
+        "Title": "Dr.",
+        "FirstName": "Stefan",
+        "LastName": "Jager",
+        "AddressLine1": "gegenüber Schulhaus",
+        "AddressLine2": "",
+        "Street": "via Stazione",
+        "HouseNumber": "12a",
+        "DwellingNumber": "",
+        "Locality": "",
+        "Town": "Arnegg",
+        "SwissZipCode": 5600,
+        "HasSwissZipCode": true,
+        "ForeignZipCode": "",
+        "HasForeignZipCode": false,
+        "Country": {
+          "Iso2": "CH",
+          "Name": "Schweiz"
+        },
+        "LanguageOfCorrespondence": "de",
+        "PersonId": "234",
+        "DateOfBirth": {
+          "Seconds": 811641600,
+          "Nanos": 0
+        },
+        "ZipCodeCase": 13
+      }
+    }
+  ]
+}

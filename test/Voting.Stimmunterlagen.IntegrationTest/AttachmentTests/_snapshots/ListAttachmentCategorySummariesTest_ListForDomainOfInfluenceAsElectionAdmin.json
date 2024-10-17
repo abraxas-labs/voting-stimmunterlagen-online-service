@@ -1,0 +1,142 @@
+{
+  "Summaries": [
+    {
+      "Category": 1,
+      "Attachments": [
+        {
+          "Id": "ebbc6e0b-bdd9-4962-a76a-4c2767ee9113",
+          "Name": "Bundesbüchlein",
+          "Format": 1,
+          "Color": "",
+          "Supplier": "Merkur",
+          "DeliveryPlannedOn": {
+            "Seconds": 1579910400,
+            "Nanos": 0
+          },
+          "DeliveryReceivedOn": null,
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessIds": [
+            "b17c5b4a-e9e9-4a6a-8083-352426a528f9"
+          ],
+          "State": 1,
+          "DomainOfInfluenceAttachmentRequiredCount": 0,
+          "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+          "TotalRequiredCount": 40,
+          "TotalRequiredForVoterListsCount": 0,
+          "Station": 1,
+          "OrderedCount": 50000,
+          "Category": 1
+        },
+        {
+          "Id": "4f8bb85c-e120-4cc5-b6a9-8033ee313f35",
+          "Name": "Bundesbüchlein 2",
+          "Format": 2,
+          "Color": "",
+          "Supplier": "Druckverlag",
+          "DeliveryPlannedOn": {
+            "Seconds": 1581206400,
+            "Nanos": 0
+          },
+          "DeliveryReceivedOn": null,
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessIds": [
+            "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
+            "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30"
+          ],
+          "State": 1,
+          "DomainOfInfluenceAttachmentRequiredCount": null,
+          "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+          "TotalRequiredCount": 40,
+          "TotalRequiredForVoterListsCount": 13,
+          "Station": null,
+          "OrderedCount": 50000,
+          "Category": 1
+        }
+      ],
+      "TotalOrderedCount": 100000,
+      "TotalRequiredCount": 0,
+      "TotalRequiredForVoterListsCount": 0
+    },
+    {
+      "Category": 12,
+      "Attachments": [
+        {
+          "Id": "45508c30-14fb-4aa7-9532-db2a79e3c90d",
+          "Name": "Spezielles Arnegg Büchlein",
+          "Format": 3,
+          "Color": "",
+          "Supplier": "Städtische Druckerei",
+          "DeliveryPlannedOn": {
+            "Seconds": 1580169600,
+            "Nanos": 0
+          },
+          "DeliveryReceivedOn": null,
+          "DomainOfInfluence": {
+            "Id": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+            "Name": "Gemeinde Arnegg",
+            "ShortName": "MU-AG",
+            "AuthorityName": "Gemeinde Arnegg",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 3
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": true,
+            "CanManuallyUploadVoterList": true,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessIds": [
+            "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30"
+          ],
+          "State": 1,
+          "DomainOfInfluenceAttachmentRequiredCount": null,
+          "DomainOfInfluenceAttachmentRequiredForVoterListsCount": null,
+          "TotalRequiredCount": 1000,
+          "TotalRequiredForVoterListsCount": 9,
+          "Station": null,
+          "OrderedCount": 1000,
+          "Category": 12
+        }
+      ],
+      "TotalOrderedCount": 1000,
+      "TotalRequiredCount": 0,
+      "TotalRequiredForVoterListsCount": 0
+    }
+  ]
+}

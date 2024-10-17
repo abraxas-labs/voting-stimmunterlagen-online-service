@@ -1,0 +1,19 @@
+{
+  "Filters": [
+    {
+      "Id": "3fc82cb1-b638-4a61-a2e9-ca47a9e6a9e0",
+      "Name": "CH OK",
+      "Description": "Schweizer mit Stimmrecht"
+    },
+    {
+      "Id": "bb3b45a2-2028-4477-8c2a-64e3580156fa",
+      "Name": "CH NOK",
+      "Description": "Schweizer ohne Stimmrecht"
+    },
+    {
+      "Id": "9586b50f-d375-4d68-99a3-e1d11402115d",
+      "Name": "CH 16+",
+      "Description": "Schweizer ab 16 Jahren"
+    }
+  ]
+}

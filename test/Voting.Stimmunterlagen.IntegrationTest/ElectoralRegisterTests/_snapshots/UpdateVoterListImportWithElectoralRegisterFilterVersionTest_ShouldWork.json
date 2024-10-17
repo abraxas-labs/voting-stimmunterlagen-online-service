@@ -1,0 +1,311 @@
+{
+  "response": {
+    "ImportId": "52fc9ddb-87cb-4e73-b5ff-4017009f0e9b",
+    "FilterVersionId": "4dae1953-eded-4613-acde-abd88936313e",
+    "VoterLists": [
+      {
+        "Id": "",
+        "VotingCardType": 1,
+        "NumberOfVoters": 4,
+        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 1,
+        "VoterDuplicates": [
+          {
+            "PersonId": "1",
+            "FirstName": "Steffen",
+            "LastName": "Krüger",
+            "DateOfBirth": "1952-10"
+          }
+        ]
+      }
+    ]
+  },
+  "data": {
+    "DomainOfInfluence": null,
+    "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+    "SourceId": "4dae1953-eded-4613-acde-abd88936313e",
+    "Source": 2,
+    "LastUpdate": "2023-04-03T00:00:00Z",
+    "Name": "CH OK / V2 01.09.2023",
+    "VoterLists": [
+      {
+        "DomainOfInfluence": null,
+        "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+        "VotingCardType": 1,
+        "NumberOfVoters": 4,
+        "Voters": [
+          {
+            "Salutation": 2,
+            "Title": "Dr.",
+            "FirstName": "Dirk",
+            "LastName": "Berg",
+            "AddressFirstName": "Dirk",
+            "AddressLastName": "Berg",
+            "FullName": "Dirk Berg",
+            "AddressLine1": "Bernerstrasse",
+            "AddressLine2": "Beim Eck",
+            "Street": "Mattenstrasse",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "71",
+            "DwellingNumber": "2. Etage",
+            "Locality": "3XX",
+            "Town": "Sergey",
+            "SwissZipCode": 1355,
+            "ForeignZipCode": null,
+            "Religion": "111",
+            "ZipCode": "1355",
+            "Country": {
+              "Iso2": "CH",
+              "Name": "Schweiz"
+            },
+            "SourceIndex": 0,
+            "LanguageOfCorrespondence": "fr",
+            "Bfs": "1",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 1,
+            "DateOfBirth": "1971-05",
+            "Sex": 1,
+            "PersonId": "1",
+            "PersonIdCategory": "1",
+            "MunicipalityName": "Sergey",
+            "PlacesOfOrigin": [
+              {
+                "Name": "Thun",
+                "Canton": 1,
+                "VoterId": "00000000-0000-0000-0000-000000000000",
+                "Voter": null
+              }
+            ],
+            "SwissAbroadPerson": null,
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": true,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "Salutation": 2,
+            "Title": null,
+            "FirstName": "Steffen",
+            "LastName": "Krüger",
+            "AddressFirstName": "Steffen",
+            "AddressLastName": "Krüger",
+            "FullName": "Steffen Krüger",
+            "AddressLine1": null,
+            "AddressLine2": null,
+            "Street": "Scheidweg",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "104",
+            "DwellingNumber": null,
+            "Locality": null,
+            "Town": "Guschelmuth",
+            "SwissZipCode": 1792,
+            "ForeignZipCode": null,
+            "Religion": null,
+            "ZipCode": "1792",
+            "Country": {
+              "Iso2": "CH",
+              "Name": "Schweiz"
+            },
+            "SourceIndex": 1,
+            "LanguageOfCorrespondence": "de",
+            "Bfs": "1",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 1,
+            "DateOfBirth": "1952-10",
+            "Sex": 1,
+            "PersonId": "1",
+            "PersonIdCategory": "1",
+            "MunicipalityName": "Gurmels",
+            "PlacesOfOrigin": [
+              {
+                "Name": "Airolo",
+                "Canton": 20,
+                "VoterId": "00000000-0000-0000-0000-000000000000",
+                "Voter": null
+              }
+            ],
+            "SwissAbroadPerson": null,
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "Salutation": 0,
+            "Title": null,
+            "FirstName": "John",
+            "LastName": "Schmitt",
+            "AddressFirstName": null,
+            "AddressLastName": "Schmitt",
+            "FullName": "John Schmitt",
+            "AddressLine1": null,
+            "AddressLine2": null,
+            "Street": "Jesmond Rd",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "33",
+            "DwellingNumber": null,
+            "Locality": null,
+            "Town": "KILMELFORD",
+            "SwissZipCode": null,
+            "ForeignZipCode": "PA34 8BJ",
+            "Religion": null,
+            "ZipCode": "PA34 8BJ",
+            "Country": {
+              "Iso2": null,
+              "Name": "England"
+            },
+            "SourceIndex": 3,
+            "LanguageOfCorrespondence": "it",
+            "Bfs": "1",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 3,
+            "DateOfBirth": "1952-10",
+            "Sex": 1,
+            "PersonId": "10",
+            "PersonIdCategory": "10",
+            "MunicipalityName": "Interlaken",
+            "PlacesOfOrigin": [],
+            "SwissAbroadPerson": null,
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "Salutation": 1,
+            "Title": null,
+            "FirstName": "Birgit",
+            "LastName": "Theiss",
+            "AddressFirstName": "Birgit",
+            "AddressLastName": "Theiss",
+            "FullName": "Birgit Theiss",
+            "AddressLine1": null,
+            "AddressLine2": null,
+            "Street": "Grossmatt",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "37",
+            "DwellingNumber": null,
+            "Locality": null,
+            "Town": "Biel",
+            "SwissZipCode": 5000,
+            "ForeignZipCode": null,
+            "Religion": null,
+            "ZipCode": "5000",
+            "Country": {
+              "Iso2": "CH",
+              "Name": "Schweiz"
+            },
+            "SourceIndex": 2,
+            "LanguageOfCorrespondence": "de",
+            "Bfs": "0000",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 2,
+            "DateOfBirth": "1991-05",
+            "Sex": 2,
+            "PersonId": "2",
+            "PersonIdCategory": "2",
+            "MunicipalityName": "?",
+            "PlacesOfOrigin": [
+              {
+                "Name": "Bellinzona",
+                "Canton": 20,
+                "VoterId": "00000000-0000-0000-0000-000000000000",
+                "Voter": null
+              }
+            ],
+            "SwissAbroadPerson": {
+              "ResidenceCountry": {
+                "Iso2": null,
+                "Name": "Dänemark"
+              },
+              "DateOfRegistration": "2016-08-23T00:00:00Z",
+              "Extension": {
+                "PostageCode": "1",
+                "Authority": {
+                  "Organisation": {
+                    "Name": "Staatskanzlei",
+                    "AddOn1": "St. Gallen"
+                  },
+                  "AddressLine1": "Kanton St. Gallen",
+                  "AddressLine2": "Staatskanzlein",
+                  "Street": "Regierungsgebäude",
+                  "Town": "St. Gallen",
+                  "SwissZipCode": 9001,
+                  "Country": {
+                    "Iso2": "CH",
+                    "Name": "SWITZERLAND"
+                  }
+                },
+                "Address": {
+                  "Line1": "Aasen Pätrick",
+                  "Line2": "3/1 23 Hathaway Lane",
+                  "Line3": "Glasgow",
+                  "Line4": "G20 8ND",
+                  "Line5": "",
+                  "Line6": "",
+                  "Line7": "UNITED KINGDOM"
+                }
+              }
+            },
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "Index": 4,
+        "PoliticalBusinessEntries": null,
+        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 1,
+        "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
+        "ImportId": "00000000-0000-0000-0000-000000000000",
+        "Import": null,
+        "HasVoterDuplicates": true,
+        "VoterDuplicates": [
+          {
+            "FirstName": "Steffen",
+            "LastName": "Krüger",
+            "PersonId": "1",
+            "DateOfBirth": "1952-10",
+            "Sex": 1,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "List": null,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "Id": "00000000-0000-0000-0000-000000000000"
+      }
+    ],
+    "Id": "00000000-0000-0000-0000-000000000000"
+  }
+}

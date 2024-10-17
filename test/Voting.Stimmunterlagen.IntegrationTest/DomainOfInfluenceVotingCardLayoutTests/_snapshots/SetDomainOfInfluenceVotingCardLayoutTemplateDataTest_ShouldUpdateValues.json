@@ -1,0 +1,63 @@
+{
+  "Containers": [
+    {
+      "Key": "adresse_empfaenger",
+      "Name": "Adresse Empfänger",
+      "Fields": [
+        {
+          "Key": "first_name",
+          "Name": "Vorname",
+          "Value": ""
+        },
+        {
+          "Key": "last_name",
+          "Name": "Nachname",
+          "Value": ""
+        }
+      ]
+    },
+    {
+      "Key": "e_voting",
+      "Name": "E-Voting",
+      "Fields": [
+        {
+          "Key": "domain",
+          "Name": "eVoting Domain",
+          "Value": "vote.arnegg.ch"
+        },
+        {
+          "Key": "e_voting",
+          "Name": "eVoting Systemname",
+          "Value": "ArneggSuperVote"
+        }
+      ]
+    },
+    {
+      "Key": "urne",
+      "Name": "Urne",
+      "Fields": [
+        {
+          "Key": "standort",
+          "Name": "Standort der Urne",
+          "Value": "Turnhalle West"
+        },
+        {
+          "Key": "zeit",
+          "Name": "Zeit",
+          "Value": "18:00"
+        }
+      ]
+    },
+    {
+      "Key": "urnengang",
+      "Name": "Urnengang",
+      "Fields": [
+        {
+          "Key": "urnengang_datum",
+          "Name": "Datum",
+          "Value": ""
+        }
+      ]
+    }
+  ]
+}

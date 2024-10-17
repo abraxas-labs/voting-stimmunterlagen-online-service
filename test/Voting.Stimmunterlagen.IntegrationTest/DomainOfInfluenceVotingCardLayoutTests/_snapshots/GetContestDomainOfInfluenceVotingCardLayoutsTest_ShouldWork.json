@@ -1,0 +1,303 @@
+{
+  "LayoutGroups": [
+    {
+      "DomainOfInfluence": {
+        "Id": "1779cde4-8a1f-5113-a7d6-5f886476566a",
+        "Name": "Auslandschweizer",
+        "ShortName": "MU-AS",
+        "AuthorityName": "Auslandschweizer",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-AS",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": null,
+          "OverriddenTemplate": null,
+          "EffectiveTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "1779cde4-8a1f-5113-a7d6-5f886476566a",
+            "Name": "Auslandschweizer",
+            "ShortName": "MU-AS",
+            "AuthorityName": "Auslandschweizer",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-AS",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 3
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          }
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "ba28b300-1b81-58c5-978e-480ef523ca40",
+        "Name": "Gemeinde Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": true,
+        "CanManuallyUploadVoterList": true,
+        "LastVoterUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": {
+            "Id": 3,
+            "Name": "template-003-others"
+          },
+          "OverriddenTemplate": {
+            "Id": 100,
+            "Name": "template-100-swiss-arnegg"
+          },
+          "EffectiveTemplate": {
+            "Id": 100,
+            "Name": "template-100-swiss-arnegg"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "ba28b300-1b81-58c5-978e-480ef523ca40",
+            "Name": "Gemeinde Arnegg",
+            "ShortName": "MU-AG",
+            "AuthorityName": "Gemeinde Arnegg",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 3
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": true,
+            "CanManuallyUploadVoterList": true,
+            "LastVoterUpdate": null
+          }
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "a4fea864-df16-58dc-bf76-5d33489d01a3",
+        "Name": "Stadt Gossau",
+        "ShortName": "MU-GO",
+        "AuthorityName": "Stadt St. Gossau",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-GO",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 6,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": {
+            "Id": 3,
+            "Name": "template-003-others"
+          },
+          "OverriddenTemplate": null,
+          "EffectiveTemplate": {
+            "Id": 3,
+            "Name": "template-003-others"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "a4fea864-df16-58dc-bf76-5d33489d01a3",
+            "Name": "Stadt Gossau",
+            "ShortName": "MU-GO",
+            "AuthorityName": "Stadt St. Gossau",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-GO",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 6,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          }
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "664783a2-c094-590b-a6f4-bb9a100bb5b3",
+        "Name": "Stadt St. Gallen",
+        "ShortName": "MU-SG",
+        "AuthorityName": "Stadt St. Gallen",
+        "Type": 4,
+        "SecureConnectId": "SC-SG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 2,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": null,
+          "OverriddenTemplate": null,
+          "EffectiveTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "664783a2-c094-590b-a6f4-bb9a100bb5b3",
+            "Name": "Stadt St. Gallen",
+            "ShortName": "MU-SG",
+            "AuthorityName": "Stadt St. Gallen",
+            "Type": 4,
+            "SecureConnectId": "SC-SG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 2,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          }
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "c647082e-892a-54df-888a-1fcb460ec6ca",
+        "Name": "Stadt Uzwil",
+        "ShortName": "MU-UZ",
+        "AuthorityName": "Stadt St. Uzwil",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-UZ",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": true,
+        "ExternalPrintingCenterEaiMessageType": "EXT-Uzwil",
+        "PrintData": {
+          "ShippingAway": 1,
+          "ShippingReturn": 4,
+          "ShippingMethod": 2
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": null,
+          "OverriddenTemplate": null,
+          "EffectiveTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "c647082e-892a-54df-888a-1fcb460ec6ca",
+            "Name": "Stadt Uzwil",
+            "ShortName": "MU-UZ",
+            "AuthorityName": "Stadt St. Uzwil",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-UZ",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": true,
+            "ExternalPrintingCenterEaiMessageType": "EXT-Uzwil",
+            "PrintData": {
+              "ShippingAway": 1,
+              "ShippingReturn": 4,
+              "ShippingMethod": 2
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          }
+        }
+      ]
+    }
+  ]
+}

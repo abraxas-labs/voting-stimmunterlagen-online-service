@@ -1,0 +1,104 @@
+{
+  "DomainOfInfluences_": [
+    {
+      "Id": "93a5b1ef-8bda-5080-9a8b-64951594bfe1",
+      "Name": "Auslandschweizer",
+      "ShortName": "MU-AS",
+      "AuthorityName": "Auslandschweizer",
+      "Type": 4,
+      "SecureConnectId": "SC-MU-AS",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": false,
+      "ExternalPrintingCenterEaiMessageType": "",
+      "PrintData": {
+        "ShippingAway": 3,
+        "ShippingReturn": 3,
+        "ShippingMethod": 3
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": false,
+      "CanManuallyUploadVoterList": false,
+      "LastVoterUpdate": null
+    },
+    {
+      "Id": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+      "Name": "Gemeinde Arnegg",
+      "ShortName": "MU-AG",
+      "AuthorityName": "Gemeinde Arnegg",
+      "Type": 4,
+      "SecureConnectId": "SC-MU-AG",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": false,
+      "ExternalPrintingCenterEaiMessageType": "",
+      "PrintData": {
+        "ShippingAway": 3,
+        "ShippingReturn": 3,
+        "ShippingMethod": 3
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": true,
+      "CanManuallyUploadVoterList": true,
+      "LastVoterUpdate": null
+    },
+    {
+      "Id": "63356916-248a-5560-b0a7-516db5b0f766",
+      "Name": "Stadt Gossau",
+      "ShortName": "MU-GO",
+      "AuthorityName": "Stadt St. Gossau",
+      "Type": 4,
+      "SecureConnectId": "SC-MU-GO",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": false,
+      "ExternalPrintingCenterEaiMessageType": "",
+      "PrintData": {
+        "ShippingAway": 3,
+        "ShippingReturn": 6,
+        "ShippingMethod": 1
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": false,
+      "CanManuallyUploadVoterList": false,
+      "LastVoterUpdate": null
+    },
+    {
+      "Id": "7cd2f09e-48f5-5916-ae2e-18512481615d",
+      "Name": "Stadt St. Gallen",
+      "ShortName": "MU-SG",
+      "AuthorityName": "Stadt St. Gallen",
+      "Type": 4,
+      "SecureConnectId": "SC-SG",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": false,
+      "ExternalPrintingCenterEaiMessageType": "",
+      "PrintData": {
+        "ShippingAway": 3,
+        "ShippingReturn": 2,
+        "ShippingMethod": 1
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": false,
+      "CanManuallyUploadVoterList": false,
+      "LastVoterUpdate": null
+    },
+    {
+      "Id": "834f81d8-59a8-56cb-8126-53e932994b25",
+      "Name": "Stadt Uzwil",
+      "ShortName": "MU-UZ",
+      "AuthorityName": "Stadt St. Uzwil",
+      "Type": 4,
+      "SecureConnectId": "SC-MU-UZ",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": true,
+      "ExternalPrintingCenterEaiMessageType": "EXT-Uzwil",
+      "PrintData": {
+        "ShippingAway": 1,
+        "ShippingReturn": 4,
+        "ShippingMethod": 2
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": false,
+      "CanManuallyUploadVoterList": false,
+      "LastVoterUpdate": null
+    }
+  ]
+}

@@ -1,0 +1,444 @@
+{
+  "response": {
+    "ImportId": "00000000-0000-0000-0000-000000000000",
+    "VoterLists": [
+      {
+        "Id": "00000000-0000-0000-0000-000000000000",
+        "VotingCardType": 1,
+        "NumberOfVoters": 3,
+        "VoterDuplicates": []
+      },
+      {
+        "Id": "00000000-0000-0000-0000-000000000000",
+        "VotingCardType": 3,
+        "NumberOfVoters": 1,
+        "VoterDuplicates": []
+      }
+    ],
+    "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false
+  },
+  "data": {
+    "DomainOfInfluence": null,
+    "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+    "SourceId": "",
+    "Source": 1,
+    "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false,
+    "LastUpdate": "2020-01-09T00:00:00Z",
+    "Name": "my-file-001",
+    "VoterLists": [
+      {
+        "DomainOfInfluence": null,
+        "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+        "VotingCardType": 1,
+        "NumberOfVoters": 3,
+        "Voters": [
+          {
+            "Salutation": 0,
+            "Title": null,
+            "FirstName": "Steffen",
+            "LastName": "Krüger",
+            "AddressFirstName": "Steffen",
+            "AddressLastName": "Krüger",
+            "FullName": "Steffen Krüger",
+            "AddressLine1": null,
+            "AddressLine2": null,
+            "Street": "Scheidweg",
+            "PostOfficeBoxText": "Postfach 28",
+            "HouseNumber": "104",
+            "DwellingNumber": null,
+            "Locality": null,
+            "Town": "Guschelmuth",
+            "SwissZipCode": 1792,
+            "ForeignZipCode": null,
+            "Religion": null,
+            "ZipCode": "1792",
+            "Country": {
+              "Iso2": "CH",
+              "Name": "Schweiz"
+            },
+            "SourceIndex": 1,
+            "LanguageOfCorrespondence": "de",
+            "Bfs": "0000",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 1,
+            "DateOfBirth": "1952-10",
+            "Sex": 1,
+            "PersonId": "1",
+            "PersonIdCategory": "1",
+            "MunicipalityName": "Gurmels",
+            "PlacesOfOrigin": [
+              {
+                "Name": "Airolo",
+                "Canton": 20,
+                "VoterId": "00000000-0000-0000-0000-000000000000",
+                "Voter": null
+              }
+            ],
+            "SwissAbroadPerson": null,
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "Salutation": 0,
+            "Title": null,
+            "FirstName": "John",
+            "LastName": "Schmitt",
+            "AddressFirstName": null,
+            "AddressLastName": "Schmitt",
+            "FullName": "John Schmitt",
+            "AddressLine1": null,
+            "AddressLine2": null,
+            "Street": "Jesmond Rd",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "33",
+            "DwellingNumber": null,
+            "Locality": null,
+            "Town": "KILMELFORD",
+            "SwissZipCode": null,
+            "ForeignZipCode": "PA34 8BJ",
+            "Religion": null,
+            "ZipCode": "PA34 8BJ",
+            "Country": {
+              "Iso2": null,
+              "Name": "England"
+            },
+            "SourceIndex": 3,
+            "LanguageOfCorrespondence": "it",
+            "Bfs": "0000",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 3,
+            "DateOfBirth": "1952-10",
+            "Sex": 1,
+            "PersonId": "10",
+            "PersonIdCategory": "10",
+            "MunicipalityName": "Interlaken",
+            "PlacesOfOrigin": [],
+            "SwissAbroadPerson": null,
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "Salutation": 0,
+            "Title": null,
+            "FirstName": "Birgit",
+            "LastName": "Theiss",
+            "AddressFirstName": "Birgit",
+            "AddressLastName": "Theiss",
+            "FullName": "Birgit Theiss",
+            "AddressLine1": null,
+            "AddressLine2": null,
+            "Street": "Grossmatt",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "37",
+            "DwellingNumber": null,
+            "Locality": null,
+            "Town": "Biel",
+            "SwissZipCode": 5000,
+            "ForeignZipCode": null,
+            "Religion": null,
+            "ZipCode": "5000",
+            "Country": {
+              "Iso2": "CH",
+              "Name": "Schweiz"
+            },
+            "SourceIndex": 2,
+            "LanguageOfCorrespondence": "fr",
+            "Bfs": "0000",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 1,
+            "VoterType": 2,
+            "DateOfBirth": "1991-05",
+            "Sex": 2,
+            "PersonId": "2",
+            "PersonIdCategory": "2",
+            "MunicipalityName": "?",
+            "PlacesOfOrigin": [
+              {
+                "Name": "Zürich",
+                "Canton": 0,
+                "VoterId": "00000000-0000-0000-0000-000000000000",
+                "Voter": null
+              }
+            ],
+            "SwissAbroadPerson": {
+              "ResidenceCountry": {
+                "Iso2": null,
+                "Name": "Dänemark"
+              },
+              "DateOfRegistration": "2016-08-23T00:00:00Z",
+              "Extension": {
+                "PostageCode": "1",
+                "Authority": {
+                  "Organisation": {
+                    "Name": "Staatskanzlei",
+                    "AddOn1": "St. Gallen"
+                  },
+                  "AddressLine1": "Kanton St. Gallen",
+                  "AddressLine2": "Staatskanzlein",
+                  "Street": "Regierungsgebäude",
+                  "Town": "St. Gallen",
+                  "SwissZipCode": 9001,
+                  "Country": {
+                    "Iso2": "CH",
+                    "Name": "SWITZERLAND"
+                  }
+                },
+                "Address": {
+                  "Line1": "Aasen Pätrick",
+                  "Line2": "3/1 23 Hathaway Lane",
+                  "Line3": "Glasgow ",
+                  "Line4": "G20 8ND ",
+                  "Line5": "",
+                  "Line6": "",
+                  "Line7": "UNITED KINGDOM"
+                }
+              }
+            },
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "Index": 4,
+        "PoliticalBusinessEntries": [
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "0a6f0b72-bd98-4068-a339-284e7bdd37ab",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "2770e4c7-fc2c-4600-83df-c9215dc20cb1",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "4e71e6dd-f040-4862-bd0f-fcdf69aef68b",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "97aa25ce-0d1c-4330-8d99-46b59bfea4b1",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "a9ffc699-3542-45df-8bac-febea9f60c1a",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "b17c5b4a-e9e9-4a6a-8083-352426a528f9",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "d80617ea-36b9-4ad3-a767-59310c94a4cc",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
+        "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
+        "ImportId": "00000000-0000-0000-0000-000000000000",
+        "Import": null,
+        "HasVoterDuplicates": false,
+        "VoterDuplicates": [],
+        "Id": "00000000-0000-0000-0000-000000000000"
+      },
+      {
+        "DomainOfInfluence": null,
+        "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+        "VotingCardType": 3,
+        "NumberOfVoters": 1,
+        "Voters": [
+          {
+            "Salutation": 0,
+            "Title": "Dr.",
+            "FirstName": "Dirk",
+            "LastName": "Berg",
+            "AddressFirstName": "Dirk",
+            "AddressLastName": "Berg",
+            "FullName": "Dirk Berg",
+            "AddressLine1": "Bernerstrasse",
+            "AddressLine2": "Beim Eck",
+            "Street": "Mattenstrasse",
+            "PostOfficeBoxText": null,
+            "HouseNumber": "71",
+            "DwellingNumber": "2. Etage",
+            "Locality": "3XX",
+            "Town": "Sergey",
+            "SwissZipCode": 1355,
+            "ForeignZipCode": null,
+            "Religion": null,
+            "ZipCode": "1355",
+            "Country": {
+              "Iso2": "CH",
+              "Name": "Schweiz"
+            },
+            "SourceIndex": 0,
+            "LanguageOfCorrespondence": "fr",
+            "Bfs": "0000",
+            "List": null,
+            "ListId": "00000000-0000-0000-0000-000000000000",
+            "ManualJob": null,
+            "ManualJobId": null,
+            "JobId": null,
+            "Job": null,
+            "VotingCardType": 3,
+            "VoterType": 1,
+            "DateOfBirth": "1971-05",
+            "Sex": 1,
+            "PersonId": "1",
+            "PersonIdCategory": "1",
+            "MunicipalityName": "Sergey",
+            "PlacesOfOrigin": [
+              {
+                "Name": "Thun",
+                "Canton": 1,
+                "VoterId": "00000000-0000-0000-0000-000000000000",
+                "Voter": null
+              }
+            ],
+            "SwissAbroadPerson": null,
+            "PageInfo": null,
+            "ContestIndex": 0,
+            "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+            "Contest": null,
+            "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "Id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "Index": 5,
+        "PoliticalBusinessEntries": [
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "0a6f0b72-bd98-4068-a339-284e7bdd37ab",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "2770e4c7-fc2c-4600-83df-c9215dc20cb1",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "4e71e6dd-f040-4862-bd0f-fcdf69aef68b",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "97aa25ce-0d1c-4330-8d99-46b59bfea4b1",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "a9ffc699-3542-45df-8bac-febea9f60c1a",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "b17c5b4a-e9e9-4a6a-8083-352426a528f9",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "d80617ea-36b9-4ad3-a767-59310c94a4cc",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          }
+        ],
+        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
+        "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
+        "ImportId": "00000000-0000-0000-0000-000000000000",
+        "Import": null,
+        "HasVoterDuplicates": false,
+        "VoterDuplicates": [],
+        "Id": "00000000-0000-0000-0000-000000000000"
+      }
+    ],
+    "Id": "00000000-0000-0000-0000-000000000000"
+  }
+}

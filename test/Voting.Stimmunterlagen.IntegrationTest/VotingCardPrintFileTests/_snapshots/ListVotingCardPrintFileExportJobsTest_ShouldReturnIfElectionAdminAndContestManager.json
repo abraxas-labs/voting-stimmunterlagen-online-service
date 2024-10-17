@@ -1,0 +1,28 @@
+{
+  "Jobs": [
+    {
+      "Id": "a0fd9c4f-f73d-4ad6-a898-2df4c901167e",
+      "FileName": "de.csv",
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "State": 2
+    },
+    {
+      "Id": "9e6b1dcf-cf14-4923-b000-2ffc4de7eb60",
+      "FileName": "fr.csv",
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "State": 2
+    },
+    {
+      "Id": "036ec07d-f7a4-457e-9144-13ac8f91a4a5",
+      "FileName": "it.csv",
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "State": 2
+    }
+  ]
+}

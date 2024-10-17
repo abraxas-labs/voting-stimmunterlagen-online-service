@@ -1,0 +1,36 @@
+{
+  "Steps": [
+    {
+      "Step": 1,
+      "Approved": false
+    },
+    {
+      "Step": 4,
+      "Approved": false
+    },
+    {
+      "Step": 6,
+      "Approved": false
+    },
+    {
+      "Step": 7,
+      "Approved": false
+    },
+    {
+      "Step": 8,
+      "Approved": false
+    },
+    {
+      "Step": 10,
+      "Approved": false
+    },
+    {
+      "Step": 11,
+      "Approved": false
+    },
+    {
+      "Step": 13,
+      "Approved": false
+    }
+  ]
+}

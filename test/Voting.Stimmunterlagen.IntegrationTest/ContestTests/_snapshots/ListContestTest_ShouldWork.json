@@ -1,0 +1,168 @@
+{
+  "Contests_": [
+    {
+      "Id": "8c3cfd59-3077-4596-bdce-eccf1cca9ac7",
+      "Date": {
+        "Seconds": 1578528000,
+        "Nanos": 0
+      },
+      "Description": "Contest 004(BundPast) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": null,
+      "AttachmentDeliveryDeadline": null,
+      "State": 3,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": null,
+      "IsPoliticalAssembly": false
+    },
+    {
+      "Id": "b776848e-4c4b-4bcc-9522-4b5192765a59",
+      "Date": {
+        "Seconds": 1578614400,
+        "Nanos": 0
+      },
+      "Description": "Contest 003 (BundToday) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": null,
+      "AttachmentDeliveryDeadline": null,
+      "State": 2,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": null,
+      "IsPoliticalAssembly": false
+    },
+    {
+      "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
+      "Date": {
+        "Seconds": 1578700800,
+        "Nanos": 0
+      },
+      "Description": "Political assembly 001 (BundFuture) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": true
+    },
+    {
+      "Id": "f3393e32-ff61-4007-99f8-51dc7aae52c8",
+      "Date": {
+        "Seconds": 1578700800,
+        "Nanos": 0
+      },
+      "Description": "Contest 002 (BundFuture) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": null,
+      "AttachmentDeliveryDeadline": null,
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": null,
+      "IsPoliticalAssembly": false
+    },
+    {
+      "Id": "59280f22-0b30-4498-97d7-d19d3cae02a2",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 000 (BundFuture, archived, not approved) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 1579129200,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579561200,
+        "Nanos": 0
+      },
+      "State": 5,
+      "IsSingleAttendeeContest": true,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 1579215600,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false
+    },
+    {
+      "Id": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 001 (BundFuture, approved) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false
+    },
+    {
+      "Id": "e2f0b358-e20d-4b46-8d4c-522173d93541",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 000 (BundFuture, archived) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 1579129200,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579561200,
+        "Nanos": 0
+      },
+      "State": 5,
+      "IsSingleAttendeeContest": true,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 1579215600,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false
+    }
+  ]
+}

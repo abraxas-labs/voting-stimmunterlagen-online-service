@@ -1,0 +1,55 @@
+{
+  "Summaries": [
+    {
+      "Category": 8,
+      "Attachments": [
+        {
+          "Id": "bdb7c590-c2b5-49fa-9bc7-1a931a714b97",
+          "Name": "Gossau Umschlag",
+          "Format": 2,
+          "Color": "",
+          "Supplier": "kdmz",
+          "DeliveryPlannedOn": {
+            "Seconds": 1580342400,
+            "Nanos": 0
+          },
+          "DeliveryReceivedOn": null,
+          "DomainOfInfluence": {
+            "Id": "63356916-248a-5560-b0a7-516db5b0f766",
+            "Name": "Stadt Gossau",
+            "ShortName": "MU-GO",
+            "AuthorityName": "Stadt St. Gossau",
+            "Type": 4,
+            "SecureConnectId": "SC-MU-GO",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 6,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessIds": [
+            "9f93d743-524e-4ea9-aa81-6b3e79c84a6a"
+          ],
+          "State": 2,
+          "DomainOfInfluenceAttachmentRequiredCount": null,
+          "DomainOfInfluenceAttachmentRequiredForVoterListsCount": null,
+          "TotalRequiredCount": 7000,
+          "TotalRequiredForVoterListsCount": 0,
+          "Station": null,
+          "OrderedCount": 7000,
+          "Category": 8
+        }
+      ],
+      "TotalOrderedCount": 7000,
+      "TotalRequiredCount": 7000,
+      "TotalRequiredForVoterListsCount": 0
+    }
+  ]
+}

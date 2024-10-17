@@ -1,0 +1,20 @@
+{
+  "Name": "Spezielles Arnegg Büchlein updated",
+  "Category": 7,
+  "Format": 2,
+  "Color": "Blue",
+  "Supplier": "Lieferant",
+  "DeliveryPlannedOn": "2020-01-20T00:00:00Z",
+  "DeliveryReceivedOn": null,
+  "PoliticalBusinessEntries": [],
+  "DomainOfInfluence": null,
+  "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+  "DomainOfInfluenceAttachmentCounts": null,
+  "State": 1,
+  "OrderedCount": 2001,
+  "TotalRequiredCount": 2001,
+  "TotalRequiredForVoterListsCount": 9,
+  "Station": null,
+  "Comments": [],
+  "Id": "45508c30-14fb-4aa7-9532-db2a79e3c90d"
+}

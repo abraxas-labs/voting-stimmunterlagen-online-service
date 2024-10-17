@@ -1,0 +1,20 @@
+{
+  "Name": "Publikation Gossau updated",
+  "Category": 7,
+  "Format": 3,
+  "Color": "Blue updated",
+  "Supplier": "Supplier updated",
+  "DeliveryPlannedOn": "2020-01-25T00:00:00Z",
+  "DeliveryReceivedOn": null,
+  "PoliticalBusinessEntries": [],
+  "DomainOfInfluence": null,
+  "DomainOfInfluenceId": "f9093600-bb02-53cc-8f99-e940e1f8ca37",
+  "DomainOfInfluenceAttachmentCounts": null,
+  "State": 1,
+  "OrderedCount": 4000,
+  "TotalRequiredCount": 4000,
+  "TotalRequiredForVoterListsCount": 3,
+  "Station": null,
+  "Comments": [],
+  "Id": "c20c3074-1043-441b-9759-dd017f0bb296"
+}

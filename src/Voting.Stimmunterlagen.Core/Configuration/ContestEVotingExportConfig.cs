@@ -1,0 +1,42 @@
+﻿// (c) Copyright by Abraxas Informatik AG
+// For license information see LICENSE file
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using Voting.Lib.Scheduler;
+using Voting.Stimmunterlagen.Core.Utils;
+using Voting.Stimmunterlagen.Data.Models;
+using Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration;
+using DomainOfInfluence = Voting.Stimmunterlagen.EVoting.Models.DomainOfInfluence;
+
+namespace Voting.Stimmunterlagen.Core.Configuration;
+
+public class ContestEVotingExportConfig
+{
+    public string OutDirectoryPath { get; set; }
+        = Path.Join(
+            StimmunterlagenOutDirectoryUtils.OutDirectoryBasePath,
+            "contest-evoting-exports");
+
+    public int ParallelTasks { get; set; } = 3; // export could contain data up to 1gb.
+
+    public JobConfig Scheduler { get; set; } = new() { Interval = TimeSpan.FromHours(12) };
+
+    public int MaxLogoHeight { get; set; } = 250; // approx 50-150kb.
+
+    /// <summary>
+    /// Gets or sets the "test domain of influence defaults" (Testurnen), which are exported for eVoting.
+    /// </summary>
+    public DomainOfInfluence TestDomainOfInfluenceDefaults { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets the "test domain of influences" (Testurnen), which are exported for eVoting.
+    /// </summary>
+    public Dictionary<DomainOfInfluenceCanton, List<DomainOfInfluence>> TestDomainOfInfluences { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets the e text blocks, which are exported for eVoting.
+    /// </summary>
+    public Dictionary<string, ETextBlocks> ETextBlocks { get; set; } = new();
+}

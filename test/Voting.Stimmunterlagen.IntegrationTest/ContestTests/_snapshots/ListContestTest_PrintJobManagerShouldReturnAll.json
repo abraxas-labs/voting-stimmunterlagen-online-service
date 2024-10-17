@@ -1,0 +1,91 @@
+{
+  "Contests_": [
+    {
+      "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
+      "Date": {
+        "Seconds": 1578700800,
+        "Nanos": 0
+      },
+      "Description": "Political assembly 001 (BundFuture) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": true
+    },
+    {
+      "Id": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 001 (BundFuture, approved) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false
+    },
+    {
+      "Id": "e2f0b358-e20d-4b46-8d4c-522173d93541",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 000 (BundFuture, archived) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 1579129200,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579561200,
+        "Nanos": 0
+      },
+      "State": 5,
+      "IsSingleAttendeeContest": true,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 1579215600,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false
+    }
+  ]
+}

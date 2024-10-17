@@ -1,0 +1,64 @@
+{
+  "Versions": [
+    {
+      "Id": "65d05d9c-8543-40c1-9cdb-f81fd5c2f26c",
+      "Name": "V1 01.08.2023",
+      "Deadline": {
+        "Seconds": 1690848000,
+        "Nanos": 0
+      },
+      "NumberOfPersons": 5,
+      "NumberOfInvalidPersons": 1,
+      "CreatedAt": {
+        "Seconds": 1677665712,
+        "Nanos": 0
+      },
+      "CreatedByName": "Rudolf Meier"
+    },
+    {
+      "Id": "4dae1953-eded-4613-acde-abd88936313e",
+      "Name": "V2 01.09.2023",
+      "Deadline": {
+        "Seconds": 1693526400,
+        "Nanos": 0
+      },
+      "NumberOfPersons": 4,
+      "NumberOfInvalidPersons": 0,
+      "CreatedAt": {
+        "Seconds": 1680520575,
+        "Nanos": 0
+      },
+      "CreatedByName": "Hans-Peter Ryss"
+    },
+    {
+      "Id": "82bad2e5-c214-413f-94c2-7b82c95abccb",
+      "Name": "V3 01.12.2023",
+      "Deadline": {
+        "Seconds": 1701388800,
+        "Nanos": 0
+      },
+      "NumberOfPersons": 30000,
+      "NumberOfInvalidPersons": 0,
+      "CreatedAt": {
+        "Seconds": 1686129124,
+        "Nanos": 0
+      },
+      "CreatedByName": "Hans-Peter Ryss"
+    },
+    {
+      "Id": "49bab8b7-56b1-4aeb-9ac6-d3c2c21a094e",
+      "Name": "V4 01.01.2024",
+      "Deadline": {
+        "Seconds": 1702339200,
+        "Nanos": 0
+      },
+      "NumberOfPersons": 4,
+      "NumberOfInvalidPersons": 0,
+      "CreatedAt": {
+        "Seconds": 1686129310,
+        "Nanos": 0
+      },
+      "CreatedByName": "Hans-Peter Ryss"
+    }
+  ]
+}

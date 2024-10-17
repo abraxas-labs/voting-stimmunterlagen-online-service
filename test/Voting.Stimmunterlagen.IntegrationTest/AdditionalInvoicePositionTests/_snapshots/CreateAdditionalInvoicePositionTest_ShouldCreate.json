@@ -1,0 +1,22 @@
+{
+  "MaterialNumber": "1040.05.55",
+  "Amount": 25.25,
+  "AmountCentime": 2525,
+  "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+  "DomainOfInfluence": null,
+  "Created": "2020-01-10T13:12:10.2Z",
+  "CreatedBy": {
+    "SecureConnectId": "default-user-id",
+    "FirstName": "default user firstname",
+    "LastName": "default user lastname",
+    "UserName": "default username"
+  },
+  "Modified": "2020-01-10T13:12:10.2Z",
+  "ModifiedBy": {
+    "SecureConnectId": "default-user-id",
+    "FirstName": "default user firstname",
+    "LastName": "default user lastname",
+    "UserName": "default username"
+  },
+  "Id": "00000000-0000-0000-0000-000000000000"
+}

@@ -1,0 +1,29 @@
+root = true
+
+[*]
+indent_style = space
+
+[*.{csproj, prop, targets}]
+indent_size = 2
+tab_width = 2
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = false
+
+[*.cs]
+# obsolete
+# dont warn about obsolete members unless VOTING-3198 is resolved
+dotnet_diagnostic.CS0618.severity = suggestion
+
+indent_size = 4
+tab_width = 4
+end_of_line = lf
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# csharp styles
+csharp_style_namespace_declarations = file_scoped:warning
+csharp_prefer_braces = true:warning
+
+# copyright
+file_header_template = (c) Copyright by Abraxas Informatik AG\nFor license information see LICENSE file

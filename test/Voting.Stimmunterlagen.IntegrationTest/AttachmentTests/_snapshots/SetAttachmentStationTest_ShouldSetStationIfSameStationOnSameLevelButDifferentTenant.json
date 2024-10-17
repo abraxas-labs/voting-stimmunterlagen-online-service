@@ -1,0 +1,20 @@
+{
+  "Name": "St- Gallen Umschlag",
+  "Category": 8,
+  "Format": 1,
+  "Color": "",
+  "Supplier": "kdmz",
+  "DeliveryPlannedOn": "2020-01-25T00:00:00Z",
+  "DeliveryReceivedOn": null,
+  "PoliticalBusinessEntries": [],
+  "DomainOfInfluence": null,
+  "DomainOfInfluenceId": "4d1dcca4-33f1-5236-b8e7-d83a24f3477e",
+  "DomainOfInfluenceAttachmentCounts": null,
+  "State": 1,
+  "OrderedCount": 20000,
+  "TotalRequiredCount": 100,
+  "TotalRequiredForVoterListsCount": 3,
+  "Station": null,
+  "Comments": [],
+  "Id": "bfbdd65a-6790-43ca-9d0c-e822557bc674"
+}

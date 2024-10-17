@@ -1,0 +1,332 @@
+{
+  "Entries": [
+    {
+      "DomainOfInfluence": {
+        "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+        "Name": "Bund",
+        "ShortName": "CH",
+        "AuthorityName": "Abraxas Informatik AG",
+        "Type": 1,
+        "SecureConnectId": "SC-ABX",
+        "ResponsibleForVotingCards": false,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": null,
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "AttachmentCategorySummaries": [
+        {
+          "Category": 1,
+          "Attachments": [
+            {
+              "Id": "ebbc6e0b-bdd9-4962-a76a-4c2767ee9113",
+              "Name": "Bundesbüchlein",
+              "Format": 1,
+              "Color": "",
+              "Supplier": "Merkur",
+              "DeliveryPlannedOn": {
+                "Seconds": 1579910400,
+                "Nanos": 0
+              },
+              "DeliveryReceivedOn": null,
+              "DomainOfInfluence": {
+                "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+                "Name": "Bund",
+                "ShortName": "CH",
+                "AuthorityName": "Abraxas Informatik AG",
+                "Type": 1,
+                "SecureConnectId": "SC-ABX",
+                "ResponsibleForVotingCards": false,
+                "ExternalPrintingCenter": false,
+                "ExternalPrintingCenterEaiMessageType": "",
+                "PrintData": null,
+                "ElectoralRegistrationEnabled": true,
+                "AllowManualVoterListUpload": false,
+                "CanManuallyUploadVoterList": false,
+                "LastVoterUpdate": null
+              },
+              "PoliticalBusinessIds": [
+                "b17c5b4a-e9e9-4a6a-8083-352426a528f9"
+              ],
+              "State": 1,
+              "DomainOfInfluenceAttachmentRequiredCount": null,
+              "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+              "TotalRequiredCount": 40,
+              "TotalRequiredForVoterListsCount": 0,
+              "Station": 1,
+              "OrderedCount": 50000,
+              "Category": 1
+            },
+            {
+              "Id": "4f8bb85c-e120-4cc5-b6a9-8033ee313f35",
+              "Name": "Bundesbüchlein 2",
+              "Format": 2,
+              "Color": "",
+              "Supplier": "Druckverlag",
+              "DeliveryPlannedOn": {
+                "Seconds": 1581206400,
+                "Nanos": 0
+              },
+              "DeliveryReceivedOn": null,
+              "DomainOfInfluence": {
+                "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+                "Name": "Bund",
+                "ShortName": "CH",
+                "AuthorityName": "Abraxas Informatik AG",
+                "Type": 1,
+                "SecureConnectId": "SC-ABX",
+                "ResponsibleForVotingCards": false,
+                "ExternalPrintingCenter": false,
+                "ExternalPrintingCenterEaiMessageType": "",
+                "PrintData": null,
+                "ElectoralRegistrationEnabled": true,
+                "AllowManualVoterListUpload": false,
+                "CanManuallyUploadVoterList": false,
+                "LastVoterUpdate": null
+              },
+              "PoliticalBusinessIds": [
+                "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
+                "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30"
+              ],
+              "State": 1,
+              "DomainOfInfluenceAttachmentRequiredCount": null,
+              "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+              "TotalRequiredCount": 40,
+              "TotalRequiredForVoterListsCount": 13,
+              "Station": null,
+              "OrderedCount": 50000,
+              "Category": 1
+            }
+          ],
+          "TotalOrderedCount": 100000,
+          "TotalRequiredCount": 0,
+          "TotalRequiredForVoterListsCount": 0
+        }
+      ],
+      "PoliticalBusinesses": [
+        {
+          "Id": "0a6f0b72-bd98-4068-a339-284e7bdd37ab",
+          "PoliticalBusinessNumber": "101",
+          "OfficialDescription": "bund future approved MajorityElection 101 (official) de",
+          "ShortDescription": "bund future approved MajorityElection 101 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 2,
+          "Active": true,
+          "Approved": true
+        },
+        {
+          "Id": "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
+          "PoliticalBusinessNumber": "P001",
+          "OfficialDescription": "bund future approved ProportionalElection P001 (official) de",
+          "ShortDescription": "bund future approved ProportionalElection P001 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 3,
+          "Active": true,
+          "Approved": true
+        },
+        {
+          "Id": "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
+          "PoliticalBusinessNumber": "V001",
+          "OfficialDescription": "bund future approved vote V001 (official) de",
+          "ShortDescription": "bund future approved vote V001 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": true,
+          "Approved": true
+        },
+        {
+          "Id": "b17c5b4a-e9e9-4a6a-8083-352426a528f9",
+          "PoliticalBusinessNumber": "V002",
+          "OfficialDescription": "bund future approved vote V002 (official) de",
+          "ShortDescription": "bund future approved vote V002 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": false,
+          "Approved": true
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "4d1dcca4-33f1-5236-b8e7-d83a24f3477e",
+        "Name": "Kanton St. Gallen",
+        "ShortName": "KT-SG",
+        "AuthorityName": "Staatskanzlei St. Gallen",
+        "Type": 2,
+        "SecureConnectId": "SC-SG",
+        "ResponsibleForVotingCards": false,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": null,
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "AttachmentCategorySummaries": [
+        {
+          "Category": 8,
+          "Attachments": [
+            {
+              "Id": "bfbdd65a-6790-43ca-9d0c-e822557bc674",
+              "Name": "St- Gallen Umschlag",
+              "Format": 1,
+              "Color": "",
+              "Supplier": "kdmz",
+              "DeliveryPlannedOn": {
+                "Seconds": 1579910400,
+                "Nanos": 0
+              },
+              "DeliveryReceivedOn": null,
+              "DomainOfInfluence": {
+                "Id": "4d1dcca4-33f1-5236-b8e7-d83a24f3477e",
+                "Name": "Kanton St. Gallen",
+                "ShortName": "KT-SG",
+                "AuthorityName": "Staatskanzlei St. Gallen",
+                "Type": 2,
+                "SecureConnectId": "SC-SG",
+                "ResponsibleForVotingCards": false,
+                "ExternalPrintingCenter": false,
+                "ExternalPrintingCenterEaiMessageType": "",
+                "PrintData": null,
+                "ElectoralRegistrationEnabled": true,
+                "AllowManualVoterListUpload": false,
+                "CanManuallyUploadVoterList": false,
+                "LastVoterUpdate": null
+              },
+              "PoliticalBusinessIds": [
+                "4e71e6dd-f040-4862-bd0f-fcdf69aef68b"
+              ],
+              "State": 1,
+              "DomainOfInfluenceAttachmentRequiredCount": null,
+              "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+              "TotalRequiredCount": 100,
+              "TotalRequiredForVoterListsCount": 3,
+              "Station": null,
+              "OrderedCount": 20000,
+              "Category": 8
+            }
+          ],
+          "TotalOrderedCount": 20000,
+          "TotalRequiredCount": 0,
+          "TotalRequiredForVoterListsCount": 0
+        }
+      ],
+      "PoliticalBusinesses": [
+        {
+          "Id": "4e71e6dd-f040-4862-bd0f-fcdf69aef68b",
+          "PoliticalBusinessNumber": "M001",
+          "OfficialDescription": "bund future approved MajorityElection M001 (official) de",
+          "ShortDescription": "bund future approved MajorityElection M001 (short) de",
+          "DomainOfInfluence": {
+            "Id": "4d1dcca4-33f1-5236-b8e7-d83a24f3477e",
+            "Name": "Kanton St. Gallen",
+            "ShortName": "KT-SG",
+            "AuthorityName": "Staatskanzlei St. Gallen",
+            "Type": 2,
+            "SecureConnectId": "SC-SG",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 2,
+          "Active": true,
+          "Approved": true
+        },
+        {
+          "Id": "97aa25ce-0d1c-4330-8d99-46b59bfea4b1",
+          "PoliticalBusinessNumber": "V003",
+          "OfficialDescription": "bund future approved vote V003 (official) de",
+          "ShortDescription": "bund future approved vote V003 (short) de",
+          "DomainOfInfluence": {
+            "Id": "4d1dcca4-33f1-5236-b8e7-d83a24f3477e",
+            "Name": "Kanton St. Gallen",
+            "ShortName": "KT-SG",
+            "AuthorityName": "Staatskanzlei St. Gallen",
+            "Type": 2,
+            "SecureConnectId": "SC-SG",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": true,
+          "Approved": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "Templates_": [
+    {
+      "Id": 1,
+      "Name": "template-001-swiss"
+    },
+    {
+      "Id": 2,
+      "Name": "template-002-evoting"
+    },
+    {
+      "Id": 3,
+      "Name": "template-003-others"
+    },
+    {
+      "Id": 4,
+      "Name": "template-004-others2"
+    },
+    {
+      "Id": 100,
+      "Name": "template-100-swiss-arnegg"
+    },
+    {
+      "Id": 101,
+      "Name": "template-101-swiss-arnegg"
+    },
+    {
+      "Id": 800,
+      "Name": "template-800-swiss-arnegg"
+    }
+  ]
+}

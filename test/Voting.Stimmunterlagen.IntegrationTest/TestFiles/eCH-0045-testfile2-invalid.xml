@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<eCH-0045:voterDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                        xsi:schemaLocation="http://www.ech.ch/xmlns/eCH-0045/4 http://www.ech.ch/xmlns/eCH-0045/4/eCH-0045-4-0.xsd"
+                        xmlns:eCH-0045="http://www.ech.ch/xmlns/eCH-0045/4">
+  <eCH-0045:voterList>
+    <eCH-0045:numberOfVoters>4</eCH-0045:numberOfVoters>
+    <eCH-0045:voter>
+      <eCH-0045:electoralAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+        <eCH-0010:addressInformation>
+          <eCH-0010:street>Mattenstrasse</eCH-0010:street>
+          <eCH-0010:houseNumber>71</eCH-0010:houseNumber>
+          <eCH-0010:town>Sergey</eCH-0010:town>
+          <eCH-0010:swissZipCode>99999999</eCH-0010:swissZipCode> <!-- invalid -->
+          <eCH-0010:country>
+            <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+            <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+          </eCH-0010:country>
+        </eCH-0010:addressInformation>
+        <eCH-0010:person>
+          <eCH-0010:title>Dr.</eCH-0010:title>
+          <eCH-0010:firstName>Dirk</eCH-0010:firstName>
+          <eCH-0010:lastName>Berg</eCH-0010:lastName>
+        </eCH-0010:person>
+      </eCH-0045:electoralAddress>
+      <eCH-0045:dataLock>0</eCH-0045:dataLock>
+    </eCH-0045:voter>
+    <eCH-0045:voter>
+      <eCH-0045:electoralAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+        <eCH-0010:addressInformation>
+          <eCH-0010:street>Scheidweg</eCH-0010:street>
+          <eCH-0010:houseNumber>104</eCH-0010:houseNumber>
+          <eCH-0010:town>Guschelmuth</eCH-0010:town>
+          <eCH-0010:swissZipCode>1792</eCH-0010:swissZipCode>
+          <eCH-0010:country>
+            <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+            <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+          </eCH-0010:country>
+        </eCH-0010:addressInformation>
+        <eCH-0010:person>
+          <eCH-0010:firstName>Steffen</eCH-0010:firstName>
+          <eCH-0010:lastName>Krüger</eCH-0010:lastName>
+        </eCH-0010:person>
+      </eCH-0045:electoralAddress>
+      <eCH-0045:dataLock>0</eCH-0045:dataLock>
+    </eCH-0045:voter>
+    <eCH-0045:voter>
+      <eCH-0045:electoralAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+        <eCH-0010:addressInformation>
+          <eCH-0010:street>Grossmatt</eCH-0010:street>
+          <eCH-0010:houseNumber>37</eCH-0010:houseNumber>
+          <eCH-0010:town>Biel</eCH-0010:town>
+          <eCH-0010:swissZipCode>5000</eCH-0010:swissZipCode>
+          <eCH-0010:country>
+            <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+            <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+          </eCH-0010:country>
+        </eCH-0010:addressInformation>
+        <eCH-0010:person>
+          <eCH-0010:firstName>Birgit</eCH-0010:firstName>
+          <eCH-0010:lastName>Theiss</eCH-0010:lastName>
+        </eCH-0010:person>
+      </eCH-0045:electoralAddress>
+      <eCH-0045:dataLock>0</eCH-0045:dataLock>
+    </eCH-0045:voter>
+    <eCH-0045:voter>
+      <eCH-0045:electoralAddress xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">
+        <eCH-0010:addressInformation>
+          <eCH-0010:street>Jesmond Rd</eCH-0010:street>
+          <eCH-0010:houseNumber>33</eCH-0010:houseNumber>
+          <eCH-0010:town>KILMELFORD</eCH-0010:town>
+          <eCH-0010:foreignZipCode>PA34 8BJ</eCH-0010:foreignZipCode>
+          <eCH-0010:country>
+            <eCH-0010:countryIdISO2>CH</eCH-0010:countryIdISO2>
+            <eCH-0010:countryNameShort>Schweiz</eCH-0010:countryNameShort>
+          </eCH-0010:country>
+        </eCH-0010:addressInformation>
+        <eCH-0010:person>
+          <eCH-0010:lastName>Schmitt</eCH-0010:lastName>
+        </eCH-0010:person>
+      </eCH-0045:electoralAddress>
+      <eCH-0045:dataLock>0</eCH-0045:dataLock>
+    </eCH-0045:voter>
+  </eCH-0045:voterList>
+</eCH-0045:voterDelivery>

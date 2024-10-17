@@ -1,0 +1,36 @@
+{
+  "Summaries": [
+    {
+      "DomainOfInfluence": {
+        "Id": "63356916-248a-5560-b0a7-516db5b0f766",
+        "Name": "Stadt Gossau",
+        "ShortName": "MU-GO",
+        "AuthorityName": "Stadt St. Gossau",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-GO",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 6,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null
+      },
+      "State": 1,
+      "ProcessStartedOn": null,
+      "ProcessEndedOn": null,
+      "DoneOn": null,
+      "AttachmentsDefinedCount": 4,
+      "AttachmentsDeliveredCount": 1,
+      "GenerateVotingCardsTriggered": null,
+      "HasCommunalPoliticalBusinesses": true,
+      "TemplateName": "template-003-others",
+      "LastConfirmedStep": 0
+    }
+  ]
+}

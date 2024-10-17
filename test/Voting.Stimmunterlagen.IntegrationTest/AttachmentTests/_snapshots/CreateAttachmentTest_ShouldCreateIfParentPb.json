@@ -1,0 +1,20 @@
+{
+  "Name": "Publikation Gossau",
+  "Category": 7,
+  "Format": 2,
+  "Color": "Blue",
+  "Supplier": "Lieferant",
+  "DeliveryPlannedOn": "2020-01-20T00:00:00Z",
+  "DeliveryReceivedOn": null,
+  "PoliticalBusinessEntries": null,
+  "DomainOfInfluence": null,
+  "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+  "DomainOfInfluenceAttachmentCounts": null,
+  "State": 1,
+  "OrderedCount": 2000,
+  "TotalRequiredCount": 2000,
+  "TotalRequiredForVoterListsCount": 9,
+  "Station": null,
+  "Comments": [],
+  "Id": "00000000-0000-0000-0000-000000000000"
+}

@@ -1,0 +1,28 @@
+{
+  "Materials": [
+    {
+      "Number": "1040.05.55",
+      "Description": "Rückschub Beilagen Porto Paket"
+    },
+    {
+      "Number": "1040.05.56",
+      "Description": "Bereitstellung für Spediteur"
+    },
+    {
+      "Number": "1040.05.57",
+      "Description": "Aufwand in Stunden"
+    },
+    {
+      "Number": "1040.05.58",
+      "Description": "erste fehlende Beilage"
+    },
+    {
+      "Number": "1040.05.59",
+      "Description": "jede weitere fehlende Beilage"
+    },
+    {
+      "Number": "1040.05.62",
+      "Description": "Rückschub Beilagen Porto Dispo-Box"
+    }
+  ]
+}

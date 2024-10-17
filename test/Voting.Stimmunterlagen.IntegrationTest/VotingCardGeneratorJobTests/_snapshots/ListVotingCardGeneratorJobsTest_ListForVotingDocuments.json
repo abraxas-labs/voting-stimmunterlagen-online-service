@@ -1,0 +1,34 @@
+{
+  "Jobs": [
+    {
+      "Id": "d1586336-05d9-49e7-b208-f6e20def0f80",
+      "FileName": "de.pdf",
+      "CountOfVoters": 3,
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "VotingCardType": 1,
+      "State": 1
+    },
+    {
+      "Id": "5af3fcaf-ebf5-4c93-9ff5-26e3193e8f51",
+      "FileName": "de.pdf",
+      "CountOfVoters": 2,
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "VotingCardType": 3,
+      "State": 5
+    },
+    {
+      "Id": "638276f2-2c2d-430c-8f66-eefb1473bea3",
+      "FileName": "it.pdf",
+      "CountOfVoters": 2,
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "VotingCardType": 3,
+      "State": 5
+    }
+  ]
+}

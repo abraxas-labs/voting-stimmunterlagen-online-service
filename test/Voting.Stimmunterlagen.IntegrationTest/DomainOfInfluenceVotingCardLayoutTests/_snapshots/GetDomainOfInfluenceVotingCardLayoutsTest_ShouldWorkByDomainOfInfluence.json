@@ -1,0 +1,22 @@
+{
+  "Layouts": [
+    {
+      "ContestTemplate": {
+        "Id": 1,
+        "Name": "template-001-swiss"
+      },
+      "DomainOfInfluenceTemplate": null,
+      "OverriddenTemplate": {
+        "Id": 100,
+        "Name": "template-100-swiss-arnegg"
+      },
+      "EffectiveTemplate": {
+        "Id": 100,
+        "Name": "template-100-swiss-arnegg"
+      },
+      "AllowCustom": true,
+      "VotingCardType": 1,
+      "DomainOfInfluence": null
+    }
+  ]
+}

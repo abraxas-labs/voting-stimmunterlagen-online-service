@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Voting.Stimmunterlagen.Core\Voting.Stimmunterlagen.Core.csproj" />
+  </ItemGroup>
+</Project>

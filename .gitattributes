@@ -1,0 +1,2 @@
+# Our CSV files always use CRLF as line endings
+*.csv eol=crlf

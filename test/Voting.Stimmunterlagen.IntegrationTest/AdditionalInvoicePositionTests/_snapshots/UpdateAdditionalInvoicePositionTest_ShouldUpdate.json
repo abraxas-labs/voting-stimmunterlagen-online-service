@@ -1,0 +1,22 @@
+{
+  "MaterialNumber": "1040.05.55",
+  "Amount": 101.0,
+  "AmountCentime": 10100,
+  "DomainOfInfluenceId": "63356916-248a-5560-b0a7-516db5b0f766",
+  "DomainOfInfluence": null,
+  "Created": "2020-01-11T13:12:10.2Z",
+  "CreatedBy": {
+    "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+    "FirstName": "Utz",
+    "LastName": "van Druckverwalter",
+    "UserName": "AXDVZUTZ"
+  },
+  "Modified": "2020-01-10T13:12:10.2Z",
+  "ModifiedBy": {
+    "SecureConnectId": "default-user-id",
+    "FirstName": "default user firstname",
+    "LastName": "default user lastname",
+    "UserName": "default username"
+  },
+  "Id": "d7b1e1a4-c1a5-4e09-b54c-727532aa18a4"
+}

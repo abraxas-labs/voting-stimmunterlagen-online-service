@@ -1,0 +1,21 @@
+{
+  "PrintData": {
+    "ShippingAway": 3,
+    "ShippingReturn": 5,
+    "ShippingMethod": 1,
+    "ShippingVotingCardsToDeliveryAddress": true
+  },
+  "ReturnAddress": {
+    "AddressLine1": "Rathaus",
+    "AddressLine2": "",
+    "Street": "Bahnhofplatz",
+    "AddressAddition": "",
+    "ZipCode": "9000",
+    "City": "St. Gallen",
+    "Country": "Switzerland"
+  },
+  "SwissPostData": {
+    "InvoiceReferenceNumber": "049844412",
+    "FrankingLicenceReturnNumber": "094922284"
+  }
+}

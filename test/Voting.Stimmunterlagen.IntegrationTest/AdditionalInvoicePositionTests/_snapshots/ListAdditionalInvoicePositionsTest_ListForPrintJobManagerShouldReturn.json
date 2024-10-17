@@ -1,0 +1,139 @@
+{
+  "Positions": [
+    {
+      "Id": "d7b1e1a4-c1a5-4e09-b54c-727532aa18a4",
+      "DomainOfInfluence": {
+        "Id": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+        "Name": "Gemeinde Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": true,
+        "CanManuallyUploadVoterList": true,
+        "LastVoterUpdate": null
+      },
+      "MaterialNumber": "1040.05.57",
+      "AmountCentime": 1975,
+      "Created": {
+        "Seconds": 1578748330,
+        "Nanos": 200000000
+      },
+      "CreatedBy": {
+        "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+        "UserName": "AXDVZUTZ",
+        "FirstName": "Utz",
+        "LastName": "van Druckverwalter"
+      },
+      "Modified": {
+        "Seconds": 1578748330,
+        "Nanos": 200000000
+      },
+      "ModifiedBy": {
+        "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+        "UserName": "AXDVZUTZ",
+        "FirstName": "Utz",
+        "LastName": "van Druckverwalter"
+      }
+    },
+    {
+      "Id": "249c8c97-22cd-4704-af7e-7452e2e40f6b",
+      "DomainOfInfluence": {
+        "Id": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+        "Name": "Gemeinde Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": true,
+        "CanManuallyUploadVoterList": true,
+        "LastVoterUpdate": null
+      },
+      "MaterialNumber": "1040.05.62",
+      "AmountCentime": 3000,
+      "Created": {
+        "Seconds": 1578751930,
+        "Nanos": 200000000
+      },
+      "CreatedBy": {
+        "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+        "UserName": "AXDVZUTZ",
+        "FirstName": "Utz",
+        "LastName": "van Druckverwalter"
+      },
+      "Modified": {
+        "Seconds": 1578755530,
+        "Nanos": 200000000
+      },
+      "ModifiedBy": {
+        "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+        "UserName": "AXDVZUTZ",
+        "FirstName": "Utz",
+        "LastName": "van Druckverwalter"
+      }
+    },
+    {
+      "Id": "08ce9c56-78d1-4f4e-ab39-4f051d35b17d",
+      "DomainOfInfluence": {
+        "Id": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+        "Name": "Gemeinde Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 4,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": true,
+        "CanManuallyUploadVoterList": true,
+        "LastVoterUpdate": null
+      },
+      "MaterialNumber": "Zusatzsticker",
+      "AmountCentime": 225,
+      "Created": {
+        "Seconds": 1578921130,
+        "Nanos": 200000000
+      },
+      "CreatedBy": {
+        "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+        "UserName": "AXDVZUTZ",
+        "FirstName": "Utz",
+        "LastName": "van Druckverwalter"
+      },
+      "Modified": {
+        "Seconds": 1578921130,
+        "Nanos": 200000000
+      },
+      "ModifiedBy": {
+        "SecureConnectId": "f8c0407a-255f-471b-ab15-79ca06c53283",
+        "UserName": "AXDVZUTZ",
+        "FirstName": "Utz",
+        "LastName": "van Druckverwalter"
+      }
+    }
+  ]
+}

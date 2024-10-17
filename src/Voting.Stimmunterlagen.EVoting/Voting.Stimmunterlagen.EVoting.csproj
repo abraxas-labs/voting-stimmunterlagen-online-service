@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="Voting.Stimmunterlagen.OfflineClient.Shared" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Voting.Stimmunterlagen.Ech\Voting.Stimmunterlagen.Ech.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Export\Templates\**">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
