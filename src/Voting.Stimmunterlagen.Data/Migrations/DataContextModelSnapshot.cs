@@ -46,6 +46,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<int>("AmountCentime")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Comment")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
                         .HasColumnType("timestamp with time zone");
 
@@ -97,6 +101,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
 
                     b.Property<int>("OrderedCount")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("SendOnlyToHouseholder")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("State")
                         .HasColumnType("integer");
@@ -322,11 +329,17 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("StistatMunicipality")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.Property<int>("VotingCardColor")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("VotingCardFlatRateDisabled")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -578,11 +591,17 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("StistatMunicipality")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
                     b.Property<int>("VotingCardColor")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("VotingCardFlatRateDisabled")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -780,9 +799,6 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<bool>("Active")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("Approved")
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("ContestId")
@@ -1123,6 +1139,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)");
 
+                    b.Property<bool>("IsHouseholder")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid?>("JobId")
                         .HasColumnType("uuid");
 
@@ -1271,6 +1290,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<int>("Index")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("NumberOfHouseholders")
                         .HasColumnType("integer");
 
                     b.Property<int>("NumberOfVoters")

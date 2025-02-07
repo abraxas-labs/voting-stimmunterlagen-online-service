@@ -24,10 +24,10 @@ public class InvoiceFileBuilder
         _clock = clock;
     }
 
-    public async Task<byte[]> BuildInvoiceFile(List<PrintJob> printJobs)
+    public async Task<byte[]> BuildInvoiceFile(Contest contest, List<PrintJob> printJobs)
     {
         var timestamp = _clock.UtcNow;
-        var entries = printJobs.SelectMany(p => _invoiceFileEntriesBuilder.BuildEntries(p, timestamp));
+        var entries = printJobs.SelectMany(p => _invoiceFileEntriesBuilder.BuildEntries(p, timestamp, contest));
 
         return await _csvService.Render(
             entries,

@@ -2,6 +2,7 @@
 // For license information see LICENSE file
 
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Data.Models;
@@ -14,6 +15,7 @@ public class DomainOfInfluenceProfile : Profile
     public DomainOfInfluenceProfile()
     {
         CreateMap<ContestDomainOfInfluence, ProtoModels.DomainOfInfluence>()
+            .ForMember(dst => dst.EVoting, opts => opts.MapFrom(src => src.CountingCircles != null ? src.CountingCircles.Any(cc => cc.CountingCircle!.EVoting) : (bool?)null))
             .IncludeMembers(x => x.CantonDefaults);
         CreateMap<DomainOfInfluenceCantonDefaults, ProtoModels.DomainOfInfluence>();
         CreateMap<IEnumerable<ContestDomainOfInfluence>, ProtoModels.DomainOfInfluences>()

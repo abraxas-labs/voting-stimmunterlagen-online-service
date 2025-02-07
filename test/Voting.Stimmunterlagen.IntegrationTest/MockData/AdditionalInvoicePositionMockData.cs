@@ -36,6 +36,7 @@ public static class AdditionalInvoicePositionMockData
         Id = BundFutureApprovedArnegg1Guid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
         MaterialNumber = "1040.05.57",
+        Comment = "Hilfe beim Standaufbau",
         AmountCentime = 1975,
         Created = MockedClock.GetDate(1),
         CreatedBy = UserMockData.DruckverwalterUtz,

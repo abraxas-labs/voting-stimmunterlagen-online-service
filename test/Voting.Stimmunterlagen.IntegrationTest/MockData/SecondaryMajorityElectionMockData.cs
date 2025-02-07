@@ -32,7 +32,6 @@ public static class SecondaryMajorityElectionMockData
         PoliticalBusinessType = PoliticalBusinessType.SecondaryMajorityElection,
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid,
-        Approved = true,
     };
 
     public static IEnumerable<PoliticalBusiness> All

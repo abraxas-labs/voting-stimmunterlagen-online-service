@@ -55,6 +55,10 @@ public abstract class BaseDomainOfInfluence : BaseEntity
     /// Gets or sets a value indicating whether VOTING Stimmregister is enabled.
     /// </summary>
     public bool ElectoralRegistrationEnabled { get; set; }
+
+    public bool StistatMunicipality { get; set; }
+
+    public bool VotingCardFlatRateDisabled { get; set; }
 }
 
 public abstract class BaseDomainOfInfluence<T, THierarchyEntry> : BaseDomainOfInfluence

@@ -52,6 +52,9 @@
     "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
     "Contest": null,
     "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+    "IsHouseholder": true,
+    "ResidenceBuildingId": null,
+    "ResidenceApartmentId": null,
     "Id": "00000000-0000-0000-0000-000000000000"
   },
   "Layout": {

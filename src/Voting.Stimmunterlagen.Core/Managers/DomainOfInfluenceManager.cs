@@ -73,6 +73,8 @@ public class DomainOfInfluenceManager
         var tenantId = _auth.Tenant.Id;
         return await _doiRepo.Query()
                    .WhereCanRead(tenantId)
+                   .Include(x => x.CountingCircles!)
+                   .ThenInclude(x => x.CountingCircle)
                    .FirstOrDefaultAsync(x => x.Id == id)
                ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), id);
     }

@@ -2,6 +2,7 @@
 // For license information see LICENSE file
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -19,10 +20,11 @@ public class AttachmentBuilder
         _dataContext = dataContext;
     }
 
-    internal async Task CleanUp()
+    internal async Task CleanUp(List<Guid> contestIds)
     {
         var attachmentsToDelete = await _dataContext.Attachments
-            .Where(a => a.PoliticalBusinessEntries.Count == 0 || a.DomainOfInfluence!.StepStates!.Count(s => s.Step == Step.Attachments) == 0)
+            .Where(a => contestIds.Contains(a.DomainOfInfluence!.ContestId) &&
+                ((!a.DomainOfInfluence!.Contest!.IsPoliticalAssembly && a.PoliticalBusinessEntries.Count == 0) || a.DomainOfInfluence!.StepStates!.Count(s => s.Step == Step.Attachments) == 0))
             .ToListAsync();
 
         _dataContext.Attachments.RemoveRange(attachmentsToDelete);

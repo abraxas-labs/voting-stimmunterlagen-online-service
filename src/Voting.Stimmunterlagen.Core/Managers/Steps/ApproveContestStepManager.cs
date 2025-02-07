@@ -14,7 +14,7 @@ using Voting.Stimmunterlagen.Data.Repositories;
 
 namespace Voting.Stimmunterlagen.Core.Managers.Steps;
 
-public class ApproveContestStepManager : NonRevertableStepManager
+public class ApproveContestStepManager : ISingleStepManager
 {
     private readonly IDbRepository<Contest> _contestRepo;
     private readonly IClock _clock;
@@ -25,9 +25,9 @@ public class ApproveContestStepManager : NonRevertableStepManager
         _clock = clock;
     }
 
-    public override Step Step => Step.ContestApproval;
+    public Step Step => Step.ContestApproval;
 
-    public override async Task Approve(Guid domainOfInfluenceId, string tenantId, CancellationToken ct)
+    public async Task Approve(Guid domainOfInfluenceId, string tenantId, CancellationToken ct)
     {
         var contest = await _contestRepo.Query()
                           .WhereIsContestManager(tenantId)
@@ -42,6 +42,17 @@ public class ApproveContestStepManager : NonRevertableStepManager
         }
 
         contest.Approved = _clock.UtcNow;
+        await _contestRepo.Update(contest);
+    }
+
+    public async Task Revert(Guid domainOfInfluenceId, string tenantId, CancellationToken ct)
+    {
+        var contest = await _contestRepo.Query()
+                          .WhereIsContestManager(tenantId)
+                          .FirstOrDefaultAsync(c => c.DomainOfInfluenceId == domainOfInfluenceId, ct)
+                      ?? throw new EntityNotFoundException(nameof(Contest), $"{domainOfInfluenceId}-{tenantId}");
+
+        contest.Approved = null;
         await _contestRepo.Update(contest);
     }
 }

@@ -48,7 +48,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture2 => new()
@@ -64,7 +63,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureKantonStGallenGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture3 => new()
@@ -80,7 +78,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureStadtUzwilGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture4 => new()
@@ -96,7 +93,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureGemeindeArnegg1 => new()
@@ -112,7 +108,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureUzwil1 => new()
@@ -128,7 +123,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApproved1 => new()
@@ -144,7 +138,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApprovedUzwil1 => new()
@@ -160,7 +153,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtUzwilGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApprovedGemeindeArnegg1 => new()
@@ -176,7 +168,6 @@ public static class ProportionalElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
         PoliticalBusinessType = PoliticalBusinessType.ProportionalElection,
-        Approved = true,
     };
 
     public static IEnumerable<PoliticalBusiness> All

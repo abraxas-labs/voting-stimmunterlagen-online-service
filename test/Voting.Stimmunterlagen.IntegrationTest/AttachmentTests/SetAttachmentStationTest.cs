@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Snapper;
@@ -67,6 +68,64 @@ public class SetAttachmentStationTest : BaseWriteableDbGrpcTest<AttachmentServic
             x => x.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedKantonStGallenGuid,
             x => x.ExternalPrintingCenter = true);
         await AssertStatus(async () => await AbraxasPrintJobManagerClient.SetStationAsync(NewValidRequest()), StatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfCommunalAttachmentWithSameStation()
+    {
+        await ModifyDbEntities<Attachment>(
+            a => a.Id == AttachmentMockData.BundFutureApprovedGemeindeArneggGuid,
+            a =>
+            {
+                a.Category = AttachmentCategory.BrochureMu;
+                a.Station = 5;
+            });
+
+        await ModifyDbEntities<Attachment>(
+            a => a.Id == AttachmentMockData.BundFutureApprovedGemeindeArneggWithParentPbsGuid,
+            a =>
+            {
+                a.Category = AttachmentCategory.VotingGuideMu;
+                a.Station = 4;
+            });
+
+        await AssertStatus(
+            async () => await AbraxasPrintJobManagerClient.SetStationAsync(new()
+            {
+                Id = AttachmentMockData.BundFutureApprovedGemeindeArneggWithParentPbsId,
+                Station = 5,
+            }),
+            StatusCode.InvalidArgument,
+            "Communal attachment station 5 is already used");
+    }
+
+    [Fact]
+    public async Task ShouldWorkIfNonCommunalAttachmentWithSameStation()
+    {
+        await ModifyDbEntities<Attachment>(
+            a => a.Id == AttachmentMockData.BundFutureApprovedGemeindeArneggGuid,
+            a =>
+            {
+                a.Category = AttachmentCategory.BrochureCt;
+                a.Station = 5;
+            });
+
+        await ModifyDbEntities<Attachment>(
+            a => a.Id == AttachmentMockData.BundFutureApprovedGemeindeArneggWithParentPbsGuid,
+            a =>
+            {
+                a.Category = AttachmentCategory.VotingGuideCt;
+                a.Station = 4;
+            });
+
+        await AbraxasPrintJobManagerClient.SetStationAsync(new()
+        {
+            Id = AttachmentMockData.BundFutureApprovedGemeindeArneggWithParentPbsId,
+            Station = 5,
+        });
+
+        var attachment = await RunOnDb(db => db.Attachments.SingleAsync(a => a.Id == AttachmentMockData.BundFutureApprovedGemeindeArneggWithParentPbsGuid));
+        attachment.Station.Should().Be(5);
     }
 
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)

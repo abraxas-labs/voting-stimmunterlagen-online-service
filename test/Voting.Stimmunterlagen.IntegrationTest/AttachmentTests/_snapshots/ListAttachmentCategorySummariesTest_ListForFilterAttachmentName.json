@@ -32,7 +32,9 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null
+            "LastVoterUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null
           },
           "PoliticalBusinessIds": [
             "9f93d743-524e-4ea9-aa81-6b3e79c84a6a"
@@ -44,7 +46,8 @@
           "TotalRequiredForVoterListsCount": 0,
           "Station": null,
           "OrderedCount": 7000,
-          "Category": 8
+          "Category": 8,
+          "SendOnlyToHouseholder": false
         }
       ],
       "TotalOrderedCount": 7000,

@@ -150,9 +150,13 @@ internal static class VoterMapping
         voter.PersonIdCategory = personIdentification.LocalPersonId.PersonIdCategory;
         voter.DateOfBirth = personIdentification.DateOfBirth.ToDateString();
 
-        voter.SendVotingCardsToDomainOfInfluenceReturnAddress = personExtension != null && personExtension.SendVotingCardsToDomainOfInfluenceReturnAddress.HasValue
-            ? personExtension.SendVotingCardsToDomainOfInfluenceReturnAddress.Value
-            : false;
+        if (personExtension != null)
+        {
+            voter.SendVotingCardsToDomainOfInfluenceReturnAddress = personExtension.SendVotingCardsToDomainOfInfluenceReturnAddress.HasValue && personExtension.SendVotingCardsToDomainOfInfluenceReturnAddress.Value;
+            voter.IsHouseholder = personExtension.IsHouseholder;
+            voter.ResidenceBuildingId = personExtension.ResidenceBuildingId;
+            voter.ResidenceApartmentId = personExtension.ResidenceApartmentId;
+        }
 
         voter.PlacesOfOrigin = placeOfOriginSelector(nationality).ToList()
             .ConvertAll(x => new DataModels.VoterPlaceOfOrigin

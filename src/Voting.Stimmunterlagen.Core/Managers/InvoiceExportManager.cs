@@ -46,6 +46,12 @@ public class InvoiceExportManager
             .Include(p => p.DomainOfInfluence!.VoterLists!)
                 .ThenInclude(vl => vl.PoliticalBusinessEntries)
             .Include(p => p.DomainOfInfluence!.AdditionalInvoicePositions!.OrderBy(p => p.MaterialNumber))
+            .Include(p => p.DomainOfInfluence!.VotingCardLayouts!)
+                .ThenInclude(l => l.Template)
+            .Include(p => p.DomainOfInfluence!.VotingCardLayouts!)
+                .ThenInclude(l => l.DomainOfInfluenceTemplate)
+            .Include(p => p.DomainOfInfluence!.VotingCardLayouts!)
+                .ThenInclude(l => l.OverriddenTemplate)
             .OrderBy(p => p.DomainOfInfluence!.Name)
             .WhereDomainOfInfluenceIsNotExternalPrintingCenter()
             .ToListAsync();
@@ -55,7 +61,7 @@ public class InvoiceExportManager
             throw new ValidationException($"Cannot generate export for contest {contestId} because no print job exists");
         }
 
-        var invoiceContent = await _invoiceFileBuilder.BuildInvoiceFile(printJobs);
+        var invoiceContent = await _invoiceFileBuilder.BuildInvoiceFile(contest, printJobs);
         return new FileModel(invoiceContent, BuildFileName(contest), MimeTypes.CsvMimeType);
     }
 

@@ -62,6 +62,8 @@ public class DomainOfInfluenceVotingCardLayoutManager
             .Include(x => x.DomainOfInfluence!.Contest!.DomainOfInfluence!)
             .Include(x => x.DomainOfInfluence!.VotingCardLayouts!).ThenInclude(x => x.TemplateDataFieldValues!).ThenInclude(x => x.Field!.Container)
             .Include(x => x.TemplateDataFieldValues!).ThenInclude(x => x.Field!.Container)
+            .WhereGenerateVotingCardsTriggered(false)
+            .WhereContestPrintingCenterSignUpDeadlineNotSetOrNotPast(_clock)
             .WhereIsContestManager(_auth.Tenant.Id)
             .WhereContestIsNotLocked()
             .WhereContestIsApproved(false)

@@ -66,7 +66,7 @@ public class ApproveGenerateVotingCardsStepTest : BaseWriteableStepTest
         var swissJob = jobs.Single(x => x.Layout?.VotingCardType == VotingCardType.Swiss);
         swissJob.State.Should().Be(VotingCardGeneratorJobState.Ready);
         swissJob.CountOfVoters.Should().Be(5);
-        swissJob.FileName.Should().Be("1240_Gemeinde_Arnegg_de.pdf");
+        swissJob.FileName.Should().Be("U_1240_Gemeinde_Arnegg_1234_de_20200112.pdf");
 
         var eVotingJobs = jobs.Where(x => x.State == VotingCardGeneratorJobState.ReadyToRunOffline).ToList();
         eVotingJobs.All(x => x.State == VotingCardGeneratorJobState.ReadyToRunOffline).Should().BeTrue();
@@ -75,6 +75,10 @@ public class ApproveGenerateVotingCardsStepTest : BaseWriteableStepTest
             .OrderBy(x => x)
             .Should()
             .BeInAscendingOrder("de.pdf", "it.pdf");
+
+        eVotingJobs.Any(x => x.FileName == "U_1240_Gemeinde_Arnegg_EVoting_1234_de_20200112.pdf")
+            .Should()
+            .BeTrue();
 
         jobs.Should().HaveCount(3);
 

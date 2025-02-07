@@ -45,6 +45,8 @@
     "ParentId": "8acf818a-45da-4738-a546-4c8428a6a6b1",
     "RootId": "d59da8b8-8af3-4082-afe1-db133bc21897",
     "ElectoralRegistrationEnabled": true,
+    "StistatMunicipality": true,
+    "VotingCardFlatRateDisabled": false,
     "Id": "47ef9998-8361-474b-a3f5-04961d28db1b"
   },
   "contest_doi": {

@@ -20,7 +20,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "MaterialNumber": "1040.05.57",
       "AmountCentime": 1975,
@@ -43,7 +45,8 @@
         "UserName": "AXDVZUTZ",
         "FirstName": "Utz",
         "LastName": "van Druckverwalter"
-      }
+      },
+      "Comment": "Hilfe beim Standaufbau"
     },
     {
       "Id": "249c8c97-22cd-4704-af7e-7452e2e40f6b",
@@ -65,7 +68,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "MaterialNumber": "1040.05.62",
       "AmountCentime": 3000,
@@ -88,7 +93,8 @@
         "UserName": "AXDVZUTZ",
         "FirstName": "Utz",
         "LastName": "van Druckverwalter"
-      }
+      },
+      "Comment": ""
     },
     {
       "Id": "08ce9c56-78d1-4f4e-ab39-4f051d35b17d",
@@ -110,7 +116,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "MaterialNumber": "Zusatzsticker",
       "AmountCentime": 225,
@@ -133,7 +141,8 @@
         "UserName": "AXDVZUTZ",
         "FirstName": "Utz",
         "LastName": "van Druckverwalter"
-      }
+      },
+      "Comment": ""
     }
   ]
 }

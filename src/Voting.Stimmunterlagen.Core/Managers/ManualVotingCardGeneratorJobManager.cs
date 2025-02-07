@@ -95,7 +95,6 @@ public class ManualVotingCardGeneratorJobManager
              ?? throw new EntityNotFoundException(
                  nameof(DomainOfInfluenceVotingCardLayout),
                  new { voter.VotingCardType, doiId });
-
         voter.Bfs = layout.DomainOfInfluence!.Bfs;
         voter.ContestId = layout.DomainOfInfluence.ContestId;
         FillVoterWithDefaultValuesForEchCompability(voter);
@@ -112,13 +111,10 @@ public class ManualVotingCardGeneratorJobManager
         };
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
-
         await _stepManager.EnsureStepApproved(doiId, Step.GenerateVotingCards);
         await _jobsRepo.Create(manualJob);
-
-        var pdf = await _templateManager.GetPdf(null, layout, new[] { voter }, ct);
+        var pdf = await _templateManager.GetPdf(layout.DomainOfInfluence!.Contest!.Date, layout, new[] { voter }, ct);
         await _doiManager.UpdateLastVoterUpdate(doiId);
-
         await transaction.CommitAsync();
         return pdf;
     }

@@ -166,6 +166,9 @@
                 <line6 />
                 <line7>UNITED KINGDOM</line7>
               </address>
+              <isHouseholder xmlns="">false</isHouseholder>
+              <residenceBuildingId xsi:nil="true" xmlns="" />
+              <residenceApartmentId xsi:nil="true" xmlns="" />
             </extension>
             <placeOfOrigin>
               <originName xmlns="http://www.ech.ch/xmlns/eCH-0011/8">Zürich</originName>
@@ -280,6 +283,9 @@
                 <line6 />
                 <line7>SOUTH AFRICA</line7>
               </address>
+              <isHouseholder xmlns="">false</isHouseholder>
+              <residenceBuildingId xsi:nil="true" xmlns="" />
+              <residenceApartmentId xsi:nil="true" xmlns="" />
             </extension>
             <placeOfOrigin>
               <originName xmlns="http://www.ech.ch/xmlns/eCH-0011/8">Basel</originName>

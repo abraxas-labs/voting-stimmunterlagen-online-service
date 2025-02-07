@@ -93,8 +93,8 @@ public abstract class PoliticalBusinessProcessor<TPoliticalBusinessBasisProto>
         }
 
         await _politicalBusinessRepo.DeleteByKey(politicalBusiness.Id);
-        await _attachmentBuilder.CleanUp();
-        await _voterListBuilder.CleanUp();
+        await _attachmentBuilder.CleanUp(new() { politicalBusiness.ContestId });
+        await _voterListBuilder.CleanUp(new() { politicalBusiness.ContestId });
         await SyncForContest(politicalBusiness.ContestId);
     }
 
@@ -128,10 +128,6 @@ public abstract class PoliticalBusinessProcessor<TPoliticalBusinessBasisProto>
             .FirstOrDefaultAsync(pb => pb.Id == guid)
             ?? throw new EntityNotFoundException(nameof(PoliticalBusiness), guid);
 
-        var oldDomainOfInfluenceId = existingModel.DomainOfInfluenceId;
-        var wasApproved = existingModel.Approved;
-
-        existingModel.Approved = _eventProcessorScope.IsInReplay && wasApproved;
         existingModel.ContestId = GuidParser.Parse(newContestId);
         existingModel.DomainOfInfluenceId = await _doiRepo.GetIdForContest(newContestGuid, existingModel.DomainOfInfluence!.BasisDomainOfInfluenceId);
         existingModel.DomainOfInfluence = null;
@@ -141,17 +137,13 @@ public abstract class PoliticalBusinessProcessor<TPoliticalBusinessBasisProto>
 
         if (!_eventProcessorScope.IsInReplay)
         {
-            await _stepsBuilder.ResetStepsOfPoliticalBusiness(existingModel.Id, existingModel.DomainOfInfluenceId, oldDomainOfInfluenceId);
             await SyncForContest(existingModel.ContestId);
         }
     }
 
     private async Task Update(PoliticalBusiness existingData, TPoliticalBusinessBasisProto updatedData)
     {
-        var oldDomainOfInfluenceId = existingData.DomainOfInfluenceId;
-        var wasApproved = existingData.Approved;
         _mapper.Map(updatedData, existingData);
-        existingData.Approved = _eventProcessorScope.IsInReplay && wasApproved;
 
         existingData.DomainOfInfluenceId = await _doiRepo.GetIdForContest(existingData.ContestId, existingData.DomainOfInfluenceId);
 
@@ -160,7 +152,6 @@ public abstract class PoliticalBusinessProcessor<TPoliticalBusinessBasisProto>
         await _politicalBusinessPermissionBuilder.UpdatePermissionsForPoliticalBusiness(existingData.Id);
         if (!_eventProcessorScope.IsInReplay)
         {
-            await _stepsBuilder.ResetStepsOfPoliticalBusiness(existingData.Id, existingData.DomainOfInfluenceId, oldDomainOfInfluenceId);
             await SyncForContest(existingData.ContestId);
         }
     }

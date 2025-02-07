@@ -27,3 +27,9 @@ csharp_prefer_braces = true:warning
 
 # copyright
 file_header_template = (c) Copyright by Abraxas Informatik AG\nFor license information see LICENSE file
+
+[*.cshtml]
+indent_size = 4
+tab_width = 4
+end_of_line = lf
+insert_final_newline = true

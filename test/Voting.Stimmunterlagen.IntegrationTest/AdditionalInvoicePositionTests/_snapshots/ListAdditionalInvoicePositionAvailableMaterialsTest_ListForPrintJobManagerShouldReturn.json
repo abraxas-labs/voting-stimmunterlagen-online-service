@@ -2,27 +2,33 @@
   "Materials": [
     {
       "Number": "1040.05.55",
-      "Description": "Rückschub Beilagen Porto Paket"
+      "Description": "Rückschub Beilagen Porto Paket",
+      "CommentRequired": false
     },
     {
       "Number": "1040.05.56",
-      "Description": "Bereitstellung für Spediteur"
+      "Description": "Bereitstellung für Spediteur",
+      "CommentRequired": false
     },
     {
       "Number": "1040.05.57",
-      "Description": "Aufwand in Stunden"
+      "Description": "Aufwand in Stunden",
+      "CommentRequired": true
     },
     {
       "Number": "1040.05.58",
-      "Description": "erste fehlende Beilage"
+      "Description": "erste fehlende Beilage",
+      "CommentRequired": false
     },
     {
       "Number": "1040.05.59",
-      "Description": "jede weitere fehlende Beilage"
+      "Description": "jede weitere fehlende Beilage",
+      "CommentRequired": false
     },
     {
       "Number": "1040.05.62",
-      "Description": "Rückschub Beilagen Porto Dispo-Box"
+      "Description": "Rückschub Beilagen Porto Dispo-Box",
+      "CommentRequired": false
     }
   ]
 }

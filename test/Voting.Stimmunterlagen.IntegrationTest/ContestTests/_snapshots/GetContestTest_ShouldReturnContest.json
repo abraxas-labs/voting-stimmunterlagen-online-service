@@ -19,7 +19,9 @@
     "ElectoralRegistrationEnabled": true,
     "AllowManualVoterListUpload": false,
     "CanManuallyUploadVoterList": false,
-    "LastVoterUpdate": null
+    "LastVoterUpdate": null,
+    "GenerateVotingCardsTriggered": null,
+    "EVoting": null
   },
   "Approved": null,
   "IsApproved": false,

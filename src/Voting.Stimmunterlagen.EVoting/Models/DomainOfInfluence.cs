@@ -15,8 +15,5 @@ public class DomainOfInfluence
 
     public DomainOfInfluenceVotingCardPrintData PrintData { get; set; } = new();
 
-    /// <summary>
-    /// Gets or sets the attachment stations for all e-voting voter lists of the domain of influence.
-    /// </summary>
-    public string AttachmentStations { get; set; } = string.Empty;
+    public bool StistatMunicipality { get; set; }
 }

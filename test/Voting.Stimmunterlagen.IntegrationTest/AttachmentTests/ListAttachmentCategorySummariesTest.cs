@@ -14,9 +14,9 @@ using Xunit;
 
 namespace Voting.Stimmunterlagen.IntegrationTest.AttachmentTests;
 
-public class ListAttachmentCategorySummariesTest : BaseReadOnlyGrpcTest<AttachmentService.AttachmentServiceClient>
+public class ListAttachmentCategorySummariesTest : BaseWriteableDbGrpcTest<AttachmentService.AttachmentServiceClient>
 {
-    public ListAttachmentCategorySummariesTest(TestReadOnlyApplicationFactory factory)
+    public ListAttachmentCategorySummariesTest(TestApplicationFactory factory)
         : base(factory)
     {
     }
@@ -35,6 +35,36 @@ public class ListAttachmentCategorySummariesTest : BaseReadOnlyGrpcTest<Attachme
         var summaries = await GemeindeArneggElectionAdminClient.ListCategorySummariesAsync(new()
         { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId });
         summaries.ShouldMatchSnapshot();
+    }
+
+    [Fact]
+    public async Task ListForDomainOfInfluenceGemeindeArneggWithHouseholdersOnlyAttachments()
+    {
+        var summaries = await GemeindeArneggElectionAdminClient.ListCategorySummariesAsync(new()
+        { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId });
+
+        summaries.Summaries[0].TotalRequiredForVoterListsCount.Should().Be(9);
+
+        await ModifyDbEntities<Data.Models.Attachment>(
+            a => a.Id == AttachmentMockData.BundFutureApprovedBund1Guid,
+            a => a.SendOnlyToHouseholder = true);
+
+        await ModifyDbEntities<Data.Models.VoterList>(vl => vl.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid, vl => vl.NumberOfHouseholders = 0);
+
+        // The count should not change if not all attachments of a category are sent to householders.
+        summaries = await GemeindeArneggElectionAdminClient.ListCategorySummariesAsync(new()
+        { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId });
+
+        summaries.Summaries[0].TotalRequiredForVoterListsCount.Should().Be(9);
+
+        await ModifyDbEntities<Data.Models.Attachment>(
+            a => a.Id == AttachmentMockData.BundFutureApprovedBund2Guid,
+            a => a.SendOnlyToHouseholder = true);
+
+        summaries = await GemeindeArneggElectionAdminClient.ListCategorySummariesAsync(new()
+        { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId });
+
+        summaries.Summaries[0].TotalRequiredForVoterListsCount.Should().Be(6);
     }
 
     [Fact]

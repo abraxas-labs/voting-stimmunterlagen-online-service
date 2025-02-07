@@ -54,6 +54,8 @@ public class Attachment : BaseEntity, IHasContestDomainOfInfluence
 
     public int? Station { get; set; }
 
+    public bool SendOnlyToHouseholder { get; set; }
+
     public ICollection<AttachmentComment> Comments { get; set; }
         = new HashSet<AttachmentComment>();
 }

@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Snapper;
 using Voting.Lib.DmDoc.Serialization;
+using Voting.Lib.Iam.Store;
 using Voting.Lib.Testing.Mocks;
 using Voting.Stimmunterlagen.Core.Managers.Generator;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
@@ -190,6 +191,12 @@ public class VotingCardGeneratorTest : BaseWriteableDbTest
     private async Task StartRun(Guid jobId)
     {
         using var scope = GetService<IServiceScopeFactory>().CreateScope();
+        var auth = scope.ServiceProvider.GetRequiredService<IAuthStore>();
+        auth.SetValues(
+            "mock-token",
+            "mock-data-seeder",
+            "SC-ABX",
+            Enumerable.Empty<string>());
         var generator = scope.ServiceProvider.GetRequiredService<VotingCardGenerator>();
         await generator.StartJob(jobId, CancellationToken.None);
     }

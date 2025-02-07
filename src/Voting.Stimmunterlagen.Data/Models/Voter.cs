@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Voting.Lib.Database.Models;
 using Voting.Stimmunterlagen.Data.ValidationAttributes;
 
@@ -148,13 +149,21 @@ public class Voter : BaseEntity
 
     public bool SendVotingCardsToDomainOfInfluenceReturnAddress { get; set; }
 
+    public bool IsHouseholder { get; set; }
+
+    [NotMapped]
+    public int? ResidenceBuildingId { get; set; }
+
+    [NotMapped]
+    public int? ResidenceApartmentId { get; set; }
+
     public string? GetGroupValue(VotingCardGroup group)
     {
         return group switch
         {
             VotingCardGroup.Language => LanguageOfCorrespondence,
             VotingCardGroup.ShippingRegion => ZipCode,
-            _ => null,
+            _ => Bfs,
         };
     }
 }

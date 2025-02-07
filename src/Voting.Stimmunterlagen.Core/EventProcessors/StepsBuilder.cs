@@ -31,26 +31,6 @@ public class StepsBuilder
         _voterListBuilder = voterListBuilder;
     }
 
-    public async Task ResetStepsOfPoliticalBusiness(Guid id, Guid updatedDomainOfInfluenceId, Guid? oldDomainOfInfluenceId = null)
-    {
-        var steps = await _stepRepo.Query()
-            .Where(s => s.Step == Step.PoliticalBusinessesApproval
-                        && s.Approved
-                        && s.DomainOfInfluence!.PoliticalBusinessPermissionEntries!.Any(pb =>
-                            pb.Role == PoliticalBusinessRole.Manager
-                            && pb.PoliticalBusinessId == id
-                            && (pb.DomainOfInfluenceId == oldDomainOfInfluenceId ||
-                                pb.DomainOfInfluenceId == updatedDomainOfInfluenceId)))
-            .ToListAsync();
-
-        foreach (var step in steps)
-        {
-            step.Approved = false;
-        }
-
-        await _stepRepo.UpdateRange(steps);
-    }
-
     public Task SyncStepsForBasisDomainOfInfluence(Guid basisDoiId)
         => SyncSteps(query => query.Where(x => x.BasisDomainOfInfluenceId == basisDoiId));
 
@@ -81,6 +61,7 @@ public class StepsBuilder
                 doi.ExternalPrintingCenter,
                 doi.Contest.IsPoliticalAssembly,
                 doi.ResponsibleForVotingCards,
+                doi.ContestId,
             })
             .ToListAsync();
 
@@ -105,19 +86,19 @@ public class StepsBuilder
 
         await _stepRepo.DeleteRangeByKey(toRemove.Select(x => x.Id));
         await _stepRepo.CreateRange(toAdd);
-        await CleanUpForRemovedSteps(toRemove.ConvertAll(s => s.Step));
+        await CleanUpForRemovedSteps(toRemove.ConvertAll(s => s.Step), items.Select(i => i.ContestId).Distinct().ToList());
     }
 
-    private async Task CleanUpForRemovedSteps(IReadOnlyCollection<Step> removedSteps)
+    private async Task CleanUpForRemovedSteps(IReadOnlyCollection<Step> removedSteps, List<Guid> contestIds)
     {
         if (removedSteps.Contains(Step.Attachments))
         {
-            await _attachmentBuilder.CleanUp();
+            await _attachmentBuilder.CleanUp(contestIds);
         }
 
         if (removedSteps.Contains(Step.VoterLists))
         {
-            await _voterListBuilder.CleanUp();
+            await _voterListBuilder.CleanUp(contestIds);
         }
     }
 }

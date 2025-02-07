@@ -7,6 +7,7 @@ using System.Linq;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.Models.Invoice;
 using Voting.Stimmunterlagen.Core.Utils;
+using Voting.Stimmunterlagen.Data.Extensions;
 using Voting.Stimmunterlagen.Data.Models;
 
 namespace Voting.Stimmunterlagen.Core.Managers.Invoice;
@@ -26,7 +27,7 @@ public class InvoiceFileEntriesBuilder
         _attachmentCategorySummaryBuilder = attachmentCategorySummaryBuilder;
     }
 
-    public IEnumerable<InvoiceFileEntry> BuildEntries(PrintJob printJob, DateTime timestamp)
+    public IEnumerable<InvoiceFileEntry> BuildEntries(PrintJob printJob, DateTime timestamp, Contest contest)
     {
         var voterLists = printJob.DomainOfInfluence!.VoterLists!.ToList();
         var totalNumberOfVoters = voterLists.Sum(vl => vl.NumberOfVoters);
@@ -63,8 +64,14 @@ public class InvoiceFileEntriesBuilder
 
         foreach (var materialConfig in _materialConfigs)
         {
+            if (!printJob.DomainOfInfluence.VotingCardLayouts!.Any())
+            {
+                continue;
+            }
+
             var entry = BuildInvoiceEntry(
                 printJob.DomainOfInfluence,
+                contest.IsPoliticalAssembly,
                 timestamp,
                 materialConfig,
                 attachmentStationsCount,
@@ -92,6 +99,7 @@ public class InvoiceFileEntriesBuilder
 
     private InvoiceFileEntry? BuildInvoiceEntry(
         ContestDomainOfInfluence domainOfInfluence,
+        bool contestIsPoliticalAssembly,
         DateTime timestamp,
         MaterialConfig materialConfig,
         int attachmentStationsCount,
@@ -100,7 +108,41 @@ public class InvoiceFileEntriesBuilder
         int attachmentRequiredForVoterListsCount,
         AttachmentFormat deliveryFormat)
     {
+        var votingCardLayout = domainOfInfluence.VotingCardLayouts!.FirstOrDefault(l => l.VotingCardType == VotingCardType.Swiss);
+
         if (materialConfig.AttachmentFormat.HasValue && materialConfig.AttachmentFormat != deliveryFormat)
+        {
+            return null;
+        }
+
+        if (materialConfig.ContestType != MaterialContestType.Unspecified)
+        {
+            if ((materialConfig.ContestType == MaterialContestType.Contest && contestIsPoliticalAssembly)
+                || (materialConfig.ContestType == MaterialContestType.PoliticalAssembly && !contestIsPoliticalAssembly))
+            {
+                return null;
+            }
+        }
+
+        if (materialConfig.VotingCardFormat != MaterialVotingCardFormat.Unspecified
+            && votingCardLayout != null
+            && !(materialConfig.VotingCardFormat == MaterialVotingCardFormat.A4 && votingCardLayout.IsA4Template())
+            && !(materialConfig.VotingCardFormat == MaterialVotingCardFormat.A5 && votingCardLayout.IsA5Template()))
+        {
+            return null;
+        }
+
+        if (materialConfig.IsDuplex.HasValue && votingCardLayout != null)
+        {
+            if ((materialConfig.IsDuplex.Value && !votingCardLayout.IsDuplexTemplate())
+                || (!materialConfig.IsDuplex.Value && votingCardLayout.IsDuplexTemplate()))
+            {
+                return null;
+            }
+        }
+
+        if (materialConfig.Category is MaterialCategory.Flatrate or MaterialCategory.AttachmentStationsSetup
+            && domainOfInfluence.VotingCardFlatRateDisabled)
         {
             return null;
         }
@@ -118,7 +160,7 @@ public class InvoiceFileEntriesBuilder
         {
             case MaterialCategory.Flatrate:
                 entry.Amount = 1;
-                return entry;
+                break;
             case MaterialCategory.Voter:
                 entry.Amount = totalNumberOfVoters;
                 break;
@@ -127,6 +169,16 @@ public class InvoiceFileEntriesBuilder
                 break;
             case MaterialCategory.AttachmentStationsSetup:
                 entry.Amount = attachmentStationsCount;
+                break;
+            case MaterialCategory.BallotEnvelopeStandardExclCustom:
+                if (domainOfInfluence.DomainOfInfluenceAttachmentCounts!
+                    .Any(doiAc => doiAc.Attachment!.Category == AttachmentCategory.BallotEnvelopeStandard && doiAc.RequiredCount > 0)
+                    && !domainOfInfluence.DomainOfInfluenceAttachmentCounts!
+                    .Any(doiAc => doiAc.Attachment!.Category == AttachmentCategory.BallotEnvelopeCustom && doiAc.RequiredCount > 0))
+                {
+                    entry.Amount = totalNumberOfVoters - restNumberOfVoters;
+                }
+
                 break;
             case MaterialCategory.AttachmentStations:
                 if (!materialConfig.Stations.HasValue)
@@ -158,6 +210,7 @@ public class InvoiceFileEntriesBuilder
         {
             CurrentDate = timestamp,
             Amount = additionalInvoicePosition.Amount,
+            Comment = additionalInvoicePosition.Comment,
             SapCustomerNumber = domainOfInfluence.SapCustomerOrderNumber,
             SapMaterialNumber = additionalInvoicePositionConfig?.Number ?? string.Empty,
             SapMaterialText = additionalInvoicePositionConfig?.Description ?? additionalInvoicePosition.MaterialNumber,

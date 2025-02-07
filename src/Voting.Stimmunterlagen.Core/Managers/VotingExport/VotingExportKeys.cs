@@ -8,4 +8,5 @@ public static class VotingExportKeys
     public const string VotingStatistics = "voting_statistics";
     public const string StatisticsByReligion = "statistics_by_religion";
     public const string VotingJournal = "voting_journal";
+    public const string EVoterByDoiOnContest = "e_voter_by_doi_on_contest";
 }

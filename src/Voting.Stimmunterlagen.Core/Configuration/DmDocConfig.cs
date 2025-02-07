@@ -12,7 +12,7 @@ public class DmDocConfig : Lib.DmDoc.Configuration.DmDocConfig
         Timeout = null;
     }
 
-    public string UserNamePrefix { get; set; } = "voting-stimmunterlagen-";
+    public string UserNamePrefix { get; set; } = "voting-stimmunterlagen";
 
     /// <summary>
     /// Gets or sets callback base URL of the Voting Stimmunterlagen API.

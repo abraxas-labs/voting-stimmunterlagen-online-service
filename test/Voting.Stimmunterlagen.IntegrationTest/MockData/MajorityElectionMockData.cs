@@ -55,7 +55,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture2 => new()
@@ -71,7 +70,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureKantonStGallenGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture3 => new()
@@ -87,7 +85,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureStadtUzwilGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture4 => new()
@@ -103,7 +100,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFuture5 => new()
@@ -119,7 +115,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureStadtGossau1 => new()
@@ -135,7 +130,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureStadtGossauGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureGemeindeArnegg1 => new()
@@ -151,7 +145,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApproved1 => new()
@@ -167,7 +160,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedBundGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness SchulgemeindeAndwilArneggFuture1 => new()
@@ -198,7 +190,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedKantonStGallenGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApprovedStadtGossau1 => new()
@@ -214,7 +205,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApprovedGemeindeArnegg1 => new()
@@ -230,7 +220,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static PoliticalBusiness BundFutureApprovedAuslandschweizer => new()
@@ -246,7 +235,6 @@ public static class MajorityElectionMockData
         ContestId = ContestMockData.BundFutureApprovedGuid,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedAuslandschweizerGuid,
         PoliticalBusinessType = PoliticalBusinessType.MajorityElection,
-        Approved = true,
     };
 
     public static IEnumerable<PoliticalBusiness> All

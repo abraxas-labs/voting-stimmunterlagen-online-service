@@ -9,12 +9,13 @@ using Contest = Voting.Stimmunterlagen.EVoting.Models.Contest;
 using DomainOfInfluence = Voting.Stimmunterlagen.EVoting.Models.DomainOfInfluence;
 using DomainOfInfluenceVotingCardReturnAddress = Voting.Stimmunterlagen.EVoting.Models.DomainOfInfluenceVotingCardReturnAddress;
 using VotingCardShippingFranking = Voting.Stimmunterlagen.Data.Models.VotingCardShippingFranking;
-using VotingCardShippingMethod = Voting.Stimmunterlagen.Data.Models.VotingCardShippingMethod;
 
 namespace Voting.Stimmunterlagen.EVoting.Mapper;
 
 internal static class ConfigurationMapper
 {
+    private const string DefaultEVotingDeliveryType = "A";
+
     internal static Configuration ToConfiguration(
         this Contest contest,
         List<DomainOfInfluence> testDomainOfInfluences,
@@ -60,7 +61,7 @@ internal static class ConfigurationMapper
             Bfs = domainOfInfluence.Bfs,
             Name = domainOfInfluence.Name,
             Logo = domainOfInfluence.Logo,
-            DeliveryType = ConvertShippingMethodToString(domainOfInfluence.PrintData.ShippingMethod),
+            DeliveryType = DefaultEVotingDeliveryType,
             ForwardDeliveryType = ConvertShippingFrankingToString(domainOfInfluence.PrintData.ShippingAway),
             ReturnDeliveryType = ConvertShippingFrankingToString(domainOfInfluence.PrintData.ShippingReturn),
             Etemplate = EVotingDefaults.AuslandschweizerBfs.Equals(domainOfInfluence.Bfs) ? EVotingDefaults.ETemplateAuslandschweizer : EVotingDefaults.ETemplate,
@@ -68,8 +69,9 @@ internal static class ConfigurationMapper
             PollOpening = ConvertDateTimeToString(contestDate),
             PollClosing = ConvertDateTimeToString(contestDate.AddDays(1)),
             ReturnDeliveryAddress = domainOfInfluence.ReturnAddress.ToDeliveryAddress(),
-            AttachmentStations = domainOfInfluence.AttachmentStations,
+            AttachmentStations = string.Empty,
             ETextBlocks = eTextBlocksByBfs.GetValueOrDefault(domainOfInfluence.Bfs),
+            Stistat = domainOfInfluence.StistatMunicipality,
         };
     }
 
@@ -105,17 +107,6 @@ internal static class ConfigurationMapper
             VotingCardShippingFranking.GasB => "B",
             VotingCardShippingFranking.WithoutFranking => "F",
             _ => franking.ToString(),
-        };
-    }
-
-    private static string ConvertShippingMethodToString(VotingCardShippingMethod shippingMethod)
-    {
-        return shippingMethod switch
-        {
-            VotingCardShippingMethod.PrintingPackagingShippingToCitizen => "A",
-            VotingCardShippingMethod.PrintingPackagingShippingToMunicipality => "B",
-            VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality => "C",
-            _ => shippingMethod.ToString(),
         };
     }
 }

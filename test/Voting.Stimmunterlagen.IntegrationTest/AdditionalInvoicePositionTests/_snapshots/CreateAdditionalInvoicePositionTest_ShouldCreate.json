@@ -2,6 +2,7 @@
   "MaterialNumber": "1040.05.55",
   "Amount": 25.25,
   "AmountCentime": 2525,
+  "Comment": "",
   "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
   "DomainOfInfluence": null,
   "Created": "2020-01-10T13:12:10.2Z",

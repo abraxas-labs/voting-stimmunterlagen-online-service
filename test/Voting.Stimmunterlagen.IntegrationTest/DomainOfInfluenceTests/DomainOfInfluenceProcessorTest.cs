@@ -376,6 +376,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             },
             ExternalPrintingCenter = false,
             ExternalPrintingCenterEaiMessageType = "EAI-Gossau",
+            StistatMunicipality = false,
+            VotingCardFlatRateDisabled = false,
         };
 
         // publish two events to test idempotency
@@ -390,6 +392,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         doi.SwissPostData!.ShouldMatchChildSnapshot("SwissPostData");
         doi.ExternalPrintingCenter.Should().BeFalse();
         doi.ExternalPrintingCenterEaiMessageType.Should().Be("EAI-Gossau");
+        doi.StistatMunicipality.Should().BeFalse();
+        doi.VotingCardFlatRateDisabled.Should().BeFalse();
 
         var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
             .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
@@ -402,6 +406,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             contestDoi.PrintData!.ShouldMatchChildSnapshot("PrintData");
             contestDoi.ReturnAddress.Should().NotBeNull();
             contestDoi.ReturnAddress!.ShouldMatchChildSnapshot("ReturnAddress");
+            contestDoi.StistatMunicipality.Should().BeFalse();
+            contestDoi.VotingCardFlatRateDisabled.Should().BeFalse();
         }
 
         contestDois.Select(x => x.PrintJob).WhereNotNull().Any().Should().BeTrue();
@@ -458,6 +464,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             },
             ExternalPrintingCenter = true,
             ExternalPrintingCenterEaiMessageType = "EAI-Gossau Update",
+            StistatMunicipality = true,
+            VotingCardFlatRateDisabled = true,
         };
 
         await TestEventPublisher.PublishTwice(eventDataWithExternalPrintingCenter);
@@ -469,6 +477,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         {
             contestDoi.ExternalPrintingCenter.Should().BeTrue();
             contestDoi.ExternalPrintingCenterEaiMessageType.Should().Be("EAI-Gossau Update");
+            contestDoi.StistatMunicipality.Should().BeTrue();
+            contestDoi.VotingCardFlatRateDisabled.Should().BeTrue();
         }
 
         contestDoisWithExternalPrintingCenter.Select(x => x.PrintJob).WhereNotNull().Any().Should().BeFalse();

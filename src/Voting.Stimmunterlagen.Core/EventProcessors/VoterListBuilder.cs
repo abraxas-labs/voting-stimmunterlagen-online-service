@@ -1,6 +1,8 @@
 ﻿// (c) Copyright by Abraxas Informatik AG
 // For license information see LICENSE file
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +20,11 @@ public class VoterListBuilder
         _dataContext = dataContext;
     }
 
-    internal async Task CleanUp()
+    internal async Task CleanUp(List<Guid> contestIds)
     {
         var voterListsToDelete = await _dataContext.VoterLists
-            .Where(vl => vl.PoliticalBusinessEntries!.Count == 0 || vl.DomainOfInfluence!.StepStates!.Count(s => s.Step == Step.VoterLists) == 0)
+            .Where(vl => contestIds.Contains(vl.DomainOfInfluence!.ContestId) &&
+                ((!vl.DomainOfInfluence!.Contest!.IsPoliticalAssembly && vl.PoliticalBusinessEntries!.Count == 0) || vl.DomainOfInfluence!.StepStates!.Count(s => s.Step == Step.VoterLists) == 0))
             .ToListAsync();
 
         _dataContext.VoterLists.RemoveRange(voterListsToDelete);

@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
+using Voting.Lib.Testing.Mocks;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Mocks;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
-using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using Xunit;
+using VotingCardType = Voting.Stimmunterlagen.Proto.V1.Models.VotingCardType;
 
 namespace Voting.Stimmunterlagen.IntegrationTest.ContestVotingCardLayoutTests;
 
@@ -49,6 +51,52 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
         doiLayouts.All(x => x.DomainOfInfluenceTemplateId == null).Should().BeTrue();
         doiLayouts.All(x => x.OverriddenTemplateId == null).Should().BeTrue();
         doiLayouts.All(x => x.EffectiveTemplateId == DmDocServiceMock.TemplateOthers2.Id).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task ShouldIgnoreDoisWithVotingCardsAlreadyGenerated()
+    {
+        var unaffectedDoiGuid = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid;
+        var affectedDoiGuid = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid;
+
+        await ModifyDbEntities<Contest>(
+            c => c.Id == ContestMockData.BundFutureApprovedGuid,
+            c => c.Approved = null);
+
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            doi => doi.Id == unaffectedDoiGuid,
+            doi => doi.GenerateVotingCardsTriggered = MockedClock.UtcNowDate);
+
+        await ModifyDbEntities<DomainOfInfluenceVotingCardLayout>(
+            l => l.DomainOfInfluenceId == unaffectedDoiGuid || l.DomainOfInfluenceId == affectedDoiGuid,
+            l =>
+            {
+                l.TemplateId = DmDocServiceMock.TemplateSwiss.Id;
+                l.DomainOfInfluenceTemplateId = DmDocServiceMock.TemplateSwiss.Id;
+                l.OverriddenTemplateId = DmDocServiceMock.TemplateOthers.Id;
+                l.AllowCustom = true;
+            });
+
+        await AbraxasElectionAdminClient.SetLayoutAsync(new SetContestVotingCardLayoutRequest
+        {
+            AllowCustom = false,
+            ContestId = ContestMockData.BundFutureApprovedId,
+            TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+            VotingCardType = VotingCardType.Swiss,
+        });
+
+        var affectedLayout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts.SingleAsync(l => l.DomainOfInfluenceId == affectedDoiGuid));
+        var unaffectedLayout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts.SingleAsync(l => l.DomainOfInfluenceId == unaffectedDoiGuid));
+
+        unaffectedLayout.TemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
+        unaffectedLayout.DomainOfInfluenceTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
+        unaffectedLayout.OverriddenTemplateId.Should().Be(DmDocServiceMock.TemplateOthers.Id);
+        unaffectedLayout.AllowCustom.Should().BeTrue();
+
+        affectedLayout.TemplateId.Should().Be(DmDocServiceMock.TemplateOthers2.Id);
+        affectedLayout.DomainOfInfluenceTemplateId.Should().Be(null);
+        affectedLayout.OverriddenTemplateId.Should().Be(null);
+        affectedLayout.AllowCustom.Should().BeFalse();
     }
 
     [Fact]

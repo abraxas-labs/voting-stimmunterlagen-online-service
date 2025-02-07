@@ -68,6 +68,11 @@ public class VotingCardGenerator
             var job = await FetchAndSetRunning(jobId, ct);
             _logger.LogDebug("Start PDF generation");
 
+            if (!_config.DmDoc.EnableMock)
+            {
+                await _templateManager.TagBricks(job.Layout!);
+            }
+
             var webhookUrl = _config.DmDoc.GetVotingCardPdfCallbackUrl(job.CallbackToken);
             var draftId = await _templateManager.StartPdfGeneration(
                 null,

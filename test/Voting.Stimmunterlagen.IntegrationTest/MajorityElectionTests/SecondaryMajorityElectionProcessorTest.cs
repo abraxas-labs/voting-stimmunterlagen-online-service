@@ -7,7 +7,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Abraxas.Voting.Basis.Events.V1;
 using Abraxas.Voting.Basis.Events.V1.Data;
-using Abraxas.Voting.Basis.Shared.V1;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Snapper;
@@ -40,7 +39,6 @@ public class SecondaryMajorityElectionProcessorTest : BaseWriteableDbTest
                 OfficialDescription = { LanguageUtil.MockAllLanguages("official 99") },
                 ShortDescription = { LanguageUtil.MockAllLanguages("short 99") },
                 PoliticalBusinessNumber = "99",
-                AllowedCandidates = SecondaryMajorityElectionAllowedCandidates.MayExistInPrimaryElection,
                 NumberOfMandates = 10,
                 PrimaryMajorityElectionId = MajorityElectionMockData.BundFuture1Id,
             },
@@ -70,7 +68,6 @@ public class SecondaryMajorityElectionProcessorTest : BaseWriteableDbTest
                 OfficialDescription = { LanguageUtil.MockAllLanguages("official 99") },
                 ShortDescription = { LanguageUtil.MockAllLanguages("short 99") },
                 PoliticalBusinessNumber = "99",
-                AllowedCandidates = SecondaryMajorityElectionAllowedCandidates.MayExistInPrimaryElection,
                 NumberOfMandates = 10,
                 PrimaryMajorityElectionId = MajorityElectionMockData.BundFuture5Id,
             },

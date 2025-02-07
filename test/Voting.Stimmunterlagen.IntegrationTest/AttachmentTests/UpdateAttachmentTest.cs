@@ -218,6 +218,7 @@ public class UpdateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
                 },
             OrderedCount = 4000,
             RequiredCount = 4000,
+            SendOnlyToHouseholder = true,
         };
         customizer?.Invoke(request);
         return request;

@@ -82,11 +82,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": false,
           "CanManuallyUploadVoterList": false,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 2,
-        "Active": true,
-        "Approved": true
+        "Active": true
       },
       "NumberOfVoters": 0
     },
@@ -110,11 +111,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": false,
           "CanManuallyUploadVoterList": false,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 2,
-        "Active": true,
-        "Approved": true
+        "Active": true
       },
       "NumberOfVoters": 0
     },
@@ -142,11 +144,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": true,
           "CanManuallyUploadVoterList": true,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 2,
-        "Active": true,
-        "Approved": true
+        "Active": true
       },
       "NumberOfVoters": 0
     },
@@ -170,11 +173,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": false,
           "CanManuallyUploadVoterList": false,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 3,
-        "Active": true,
-        "Approved": true
+        "Active": true
       },
       "NumberOfVoters": 0
     },
@@ -202,11 +206,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": true,
           "CanManuallyUploadVoterList": true,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 3,
-        "Active": false,
-        "Approved": true
+        "Active": false
       },
       "NumberOfVoters": 0
     },
@@ -230,11 +235,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": false,
           "CanManuallyUploadVoterList": false,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 1,
-        "Active": true,
-        "Approved": true
+        "Active": true
       },
       "NumberOfVoters": 9
     },
@@ -258,11 +264,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": false,
           "CanManuallyUploadVoterList": false,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 1,
-        "Active": false,
-        "Approved": true
+        "Active": false
       },
       "NumberOfVoters": 0
     },
@@ -286,11 +293,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": false,
           "CanManuallyUploadVoterList": false,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 1,
-        "Active": true,
-        "Approved": true
+        "Active": true
       },
       "NumberOfVoters": 9
     },
@@ -318,11 +326,12 @@
           "ElectoralRegistrationEnabled": true,
           "AllowManualVoterListUpload": true,
           "CanManuallyUploadVoterList": true,
-          "LastVoterUpdate": null
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null
         },
         "PoliticalBusinessType": 1,
-        "Active": false,
-        "Approved": true
+        "Active": false
       },
       "NumberOfVoters": 5
     }

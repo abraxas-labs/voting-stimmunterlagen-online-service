@@ -16,6 +16,12 @@ public class MaterialConfig
 
     public MaterialCategory Category { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether a comment on the additional invoice position is required or not.
+    /// If set to false then comments are disabled.
+    /// </summary>
+    public bool CommentRequired { get; set; }
+
     public int? Stations { get; set; }
 
     /// <summary>
@@ -23,4 +29,10 @@ public class MaterialConfig
     /// If not set the delivery format does not matter for this material.
     /// </summary>
     public AttachmentFormat? AttachmentFormat { get; set; }
+
+    public MaterialContestType ContestType { get; set; }
+
+    public MaterialVotingCardFormat VotingCardFormat { get; set; }
+
+    public bool? IsDuplex { get; set; }
 }

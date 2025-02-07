@@ -36,25 +36,13 @@ public class ApprovePoliticalBusinessesStepManager : ISingleStepManager
 
     private async Task SetApproved(Guid domainOfInfluenceId, string tenantId, bool approved, CancellationToken ct)
     {
-        // according to business this step should approve all businesses of the current tenant,
-        // regardless of the domain of influence.
         var dois = await _doiRepo
             .Query()
             .WhereIsManager(tenantId)
-            .Include(x => x.PoliticalBusinesses!.Where(y => y.Approved != approved))
             .Include(x => x.PrintJob)
             .ToListAsync(ct);
 
-        var businesses = dois.SelectMany(x => x.PoliticalBusinesses!).ToList();
-
-        foreach (var business in businesses)
-        {
-            business.Approved = approved;
-        }
-
-        await _politicalBusinessRepo.UpdateRange(businesses);
         SetPrintJobState(dois, approved);
-
         await _doiRepo.UpdateRange(dois);
     }
 

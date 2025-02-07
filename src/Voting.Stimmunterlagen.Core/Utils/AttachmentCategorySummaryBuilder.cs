@@ -51,15 +51,17 @@ public class AttachmentCategorySummaryBuilder
         return attachmentsByCategory
             .Select(attachmentsByCategoryEntry =>
             {
-                var attachmentPbIds = attachmentsByCategoryEntry
-                    .Value
+                var categoryAttachments = attachmentsByCategoryEntry.Value;
+                var sendAllAttachmentsOnlyToHouseholder = categoryAttachments.All(a => a.SendOnlyToHouseholder);
+
+                var attachmentPbIds = categoryAttachments
                     .SelectMany(a => a.PoliticalBusinessEntries)
                     .Select(e => e.PoliticalBusinessId)
                     .ToHashSet();
 
                 var requiredForVoterListsCount = voterLists
                     .Where(v => v.PoliticalBusinessEntries!.Any(e => attachmentPbIds.Contains(e.PoliticalBusinessId)) || isPoliticalAssembly)
-                    .Sum(v => v.NumberOfVoters);
+                    .Sum(v => sendAllAttachmentsOnlyToHouseholder ? v.NumberOfHouseholders : v.NumberOfVoters);
 
                 return new AttachmentCategorySummary(
                     attachmentsByCategoryEntry.Key,

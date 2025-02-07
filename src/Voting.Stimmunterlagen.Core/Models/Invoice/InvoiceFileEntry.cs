@@ -35,6 +35,10 @@ public class InvoiceFileEntry
     [Name("RKDPOS")]
     public string SapOrderPosition { get; set; } = string.Empty;
 
+    [Index(22)]
+    [Name("LANGTEXT")]
+    public string Comment { get; set; } = string.Empty;
+
     [Index(32)]
     [Name("/PPA/MAKTX2")]
     public string SapMaterialText { get; set; } = string.Empty;

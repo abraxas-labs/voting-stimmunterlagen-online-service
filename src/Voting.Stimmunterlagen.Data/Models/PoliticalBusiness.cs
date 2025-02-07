@@ -26,8 +26,6 @@ public class PoliticalBusiness : BaseEntity, IHasContest, IHasContestDomainOfInf
 
     public ICollection<PoliticalBusinessPermissionEntry>? PermissionEntries { get; set; }
 
-    public bool Approved { get; set; }
-
     public ICollection<PoliticalBusinessAttachmentEntry>? AttachmentEntries { get; set; }
 
     public ICollection<PoliticalBusinessVoterListEntry>? VoterListEntries { get; set; }

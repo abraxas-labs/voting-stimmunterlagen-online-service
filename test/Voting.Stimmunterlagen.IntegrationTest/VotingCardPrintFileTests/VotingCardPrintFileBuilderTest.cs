@@ -103,6 +103,21 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task ShouldWorkPrintA5AttachementA5Duplex()
+    {
+        var job = GetJob("voting_template_a5_duplex");
+        var attachments = GetAttachments(AttachmentFormat.A5);
+        var entries = _votingCardPrintFileBuilder.MapToPrintFileEntries(job, attachments, new() { OrderNumber = 955000, IsPoliticalAssembly = false });
+        entries.MatchSnapshot("rawEntries");
+
+        var csvBytes = await _votingCardPrintFileBuilder.BuildPrintFile(job, attachments);
+        using var ms = new MemoryStream(csvBytes);
+        using var streamReader = new StreamReader(ms);
+        var csv = streamReader.ReadToEnd();
+        csv.MatchRawSnapshot("VotingCardPrintFileTests", "_snapshots", $"{nameof(VotingCardPrintFileBuilderTest)}_{nameof(ShouldWorkPrintA5AttachementA5Duplex)}.csv");
+    }
+
+    [Fact]
     public async Task ShouldWorkForPoliticalAssemblyPrintA5AttachementA5()
     {
         var job = GetJob("voting_template_a5", true);
@@ -122,9 +137,9 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
     {
         var job = GetJob("voting_template_a5", false);
 
-        // E-Voting has no templates
-        job.Layout!.VotingCardType = VotingCardType.EVoting;
-        job.Layout!.OverriddenTemplate = null!;
+        // E-Voting has no Layout
+        job.Layout = null;
+        job.State = VotingCardGeneratorJobState.ReadyToRunOffline;
         var attachments = GetAttachments(AttachmentFormat.A5, false);
         var entries = _votingCardPrintFileBuilder.MapToPrintFileEntries(job, attachments, new() { OrderNumber = 955000, IsPoliticalAssembly = false });
         entries.MatchSnapshot("rawEntries");
@@ -211,6 +226,7 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                     VoterType = VoterType.Swiss,
                     PersonId = "3",
                     PersonIdCategory = "Inlandschweizer",
+                    IsHouseholder = true,
                     MunicipalityName = "Arnegg",
                     PlacesOfOrigin = new List<VoterPlaceOfOrigin>
                     {
@@ -306,16 +322,24 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
 
     private List<Attachment> GetAttachments(AttachmentFormat format, bool isPoliticalAssembly = false)
     {
+        var id1 = Guid.Parse("9206346c-ab33-477a-a0d3-4b10347ad8a8");
+        var id2 = Guid.Parse("07af1ef1-40c7-4fbe-af64-022b045dfcad");
+        var id3 = Guid.Parse("f7759e92-1c3b-4d15-8a90-4567e049c207");
+        var id4 = Guid.Parse("b49b3fd1-20b2-4d49-88fa-679a96bc8fe6");
+        var id5 = Guid.Parse("41a1a84b-e308-45e3-9ee5-26dbced6e2e6");
+        var id6 = Guid.Parse("3d630880-759f-4764-9060-aff6ea3a2bcf");
+
         return new()
         {
             new()
             {
+                Id = id1,
                 Station = 1,
                 PoliticalBusinessEntries = isPoliticalAssembly
                     ? new List<PoliticalBusinessAttachmentEntry>()
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
-                        new() { PoliticalBusinessId = PoliticalBusinessId1 },
+                        new() { PoliticalBusinessId = PoliticalBusinessId1, AttachmentId = id1 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
                 {
@@ -325,12 +349,13 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
             },
             new()
             {
+                Id = id2,
                 Station = 1,
                 PoliticalBusinessEntries = isPoliticalAssembly
                     ? new List<PoliticalBusinessAttachmentEntry>()
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
-                        new() { PoliticalBusinessId = PoliticalBusinessId1 },
+                        new() { PoliticalBusinessId = PoliticalBusinessId1, AttachmentId = id2 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
                 {
@@ -339,26 +364,29 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
             },
             new()
             {
+                Id = id3,
                 Station = 12,
                 PoliticalBusinessEntries = isPoliticalAssembly
                     ? new List<PoliticalBusinessAttachmentEntry>()
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
-                        new() { PoliticalBusinessId = PoliticalBusinessId2 },
+                        new() { PoliticalBusinessId = PoliticalBusinessId2, AttachmentId = id3 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
                 {
                     new() { RequiredCount = 1 },
                 },
+                SendOnlyToHouseholder = true,
             },
             new()
             {
+                Id = id4,
                 Station = 11,
                 PoliticalBusinessEntries = isPoliticalAssembly
                     ? new List<PoliticalBusinessAttachmentEntry>()
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
-                        new() { PoliticalBusinessId = PoliticalBusinessId1 },
+                        new() { PoliticalBusinessId = PoliticalBusinessId1, AttachmentId = id4 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
                 {
@@ -367,23 +395,25 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
             },
             new()
             {
+                Id = id5,
                 Station = 7,
                 PoliticalBusinessEntries = isPoliticalAssembly
                     ? new List<PoliticalBusinessAttachmentEntry>()
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
-                        new() { PoliticalBusinessId = PoliticalBusinessId1 },
+                        new() { PoliticalBusinessId = PoliticalBusinessId1, AttachmentId = id5 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>(),
             },
             new()
             {
+                Id = id6,
                 Station = 6,
                 PoliticalBusinessEntries = isPoliticalAssembly
                     ? new List<PoliticalBusinessAttachmentEntry>()
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
-                        new() { PoliticalBusinessId = PoliticalBusinessId1 },
+                        new() { PoliticalBusinessId = PoliticalBusinessId1, AttachmentId = id6 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
                 {

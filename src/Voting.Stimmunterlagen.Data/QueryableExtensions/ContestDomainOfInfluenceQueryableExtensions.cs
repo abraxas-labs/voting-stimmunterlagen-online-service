@@ -62,10 +62,10 @@ public static class ContestDomainOfInfluenceQueryableExtensions
         return queryable.Where(x => x.DomainOfInfluence!.Contest!.DomainOfInfluence!.SecureConnectId == tenantId);
     }
 
-    public static IQueryable<T> WhereGenerateVotingCardsTriggered<T>(this IQueryable<T> queryable)
+    public static IQueryable<T> WhereGenerateVotingCardsTriggered<T>(this IQueryable<T> queryable, bool triggered = true)
         where T : IHasContestDomainOfInfluence
     {
-        return queryable.Where(x => x.DomainOfInfluence!.GenerateVotingCardsTriggered != null);
+        return queryable.Where(x => x.DomainOfInfluence!.GenerateVotingCardsTriggered.HasValue == triggered);
     }
 
     public static IQueryable<T> WherePrintJobProcessNotStarted<T>(this IQueryable<T> queryable)

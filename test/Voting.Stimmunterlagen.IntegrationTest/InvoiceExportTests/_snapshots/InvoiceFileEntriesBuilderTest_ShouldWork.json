@@ -6,6 +6,7 @@
       "Amount": 1.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "50",
+      "Comment": "",
       "SapMaterialText": "DV Auftragspauschale Urnengänge"
     },
     {
@@ -14,6 +15,7 @@
       "Amount": 62.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV Drucken A4-Stimmausweis einseitig"
     },
     {
@@ -22,6 +24,7 @@
       "Amount": 1.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV Einrichtkosten / B5-Kuvert"
     },
     {
@@ -30,7 +33,17 @@
       "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV Kuvertier-Grundkosten B5/C5"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.35",
+      "Amount": 62.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV pro zugeführtem Stimmrechtsausweis A4"
     },
     {
       "CurrentDate": "2020-01-10T13:12:10.2Z",
@@ -38,6 +51,7 @@
       "Amount": 2.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV Einrichtkosten / Beilagenstation"
     },
     {
@@ -46,6 +60,7 @@
       "Amount": 50.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV Beilagen mit 2 Beilagenstationen"
     },
     {
@@ -54,6 +69,7 @@
       "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV CAG80 Antwortkuvert C5 postzert"
     },
     {
@@ -62,6 +78,7 @@
       "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "",
       "SapMaterialText": "DV Postversand B5/C5"
     },
     {
@@ -70,6 +87,7 @@
       "Amount": 1.25,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
+      "Comment": "Testcomment",
       "SapMaterialText": "Aufwand in Stunden"
     },
     {
@@ -78,6 +96,7 @@
       "Amount": 9.75,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "",
+      "Comment": "",
       "SapMaterialText": "Zusatzleistung"
     }
   ]

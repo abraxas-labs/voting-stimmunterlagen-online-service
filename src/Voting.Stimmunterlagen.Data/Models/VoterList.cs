@@ -17,6 +17,8 @@ public class VoterList : BaseEntity, IHasContestDomainOfInfluence
 
     public int NumberOfVoters { get; set; }
 
+    public int NumberOfHouseholders { get; set; }
+
     public ICollection<Voter>? Voters { get; set; }
 
     public int Index { get; set; }

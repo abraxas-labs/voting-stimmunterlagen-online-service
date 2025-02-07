@@ -20,7 +20,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "RequiredCount": 2000,
       "RequiredForVoterListsCount": 0

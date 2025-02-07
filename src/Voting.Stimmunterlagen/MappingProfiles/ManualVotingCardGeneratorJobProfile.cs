@@ -16,6 +16,7 @@ public class ManualVotingCardGeneratorJobProfile : Profile
         CreateMap<IEnumerable<ManualVotingCardGeneratorJob>, ProtoModels.ManualVotingCardGeneratorJobs>()
             .ForMember(dst => dst.Jobs, opts => opts.MapFrom(x => x));
         CreateMap<CreateManualVotingCardVoterRequest, Voter>()
+            .ForMember(dst => dst.IsHouseholder, opts => opts.MapFrom(_ => true))
             .ForMember(dst => dst.DateOfBirth, opts => opts.MapFrom(x => x.DateOfBirth.ToDateTime().ToString("yyyy-MM-dd")));
         CreateMap<CreateCountryRequest, Country>();
         CreateMap<ManualVotingCardGeneratorJob, ProtoModels.ManualVotingCardGeneratorJob>();

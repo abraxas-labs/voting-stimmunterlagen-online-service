@@ -16,6 +16,7 @@
     "TotalRequiredCount": 4000,
     "TotalRequiredForVoterListsCount": 5,
     "Station": null,
+    "SendOnlyToHouseholder": true,
     "Comments": [],
     "Id": "b4ff2aa7-ff44-483a-b756-476130f9bf2c"
   },

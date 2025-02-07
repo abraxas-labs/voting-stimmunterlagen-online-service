@@ -43,12 +43,6 @@ public class RevertApprovePoliticalBusinessesStepTest : BaseWriteableStepTest
             Step.PoliticalBusinessesApproval,
             false);
 
-        var politicalBusinesses = await RunOnDb(db => db.PoliticalBusinesses
-            .Where(x => x.DomainOfInfluence!.SecureConnectId == MockDataSeeder.SecureConnectTenantIds.StadtGossau)
-            .ToListAsync());
-        politicalBusinesses.Should().NotBeEmpty();
-        politicalBusinesses.Any(x => x.Approved).Should().BeFalse();
-
         var printJobs = await RunOnDb(db => db.PrintJobs
             .Where(x =>
                 x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid

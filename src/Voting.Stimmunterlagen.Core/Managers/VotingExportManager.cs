@@ -39,6 +39,7 @@ public class VotingExportManager
     {
         var doi = await _doiRepo.Query()
             .Where(doi => doi.Id == domainOfInfluenceId)
+            .Include(x => x.Contest)
             .WhereIsManager(_auth.Tenant.Id)
             .FirstOrDefaultAsync()
             ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), domainOfInfluenceId);

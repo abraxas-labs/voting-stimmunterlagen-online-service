@@ -350,6 +350,24 @@ public class AttachmentManager
             .FirstOrDefaultAsync(a => a.Id == attachmentId)
             ?? throw new EntityNotFoundException(nameof(Attachment), attachmentId);
 
+        if (IsCommunalAttachment(existingAttachment))
+        {
+            var otherDoiAttachments = await _attachmentRepo.Query()
+                .WhereHasDomainOfInfluence(existingAttachment.DomainOfInfluenceId)
+                .Where(a => a.Id != attachmentId)
+                .ToListAsync();
+
+            var otherCommunalAttachmentStations = otherDoiAttachments
+                .Where(a => IsCommunalAttachment(a) && a.Station.HasValue)
+                .Select(a => a.Station!.Value)
+                .ToHashSet();
+
+            if (otherCommunalAttachmentStations.Contains(station))
+            {
+                throw new ValidationException($"Communal attachment station {station} is already used");
+            }
+        }
+
         existingAttachment.Station = station;
         await _attachmentRepo.Update(existingAttachment);
     }
@@ -575,5 +593,13 @@ public class AttachmentManager
         }
 
         throw new ValidationException($"Attachments on domain of influence of type {domainOfInfluenceType} must have an equal ordered and required count and it has to be larger than 0");
+    }
+
+    private bool IsCommunalAttachment(Attachment attachment)
+    {
+        return attachment.Category == AttachmentCategory.BallotMu
+            || attachment.Category == AttachmentCategory.BrochureMu
+            || attachment.Category == AttachmentCategory.OtherMu
+            || attachment.Category == AttachmentCategory.VotingGuideMu;
     }
 }

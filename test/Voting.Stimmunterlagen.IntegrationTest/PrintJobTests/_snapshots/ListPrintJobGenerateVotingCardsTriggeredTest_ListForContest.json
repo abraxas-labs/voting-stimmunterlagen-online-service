@@ -19,7 +19,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": {
+          "Seconds": 1578661930,
+          "Nanos": 200000000
+        },
+        "EVoting": null
       },
       "State": 1,
       "ProcessStartedOn": null,
@@ -49,7 +54,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": {
+          "Seconds": 1578661930,
+          "Nanos": 200000000
+        },
+        "EVoting": null
       },
       "State": 3,
       "ProcessStartedOn": null,
@@ -79,7 +89,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": {
+          "Seconds": 1578661930,
+          "Nanos": 200000000
+        },
+        "EVoting": null
       },
       "State": 1,
       "ProcessStartedOn": null,

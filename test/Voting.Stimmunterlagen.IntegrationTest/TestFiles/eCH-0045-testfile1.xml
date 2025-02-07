@@ -46,6 +46,7 @@
             </eCH-0045:religionData>
             <eCH-0045:extension>
               <sendVotingCardsToDomainOfInfluenceReturnAddress>true</sendVotingCardsToDomainOfInfluenceReturnAddress>
+              <isHouseholder xmlns="">false</isHouseholder>
             </eCH-0045:extension>
             <eCH-0045:placeOfOrigin xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011/8">
               <eCH-0011:originName>Thun</eCH-0011:originName>
@@ -124,6 +125,11 @@
               </eCH-0044:dateOfBirth>
             </eCH-0045:personIdentification>
             <eCH-0045:languageOfCorrespondance>de</eCH-0045:languageOfCorrespondance>
+            <eCH-0045:extension>
+              <isHouseholder xmlns="">false</isHouseholder>
+              <residenceBuildingId xmlns="">999999999</residenceBuildingId>
+              <residenceApartmentId xmlns="">999</residenceApartmentId>
+            </eCH-0045:extension>
             <eCH-0045:placeOfOrigin xmlns:eCH-0011="http://www.ech.ch/xmlns/eCH-0011/8">
               <eCH-0011:originName>Airolo</eCH-0011:originName>
               <eCH-0011:canton>TI</eCH-0011:canton>

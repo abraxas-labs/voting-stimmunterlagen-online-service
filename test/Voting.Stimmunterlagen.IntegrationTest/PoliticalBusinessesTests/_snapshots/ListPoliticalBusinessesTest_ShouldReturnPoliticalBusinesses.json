@@ -19,11 +19,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 3,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "56fec37a-a5a4-42ac-9c2e-2d02f74c3333",
@@ -44,11 +45,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 2,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "6f7b5c83-fb9c-4177-bbec-0f893cece402",
@@ -69,11 +71,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 1,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "07139842-7531-489d-984b-afab8d69810b",
@@ -94,11 +97,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 3,
-      "Active": false,
-      "Approved": true
+      "Active": false
     },
     {
       "Id": "42b77898-3f77-4a10-a4d3-242198a26838",
@@ -119,11 +123,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 2,
-      "Active": false,
-      "Approved": true
+      "Active": false
     },
     {
       "Id": "f13ce18a-164f-495a-aefc-9b47aa702bde",
@@ -144,11 +149,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 1,
-      "Active": false,
-      "Approved": true
+      "Active": false
     },
     {
       "Id": "6a30f10e-20c2-4bfd-aaa5-b058a34fb2be",
@@ -169,11 +175,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 2,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "be0af996-5c16-4abd-8313-eb3b0d9ad29b",
@@ -194,11 +201,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 4,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "316f4fc7-e031-45b5-b717-0272636c9c22",
@@ -219,11 +227,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 3,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "4cabfa9d-4956-4bea-96ea-41ac8b780dfd",
@@ -244,11 +253,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 1,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "8b9c1b7a-c519-4cf6-a1cb-f5789384a036",
@@ -269,11 +279,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 2,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "4cd49a49-d9ba-4a2e-845f-d432a3401ac1",
@@ -298,11 +309,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 2,
-      "Active": true,
-      "Approved": true
+      "Active": true
     },
     {
       "Id": "1c22116b-c97b-4983-972a-623770799fc7",
@@ -327,11 +339,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 3,
-      "Active": false,
-      "Approved": true
+      "Active": false
     },
     {
       "Id": "d2ec0817-0373-46bb-bfaa-68ec9c63d0ae",
@@ -356,11 +369,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 3,
-      "Active": false,
-      "Approved": true
+      "Active": false
     },
     {
       "Id": "f2a9182a-faba-4756-9211-59d19c63102c",
@@ -385,11 +399,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "PoliticalBusinessType": 1,
-      "Active": false,
-      "Approved": true
+      "Active": false
     }
   ]
 }

@@ -37,4 +37,9 @@ public enum MaterialCategory
     /// Charge separatly (user-defined).
     /// </summary>
     AdditionalInvoicePosition,
+
+    /// <summary>
+    /// Charge if standard ballot envelope is set (but not if custom) for each voter excluding rest.
+    /// </summary>
+    BallotEnvelopeStandardExclCustom,
 }

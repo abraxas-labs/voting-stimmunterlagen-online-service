@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Voting.Lib.Common.Net;
+using Voting.Lib.Iam.Configuration;
 using Voting.Lib.Iam.ServiceTokenHandling;
 using Voting.Stimmunterlagen.Data.Configuration;
 
@@ -59,4 +60,9 @@ public class AppConfig
 
     public bool EventProcessorModeEnabled
         => (ServiceMode & ServiceMode.EventProcessor) != 0;
+
+    /// <summary>
+    /// Gets or sets the auth store configuration.
+    /// </summary>
+    public AuthStoreConfig AuthStore { get; set; } = new();
 }

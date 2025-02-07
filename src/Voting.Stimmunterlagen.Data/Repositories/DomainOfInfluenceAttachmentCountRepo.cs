@@ -26,6 +26,12 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
         var voterListIdCol = Context.VoterLists.GetDelimitedColumnName(x => x.Id);
         var voterListDomainOfInfluenceIdCol = Context.VoterLists.GetDelimitedColumnName(x => x.DomainOfInfluenceId);
         var voterListNumberOfVotersCol = Context.VoterLists.GetDelimitedColumnName(x => x.NumberOfVoters);
+        var voterListNumberOfHouseholdersCol = Context.VoterLists.GetDelimitedColumnName(x => x.NumberOfHouseholders);
+
+        var attachmentTable = Context.Attachments.GetDelimitedSchemaAndTableName();
+        var attachmentIdCol = Context.Attachments.GetDelimitedColumnName(x => x.Id);
+        var attachmentSendOnlyForHouseholderCol = Context.Attachments.GetDelimitedColumnName(x => x.SendOnlyToHouseholder);
+        var attachmentDomainOfInfluenceIdCol = Context.Attachments.GetDelimitedColumnName(x => x.DomainOfInfluenceId);
 
         var politicalBusinessVoterListEntriesTable = Context.PoliticalBusinessVoterListEntries.GetDelimitedSchemaAndTableName();
         var politicalBusinessVoterListEntriesVoterListIdCol = Context.PoliticalBusinessVoterListEntries.GetDelimitedColumnName(x => x.VoterListId);
@@ -40,26 +46,37 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
             return Context.Database.ExecuteSqlRawAsync(
             $@"
                 update {DelimitedSchemaAndTableName} DOIAC
-                set {doiAcRequiredForVoterListsCountCol} = VLSUM.""RequiredForVoterListsCount""
+                set {doiAcRequiredForVoterListsCountCol} = CASE
+                    WHEN ATT.{attachmentSendOnlyForHouseholderCol} = TRUE THEN VLSUM.""NumberOfHouseholders""
+                    ELSE VLSUM.""NumberOfVoters""
+                END
                 from
                 (
                     select
-                        SUM(VLAGG.""VoterListNumberOfVoters"") as ""RequiredForVoterListsCount"",
-                        VLAGG.""DoiId""
+                        SUM(VLAGG.""VoterListNumberOfVoters"") as ""NumberOfVoters"",
+                        SUM(VLAGG.""VoterListNumberOfHouseholders"") as ""NumberOfHouseholders"",
+                        VLAGG.""DoiId"",
+                        VLAGG.""AttachmentId""
                     from
                     (
                         select distinct
                             COALESCE(VL.{voterListNumberOfVotersCol}, 0) as ""VoterListNumberOfVoters"",
+                            COALESCE(VL.{voterListNumberOfHouseholdersCol}, 0) as ""VoterListNumberOfHouseholders"",
                             COALESCE(VL.{voterListDomainOfInfluenceIdCol}, {{1}}) as ""DoiId"",
-                            VL.{voterListIdCol}
+                            VL.{voterListIdCol},
+                            ATTA.{attachmentIdCol} as ""AttachmentId""
                         from {voterListTable} VL
+                        inner join {attachmentTable} ATTA
+                            on VL.{voterListDomainOfInfluenceIdCol} = ATTA.{attachmentDomainOfInfluenceIdCol}
                         where 1=1
+                            {(attachmentId.HasValue ? $"AND ATTA.{attachmentIdCol} = {{0}}" : string.Empty)}
                             {(doiId.HasValue ? $"AND (VL.{voterListDomainOfInfluenceIdCol} = {{1}} OR VL.{voterListDomainOfInfluenceIdCol} IS NULL)" : string.Empty)}
                     ) AS VLAGG
-                    group by VLAGG.""DoiId""
+                    group by VLAGG.""AttachmentId"", VLAGG.""DoiId""
                 ) as VLSUM
+                inner join {attachmentTable} ATT on ATT.{attachmentIdCol} = VLSUM.{doiAcAttachmentIdCol}
                 where VLSUM.""DoiId"" = DOIAC.{doiAcDoiIdCol}
-                {(attachmentId.HasValue ? $"AND DOIAC.{doiAcAttachmentIdCol} = {{0}}" : string.Empty)}",
+                    AND VLSUM.""AttachmentId"" = DOIAC.{doiAcAttachmentIdCol}",
             attachmentId!,
             doiId!);
         }
@@ -67,17 +84,22 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
         return Context.Database.ExecuteSqlRawAsync(
             $@"
                 update {DelimitedSchemaAndTableName} DOIAC
-                set {doiAcRequiredForVoterListsCountCol} = VLSUM.""RequiredForVoterListsCount""
+                set {doiAcRequiredForVoterListsCountCol} = CASE
+                    WHEN ATT.{attachmentSendOnlyForHouseholderCol} = TRUE THEN VLSUM.""NumberOfHouseholders""
+                    ELSE VLSUM.""NumberOfVoters""
+                END
                 from
                 (
                     select
-                        SUM(VLAGG.""VoterListNumberOfVoters"") as ""RequiredForVoterListsCount"",
+                        SUM(VLAGG.""VoterListNumberOfVoters"") as ""NumberOfVoters"",
+                        SUM(VLAGG.""VoterListNumberOfHouseholders"") as ""NumberOfHouseholders"",
                         VLAGG.""AttachmentId"",
                         VLAGG.""DoiId""
                     from
                     (
                         select distinct
                             COALESCE(VL.{voterListNumberOfVotersCol}, 0) as ""VoterListNumberOfVoters"",
+                            COALESCE(VL.{voterListNumberOfHouseholdersCol}, 0) as ""VoterListNumberOfHouseholders"",
                             PBAE.{politicalBusinessAttachmentEntriesAttachmentIdCol} as ""AttachmentId"",
                             COALESCE(VL.{voterListDomainOfInfluenceIdCol}, {{1}}) as ""DoiId"",
                             VL.{voterListIdCol}
@@ -92,6 +114,8 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
                     ) AS VLAGG
                     group by VLAGG.""AttachmentId"", VLAGG.""DoiId""
                 ) as VLSUM
+                inner join {attachmentTable} ATT
+                    on ATT.{attachmentIdCol} = VLSUM.""AttachmentId""
                 where VLSUM.""AttachmentId"" = DOIAC.{doiAcAttachmentIdCol}
                      AND VLSUM.""DoiId"" = DOIAC.{doiAcDoiIdCol}",
             attachmentId!,

@@ -32,6 +32,7 @@
         "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
         "VotingCardType": 1,
         "NumberOfVoters": 4,
+        "NumberOfHouseholders": 4,
         "Voters": [
           {
             "Salutation": 2,
@@ -87,6 +88,9 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": true,
+            "IsHouseholder": true,
+            "ResidenceBuildingId": null,
+            "ResidenceApartmentId": null,
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -143,6 +147,9 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "IsHouseholder": true,
+            "ResidenceBuildingId": null,
+            "ResidenceApartmentId": null,
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -192,6 +199,9 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "IsHouseholder": true,
+            "ResidenceBuildingId": null,
+            "ResidenceApartmentId": null,
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -281,6 +291,9 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+            "IsHouseholder": true,
+            "ResidenceBuildingId": null,
+            "ResidenceApartmentId": null,
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],

@@ -207,6 +207,7 @@ public static class DomainOfInfluenceMockData
                 CountingCircleId = CountingCircleMockData.StadtGossauGuid,
             },
         },
+        StistatMunicipality = true,
     };
 
     public static DomainOfInfluence StadtUzwil => new()
@@ -307,6 +308,7 @@ public static class DomainOfInfluenceMockData
                 CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
             },
         },
+        StistatMunicipality = true,
     };
 
     public static DomainOfInfluence SchulgemeindeArneggAndwil => new()
@@ -354,6 +356,7 @@ public static class DomainOfInfluenceMockData
                 CountingCircleId = CountingCircleMockData.SchulgemeindeAndwilArneggGuid,
             },
         },
+        VotingCardFlatRateDisabled = true,
     };
 
     public static DomainOfInfluence Auslandschweizer => new()

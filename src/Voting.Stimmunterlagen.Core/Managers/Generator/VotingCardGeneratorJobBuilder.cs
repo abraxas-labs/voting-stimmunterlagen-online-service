@@ -20,6 +20,9 @@ namespace Voting.Stimmunterlagen.Core.Managers.Generator;
 public class VotingCardGeneratorJobBuilder
 {
     private const string PdfFileExtension = ".pdf";
+    private const string ContestFilePrefix = "U";
+    private const string PoliticalAssemblyFilePrefix = "V";
+    private const string EVotingFileNameGroup = "EVoting";
 
     private readonly ApiConfig _config;
     private readonly IDbRepository<VotingCardGeneratorJob> _jobsRepo;
@@ -49,7 +52,7 @@ public class VotingCardGeneratorJobBuilder
         await CleanJobs(doiId, tenantId, ct);
 
         var config = await _doiConfigRepo.Query()
-                         .Include(x => x.DomainOfInfluence)
+                         .Include(x => x.DomainOfInfluence!.Contest)
                          .WhereIsDomainOfInfluenceManager(tenantId)
                          .FirstOrDefaultAsync(x => x.DomainOfInfluenceId == doiId, ct)
                      ?? throw new EntityNotFoundException(nameof(DomainOfInfluenceVotingCardConfiguration), doiId);
@@ -87,8 +90,9 @@ public class VotingCardGeneratorJobBuilder
         var votingCardType = firstVoter.List!.VotingCardType;
 
         DomainOfInfluenceVotingCardLayout? layout = null;
+        var isEVotingJob = votingCardType.OfflineGenerationRequired();
 
-        if (!votingCardType.OfflineGenerationRequired() && (!layoutsByType.TryGetValue(firstVoter.List!.VotingCardType, out layout) || !layout.EffectiveTemplateId.HasValue))
+        if (!isEVotingJob && (!layoutsByType.TryGetValue(firstVoter.List!.VotingCardType, out layout) || !layout.EffectiveTemplateId.HasValue))
         {
             throw new EntityNotFoundException(
                 nameof(VotingCardLayout),
@@ -97,11 +101,11 @@ public class VotingCardGeneratorJobBuilder
 
         return new VotingCardGeneratorJob
         {
-            State = votingCardType.OfflineGenerationRequired()
+            State = isEVotingJob
                 ? VotingCardGeneratorJobState.ReadyToRunOffline
                 : VotingCardGeneratorJobState.Ready,
             Voter = voterGroup,
-            FileName = BuildFileName(doi, groups, firstVoter),
+            FileName = BuildFileName(doi, groups, firstVoter, isEVotingJob),
             CountOfVoters = voterGroup.Count,
             LayoutId = layout?.Id,
             DomainOfInfluenceId = doi.Id,
@@ -117,18 +121,35 @@ public class VotingCardGeneratorJobBuilder
         await _jobsRepo.DeleteRangeByKey(toDelete);
     }
 
-    private string BuildFileName(ContestDomainOfInfluence doi, IEnumerable<VotingCardGroup> groups, Voter voter)
+    private string BuildFileName(ContestDomainOfInfluence doi, IEnumerable<VotingCardGroup> groups, Voter voter, bool isEVotingJob)
     {
+        // Ensures that the voter BFS is added to the file name
+        var fileNameVotingCardGroups = new List<VotingCardGroup>(groups);
+        fileNameVotingCardGroups.Insert(0, VotingCardGroup.Unspecified);
+
+        var name = doi.Contest!.IsPoliticalAssembly ? PoliticalAssemblyFilePrefix : ContestFilePrefix;
+        name += _config.VotingCardGenerator.FileNameGroupSeparator;
+
         var doiNameWithoutSpace = doi.Name.Replace(" ", "_");
-        var fileNamePrefix = !string.IsNullOrWhiteSpace(doi.Bfs)
+        name += !string.IsNullOrWhiteSpace(doi.Bfs)
             ? doi.Bfs + _config.VotingCardGenerator.FileNameGroupSeparator + doiNameWithoutSpace
             : doiNameWithoutSpace;
 
+        if (isEVotingJob)
+        {
+            name += _config.VotingCardGenerator.FileNameGroupSeparator + EVotingFileNameGroup;
+        }
+
         var groupsName = string.Join(
                 _config.VotingCardGenerator.FileNameGroupSeparator,
-                groups.Select(voter.GetGroupValue).Where(x => x != null));
+                fileNameVotingCardGroups.Select(voter.GetGroupValue).Where(x => x != null));
 
-        var name = fileNamePrefix + _config.VotingCardGenerator.FileNameGroupSeparator + groupsName;
+        if (!string.IsNullOrWhiteSpace(groupsName))
+        {
+            name += _config.VotingCardGenerator.FileNameGroupSeparator + groupsName;
+        }
+
+        name += _config.VotingCardGenerator.FileNameGroupSeparator + $"{doi.Contest.Date:yyyyMMdd}";
         return FileNameUtils.SanitizeFileName(name) + PdfFileExtension;
     }
 }

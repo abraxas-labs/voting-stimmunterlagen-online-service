@@ -324,6 +324,9 @@ public class DmDocServiceMock : IDmDocService
     public Task<List<Brick>> ListBricks(string category, CancellationToken ct = default)
         => ListBricks();
 
+    public Task<List<Brick>> ListActiveBricks(string category, CancellationToken ct = default)
+        => ListBricks();
+
     public Task<string> GetBrickContentEditorUrl(int brickId, int brickContentId, CancellationToken ct = default)
     {
         if (BrickContentIdByBrickId.GetValueOrDefault(brickId) != brickContentId)
@@ -344,6 +347,12 @@ public class DmDocServiceMock : IDmDocService
 
     public Task<List<Brick>> ListBricks(CancellationToken ct = default)
         => Task.FromResult(MockedBricks.OfType<Brick>().ToList());
+
+    public Task TagBricks(int[] brickIds, string tag, CancellationToken ct = default)
+    {
+        // this function can be empty in test cases. It has no functional impact in testing mode.
+        return Task.CompletedTask;
+    }
 
     private Task<Stream> GetExamplePdfStream()
         => Task.FromResult<Stream>(File.OpenRead(ExamplePdfPath));

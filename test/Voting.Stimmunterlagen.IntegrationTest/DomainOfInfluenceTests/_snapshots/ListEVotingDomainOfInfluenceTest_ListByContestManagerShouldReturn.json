@@ -23,7 +23,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false
       }
     },
     {
@@ -49,7 +51,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false
       }
     },
     {
@@ -75,7 +79,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false
       }
     },
     {
@@ -101,7 +107,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false
       }
     },
     {
@@ -127,7 +135,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": true
       }
     }
   ]

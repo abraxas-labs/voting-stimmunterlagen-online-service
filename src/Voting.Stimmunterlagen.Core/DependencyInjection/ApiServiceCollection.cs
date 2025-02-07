@@ -188,6 +188,7 @@ internal static class ApiServiceCollection
             .AddVotingExportRenderService<StatisticsByReligionVotingRenderService>(registry, VotingExportKeys.StatisticsByReligion)
             .AddVotingExportRenderService<VotingJournalVotingRenderService>(registry, VotingExportKeys.VotingJournal)
             .AddVotingExportRenderService<VotingStatisticsVotingRenderService>(registry, VotingExportKeys.VotingStatistics)
+            .AddVotingExportRenderService<EVoterByDoiOnContestRenderService>(registry, VotingExportKeys.EVoterByDoiOnContest)
             .AddSingleton(registry)
             .AddScoped<VotingExportRenderServiceAdapter>();
     }

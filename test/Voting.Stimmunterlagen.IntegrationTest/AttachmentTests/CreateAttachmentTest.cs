@@ -30,6 +30,10 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     [Fact]
     public async Task ShouldCreate()
     {
+        await ModifyDbEntities<Data.Models.VoterList>(
+            x => x.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid,
+            x => x.NumberOfVoters = 10);
+
         var req = NewValidRequest();
         var response = await GemeindeArneggElectionAdminClient.CreateAsync(req);
 
@@ -60,6 +64,10 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     [Fact]
     public async Task ShouldCreateInPoliticalAssembly()
     {
+        await ModifyDbEntities<Data.Models.VoterList>(
+            x => x.Id == VoterListMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggSwissGuid,
+            x => x.NumberOfVoters = 10);
+
         var req = NewValidRequest(x =>
         {
             x.PoliticalBusinessIds.Clear();
@@ -216,6 +224,55 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
         attachment.ShouldMatchSnapshot();
     }
 
+    [Fact]
+    public async Task ShouldCreateWithTotalNumberOfVotersAsRequiredForVoterListsCount()
+    {
+        await ModifyDbEntities<Data.Models.VoterList>(
+            x => x.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid,
+            x => x.NumberOfVoters = 10);
+
+        var req = NewValidRequest(x => x.SendOnlyToHouseholder = false);
+        var response = await GemeindeArneggElectionAdminClient.CreateAsync(req);
+
+        var id = Guid.Parse(response.Id);
+        var attachment = await RunOnDb(db => db.Attachments
+            .Include(x => x.PoliticalBusinessEntries)
+            .Include(x => x.DomainOfInfluenceAttachmentCounts)
+            .SingleAsync(x => x.Id == id));
+
+        attachment.TotalRequiredForVoterListsCount.Should().Be(12);
+
+        var doiCount = attachment.DomainOfInfluenceAttachmentCounts!.Single();
+        doiCount.DomainOfInfluenceId.Should().Be(DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId);
+        doiCount.RequiredForVoterListsCount.Should().Be(12);
+    }
+
+    [Fact]
+    public async Task ShouldCreatePoliticalAssemblyWithTotalNumberOfVotersAsRequiredForVoterListsCount()
+    {
+        await ModifyDbEntities<Data.Models.VoterList>(
+            x => x.Id == VoterListMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggSwissGuid,
+            x => x.NumberOfVoters = 10);
+
+        var req = NewValidRequest(x =>
+        {
+            x.PoliticalBusinessIds.Clear();
+            x.DomainOfInfluenceId = DomainOfInfluenceMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggId;
+            x.SendOnlyToHouseholder = false;
+        });
+        var response = await GemeindeArneggElectionAdminClient.CreateAsync(req);
+
+        var id = Guid.Parse(response.Id);
+        var attachment = await RunOnDb(db => db.Attachments
+            .Include(x => x.DomainOfInfluenceAttachmentCounts)
+            .SingleAsync(x => x.Id == id));
+
+        attachment.TotalRequiredForVoterListsCount.Should().Be(10);
+
+        var doiCount = attachment.DomainOfInfluenceAttachmentCounts!.Single();
+        doiCount.RequiredForVoterListsCount.Should().Be(10);
+    }
+
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)
     {
         await service.CreateAsync(NewValidRequest());
@@ -245,6 +302,7 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
                 },
             OrderedCount = 2000,
             RequiredCount = 2000,
+            SendOnlyToHouseholder = true,
         };
         customizer?.Invoke(request);
         return request;

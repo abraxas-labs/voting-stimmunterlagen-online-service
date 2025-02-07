@@ -173,8 +173,6 @@ public class VoterListManager
 
         await _attachmentManager.UpdateRequiredCountForDomainOfInfluence(list.DomainOfInfluenceId);
         await transaction.CommitAsync();
-
-        // TODO: LastVoterUpdate WENN Pbs einen Einfluss auf einen Export haben
     }
 
     public async Task UnassignPoliticalBusiness(Guid voterListId, Guid politicalBusinessId)

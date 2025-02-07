@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
+using Voting.Lib.Testing.Mocks;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Mocks;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
-using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using Xunit;
+using VotingCardType = Voting.Stimmunterlagen.Proto.V1.Models.VotingCardType;
 
 namespace Voting.Stimmunterlagen.IntegrationTest.DomainOfInfluenceVotingCardLayoutTests;
 
@@ -73,6 +75,26 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
         layout.DomainOfInfluenceTemplateId.Should().BeNull();
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
         layout.OverriddenTemplateId.Should().BeNull();
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfVotingCardsAlreadyGenerated()
+    {
+        var doiGuid = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid;
+
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            doi => doi.Id == doiGuid,
+            doi => doi.GenerateVotingCardsTriggered = MockedClock.UtcNowDate);
+
+        await AssertStatus(
+            async () => await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
+            {
+                AllowCustom = true,
+                TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+                VotingCardType = VotingCardType.Swiss,
+                DomainOfInfluenceId = doiGuid.ToString(),
+            }),
+            StatusCode.NotFound);
     }
 
     [Fact]

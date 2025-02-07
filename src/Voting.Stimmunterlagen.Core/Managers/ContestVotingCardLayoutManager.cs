@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Voting.Lib.Common;
 using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
@@ -27,6 +28,7 @@ public class ContestVotingCardLayoutManager
     private readonly TemplateManager _templateManager;
     private readonly ContestManager _contestManager;
     private readonly DataContext _dbContext;
+    private readonly IClock _clock;
 
     public ContestVotingCardLayoutManager(
         IAuth auth,
@@ -35,7 +37,8 @@ public class ContestVotingCardLayoutManager
         TemplateManager templateManager,
         DomainOfInfluenceVotingCardLayoutManager doiLayoutManager,
         ContestManager contestManager,
-        DataContext dbContext)
+        DataContext dbContext,
+        IClock clock)
     {
         _auth = auth;
         _contestLayoutRepo = contestLayoutRepo;
@@ -44,6 +47,7 @@ public class ContestVotingCardLayoutManager
         _doiLayoutManager = doiLayoutManager;
         _contestManager = contestManager;
         _dbContext = dbContext;
+        _clock = clock;
     }
 
     public async Task SetLayout(Guid contestId, VotingCardType vcType, bool allowCustom, int templateId)
@@ -53,6 +57,7 @@ public class ContestVotingCardLayoutManager
             .WhereContestNotLocked()
             .WhereIsContestManager(_auth.Tenant.Id)
             .WhereContestApproved(false)
+            .WhereContestPrintingCenterSignUpDeadlineNotSetOrNotPast(_clock)
             .Include(x => x.Contest!.DomainOfInfluence)
             .FirstOrDefaultAsync(x => x.VotingCardType == vcType && x.ContestId == contestId)
             ?? throw new EntityNotFoundException(nameof(ContestVotingCardLayout), new { contestId, vcType });
@@ -67,6 +72,7 @@ public class ContestVotingCardLayoutManager
             .AsTracking()
             .Include(x => x.TemplateDataFieldValues)
             .Where(x => x.VotingCardType == vcType && x.DomainOfInfluence!.ContestId == contestId)
+            .WhereGenerateVotingCardsTriggered(false)
             .ToListAsync();
 
         foreach (var doiLayout in doiLayouts)

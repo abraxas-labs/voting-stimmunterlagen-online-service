@@ -33,14 +33,6 @@ public class ApprovePoliticalBusinessesStepTest : BaseWriteableStepTest
             Step.PoliticalBusinessesApproval,
             true);
 
-        var politicalBusinesses = await RunOnDb(db => db.PoliticalBusinesses
-            .Where(x =>
-                x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid
-                && x.DomainOfInfluence!.SecureConnectId == MockDataSeeder.SecureConnectTenantIds.StadtGossau)
-            .ToListAsync());
-        politicalBusinesses.Should().NotBeEmpty();
-        politicalBusinesses.All(x => x.Approved).Should().BeTrue();
-
         var printJobs = await RunOnDb(db => db.PrintJobs
             .Where(x =>
                 x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid

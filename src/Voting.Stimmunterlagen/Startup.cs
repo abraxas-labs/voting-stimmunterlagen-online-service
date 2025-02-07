@@ -49,7 +49,7 @@ public class Startup
         services.AddData(AppConfig.Database, ConfigureDatabase);
 
         ConfigureHealthChecks(services.AddHealthChecks());
-        ConfigureAuthentication(services.AddVotingLibIam(new() { BaseUrl = AppConfig.SecureConnectApi }));
+        ConfigureAuthentication(services.AddVotingLibIam(new() { BaseUrl = AppConfig.SecureConnectApi }, AppConfig.AuthStore));
 
         AddApiServices(services);
 

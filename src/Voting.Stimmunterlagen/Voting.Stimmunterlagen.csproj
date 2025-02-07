@@ -20,7 +20,7 @@
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Expressions" Version="4.0.0" />
-    <PackageReference Include="Voting.Stimmunterlagen.Proto" Version="2.3.0" />
+    <PackageReference Include="Voting.Stimmunterlagen.Proto" Version="3.1.0" />
     <PackageReference Include="Voting.Lib.Prometheus" Version="$(VotingLibVersion)" />
   </ItemGroup>
 

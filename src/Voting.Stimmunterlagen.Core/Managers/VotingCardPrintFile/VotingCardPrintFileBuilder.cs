@@ -9,6 +9,7 @@ using Voting.Stimmunterlagen.Core.Managers.VotingCardPrintFile.Converter;
 using Voting.Stimmunterlagen.Core.Managers.VotingCardPrintFile.Mapping;
 using Voting.Stimmunterlagen.Core.Models.VotingCardPrintFile;
 using Voting.Stimmunterlagen.Core.Utils;
+using Voting.Stimmunterlagen.Data.Extensions;
 using Voting.Stimmunterlagen.Data.Models;
 
 namespace Voting.Stimmunterlagen.Core.Managers.VotingCardPrintFile;
@@ -23,6 +24,7 @@ public class VotingCardPrintFileBuilder
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA4 = "V4";
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5 = "V5";
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA5 = "V5A5";
+    private static readonly VotingCardShippingMethod DefaultEVotingShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen;
 
     private readonly CsvService _csvService;
 
@@ -50,21 +52,20 @@ public class VotingCardPrintFileBuilder
         IReadOnlyCollection<Attachment> attachments,
         Contest contest)
     {
-        if (job.Layout!.VotingCardType != VotingCardType.EVoting && job.Layout!.EffectiveTemplate == null)
+        var isEVotingJob = job.State == VotingCardGeneratorJobState.ReadyToRunOffline;
+
+        if (!isEVotingJob && job.Layout!.EffectiveTemplate == null)
         {
             throw new ArgumentException($"Template required, but missing on job {job.Id}/{job.LayoutId}");
         }
 
         var contestOrderNumber = DatamatrixMapping.MapContestOrderNumber(contest.OrderNumber);
-
-        var attachmentStationsByVoterListId = AttachmentStationsBuilder.BuildAttachmentStationsByVoterListId(
-            job.Voter.Select(v => v.List).WhereNotNull().ToHashSet(),
-            attachments,
-            contest.IsPoliticalAssembly);
+        var voterAttachmentDictionary = new VoterAttachmentDictionary(attachments, contest.IsPoliticalAssembly);
 
         var hasC4ShippmentFormat = attachments.Any(x => x.Format == AttachmentFormat.A4);
-        var hasA4Format = job.Layout!.VotingCardType == VotingCardType.EVoting || !job.Layout.EffectiveTemplate!.InternName.Contains("_a5");
-        var docId = job.DomainOfInfluence!.Contest!.IsPoliticalAssembly
+        var hasA4Format = isEVotingJob || !job.Layout!.IsA5Template();
+        var isDuplex = !isEVotingJob && job.Layout!.IsDuplexTemplate();
+        var docId = contest.IsPoliticalAssembly
             ? hasC4ShippmentFormat ? DocIdPoliticalAssemblyWithAttachmentFormatA4 : hasA4Format
                 ? DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5 : DocIdPoliticalAssemblyWithAttachmentFormatA5
             : hasC4ShippmentFormat ? DocIdContestWithAttachmentFormatA4 : hasA4Format
@@ -73,17 +74,27 @@ public class VotingCardPrintFileBuilder
 
         foreach (var voter in job.Voter)
         {
-            yield return MapToPrintFileEntry(voter, job.DomainOfInfluence!, attachmentStationsByVoterListId, contestOrderNumber, docId, form);
+            yield return MapToPrintFileEntry(
+                voter,
+                job.DomainOfInfluence!,
+                voterAttachmentDictionary,
+                contestOrderNumber,
+                docId,
+                form,
+                isDuplex,
+                isEVotingJob);
         }
     }
 
     private VotingCardPrintFileEntry MapToPrintFileEntry(
         Voter voter,
         ContestDomainOfInfluence domainOfInfluence,
-        Dictionary<Guid, string> attachmentStationsByVoterListId,
+        VoterAttachmentDictionary voterAttachmentDictionary,
         string contestOrderNumber,
         string docId,
-        string form)
+        string form,
+        bool isDuplex,
+        bool isEVotingVotingCard)
     {
         var zipCode = voter.SwissZipCode?.ToString() ?? voter.ForeignZipCode;
         var pageFrom = voter.PageInfo?.PageFrom ?? 0;
@@ -98,7 +109,7 @@ public class VotingCardPrintFileBuilder
             FullName = voter.FullName,
             SendSort = string.Empty,
             CustomerSubdivision = string.Empty,
-            IsDuplexPrint = false,
+            IsDuplexPrint = isDuplex,
             TotalPages = voter.PageInfo != null ? pageTo - pageFrom + 1 : 0,
             PageFrom = pageFrom,
             PageTo = pageTo,
@@ -115,13 +126,15 @@ public class VotingCardPrintFileBuilder
             CountryIso2 = voter.Country.Iso2 ?? string.Empty,
             ShippingAway = domainOfInfluence.PrintData!.ShippingAway,
             ShippingReturn = domainOfInfluence.PrintData.ShippingReturn,
-            ShippingMethod = !voter.SendVotingCardsToDomainOfInfluenceReturnAddress
+            ShippingMethod = isEVotingVotingCard
+                ? DefaultEVotingShippingMethod
+                : !voter.SendVotingCardsToDomainOfInfluenceReturnAddress
                 ? domainOfInfluence.PrintData.ShippingMethod
                 : VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality,
             Language = voter.LanguageOfCorrespondence,
             AdditionalBarcode = string.Empty,
             AttachmentStations = voter.ListId.HasValue
-                ? (attachmentStationsByVoterListId.GetValueOrDefault(voter.ListId.Value) ?? string.Empty)
+                ? voterAttachmentDictionary.GetAttachmentStations(voter.List!.PoliticalBusinessEntries!.Select(x => x.PoliticalBusinessId).ToList(), voter.IsHouseholder)
                 : string.Empty,
             ContestOrderNumber = contestOrderNumber,
         };

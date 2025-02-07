@@ -13,6 +13,8 @@ public class AdditionalInvoicePosition : AuditedEntity, IHasContestDomainOfInflu
 
     public int AmountCentime { get; set; }
 
+    public string Comment { get; set; } = string.Empty;
+
     public Guid DomainOfInfluenceId { get; set; }
 
     public ContestDomainOfInfluence? DomainOfInfluence { get; set; }

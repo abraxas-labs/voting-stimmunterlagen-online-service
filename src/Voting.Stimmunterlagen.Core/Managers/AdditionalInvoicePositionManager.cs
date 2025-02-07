@@ -51,6 +51,7 @@ public class AdditionalInvoicePositionManager
             {
                 Number = m.Number,
                 Description = m.Description,
+                CommentRequired = m.CommentRequired,
             }).ToList();
     }
 
@@ -126,17 +127,23 @@ public class AdditionalInvoicePositionManager
             throw new ValidationException($"{nameof(data.AmountCentime)} must be divisible by 25");
         }
 
-        EnsureValidMaterialNumber(data);
+        EnsureIsInAvailableMaterialsAndValid(data);
     }
 
-    private void EnsureValidMaterialNumber(AdditionalInvoicePosition data)
+    private void EnsureIsInAvailableMaterialsAndValid(AdditionalInvoicePosition data)
     {
-        if (_availableMaterials.Any(m => m.Number == data.MaterialNumber))
+        var existingAvailableMaterial = _availableMaterials.FirstOrDefault(m => m.Number == data.MaterialNumber)
+            ?? throw new ValidationException($"Material {data.MaterialNumber} is not available");
+
+        if (!existingAvailableMaterial.CommentRequired && !string.IsNullOrEmpty(data.Comment))
         {
-            return;
+            throw new ValidationException($"Comment on material {data.MaterialNumber} not enabled");
         }
 
-        throw new ValidationException($"Material {data.MaterialNumber} is not available");
+        if (existingAvailableMaterial.CommentRequired && string.IsNullOrEmpty(data.Comment))
+        {
+            throw new ValidationException($"Comment on material {data.MaterialNumber} is required");
+        }
     }
 
     private async Task EnsurePrintJobExistsAndIsNotExternalPrintingCenter(Guid doiId)

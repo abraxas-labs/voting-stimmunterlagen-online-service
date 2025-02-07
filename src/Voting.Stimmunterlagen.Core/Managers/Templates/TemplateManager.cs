@@ -182,30 +182,26 @@ public class TemplateManager
     internal Task<Stream> GetPdfForPrintJob(int printJobId, CancellationToken ct)
         => _dmDoc.GetPdfForPrintJob(printJobId, ct);
 
-    internal async Task<List<TemplateBrick>> GetBricksForMyTenant(int templateId)
+    internal async Task<List<TemplateBrick>> GetBricksForMyTenant(int? templateId, bool forActiveBricks = false)
     {
-        var template = await GetOrCreateTemplate(templateId);
+        if (templateId == null)
+        {
+            throw new ArgumentNullException(nameof(templateId));
+        }
+
+        var template = await GetOrCreateTemplate(templateId.Value);
         if (string.IsNullOrWhiteSpace(template.InternName))
         {
             throw new InvalidOperationException($"Template with id {templateId} has no intern name");
         }
 
-        var bricks = await _dmDoc.ListBricks(BuildTenantCategory());
-        var tenantId = _auth.Tenant.Id;
-        var templatePrefix = $"template_{template.InternName}{BrickNameSeparator}";
-        var templateSuffix = $"{BrickNameSeparator}tenantId_{tenantId}";
-
-        return bricks
-            .Where(b => b.InternName.StartsWith(templatePrefix) && b.InternName.EndsWith(templateSuffix))
-            .Select(b =>
-            {
-                if (b.BrickContents.Count == 0 || b.BrickContents.Count >= 2)
-                {
-                    throw new InvalidOperationException($"Brick with id {b.Id} has {b.BrickContents.Count} contents but only exactly 1 is allowed");
-                }
-
-                return MapToTemplateBrick(b);
-            }).ToList();
+        IEnumerable<Brick>[] allBricks = await GetAllTenantBricks(forActiveBricks);
+        var templateSuffix = $"{BrickNameSeparator}{TenantCategoryPrefix}{_auth.Tenant.Id}";
+        return allBricks.SelectMany(x => x)
+            .Where(x => x.InternName.StartsWith($"template_{template.InternName}{BrickNameSeparator}") && x.InternName.EndsWith(templateSuffix))
+            .OrderBy(t => t.Name)
+            .Select(MapToTemplateBrick)
+            .ToList();
     }
 
     internal async Task<string> GetBrickContentEditorUrl(int brickId, int brickContentId)
@@ -220,10 +216,39 @@ public class TemplateManager
         return await _dmDoc.UpdateBrickContent(brickContentId, content);
     }
 
+    internal async Task TagBricks(DomainOfInfluenceVotingCardLayout layout)
+    {
+        var bricks = await GetBricksForMyTenant(layout!.EffectiveTemplateId, true);
+        if (bricks.Count == 0)
+        {
+            throw new DmDocException($"No bricks available for tennant {_auth.Tenant.Id}");
+        }
+
+        await _dmDoc.TagBricks(bricks.Select(b => b.Id).ToArray(), layout.DomainOfInfluence!.Contest!.Date.ToString("dd.MM.yyyy"));
+    }
+
+    private async Task<IEnumerable<Brick>[]> GetAllTenantBricks(bool forActiveBricks = false)
+    {
+        var categories = await _dmDoc.ListCategories();
+        var accessibleCategoryInternNames = GetValidCategories(categories)
+                                    .Select(category => category.InternName)
+                                    .Distinct();
+        if (forActiveBricks)
+        {
+            return await Task.WhenAll(accessibleCategoryInternNames.Select(GetCategoriesActiveBricksIgnore404));
+        }
+
+        return await Task.WhenAll(accessibleCategoryInternNames.Select(GetCategoriesBricksIgnore404));
+    }
+
     private async Task EnsureHasAccessToBrickContent(int brickContentId)
     {
-        var accessibleBrickContentIds = (await _dmDoc.ListBricks(BuildTenantCategory()))
-            .SelectMany(b => b.BrickContents.Select(bc => bc.Id))
+        IEnumerable<Brick>[] allBricks = await GetAllTenantBricks();
+        var accessibleBrickContentIds = allBricks
+            .SelectMany(x => x)
+            .Select(MapToTemplateBrick)
+            .Where(x => x.ContentId == brickContentId)
+            .Select(x => x.ContentId)
             .ToList();
 
         if (!accessibleBrickContentIds.Contains(brickContentId))
@@ -241,7 +266,7 @@ public class TemplateManager
                 yield return category;
             }
 
-            if (category.Children != null && category.Children.Count > 0)
+            if (category.Children?.Count > 0)
             {
                 foreach (var child in GetValidCategories(category.Children))
                 {
@@ -322,6 +347,32 @@ public class TemplateManager
         }
     }
 
+    private async Task<IEnumerable<Lib.DmDoc.Models.Brick>> GetCategoriesBricksIgnore404(string categoryInternName)
+    {
+        try
+        {
+            return await _dmDoc.ListBricks(categoryInternName);
+        }
+        catch (DmDocException e) when (e.InnerException is HttpRequestException { StatusCode: HttpStatusCode.NotFound })
+        {
+            _logger.LogWarning(e, "Could not resolve brick for tenant {TenantId} and category {Category}", _auth.Tenant.Id, categoryInternName);
+            return Enumerable.Empty<Lib.DmDoc.Models.Brick>();
+        }
+    }
+
+    private async Task<IEnumerable<Lib.DmDoc.Models.Brick>> GetCategoriesActiveBricksIgnore404(string categoryInternName)
+    {
+        try
+        {
+            return await _dmDoc.ListActiveBricks(categoryInternName);
+        }
+        catch (DmDocException e) when (e.InnerException is HttpRequestException { StatusCode: HttpStatusCode.NotFound })
+        {
+            _logger.LogWarning(e, "Could not resolve brick for tenant {TenantId} and category {Category}", _auth.Tenant.Id, categoryInternName);
+            return Enumerable.Empty<Lib.DmDoc.Models.Brick>();
+        }
+    }
+
     /// <summary>
     /// Predicate to filter templates not relevant for stimmunterlagen.
     /// </summary>
@@ -349,6 +400,4 @@ public class TemplateManager
     {
         return new TemplateBrick(brick.Id, brick.Name, brick.Description, brick.PreviewData, brick.BrickContents.First().Id);
     }
-
-    private string BuildTenantCategory() => TenantCategoryPrefix + _auth.Tenant.Id;
 }

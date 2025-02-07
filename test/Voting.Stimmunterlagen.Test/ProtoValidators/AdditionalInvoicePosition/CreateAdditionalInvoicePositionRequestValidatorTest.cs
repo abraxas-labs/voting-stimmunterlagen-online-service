@@ -17,6 +17,9 @@ public class CreateAdditionalInvoicePositionRequestValidatorTest : ProtoValidato
         yield return New(x => x.MaterialNumber = RandomStringUtil.GenerateSimpleSingleLineText(16));
         yield return New(x => x.AmountCentime = 25);
         yield return New(x => x.AmountCentime = 100000000);
+        yield return New(x => x.Comment = string.Empty);
+        yield return New(x => x.Comment = RandomStringUtil.GenerateSimpleSingleLineText(1));
+        yield return New(x => x.Comment = RandomStringUtil.GenerateSimpleSingleLineText(500));
     }
 
     protected override IEnumerable<CreateAdditionalInvoicePositionRequest> NotOkMessages()
@@ -26,6 +29,7 @@ public class CreateAdditionalInvoicePositionRequestValidatorTest : ProtoValidato
         yield return New(x => x.AmountCentime = 0);
         yield return New(x => x.AmountCentime = 100000001);
         yield return New(x => x.DomainOfInfluenceId = string.Empty);
+        yield return New(x => x.Comment = RandomStringUtil.GenerateSimpleSingleLineText(501));
     }
 
     private static CreateAdditionalInvoicePositionRequest New(Action<CreateAdditionalInvoicePositionRequest>? customizer = null)
@@ -33,6 +37,7 @@ public class CreateAdditionalInvoicePositionRequestValidatorTest : ProtoValidato
         var req = new CreateAdditionalInvoicePositionRequest
         {
             MaterialNumber = "Name",
+            Comment = "Comment",
             DomainOfInfluenceId = "cccec354-2c06-4a29-9908-e65d64b7f649",
             AmountCentime = 2750,
         };

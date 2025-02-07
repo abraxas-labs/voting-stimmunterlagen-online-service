@@ -18,5 +18,5 @@ public class DmDocUserNameProvider : IDmDocUserNameProvider
         _config = config;
     }
 
-    public string UserName => _config.Api.DmDoc.UserNamePrefix + _auth.Tenant.Id;
+    public string UserName => _auth.IsAuthenticated ? $"{_config.Api.DmDoc.UserNamePrefix}-{_auth.Tenant.Id}" : _config.Api.DmDoc.UserNamePrefix;
 }

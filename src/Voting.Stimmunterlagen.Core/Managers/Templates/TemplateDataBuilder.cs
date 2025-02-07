@@ -153,7 +153,7 @@ public class TemplateDataBuilder
             Data.Models.VotingCardColor.Yellow => new VotingCardColor(0, 0, 20, 0),
             Data.Models.VotingCardColor.Gold => new VotingCardColor(0, 6, 60, 5),
             Data.Models.VotingCardColor.Grey => new VotingCardColor(0, 0, 0, 10),
-            Data.Models.VotingCardColor.Pink => new VotingCardColor(0, 0, 20, 0),
+            Data.Models.VotingCardColor.Pink => new VotingCardColor(0, 20, 0, 0),
             Data.Models.VotingCardColor.Red => new VotingCardColor(0, 21, 24, 0),
             Data.Models.VotingCardColor.Green => new VotingCardColor(15, 0, 15, 0),
             Data.Models.VotingCardColor.Unspecified => null,

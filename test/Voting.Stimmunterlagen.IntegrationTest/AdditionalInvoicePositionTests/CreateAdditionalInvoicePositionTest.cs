@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Grpc.Core;
 using Voting.Lib.Testing.Utils;
 using Voting.Stimmunterlagen.Auth;
@@ -31,6 +32,44 @@ public class CreateAdditionalInvoicePositionTest : BaseWriteableDbGrpcTest<Addit
         var entity = await FindDbEntity<AdditionalInvoicePosition>(x => x.Id == Guid.Parse(response.Id));
         entity.Id = Guid.Empty;
         entity.MatchSnapshot();
+    }
+
+    [Fact]
+    public async Task ShouldCreateWithCommentIfEnabled()
+    {
+        var response = await AbraxasPrintJobManagerClient.CreateAsync(NewValidRequest(x =>
+        {
+            x.MaterialNumber = "1040.05.57";
+            x.Comment = "Random comment";
+        }));
+        var entity = await FindDbEntity<AdditionalInvoicePosition>(x => x.Id == Guid.Parse(response.Id));
+        entity.Comment.Should().Be("Random comment");
+    }
+
+    [Fact]
+    public async Task ShouldThrowWithCommentIfDisabled()
+    {
+        await AssertStatus(
+            async () => await AbraxasPrintJobManagerClient.CreateAsync(
+                NewValidRequest(x =>
+                {
+                    x.Comment = "Random comment";
+                })),
+            StatusCode.InvalidArgument,
+            "Comment on material 1040.05.55 not enabled");
+    }
+
+    [Fact]
+    public async Task ShouldThrowWithNoCommentIfRequired()
+    {
+        await AssertStatus(
+            async () => await AbraxasPrintJobManagerClient.CreateAsync(
+                NewValidRequest(x =>
+                {
+                    x.MaterialNumber = "1040.05.57";
+                })),
+            StatusCode.InvalidArgument,
+            "Comment on material 1040.05.57 is required");
     }
 
     [Fact]

@@ -53,6 +53,8 @@
       "ParentId": null,
       "RootId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d",
       "ElectoralRegistrationEnabled": true,
+      "StistatMunicipality": false,
+      "VotingCardFlatRateDisabled": false,
       "Id": "00000000-0000-0000-0000-000000000000"
     },
     "State": 1,

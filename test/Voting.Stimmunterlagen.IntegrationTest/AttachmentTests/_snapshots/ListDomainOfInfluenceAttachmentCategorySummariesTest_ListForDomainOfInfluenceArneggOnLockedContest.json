@@ -19,7 +19,9 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null
       },
       "AttachmentCategorySummaries": [
         {
@@ -54,7 +56,9 @@
                 "ElectoralRegistrationEnabled": true,
                 "AllowManualVoterListUpload": true,
                 "CanManuallyUploadVoterList": true,
-                "LastVoterUpdate": null
+                "LastVoterUpdate": null,
+                "GenerateVotingCardsTriggered": null,
+                "EVoting": null
               },
               "PoliticalBusinessIds": [
                 "87732104-e226-4e74-9311-f86f1ee56b7d"
@@ -66,7 +70,8 @@
               "TotalRequiredForVoterListsCount": 0,
               "Station": null,
               "OrderedCount": 2000,
-              "Category": 8
+              "Category": 8,
+              "SendOnlyToHouseholder": false
             }
           ],
           "TotalOrderedCount": 2000,
@@ -98,11 +103,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": true,
             "CanManuallyUploadVoterList": true,
-            "LastVoterUpdate": null
+            "LastVoterUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null
           },
           "PoliticalBusinessType": 1,
-          "Active": false,
-          "Approved": true
+          "Active": false
         }
       ]
     }

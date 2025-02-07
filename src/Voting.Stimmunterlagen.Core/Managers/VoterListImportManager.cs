@@ -253,6 +253,7 @@ public class VoterListImportManager
         var voters = _echService.ReadVoters(eCh0045Reader, shippingVotingCardsToDeliveryAddress, eVotingEnabled, ct);
         var listByVcType = import.VoterLists!.ToDictionary(x => x.VotingCardType, x => x);
         var voterDuplicatesBuilder = new VoterDuplicatesBuilder(import);
+        var voterHouseholdBuilder = new VoterHouseholdBuilder(import);
 
         // manual uploads which are not from Stimmregister set the bool on the list itself (which then gets propagated on the voter), and not directly on the voter.
         var ignoreSendVotingCardsToDoiReturnAddress = !import.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit;
@@ -265,6 +266,16 @@ public class VoterListImportManager
                 voter.ListId = list.Id;
                 voter.ContestId = contestId;
                 list.NumberOfVoters++;
+
+                if (voter.ResidenceBuildingId == null && voter.ResidenceApartmentId == null)
+                {
+                    voter.IsHouseholder = true;
+                }
+
+                if (voter.IsHouseholder)
+                {
+                    list.NumberOfHouseholders++;
+                }
 
                 if (voter.SendVotingCardsToDomainOfInfluenceReturnAddress)
                 {
@@ -279,6 +290,7 @@ public class VoterListImportManager
                 }
 
                 voterDuplicatesBuilder.NextVoter(voter);
+                voterHouseholdBuilder.NextVoter(voter);
             }
 
             // Because we are inserting a lot of voters (biggest domain of influence may have above 100k voters)
@@ -294,11 +306,34 @@ public class VoterListImportManager
             await dbContext.SaveChangesAsync(ct);
         }
 
+        await UpdateHouseholders(import, voterHouseholdBuilder, ct);
+
         var voterCounter = import.VoterLists!.Sum(vl => vl.NumberOfVoters);
 
         if (expectedVoterCount.HasValue && voterCounter != expectedVoterCount)
         {
             throw new InvalidOperationException($"Expected voter count {expectedVoterCount} does not match actual imported voters {voterCounter}");
+        }
+    }
+
+    private async Task UpdateHouseholders(VoterListImport import, VoterHouseholdBuilder voterHouseholdBuilder, CancellationToken ct)
+    {
+        var listById = import.VoterLists!.ToDictionary(x => x.Id, x => x);
+
+        foreach (var households in voterHouseholdBuilder.GetHouseholdsByListId())
+        {
+            var votersToUpdate = households.Value.Values.Where(v => !v.IsHouseholder).Select(v => v.PersonId).ToList();
+
+            if (votersToUpdate.Count == 0)
+            {
+                continue;
+            }
+
+            await _dbContext.Voters
+                .Where(v => v.ListId.Equals(households.Key) && votersToUpdate.Contains(v.PersonId))
+                .ExecuteUpdateAsync(v => v.SetProperty(e => e.IsHouseholder, true), cancellationToken: ct);
+
+            listById[households.Key].NumberOfHouseholders += votersToUpdate.Count;
         }
     }
 

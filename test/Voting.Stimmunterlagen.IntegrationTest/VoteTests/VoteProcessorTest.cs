@@ -93,7 +93,7 @@ public class VoteProcessorTest : BaseWriteableDbTest
         var step = await RunOnDb(db => db.StepStates
             .SingleAsync(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureStadtUzwilGuid
                               && x.Step == Step.PoliticalBusinessesApproval));
-        step.Approved.Should().BeFalse();
+        step.Approved.Should().BeTrue();
     }
 
     [Fact]
@@ -120,9 +120,6 @@ public class VoteProcessorTest : BaseWriteableDbTest
             .SingleAsync(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureStadtUzwilGuid
                               && x.Step == Step.PoliticalBusinessesApproval));
         step.Approved.Should().BeTrue();
-
-        var vote = await RunOnDb(db => db.PoliticalBusinesses.SingleAsync(x => x.Id == VoteMockData.BundFuture6Guid));
-        vote.Approved.Should().BeTrue();
     }
 
     [Fact]
