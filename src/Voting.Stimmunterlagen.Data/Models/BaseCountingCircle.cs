@@ -12,4 +12,6 @@ public abstract class BaseCountingCircle : BaseEntity
     public string Bfs { get; set; } = string.Empty;
 
     public bool EVoting { get; set; }
+
+    public string SecureConnectId { get; set; } = string.Empty;
 }

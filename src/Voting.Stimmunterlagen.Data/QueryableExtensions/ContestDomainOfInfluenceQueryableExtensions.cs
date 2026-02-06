@@ -11,7 +11,7 @@ namespace Voting.Stimmunterlagen.Data.QueryableExtensions;
 
 public static class ContestDomainOfInfluenceQueryableExtensions
 {
-    public static IQueryable<ContestDomainOfInfluence> WhereCanRead(
+    public static IQueryable<ContestDomainOfInfluence> WhereIsManagerOrParentManager(
         this IQueryable<ContestDomainOfInfluence> queryable,
         string tenantId)
     {

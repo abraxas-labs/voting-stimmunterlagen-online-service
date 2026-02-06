@@ -62,6 +62,29 @@ public class ContestEVotingExportGeneratorTest : BaseWriteableDbTest
                 .SingleAsync(a => a.Id == AttachmentMockData.BundFutureApprovedBund1Guid);
             attachment.Station = 11;
             attachment.PoliticalBusinessEntries.Add(new() { PoliticalBusinessId = VoteMockData.BundFutureApprovedKantonStGallen1Guid });
+
+            // Voters need to belong to a job (= No duplicate) to be considered in the E-Voting export and "Gut zum Druck" step must be completed..
+            var voters = await db.Voters
+                .AsTracking()
+                .Where(v => v.ListId == VoterListMockData.BundFutureApprovedGemeindeArneggEVoterGuid
+                    || v.ListId == VoterListMockData.BundFutureApprovedStadtGossauEVoterGuid)
+                .ToListAsync();
+
+            foreach (var voter in voters)
+            {
+                voter.JobId = VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggJob1Guid;
+            }
+
+            var dois = await db.ContestDomainOfInfluences
+                .AsTracking()
+                .Where(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid || doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid)
+                .ToListAsync();
+
+            foreach (var doi in dois)
+            {
+                doi.GenerateVotingCardsTriggered = MockedClock.UtcNowDate;
+            }
+
             await db.SaveChangesAsync();
         });
 
@@ -91,7 +114,7 @@ public class ContestEVotingExportGeneratorTest : BaseWriteableDbTest
         eVotingConfigurationArchiveNameEntries.MatchSnapshot("eVotingConfigurationArchiveFileNames");
 
         var configJson = ReadFileStringFromArchive(eVotingConfigurationArchive, EVotingDefaults.ConfigurationFileName);
-        var ech45Xml = ReadFileStringFromArchive(baseArchive, EVotingDefaults.Ech45FileName);
+        var ech45Xml = ReadFileStringFromArchive(baseArchive, "file-name.xml");
         var ech45XmlStream = new MemoryStream(Encoding.UTF8.GetBytes(ech45Xml));
         var ech45Deserialized = new XmlSerializer(typeof(VoterDelivery)).Deserialize(ech45XmlStream);
 

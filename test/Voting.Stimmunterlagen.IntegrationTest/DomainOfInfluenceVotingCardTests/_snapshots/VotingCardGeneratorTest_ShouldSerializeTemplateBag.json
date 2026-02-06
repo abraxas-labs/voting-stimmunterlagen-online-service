@@ -22,8 +22,6 @@
         "swiss_zip_code": 6212,
         "foreign_zip_code": "",
         "zip_code": "6212",
-        "date_of_birth": "1991-03-10",
-        "person_id": "00000000001",
         "country": {
           "iso2": "CH",
           "name": "Schweiz"
@@ -53,6 +51,7 @@
       },
       "swiss_post_data": {
         "invoice_reference_number": "333994573",
+        "franking_licence_away_number": "73011100",
         "franking_licence_return_number": "339302122"
       },
       "voting_card_color": {

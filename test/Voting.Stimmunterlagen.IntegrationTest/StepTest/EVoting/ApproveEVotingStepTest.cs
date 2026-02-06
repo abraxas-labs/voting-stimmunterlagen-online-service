@@ -56,6 +56,6 @@ public class ApproveEVotingStepTest : BaseWriteableStepTest
         var exportJob = await FindDbEntity<ContestEVotingExportJob>(x => x.ContestId == _contestGuid);
         exportJob.Should().NotBeNull();
         exportJob.State.Should().Be(ExportJobState.ReadyToRun);
-        exportJob.FileName.Should().Be("ech0045v4_SG_20200112_Contest 001 (BundFuture, approved) de_EVoting.zip");
+        exportJob.FileName.Should().Be("eCH-0045_v4_0_SG_20200112_Contest 001 (BundFuture, approved) de_EVoting.zip");
     }
 }

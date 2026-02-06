@@ -14,7 +14,7 @@
       "Source": 1,
       "NumberOfVoters": 3,
       "Name": "Stimmregister Schweizer Arnegg",
-      "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 3,
+      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 3,
       "PoliticalBusinessIds": [
         "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
         "97aa25ce-0d1c-4330-8d99-46b59bfea4b1",
@@ -27,7 +27,7 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "0b3e449f-8675-42c9-b352-0867c62be4af",
-      "VoterDuplicates": []
+      "CountOfVotingCards": 3
     },
     {
       "Id": "b4c99c20-330e-4231-ae95-a5cbb05f1c20",
@@ -35,7 +35,7 @@
       "Source": 1,
       "NumberOfVoters": 4,
       "Name": "Stimmregister Schweizer Arnegg",
-      "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
+      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0,
       "PoliticalBusinessIds": [
         "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
         "97aa25ce-0d1c-4330-8d99-46b59bfea4b1"
@@ -46,7 +46,7 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "0b3e449f-8675-42c9-b352-0867c62be4af",
-      "VoterDuplicates": []
+      "CountOfVotingCards": 4
     }
   ],
   "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false

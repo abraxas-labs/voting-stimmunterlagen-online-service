@@ -20,7 +20,7 @@ public class AttachmentBuilder
         _dataContext = dataContext;
     }
 
-    internal async Task CleanUp(List<Guid> contestIds)
+    internal async Task CleanUp(IReadOnlyCollection<Guid> contestIds)
     {
         var attachmentsToDelete = await _dataContext.Attachments
             .Where(a => contestIds.Contains(a.DomainOfInfluence!.ContestId) &&

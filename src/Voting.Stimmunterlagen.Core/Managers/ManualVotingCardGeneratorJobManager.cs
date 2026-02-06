@@ -26,6 +26,7 @@ namespace Voting.Stimmunterlagen.Core.Managers;
 public class ManualVotingCardGeneratorJobManager
 {
     private const string EchFillDefaultString = "?";
+
     private readonly IDbRepository<ManualVotingCardGeneratorJob> _jobsRepo;
     private readonly IDbRepository<DomainOfInfluenceVotingCardLayout> _layoutsRepo;
     private readonly TemplateManager _templateManager;
@@ -71,43 +72,57 @@ public class ManualVotingCardGeneratorJobManager
             .ToListAsync();
     }
 
-    public async Task<Stream> Create(Guid doiId, Voter voter, CancellationToken ct)
+    public async Task<Stream> CreateEmpty(Guid doiId, CancellationToken ct)
     {
-        if (voter.VotingCardType != VotingCardType.Swiss)
+        var layout = await GetLayout(doiId, VotingCardType.Swiss, ct);
+        var voter = EmptyVoterBuilder.BuildEmptyVoter(layout.DomainOfInfluence!.Bfs);
+        layout.DataConfiguration = new();
+
+        if (!layout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
         {
-            throw new ValidationException("currently only swiss voting card types are supported");
+            throw new ValidationException("Empty voting cards are only supported in political assemblies");
         }
 
+        return await CreateInternal(doiId, voter, layout, ct);
+    }
+
+    public async Task<Stream> Create(Guid doiId, Voter voter, CancellationToken ct)
+    {
         // only numbers are valid for "manual voting card generator job" and it should only contain digits
         if (voter.PersonId.Length > DatamatrixMapping.PersonIdLength || !voter.PersonId.All(char.IsDigit))
         {
             throw new ValidationException($"Invalid {nameof(voter.PersonId)} {voter.PersonId}");
         }
 
-        var layout = await _layoutsRepo.Query()
-             .WhereIsDomainOfInfluenceManager(_auth.Tenant.Id)
-             .WhereHasDomainOfInfluence(doiId)
-             .WhereContestIsApproved()
-             .WhereContestIsNotLocked()
-             .Include(x => x.DomainOfInfluence!.Contest)
-             .Include(x => x.TemplateDataFieldValues!).ThenInclude(x => x.Field!.Container)
-             .FirstOrDefaultAsync(x => x.VotingCardType == voter.VotingCardType, ct)
-             ?? throw new EntityNotFoundException(
-                 nameof(DomainOfInfluenceVotingCardLayout),
-                 new { voter.VotingCardType, doiId });
-        voter.Bfs = layout.DomainOfInfluence!.Bfs;
-        voter.ContestId = layout.DomainOfInfluence.ContestId;
+        var layout = await GetLayout(doiId, voter.VotingCardType, ct);
+
+        voter.Bfs = "MANUAL";
+        voter.ContestId = layout.DomainOfInfluence!.ContestId;
         FillVoterWithDefaultValuesForEchCompability(voter);
 
         voter.PersonId = DatamatrixMapping.MapPersonId(voter.PersonId);
         _validator.EnsureValid(voter);
+
+        return await CreateInternal(doiId, voter, layout, ct);
+    }
+
+    internal async Task<Stream> CreateInternal(
+        Guid doiId,
+        Voter voter,
+        DomainOfInfluenceVotingCardLayout layout,
+        CancellationToken ct)
+    {
+        if (voter.VotingCardType != VotingCardType.Swiss)
+        {
+            throw new ValidationException("currently only swiss voting card types are supported");
+        }
 
         var manualJob = new ManualVotingCardGeneratorJob
         {
             Created = _clock.UtcNow,
             CreatedBy = await _userManager.GetCurrentUserOrEmpty(),
             LayoutId = layout.Id,
-            Voter = voter,
+            Voter = !string.IsNullOrEmpty(voter.PersonId) ? voter : null, // An empty voter is not persisted in the Database
         };
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
@@ -117,6 +132,21 @@ public class ManualVotingCardGeneratorJobManager
         await _doiManager.UpdateLastVoterUpdate(doiId);
         await transaction.CommitAsync();
         return pdf;
+    }
+
+    private async Task<DomainOfInfluenceVotingCardLayout> GetLayout(Guid doiId, VotingCardType votingCardType, CancellationToken ct)
+    {
+        return await _layoutsRepo.Query()
+             .WhereIsDomainOfInfluenceManager(_auth.Tenant.Id)
+             .WhereHasDomainOfInfluence(doiId)
+             .WhereContestIsApproved()
+             .WhereContestIsNotLocked()
+             .Include(x => x.DomainOfInfluence!.Contest)
+             .Include(x => x.TemplateDataFieldValues!).ThenInclude(x => x.Field!.Container)
+             .FirstOrDefaultAsync(x => x.VotingCardType == votingCardType, ct)
+             ?? throw new EntityNotFoundException(
+                 nameof(DomainOfInfluenceVotingCardLayout),
+                 new { votingCardType, doiId });
     }
 
     // fill default values which are necessary for eCH-0045 compability but are

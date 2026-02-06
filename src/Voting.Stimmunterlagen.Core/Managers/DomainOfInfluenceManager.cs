@@ -60,7 +60,7 @@ public class DomainOfInfluenceManager
 
         return await _doiRepo.Query()
             .Include(x => x.Contest)
-            .WhereCanRead(_auth.Tenant.Id)
+            .WhereIsManagerOrParentManager(_auth.Tenant.Id)
             .Where(x => childIds.Contains(x.Id))
             .WhereUsesVotingCardsInCurrentContest()
             .OrderBy(x => x.Type)
@@ -72,7 +72,7 @@ public class DomainOfInfluenceManager
     {
         var tenantId = _auth.Tenant.Id;
         return await _doiRepo.Query()
-                   .WhereCanRead(tenantId)
+                   .WhereIsManagerOrParentManager(tenantId)
                    .Include(x => x.CountingCircles!)
                    .ThenInclude(x => x.CountingCircle)
                    .FirstOrDefaultAsync(x => x.Id == id)
@@ -99,10 +99,27 @@ public class DomainOfInfluenceManager
     public async Task UpdateSettings(Guid doiId, bool allowManualVoterListUpload)
     {
         var doi = await _doiRepo.Query()
+            .WhereUsesVotingCardsInCurrentContest()
             .WhereIsContestManager(_auth.Tenant.Id)
             .FirstOrDefaultAsync(x => x.Id == doiId)
             ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), doiId);
         doi.AllowManualVoterListUpload = allowManualVoterListUpload;
+        await _doiRepo.Update(doi);
+    }
+
+    public async Task SetCountOfEmptyVotingCards(Guid doiId, int countOfEmptyVotingCards)
+    {
+        var doi = await _doiRepo.Query()
+            .Where(doi => doi.HasEmptyVotingCards)
+            .WhereUsesVotingCardsInCurrentContest()
+            .WhereContestNotLocked()
+            .WhereContestIsNotPastGenerateVotingCardsDeadline(_clock)
+            .WhereIsManager(_auth.Tenant.Id)
+            .FirstOrDefaultAsync(x => x.Id == doiId)
+            ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), doiId);
+
+        doi.CountOfEmptyVotingCards = countOfEmptyVotingCards;
+        doi.LastCountOfEmptyVotingCardsUpdate = _clock.UtcNow;
         await _doiRepo.Update(doi);
     }
 

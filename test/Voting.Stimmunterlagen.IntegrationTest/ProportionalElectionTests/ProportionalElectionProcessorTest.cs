@@ -43,7 +43,7 @@ public class ProportionalElectionProcessorTest : BaseWriteableDbTest
                 MandateAlgorithm = ProportionalElectionMandateAlgorithm.HagenbachBischoff,
                 ShortDescription = { LanguageUtil.MockAllLanguages("short 99") },
                 PoliticalBusinessNumber = "99",
-                DomainOfInfluenceId = DomainOfInfluenceMockData.BundId,
+                DomainOfInfluenceId = DomainOfInfluenceMockData.ZweckverbandGossauId,
             },
         });
 
@@ -54,7 +54,8 @@ public class ProportionalElectionProcessorTest : BaseWriteableDbTest
             .Where(x => x.PoliticalBusinessId == election.Id)
             .OrderBy(x => x.SecureConnectId)
             .ThenBy(x => x.Role)
-            .Select(x => new { x.SecureConnectId, x.Role })
+            .ThenBy(x => x.DomainOfInfluenceId)
+            .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.Name })
             .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
     }
@@ -84,7 +85,8 @@ public class ProportionalElectionProcessorTest : BaseWriteableDbTest
             .Where(x => x.PoliticalBusinessId == election.Id)
             .OrderBy(x => x.SecureConnectId)
             .ThenBy(x => x.Role)
-            .Select(x => new { x.SecureConnectId, x.Role })
+            .ThenBy(x => x.DomainOfInfluenceId)
+            .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.Name })
             .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
     }
@@ -113,6 +115,32 @@ public class ProportionalElectionProcessorTest : BaseWriteableDbTest
         pbAfter.Active
             .Should()
             .BeTrue();
+    }
+
+    [Fact]
+    public async Task ProportionalElectionEVotingApprovalUpdated()
+    {
+        await TestEventPublisher.PublishTwice(new ProportionalElectionEVotingApprovalUpdated
+        {
+            ProportionalElectionId = ProportionalElectionMockData.BundFuture1Id,
+            Approved = true,
+        });
+
+        var pbBefore = await RunOnDb(db => db.PoliticalBusinesses.SingleAsync(x => x.Id == ProportionalElectionMockData.BundFuture1Guid));
+        pbBefore.EVotingApproved
+            .Should()
+            .BeTrue();
+
+        await TestEventPublisher.Publish(2, new ProportionalElectionEVotingApprovalUpdated
+        {
+            ProportionalElectionId = ProportionalElectionMockData.BundFuture1Id,
+            Approved = false,
+        });
+
+        var pbAfter = await RunOnDb(db => db.PoliticalBusinesses.SingleAsync(x => x.Id == ProportionalElectionMockData.BundFuture1Guid));
+        pbAfter.EVotingApproved
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
@@ -192,7 +220,8 @@ public class ProportionalElectionProcessorTest : BaseWriteableDbTest
             .Where(x => x.PoliticalBusinessId == pb.Id)
             .OrderBy(x => x.SecureConnectId)
             .ThenBy(x => x.Role)
-            .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.ContestId })
+            .ThenBy(x => x.DomainOfInfluenceId)
+            .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.ContestId, x.DomainOfInfluence!.Name })
             .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
         permissions.All(x => x.ContestId == newContestId).Should().BeTrue();

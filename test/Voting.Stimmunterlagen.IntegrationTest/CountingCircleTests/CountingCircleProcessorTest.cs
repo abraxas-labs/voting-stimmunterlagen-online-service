@@ -35,6 +35,10 @@ public class CountingCircleProcessorTest : BaseWriteableDbTest
                 Name = "St.Gallen Tablat (neu)",
                 Bfs = "2345",
                 EVoting = true,
+                ResponsibleAuthority = new()
+                {
+                    SecureConnectId = "SC-T",
+                },
             },
         };
 
@@ -77,6 +81,10 @@ public class CountingCircleProcessorTest : BaseWriteableDbTest
                 Name = name,
                 Bfs = "1234",
                 EVoting = true,
+                ResponsibleAuthority = new()
+                {
+                    SecureConnectId = "GO-T",
+                },
             },
         };
 
@@ -100,7 +108,7 @@ public class CountingCircleProcessorTest : BaseWriteableDbTest
         var contestCcs = await RunOnDb(db => db.ContestCountingCircles
             .Where(x => x.BasisCountingCircleId == id)
             .OrderBy(x => x.ContestId)
-            .Select(x => new { x.ContestId, x.BasisCountingCircleId, x.Name, x.EVoting })
+            .Select(x => new { x.ContestId, x.BasisCountingCircleId, x.Name, x.EVoting, x.SecureConnectId })
             .ToListAsync());
         contestCcs.Count(x => x.Name == name).Should().Be(contestsInTestPhase);
         contestCcs.Count(x => x.Name == originalName).Should().Be(4);
@@ -123,6 +131,10 @@ public class CountingCircleProcessorTest : BaseWriteableDbTest
                     Id = newId.ToString(),
                     Bfs = "4444",
                     Name = "merged cc",
+                    ResponsibleAuthority = new()
+                    {
+                        SecureConnectId = "MERGED-T",
+                    },
                 },
             },
         };

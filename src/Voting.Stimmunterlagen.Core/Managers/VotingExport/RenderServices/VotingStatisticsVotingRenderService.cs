@@ -24,7 +24,7 @@ public class VotingStatisticsVotingRenderService : IVotingRenderService
     private readonly VoterRepo _voterRepo;
     private readonly IClock _clock;
 
-    public VotingStatisticsVotingRenderService(CsvService csvService, VoterRepo voterRepo, IClock clock, ContestDomainOfInfluenceRepo doiRepo)
+    public VotingStatisticsVotingRenderService(CsvService csvService, VoterRepo voterRepo, IClock clock)
     {
         _csvService = csvService;
         _voterRepo = voterRepo;
@@ -35,8 +35,10 @@ public class VotingStatisticsVotingRenderService : IVotingRenderService
     {
         var voterStatistics = await _voterRepo.Query()
             .WhereBelongToDomainOfInfluenceOnlyVoterList(context.DomainOfInfluence.Id)
-            .GroupBy(v => new { v.Sex, v.SendVotingCardsToDomainOfInfluenceReturnAddress, v.VoterType, v.VotingCardType, })
-            .Select(x => new { x.Key.Sex, x.Key.SendVotingCardsToDomainOfInfluenceReturnAddress, x.Key.VoterType, x.Key.VotingCardType, Count = x.Count() })
+            .WhereVotingCardPrintEnabled()
+            .Where(v => context.VoterList == null || v.ListId == context.VoterList.Id)
+            .GroupBy(v => new { v.Sex, v.SendVotingCardsToDomainOfInfluenceReturnAddress, v.VoterType, v.VotingCardType, v.IsMinor, })
+            .Select(x => new { x.Key.Sex, x.Key.SendVotingCardsToDomainOfInfluenceReturnAddress, x.Key.VoterType, x.Key.VotingCardType, x.Key.IsMinor, Count = x.Count() })
             .ToListAsync(ct);
 
         var data = new Data
@@ -48,15 +50,19 @@ public class VotingStatisticsVotingRenderService : IVotingRenderService
             CountOfSendVotingCardsToDomainOfInfluenceReturnAddress = voterStatistics.Where(x => x.SendVotingCardsToDomainOfInfluenceReturnAddress).Sum(x => x.Count),
             NumberOfVotersMale = voterStatistics.Where(x => x.Sex is SexType.Male).Sum(x => x.Count),
             NumberOfVotersFemale = voterStatistics.Where(x => x.Sex is SexType.Female).Sum(x => x.Count),
-            SwissAndSwissAbroadMale = voterStatistics.Where(x => x.Sex is SexType.Male && x.VoterType is VoterType.Swiss or VoterType.SwissAbroad).Sum(x => x.Count),
-            SwissAndSwissAbroadFemale = voterStatistics.Where(x => x.Sex is SexType.Female && x.VoterType is VoterType.Swiss or VoterType.SwissAbroad).Sum(x => x.Count),
-            ForeignerMale = voterStatistics.Where(x => x.Sex is SexType.Male && x.VoterType is VoterType.Foreigner).Sum(x => x.Count),
-            ForeignerFemale = voterStatistics.Where(x => x.Sex is SexType.Female && x.VoterType is VoterType.Foreigner).Sum(x => x.Count),
+            SwissAndSwissAbroadMale = voterStatistics.Where(x => x.Sex is SexType.Male && x.IsMinor is false && (x.VoterType is VoterType.Swiss or VoterType.SwissAbroad)).Sum(x => x.Count),
+            SwissAndSwissAbroadFemale = voterStatistics.Where(x => x.Sex is SexType.Female && x.IsMinor is false && (x.VoterType is VoterType.Swiss or VoterType.SwissAbroad)).Sum(x => x.Count),
+            SwissAndSwissAbroadMinorMale = voterStatistics.Where(x => x.Sex is SexType.Male && x.IsMinor is true && (x.VoterType is VoterType.Swiss or VoterType.SwissAbroad)).Sum(x => x.Count),
+            SwissAndSwissAbroadMinorFemale = voterStatistics.Where(x => x.Sex is SexType.Female && x.IsMinor is true && (x.VoterType is VoterType.Swiss or VoterType.SwissAbroad)).Sum(x => x.Count),
+            ForeignerMale = voterStatistics.Where(x => x.Sex is SexType.Male && x.IsMinor is false && x.VoterType is VoterType.Foreigner).Sum(x => x.Count),
+            ForeignerFemale = voterStatistics.Where(x => x.Sex is SexType.Female && x.IsMinor is false && x.VoterType is VoterType.Foreigner).Sum(x => x.Count),
+            ForeignerMinorMale = voterStatistics.Where(x => x.Sex is SexType.Male && x.IsMinor is true && x.VoterType is VoterType.Foreigner).Sum(x => x.Count),
+            ForeignerMinorFemale = voterStatistics.Where(x => x.Sex is SexType.Female && x.IsMinor is true && x.VoterType is VoterType.Foreigner).Sum(x => x.Count),
             NumberOfVotersEVoting = voterStatistics.Where(x => x.VotingCardType is VotingCardType.EVoting).Sum(x => x.Count),
         };
 
         var csvData = await _csvService.Render(new[] { data }, ct: ct);
-        return new FileModel(csvData, FileNameUtils.GenerateFileName(FileNameTemplate, new[] { context.DomainOfInfluence.Bfs }), MimeTypes.CsvMimeType);
+        return new FileModel(csvData, FileNameUtils.GenerateFileName(FileNameTemplate, context.BuildVotingJournalFileNameArgs()), MimeTypes.CsvMimeType);
     }
 
     private class Data
@@ -95,11 +101,23 @@ public class VotingStatisticsVotingRenderService : IVotingRenderService
         [Name("Schweizer Frauen")]
         public int SwissAndSwissAbroadFemale { get; set; }
 
+        [Name("Schweizer Männer (Minderjährige)")]
+        public int SwissAndSwissAbroadMinorMale { get; set; }
+
+        [Name("Schweizer Frauen (Minderjährige)")]
+        public int SwissAndSwissAbroadMinorFemale { get; set; }
+
         [Name("Ausländer Männer")]
         public int ForeignerMale { get; set; }
 
         [Name("Ausländer Frauen")]
         public int ForeignerFemale { get; set; }
+
+        [Name("Ausländer Männer (Minderjährige)")]
+        public int ForeignerMinorMale { get; set; }
+
+        [Name("Ausländer Frauen (Minderjährige)")]
+        public int ForeignerMinorFemale { get; set; }
 
         [Name("Anzahl E-Voter")]
         public int NumberOfVotersEVoting { get; set; }

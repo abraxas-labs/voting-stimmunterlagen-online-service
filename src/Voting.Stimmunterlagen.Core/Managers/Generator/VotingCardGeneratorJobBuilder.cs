@@ -3,12 +3,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Extensions;
 using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
@@ -68,13 +70,26 @@ public class VotingCardGeneratorJobBuilder
             .AsTracking()
             .Include(x => x.List)
             .WhereBelongToDomainOfInfluence(doiId)
+            .WhereVotingCardPrintEnabled()
             .Where(x => x.ListId.HasValue)
-            .OrderBy(config.Sorts)
+            .Include(x => x.DomainOfInfluences)
+            .ToAsyncEnumerable()
+            .OrderBySortingCriteriaAsync(config.Sorts)
             .ToListAsync(ct);
 
         var jobs = GroupVoters(voters, config.Groups)
             .Select(g => BuildJob(g, layoutsByType, config.Groups, config.DomainOfInfluence!))
             .ToList();
+
+        if (config.DomainOfInfluence!.CountOfEmptyVotingCards > 0)
+        {
+            var swissLayout = layoutsByType.GetValueOrDefault(VotingCardType.Swiss)
+                ?? throw new EntityNotFoundException(
+                    nameof(VotingCardLayout),
+                    new { VotingCardType.Swiss, config.DomainOfInfluenceId });
+
+            jobs.Add(BuildEmptyVotingCardsJob(config.DomainOfInfluence, swissLayout));
+        }
 
         await _jobsRepo.CreateRange(jobs);
         return jobs;
@@ -109,6 +124,21 @@ public class VotingCardGeneratorJobBuilder
             CountOfVoters = voterGroup.Count,
             LayoutId = layout?.Id,
             DomainOfInfluenceId = doi.Id,
+        };
+    }
+
+    private VotingCardGeneratorJob BuildEmptyVotingCardsJob(
+        ContestDomainOfInfluence doi,
+        DomainOfInfluenceVotingCardLayout layout)
+    {
+        return new VotingCardGeneratorJob
+        {
+            State = VotingCardGeneratorJobState.Ready,
+            FileName = BuildEmptyVotingCardsJobFileName(doi),
+            CountOfVoters = doi.CountOfEmptyVotingCards,
+            LayoutId = layout.Id,
+            DomainOfInfluenceId = doi.Id,
+            HasEmptyVotingCards = true,
         };
     }
 
@@ -149,6 +179,21 @@ public class VotingCardGeneratorJobBuilder
             name += _config.VotingCardGenerator.FileNameGroupSeparator + groupsName;
         }
 
+        name += _config.VotingCardGenerator.FileNameGroupSeparator + $"{doi.Contest.Date:yyyyMMdd}";
+        return FileNameUtils.SanitizeFileName(name) + PdfFileExtension;
+    }
+
+    private string BuildEmptyVotingCardsJobFileName(ContestDomainOfInfluence doi)
+    {
+        var name = doi.Contest!.IsPoliticalAssembly ? PoliticalAssemblyFilePrefix : ContestFilePrefix;
+        name += _config.VotingCardGenerator.FileNameGroupSeparator;
+
+        var doiNameWithoutSpace = doi.Name.Replace(" ", "_");
+        name += !string.IsNullOrWhiteSpace(doi.Bfs)
+            ? doi.Bfs + _config.VotingCardGenerator.FileNameGroupSeparator + doiNameWithoutSpace
+            : doiNameWithoutSpace;
+
+        name += _config.VotingCardGenerator.FileNameGroupSeparator + "EMPTY";
         name += _config.VotingCardGenerator.FileNameGroupSeparator + $"{doi.Contest.Date:yyyyMMdd}";
         return FileNameUtils.SanitizeFileName(name) + PdfFileExtension;
     }

@@ -72,13 +72,20 @@ public abstract class BaseVoterListImportRestTest : BaseWriteableDbRestTest
         }
     }
 
+    protected async Task<bool> ExistsByName(string name)
+    {
+        return await RunOnDb(db => db.VoterListImports
+            .AnyAsync(x => x.Name == name))!;
+    }
+
     protected async Task<VoterListImport> GetByName(string name)
     {
         var voterListImport = await RunOnDb(db => db.VoterListImports
             .Include(x => x.VoterLists!.OrderBy(vl => vl.VotingCardType))
             .ThenInclude(x => x.Voters!.OrderBy(y => y.LastName))
-            .Include(x => x.VoterLists!)
-            .ThenInclude(x => x.VoterDuplicates)
+            .ThenInclude(x => x.DomainOfInfluences!
+            .OrderBy(d => d.DomainOfInfluenceType)
+            .ThenBy(d => d.DomainOfInfluenceIdentification))
             .Include(x => x.VoterLists!)
             .ThenInclude(x => x.PoliticalBusinessEntries!.OrderBy(y => y.PoliticalBusinessId))
             .SingleOrDefaultAsync(x => x.Name == name))!;
@@ -91,9 +98,20 @@ public abstract class BaseVoterListImportRestTest : BaseWriteableDbRestTest
 
             foreach (var voter in voterList.Voters!)
             {
+                foreach (var doi in voter.DomainOfInfluences ?? Enumerable.Empty<VoterDomainOfInfluence>())
+                {
+                    doi.Id = Guid.Empty;
+                    doi.VoterId = Guid.Empty;
+                }
+
                 voter.List = null;
                 voter.ListId = Guid.Empty;
                 voter.Id = Guid.Empty;
+
+                if (voter.VoterDuplicateId.HasValue)
+                {
+                    voter.VoterDuplicateId = Guid.Empty;
+                }
 
                 voter.ContestIndex.Should().NotBe(0);
                 voter.ContestIndex = 0;
@@ -103,13 +121,6 @@ public abstract class BaseVoterListImportRestTest : BaseWriteableDbRestTest
                     placeOfOrigin.VoterId = Guid.Empty;
                     placeOfOrigin.Voter = null;
                 }
-            }
-
-            foreach (var voterDuplicate in voterList.VoterDuplicates!)
-            {
-                voterDuplicate.Id = Guid.Empty;
-                voterDuplicate.ListId = Guid.Empty;
-                voterDuplicate.List = null;
             }
 
             foreach (var pbEntry in voterList.PoliticalBusinessEntries!)

@@ -8,6 +8,7 @@ using AutoMapper;
 using Voting.Lib.ImageProcessing;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.ObjectStorage;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
 using EVotingModels = Voting.Stimmunterlagen.EVoting.Models;
 
@@ -18,7 +19,7 @@ public class EVotingContestBuilder
     private readonly IMapper _mapper;
     private readonly DomainOfInfluenceLogoStorage _logoStorage;
     private readonly IImageProcessor _imageProcessor;
-    private readonly int _maxLogoHeight;
+    private readonly uint _maxLogoHeight;
 
     public EVotingContestBuilder(
         IMapper mapper,
@@ -40,19 +41,22 @@ public class EVotingContestBuilder
         var eVotingContest = _mapper.Map<Contest, EVotingModels.Contest>(contest);
         var eVotingDois = new List<EVotingModels.DomainOfInfluence>();
 
+        var attachmentStationsByDoiId = AttachmentStationsBuilder.BuildAttachmentStationsByDomainOfInfluenceId(voterLists, attachments, contest.IsPoliticalAssembly);
+
         foreach (var doi in contest.ContestDomainOfInfluences!)
         {
-            eVotingDois.Add(await BuildDomainOfInfluence(doi));
+            eVotingDois.Add(await BuildDomainOfInfluence(doi, attachmentStationsByDoiId.GetValueOrDefault(doi.Id) ?? string.Empty));
         }
 
         eVotingContest.ContestDomainOfInfluences = eVotingDois;
         return eVotingContest;
     }
 
-    private async Task<EVotingModels.DomainOfInfluence> BuildDomainOfInfluence(ContestDomainOfInfluence doi)
+    private async Task<EVotingModels.DomainOfInfluence> BuildDomainOfInfluence(ContestDomainOfInfluence doi, string attachmentStations)
     {
         var eVotingDoi = _mapper.Map<EVotingModels.DomainOfInfluence>(doi);
         eVotingDoi.Logo = CompressLogo(await _logoStorage.TryFetchAsBase64(doi));
+        eVotingDoi.AttachmentStations = attachmentStations;
         return eVotingDoi;
     }
 

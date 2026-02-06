@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 using Abraxas.Voting.Basis.Events.V1;
 using Abraxas.Voting.Basis.Events.V1.Data;
 using FluentAssertions;
+using Google.Protobuf;
 using Microsoft.EntityFrameworkCore;
 using Snapper;
 using Voting.Lib.Common;
 using Voting.Lib.Testing.Mocks;
 using Voting.Lib.Testing.Utils;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Utils;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
@@ -79,6 +81,7 @@ public class PoliticalAssemblyProcessorTest : BaseWriteableDbTest
         var contestDoiCcs = await RunOnDb(db => db.ContestDomainOfInfluenceCountingCircles
             .Where(x => x.DomainOfInfluence!.ContestId == contest.Id)
             .OrderBy(x => x.CountingCircleId)
+            .ThenBy(x => x.DomainOfInfluenceId)
             .Select(x => new { x.CountingCircleId, x.DomainOfInfluenceId })
             .ToListAsync());
         contestDoiCcs.ShouldMatchChildSnapshot("contest_doi_ccs");
@@ -155,6 +158,7 @@ public class PoliticalAssemblyProcessorTest : BaseWriteableDbTest
         var contestDoiCcs = await RunOnDb(db => db.ContestDomainOfInfluenceCountingCircles
             .Where(x => x.DomainOfInfluence!.ContestId == contest.Id)
             .OrderBy(x => x.CountingCircleId)
+            .ThenBy(x => x.DomainOfInfluenceId)
             .Select(x => new { x.CountingCircleId, x.DomainOfInfluenceId })
             .ToListAsync());
         contestDoiCcs.ShouldMatchChildSnapshot("contest_doi_ccs");
@@ -224,6 +228,19 @@ public class PoliticalAssemblyProcessorTest : BaseWriteableDbTest
         (await HasVoterContestIndexSequence(id)).Should().BeFalse();
     }
 
+    [Fact]
+    public Task PoliticalAssemblyPastLocked()
+    => TestStateChange(new PoliticalAssemblyPastLocked { PoliticalAssemblyId = ContestMockData.PoliticalAssemblyBundFutureApprovedGuid.ToString() }, ContestState.PastLocked);
+
+    [Fact]
+    public async Task PoliticalAssemblyArchived()
+    {
+        var id = ContestMockData.PoliticalAssemblyBundFutureApprovedGuid;
+        (await HasVoterContestIndexSequence(id)).Should().BeTrue();
+        await TestStateChange(new PoliticalAssemblyArchived { PoliticalAssemblyId = id.ToString() }, ContestState.Archived);
+        (await HasVoterContestIndexSequence(id)).Should().BeFalse();
+    }
+
     private async Task<bool> HasVoterContestIndexSequence(Guid contestId)
     {
         var sequenceName = SequenceNames.BuildVoterContestIndexSequenceName(contestId);
@@ -243,5 +260,19 @@ public class PoliticalAssemblyProcessorTest : BaseWriteableDbTest
         });
 
         return count > 0;
+    }
+
+    private async Task TestStateChange<T>(T eventData, ContestState targetState)
+    where T : IMessage<T>
+    {
+        var contest = await RunOnDb(db => db.Contests.SingleAsync(x => x.Id == ContestMockData.PoliticalAssemblyBundFutureApprovedGuid));
+        contest.State.Should().Be(ContestState.TestingPhase);
+        contest.TestingPhaseEnded.Should().BeFalse();
+
+        await TestEventPublisher.PublishTwice(eventData);
+
+        contest = await RunOnDb(db => db.Contests.SingleAsync(x => x.Id == ContestMockData.PoliticalAssemblyBundFutureApprovedGuid));
+        contest.State.Should().Be(targetState);
+        contest.TestingPhaseEnded.Should().Be(targetState > ContestState.TestingPhase);
     }
 }

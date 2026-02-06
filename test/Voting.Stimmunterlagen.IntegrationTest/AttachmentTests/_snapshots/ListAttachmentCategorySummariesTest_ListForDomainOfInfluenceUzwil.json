@@ -30,7 +30,13 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1000",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
           },
           "PoliticalBusinessIds": [
             "b17c5b4a-e9e9-4a6a-8083-352426a528f9"
@@ -72,7 +78,13 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1000",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
           },
           "PoliticalBusinessIds": [
             "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
@@ -123,7 +135,13 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1100",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
           },
           "PoliticalBusinessIds": [
             "4e71e6dd-f040-4862-bd0f-fcdf69aef68b"

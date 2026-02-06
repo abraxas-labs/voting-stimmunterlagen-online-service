@@ -2,6 +2,7 @@
 // For license information see LICENSE file
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Voting.Stimmunterlagen.IntegrationTest.Helpers;
 public class TestApplicationFactory<TStartup> : BaseTestApplicationFactory<TStartup>
     where TStartup : class
 {
-    public override HttpClient CreateHttpClient(bool authorize, string? tenant, string? userId, string[]? roles)
+    public override HttpClient CreateHttpClient(bool authorize, string? tenant, string? userId, string[]? roles, IEnumerable<(string, string)>? additionalHeaders = null)
     {
         var httpClient = base.CreateHttpClient(authorize, tenant, userId, roles);
         httpClient.DefaultRequestHeaders.Add("x-language", "de");

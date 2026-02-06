@@ -14,6 +14,7 @@ namespace Voting.Stimmunterlagen.Ech.Mapping;
 public static class DatePartiallyKnownMapping
 {
     public const string YearMonthDayFormat = "yyyy-MM-dd";
+    public const string YearMonthFormat = "yyyy-MM";
     public const string UnspecifiedDateString = "0";
 
     public static string ToDateString(this DatePartiallyKnownType datePartiallyKnown)
@@ -34,6 +35,32 @@ public static class DatePartiallyKnownMapping
         }
 
         throw new InvalidOperationException($"No data found in ${nameof(DatePartiallyKnownType)}");
+    }
+
+    public static DateTime ToDateTime(this string dateString)
+    {
+        if (string.IsNullOrWhiteSpace(dateString))
+        {
+            throw new InvalidOperationException($"Cannot create ${nameof(DateTime)} with an empty string");
+        }
+
+        if (short.TryParse(dateString, out var year))
+        {
+            return new DateTime(year);
+        }
+
+        if (DateTime.TryParseExact(dateString, YearMonthDayFormat, null, DateTimeStyles.None, out var yearMonthDay))
+        {
+            return yearMonthDay;
+        }
+
+        // year month variant
+        if (DateTime.TryParseExact(dateString, YearMonthFormat, null, DateTimeStyles.None, out var yearMonth))
+        {
+            return yearMonth;
+        }
+
+        throw new InvalidOperationException($"Cannot create ${nameof(DateTime)} with string:'{dateString}'");
     }
 
     public static DatePartiallyKnownType ToEchDatePartiallyKnown(this string dateString)

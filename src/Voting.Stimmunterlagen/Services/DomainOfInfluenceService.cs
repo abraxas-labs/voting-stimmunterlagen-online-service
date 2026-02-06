@@ -55,4 +55,10 @@ public class DomainOfInfluenceService : Proto.V1.DomainOfInfluenceService.Domain
         await _domainOfInfluenceManager.UpdateSettings(GuidParser.Parse(request.DomainOfInfluenceId), request.AllowManualVoterListUpload);
         return ProtobufEmpty.Instance;
     }
+
+    public override async Task<Empty> SetCountOfEmptyVotingCards(SetCountOfEmptyVotingCardsDomainOfInfluenceRequest request, ServerCallContext context)
+    {
+        await _domainOfInfluenceManager.SetCountOfEmptyVotingCards(GuidParser.Parse(request.DomainOfInfluenceId), request.CountOfEmptyVotingCards);
+        return ProtobufEmpty.Instance;
+    }
 }

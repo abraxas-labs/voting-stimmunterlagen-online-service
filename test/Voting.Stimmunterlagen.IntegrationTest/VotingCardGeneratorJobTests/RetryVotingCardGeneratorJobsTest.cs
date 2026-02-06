@@ -45,11 +45,11 @@ public class RetryVotingCardGeneratorJobsTest : BaseWriteableDbGrpcTest<
 
         var jobs = await FindDbEntities<VotingCardGeneratorJob>(x =>
             x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid);
-        jobs.Should().HaveCount(3);
-        jobs.Count(x => x.State == VotingCardGeneratorJobState.Ready).Should().Be(1);
+        jobs.Should().HaveCount(4);
+        jobs.Count(x => x.State == VotingCardGeneratorJobState.Ready).Should().Be(2);
         jobs.Count(x => x.State == VotingCardGeneratorJobState.ReadyToRunOffline).Should().Be(1);
         jobs.Count(x => x.State == VotingCardGeneratorJobState.Completed).Should().Be(1);
-        GetService<VotingCardGeneratorThrottlerMock>().BlockedCount.Should().Be(1);
+        GetService<VotingCardGeneratorThrottlerMock>().BlockedCount.Should().Be(2);
     }
 
     [Fact]
@@ -61,8 +61,8 @@ public class RetryVotingCardGeneratorJobsTest : BaseWriteableDbGrpcTest<
 
         var jobs = await FindDbEntities<VotingCardGeneratorJob>(x =>
             x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid);
-        jobs.Should().HaveCount(3);
-        jobs.Count(x => x.State == VotingCardGeneratorJobState.Ready).Should().Be(0);
+        jobs.Should().HaveCount(4);
+        jobs.Count(x => x.State == VotingCardGeneratorJobState.Ready).Should().Be(1);
     }
 
     protected override async Task AuthorizationTestCall(VotingCardGeneratorJobsService.VotingCardGeneratorJobsServiceClient service)

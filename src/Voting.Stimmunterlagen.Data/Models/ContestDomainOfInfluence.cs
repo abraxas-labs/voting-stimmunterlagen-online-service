@@ -44,6 +44,8 @@ public class ContestDomainOfInfluence : BaseDomainOfInfluence<ContestDomainOfInf
 
     public ICollection<VotingCardGeneratorJob>? VotingCardGeneratorJobs { get; set; }
 
+    public ICollection<DomainOfInfluenceVoterDuplicate>? VoterDuplicates { get; set; }
+
     public DomainOfInfluenceVotingCardConfiguration? VotingCardConfiguration { get; set; }
 
     public PrintJob? PrintJob { get; set; }
@@ -63,6 +65,10 @@ public class ContestDomainOfInfluence : BaseDomainOfInfluence<ContestDomainOfInf
     /// Gets or sets a value indicating when the last voter list was imported or updated or when the last manual voting card was generated.
     /// </summary>
     public DateTime? LastVoterUpdate { get; set; }
+
+    public int CountOfEmptyVotingCards { get; set; }
+
+    public DateTime? LastCountOfEmptyVotingCardsUpdate { get; set; }
 
     public ICollection<AdditionalInvoicePosition>? AdditionalInvoicePositions { get; set; }
 

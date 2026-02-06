@@ -26,6 +26,7 @@ using Voting.Stimmunterlagen.Data.Repositories;
 using Contest = Voting.Stimmunterlagen.Data.Models.Contest;
 using Template = Voting.Stimmunterlagen.Data.Models.Template;
 using Voter = Voting.Stimmunterlagen.Data.Models.Voter;
+using VotingCardLayoutDataConfiguration = Voting.Stimmunterlagen.Data.Models.VotingCardLayoutDataConfiguration;
 
 namespace Voting.Stimmunterlagen.Core.Managers.Templates;
 
@@ -114,6 +115,7 @@ public class TemplateManager
             contestDate,
             layout.EffectiveTemplateId ?? throw new EntityNotFoundException(nameof(DomainOfInfluenceVotingCardLayout), new { layout.DomainOfInfluenceId, layout.VotingCardType }),
             layout.DomainOfInfluence!.Contest!,
+            layout.DataConfiguration,
             layout.DomainOfInfluence!,
             layout.TemplateDataFieldValues!,
             voters,
@@ -123,13 +125,14 @@ public class TemplateManager
         DateTime? contestDate,
         int templateId,
         Contest contest,
+        VotingCardLayoutDataConfiguration dataConfig,
         ContestDomainOfInfluence? domainOfInfluence = null,
         IEnumerable<TemplateDataFieldValue>? data = null,
         IEnumerable<Voter>? voters = null,
         CancellationToken cancellationToken = default)
     {
         domainOfInfluence ??= _templateDataBuilder.GetDummyDomainOfInfluence(_auth.Tenant.Id);
-        var templateBag = await BuildTemplateBag(contestDate, templateId, contest, domainOfInfluence, data, voters, cancellationToken);
+        var templateBag = await BuildTemplateBag(contestDate, templateId, contest, dataConfig, domainOfInfluence, data, voters, cancellationToken);
         return await _dmDoc.PreviewAsPdf(templateId, templateBag, SerialLetterBulkRoot, cancellationToken);
     }
 
@@ -148,6 +151,7 @@ public class TemplateManager
             contestDate,
             templateId,
             layout.DomainOfInfluence!.Contest!,
+            layout.DataConfiguration,
             layout.DomainOfInfluence,
             layout.TemplateDataFieldValues!,
             voters,
@@ -171,6 +175,7 @@ public class TemplateManager
             contestDate,
             templateId,
             layout.DomainOfInfluence!.Contest!,
+            layout.DataConfiguration,
             layout.DomainOfInfluence,
             layout.TemplateDataFieldValues!,
             voters,
@@ -280,6 +285,7 @@ public class TemplateManager
         DateTime? contestDate,
         int templateId,
         Contest contest,
+        VotingCardLayoutDataConfiguration dataConfig,
         ContestDomainOfInfluence? domainOfInfluence,
         IEnumerable<TemplateDataFieldValue>? data,
         IEnumerable<Voter>? voters,
@@ -287,14 +293,14 @@ public class TemplateManager
     {
         if (data != null)
         {
-            return await _templateDataBuilder.BuildBag(contestDate, contest, domainOfInfluence, voters, data);
+            return await _templateDataBuilder.BuildBag(contestDate, contest, dataConfig, domainOfInfluence, voters, data);
         }
 
         var template = await _templateRepo.Query()
                 .Include(x => x.DataContainers!).ThenInclude(c => c.Fields)
                 .FirstOrDefaultAsync(x => x.Id == templateId, cancellationToken)
             ?? throw new EntityNotFoundException(nameof(Template), templateId);
-        return await _templateDataBuilder.BuildBag(contestDate, contest, domainOfInfluence, voters, template.DataContainers!);
+        return await _templateDataBuilder.BuildBag(contestDate, contest, dataConfig, domainOfInfluence, voters, template.DataContainers!);
     }
 
     private async Task<Template> CreateTemplate(int id)

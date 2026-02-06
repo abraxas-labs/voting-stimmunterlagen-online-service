@@ -22,6 +22,8 @@ public static class DomainOfInfluenceMockData
     public const string SchulgemeindeAndwilArneggId = "bb3f6e2f-d8a1-4cb5-9511-fb3e2c53c87e";
     public const string GemeindeArneggId = "f2f20f24-fd80-40c1-9307-8dab12f102bb";
     public const string AuslandschweizerId = "747b552e-88ad-46be-a472-709c4b7ba996";
+    public const string KirchgemeindeArneggId = "7c2726cc-c53f-4c7c-960b-9eb1886beae7";
+    public const string ZweckverbandGossauId = "94b5f873-9623-48ed-83f9-72819163b660";
 
     public static readonly Guid BundGuid = Guid.Parse(BundId);
     public static readonly Guid KantonStGallenGuid = Guid.Parse(KantonStGallenId);
@@ -31,6 +33,8 @@ public static class DomainOfInfluenceMockData
     public static readonly Guid SchulgemeindeAndwilArneggGuid = Guid.Parse(SchulgemeindeAndwilArneggId);
     public static readonly Guid GemeindeArneggGuid = Guid.Parse(GemeindeArneggId);
     public static readonly Guid AuslandschweizerGuid = Guid.Parse(AuslandschweizerId);
+    public static readonly Guid KirchgemeindeArneggGuid = Guid.Parse(KirchgemeindeArneggId);
+    public static readonly Guid ZweckverbandGossauGuid = Guid.Parse(ZweckverbandGossauId);
 
     public static readonly Guid ContestBundArchivedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundArchivedGuid, GemeindeArneggGuid);
     public static readonly Guid ContestBundArchivedNotApprovedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundArchivedNotApprovedGuid, GemeindeArneggGuid);
@@ -41,6 +45,8 @@ public static class DomainOfInfluenceMockData
     public static readonly Guid ContestBundFutureApprovedStadtUzwilGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, StadtUzwilGuid);
     public static readonly Guid ContestBundFutureApprovedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, GemeindeArneggGuid);
     public static readonly Guid ContestBundFutureApprovedAuslandschweizerGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, AuslandschweizerGuid);
+    public static readonly Guid ContestBundFutureApprovedKirchgemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, KirchgemeindeArneggGuid);
+    public static readonly Guid ContestBundFutureApprovedZweckverbandGossauGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, ZweckverbandGossauGuid);
 
     public static readonly Guid ContestBundFutureBundGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, BundGuid);
     public static readonly Guid ContestBundFutureKantonStGallenGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, KantonStGallenGuid);
@@ -48,6 +54,8 @@ public static class DomainOfInfluenceMockData
     public static readonly Guid ContestBundFutureStadtUzwilGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, StadtUzwilGuid);
     public static readonly Guid ContestBundFutureGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, GemeindeArneggGuid);
     public static readonly Guid ContestBundFutureSchulgemeindeAndwilArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, SchulgemeindeAndwilArneggGuid);
+    public static readonly Guid ContestBundFutureKirchgemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, KirchgemeindeArneggGuid);
+    public static readonly Guid ContestBundFutureZweckverbandGossauGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, ZweckverbandGossauGuid);
 
     public static readonly Guid ContestSchulgemeindeAndwilArneggFutureSchulgemeindeAndwilArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.SchulgemeindeAndwilArneggFutureGuid, SchulgemeindeAndwilArneggGuid);
 
@@ -140,6 +148,7 @@ public static class DomainOfInfluenceMockData
         SwissPostData = new()
         {
             InvoiceReferenceNumber = "111994573",
+            FrankingLicenceAwayNumber = "72014266",
             FrankingLicenceReturnNumber = "119302122",
         },
         ReturnAddress = new()
@@ -190,6 +199,7 @@ public static class DomainOfInfluenceMockData
         SwissPostData = new()
         {
             InvoiceReferenceNumber = "505964478",
+            FrankingLicenceAwayNumber = "72619210",
             FrankingLicenceReturnNumber = "994412387",
         },
         ReturnAddress = new()
@@ -208,6 +218,8 @@ public static class DomainOfInfluenceMockData
             },
         },
         StistatMunicipality = true,
+        IsMainVotingCardsDomainOfInfluence = true,
+        HasEmptyVotingCards = true,
     };
 
     public static DomainOfInfluence StadtUzwil => new()
@@ -239,6 +251,7 @@ public static class DomainOfInfluenceMockData
         SwissPostData = new()
         {
             InvoiceReferenceNumber = "222994573",
+            FrankingLicenceAwayNumber = "72619211",
             FrankingLicenceReturnNumber = "229302122",
         },
         ReturnAddress = new()
@@ -290,6 +303,7 @@ public static class DomainOfInfluenceMockData
         SwissPostData = new()
         {
             InvoiceReferenceNumber = "333994573",
+            FrankingLicenceAwayNumber = "73011100",
             FrankingLicenceReturnNumber = "339302122",
         },
         ReturnAddress = new()
@@ -309,6 +323,8 @@ public static class DomainOfInfluenceMockData
             },
         },
         StistatMunicipality = true,
+        IsMainVotingCardsDomainOfInfluence = true,
+        HasEmptyVotingCards = true,
     };
 
     public static DomainOfInfluence SchulgemeindeArneggAndwil => new()
@@ -339,6 +355,7 @@ public static class DomainOfInfluenceMockData
         SwissPostData = new()
         {
             InvoiceReferenceNumber = "444994573",
+            FrankingLicenceAwayNumber = "73011101",
             FrankingLicenceReturnNumber = "449302122",
         },
         ReturnAddress = new()
@@ -357,6 +374,99 @@ public static class DomainOfInfluenceMockData
             },
         },
         VotingCardFlatRateDisabled = true,
+    };
+
+    public static DomainOfInfluence KirchgemeindeArnegg => new()
+    {
+        Id = KirchgemeindeArneggGuid,
+        Name = "Kirchgemeinde Arnegg",
+        AuthorityName = "Kirchgemeinde Arnegg",
+        ShortName = "MU-AG-KI",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.GemeindeArnegg,
+        ParentId = KantonStGallenGuid,
+        RootId = BundGuid,
+        ResponsibleForVotingCards = true,
+        Type = DomainOfInfluenceType.Ki,
+        Canton = DomainOfInfluenceCanton.Sg,
+        CantonDefaults = new DomainOfInfluenceCantonDefaults
+        {
+            VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
+        },
+        ElectoralRegistrationEnabled = true,
+        LogoRef = "kirche_arnegg_logo.png",
+        SapCustomerOrderNumber = "00073199",
+        PrintData = new()
+        {
+            ShippingAway = VotingCardShippingFranking.A,
+            ShippingReturn = VotingCardShippingFranking.A,
+            ShippingMethod = VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality,
+        },
+        SwissPostData = new()
+        {
+            InvoiceReferenceNumber = "333994573",
+            FrankingLicenceAwayNumber = "73011100",
+            FrankingLicenceReturnNumber = "339302122",
+        },
+        ReturnAddress = new()
+        {
+            AddressLine1 = "Gemeinde Andwil-Arnegg",
+            Street = "Lätschenstrasse 7",
+            ZipCode = "9204",
+            City = "Andwil",
+            Country = "Schweiz",
+        },
+    };
+
+    public static DomainOfInfluence ZweckverbandGossau => new()
+    {
+        Id = ZweckverbandGossauGuid,
+        Name = "Zweckverband ARA Gossau",
+        AuthorityName = "Stadt St. Gossau",
+        ShortName = "MU-GO-ARA",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.StadtGossau,
+        ParentId = KantonStGallenGuid,
+        RootId = BundGuid,
+        ResponsibleForVotingCards = true,
+        Type = DomainOfInfluenceType.An,
+        Canton = DomainOfInfluenceCanton.Sg,
+        CantonDefaults = new DomainOfInfluenceCantonDefaults
+        {
+            VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
+        },
+        ElectoralRegistrationEnabled = true,
+        LogoRef = "gossau-ara-logo.png",
+        SapCustomerOrderNumber = "00073100",
+        PrintData = new()
+        {
+            ShippingAway = VotingCardShippingFranking.A,
+            ShippingReturn = VotingCardShippingFranking.WithoutFranking,
+            ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen,
+        },
+        SwissPostData = new()
+        {
+            InvoiceReferenceNumber = "505964478",
+            FrankingLicenceAwayNumber = "72619210",
+            FrankingLicenceReturnNumber = "994412387",
+        },
+        ReturnAddress = new()
+        {
+            AddressLine1 = "Stadtverwaltung Gossau",
+            Street = "Bahnhofstrasse 25",
+            ZipCode = "9200",
+            City = "Gossau",
+            Country = "Schweiz",
+        },
+        CountingCircles = new List<DomainOfInfluenceCountingCircle>
+        {
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+            },
+        },
     };
 
     public static DomainOfInfluence Auslandschweizer => new()
@@ -388,6 +498,7 @@ public static class DomainOfInfluenceMockData
         SwissPostData = new()
         {
             InvoiceReferenceNumber = "555994573",
+            FrankingLicenceAwayNumber = "73011102",
             FrankingLicenceReturnNumber = "559302122",
         },
         ReturnAddress = new()
@@ -419,6 +530,8 @@ public static class DomainOfInfluenceMockData
             yield return GemeindeArnegg;
             yield return SchulgemeindeArneggAndwil;
             yield return Auslandschweizer;
+            yield return KirchgemeindeArnegg;
+            yield return ZweckverbandGossau;
         }
     }
 

@@ -130,7 +130,7 @@ public static class ManualVotingCardGeneratorJobMockData
 
             foreach (var job in all)
             {
-                job.LayoutId = layoutsByDoiIdAndVcType[(job.Layout.DomainOfInfluenceId, job.Voter.VotingCardType)].Id;
+                job.LayoutId = layoutsByDoiIdAndVcType[(job.Layout.DomainOfInfluenceId, job.Voter!.VotingCardType)].Id;
                 job.Layout = null!;
             }
 

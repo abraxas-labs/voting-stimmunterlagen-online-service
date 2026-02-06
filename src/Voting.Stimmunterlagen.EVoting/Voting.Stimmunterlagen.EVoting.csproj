@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="Voting.Stimmunterlagen.OfflineClient.Shared" Version="2.2.0" />
+    <PackageReference Include="Voting.Stimmunterlagen.OfflineClient.Shared" Version="2.2.3" />
   </ItemGroup>
 
   <ItemGroup>

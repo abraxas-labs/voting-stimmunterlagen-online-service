@@ -26,11 +26,12 @@
         "AddressLine6": "Deutschland",
         "CountryIso2": "DE",
         "ShippingAway": 1,
-        "ShippingMethod": 1,
+        "ShippingMethodCode": "A",
         "ShippingReturn": 6,
         "Language": "de",
         "AdditionalBarcode": "",
-        "ContestOrderNumber": "955000"
+        "ContestOrderNumber": "955000",
+        "ReligionCode": "X"
       },
       {
         "DocId": "U5",
@@ -45,7 +46,7 @@
         "PageFrom": 3,
         "PageTo": 4,
         "PrintPP": true,
-        "AttachmentStations": "16B",
+        "AttachmentStations": "9",
         "InStreamAttachment1": "",
         "InStreamAttachment2": "",
         "InStreamAttachment3": "",
@@ -57,11 +58,12 @@
         "AddressLine6": "Vereinigtes Königreich",
         "CountryIso2": "GB",
         "ShippingAway": 1,
-        "ShippingMethod": 1,
+        "ShippingMethodCode": "A",
         "ShippingReturn": 6,
         "Language": "it",
         "AdditionalBarcode": "",
-        "ContestOrderNumber": "955000"
+        "ContestOrderNumber": "955000",
+        "ReligionCode": "X"
       }
     ]
   }

@@ -19,11 +19,14 @@
       "VotingCardLayouts": null,
       "DomainOfInfluenceAttachmentCounts": null,
       "VotingCardGeneratorJobs": null,
+      "VoterDuplicates": null,
       "VotingCardConfiguration": null,
       "PrintJob": null,
       "AllowManualVoterListUpload": false,
       "CanManuallyUploadVoterList": false,
       "LastVoterUpdate": null,
+      "CountOfEmptyVotingCards": 0,
+      "LastCountOfEmptyVotingCardsUpdate": null,
       "AdditionalInvoicePositions": null,
       "Parent": null,
       "Root": null,
@@ -53,8 +56,11 @@
       "ParentId": null,
       "RootId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d",
       "ElectoralRegistrationEnabled": true,
+      "ElectoralRegisterMultipleEnabled": false,
       "StistatMunicipality": false,
       "VotingCardFlatRateDisabled": false,
+      "IsMainVotingCardsDomainOfInfluence": false,
+      "HasEmptyVotingCards": false,
       "Id": "00000000-0000-0000-0000-000000000000"
     },
     "State": 1,
@@ -68,6 +74,8 @@
     "PrintingCenterSignUpDeadline": null,
     "AttachmentDeliveryDeadline": null,
     "GenerateVotingCardsDeadline": null,
+    "ElectoralRegisterEVotingFrom": null,
+    "DeliveryToPostDeadline": null,
     "VotingCardLayouts": null,
     "TestingPhaseEnded": false,
     "Translations": [
@@ -101,9 +109,21 @@
         "Role": 2
       },
       {
+        "Name": "Kirchgemeinde Arnegg",
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "SecureConnectId": "SC-MU-AG",
+        "Role": 2
+      },
+      {
         "Name": "Kanton St. Gallen",
         "BasisDomainOfInfluenceId": "8acf818a-45da-4738-a546-4c8428a6a6b1",
         "SecureConnectId": "SC-SG",
+        "Role": 2
+      },
+      {
+        "Name": "Zweckverband ARA Gossau",
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "SecureConnectId": "SC-MU-GO",
         "Role": 2
       },
       {
@@ -231,8 +251,16 @@
         "DomainOfInfluenceId": "73fd3186-a43d-52fc-9c73-311734122cad"
       },
       {
+        "CountingCircleId": "00c24d7a-4508-5853-a0d1-803402b78c91",
+        "DomainOfInfluenceId": "a5c52ce6-52d3-559a-9953-10a4592bafc9"
+      },
+      {
         "CountingCircleId": "2c58653b-c3b6-51f4-869f-6e199feff6d2",
         "DomainOfInfluenceId": "5e3e5c7e-1e73-5694-84ec-1b2273f620ea"
+      },
+      {
+        "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",
+        "DomainOfInfluenceId": "a5c52ce6-52d3-559a-9953-10a4592bafc9"
       },
       {
         "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",

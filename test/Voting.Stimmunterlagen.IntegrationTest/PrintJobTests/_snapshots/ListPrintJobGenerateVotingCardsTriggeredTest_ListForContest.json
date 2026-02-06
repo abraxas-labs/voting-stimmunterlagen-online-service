@@ -24,7 +24,13 @@
           "Seconds": 1578661930,
           "Nanos": 200000000
         },
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "9170",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "State": 1,
       "ProcessStartedOn": null,
@@ -59,9 +65,59 @@
           "Seconds": 1578661930,
           "Nanos": 200000000
         },
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": true,
+        "Bfs": "1240",
+        "HasEmptyVotingCards": true,
+        "CountOfEmptyVotingCards": 2,
+        "LastCountOfEmptyVotingCardsUpdate": {
+          "Seconds": 1591013700,
+          "Nanos": 0
+        }
       },
       "State": 3,
+      "ProcessStartedOn": null,
+      "ProcessEndedOn": null,
+      "DoneOn": null,
+      "GenerateVotingCardsTriggered": {
+        "Seconds": 1578661930,
+        "Nanos": 200000000
+      }
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "6d133336-0fc8-565c-8539-6b2ff4fae42b",
+        "Name": "Kirchgemeinde Arnegg",
+        "ShortName": "MU-AG-KI",
+        "AuthorityName": "Kirchgemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": {
+          "Seconds": 1578661930,
+          "Nanos": 200000000
+        },
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "State": 1,
       "ProcessStartedOn": null,
       "ProcessEndedOn": null,
       "DoneOn": null,
@@ -94,7 +150,54 @@
           "Seconds": 1578661930,
           "Nanos": 200000000
         },
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "1110",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "State": 1,
+      "ProcessStartedOn": null,
+      "ProcessEndedOn": null,
+      "DoneOn": null,
+      "GenerateVotingCardsTriggered": {
+        "Seconds": 1578661930,
+        "Nanos": 200000000
+      }
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "a997e9dd-ca63-5565-9a82-847c22d5f9b1",
+        "Name": "Zweckverband ARA Gossau",
+        "ShortName": "MU-GO-ARA",
+        "AuthorityName": "Stadt St. Gossau",
+        "Type": 10,
+        "SecureConnectId": "SC-MU-GO",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 6,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": {
+          "Seconds": 1578661930,
+          "Nanos": 200000000
+        },
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "State": 1,
       "ProcessStartedOn": null,

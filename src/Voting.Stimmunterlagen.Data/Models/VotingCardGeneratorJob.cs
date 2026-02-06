@@ -23,6 +23,8 @@ public class VotingCardGeneratorJob : BaseEntity, IHasContestDomainOfInfluence
 
     public ICollection<Voter> Voter { get; set; } = new HashSet<Voter>();
 
+    public bool HasEmptyVotingCards { get; set; }
+
     public DomainOfInfluenceVotingCardLayout? Layout { get; set; }
 
     // e-voting jobs run offline and have no layout.

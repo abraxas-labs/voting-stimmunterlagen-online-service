@@ -24,7 +24,7 @@ public class EVotingDomainOfInfluenceEntry
     // should always be greater or equal 0, because a manager is always also an attendee.
     public int ParentPoliticalBusinessesCount => GetPoliticalBusinessPermissionCountByRole(PoliticalBusinessRole.Attendee, true);
 
-    public int NumberOfEVoters => DomainOfInfluence.VoterLists!.Where(vl => vl.VotingCardType == VotingCardType.EVoting).Sum(vl => vl.NumberOfVoters);
+    public int CountOfVotingCardsForEVoters => DomainOfInfluence.VoterLists!.Where(vl => vl.VotingCardType == VotingCardType.EVoting).Sum(vl => vl.CountOfVotingCards);
 
     private int GetPoliticalBusinessPermissionCountByRole(PoliticalBusinessRole role, bool exceptOwnPoliticalBusinesses)
     {

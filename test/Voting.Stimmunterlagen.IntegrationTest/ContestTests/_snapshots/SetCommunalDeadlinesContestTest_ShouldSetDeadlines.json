@@ -1,0 +1,18 @@
+{
+  "PrintingCenterSignUpDeadline": {
+    "Seconds": 1578697200,
+    "Nanos": 0
+  },
+  "AttachmentDeliveryDeadline": {
+    "Seconds": 1579474800,
+    "Nanos": 0
+  },
+  "GenerateVotingCardsDeadline": {
+    "Seconds": 1579302000,
+    "Nanos": 0
+  },
+  "DeliveryToPostDeadline": {
+    "Seconds": 1581375600,
+    "Nanos": 0
+  }
+}

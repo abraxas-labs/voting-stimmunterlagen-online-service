@@ -14,6 +14,8 @@
     "PrintingCenterSignUpDeadline": null,
     "AttachmentDeliveryDeadline": null,
     "GenerateVotingCardsDeadline": null,
+    "ElectoralRegisterEVotingFrom": null,
+    "DeliveryToPostDeadline": null,
     "VotingCardLayouts": null,
     "TestingPhaseEnded": false,
     "Translations": [
@@ -47,9 +49,21 @@
         "Role": 2
       },
       {
+        "Name": "Kirchgemeinde Arnegg",
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "SecureConnectId": "SC-MU-AG",
+        "Role": 2
+      },
+      {
         "Name": "Kanton St. Gallen",
         "BasisDomainOfInfluenceId": "8acf818a-45da-4738-a546-4c8428a6a6b1",
         "SecureConnectId": "SC-SG",
+        "Role": 2
+      },
+      {
+        "Name": "Zweckverband ARA Gossau",
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "SecureConnectId": "SC-MU-GO",
         "Role": 2
       },
       {
@@ -185,6 +199,54 @@
       {
         "Step": 1,
         "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 4,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 6,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 7,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 8,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 10,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 11,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 13,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "7c2726cc-c53f-4c7c-960b-9eb1886beae7",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "Step": 1,
+        "Approved": false,
         "BasisDomainOfInfluenceId": "8acf818a-45da-4738-a546-4c8428a6a6b1",
         "Name": "Kanton St. Gallen"
       },
@@ -199,6 +261,54 @@
         "Approved": false,
         "BasisDomainOfInfluenceId": "8acf818a-45da-4738-a546-4c8428a6a6b1",
         "Name": "Kanton St. Gallen"
+      },
+      {
+        "Step": 1,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 4,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 6,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 7,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 8,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 10,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 11,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
+      },
+      {
+        "Step": 13,
+        "Approved": false,
+        "BasisDomainOfInfluenceId": "94b5f873-9623-48ed-83f9-72819163b660",
+        "Name": "Zweckverband ARA Gossau"
       },
       {
         "Step": 1,
@@ -418,6 +528,12 @@
         "AllowCustom": true
       },
       {
+        "Name": "Kirchgemeinde Arnegg",
+        "VotingCardType": 1,
+        "TemplateId": 1,
+        "AllowCustom": true
+      },
+      {
         "Name": "Stadt Gossau",
         "VotingCardType": 1,
         "TemplateId": 1,
@@ -431,6 +547,12 @@
       },
       {
         "Name": "Stadt Uzwil",
+        "VotingCardType": 1,
+        "TemplateId": 1,
+        "AllowCustom": true
+      },
+      {
+        "Name": "Zweckverband ARA Gossau",
         "VotingCardType": 1,
         "TemplateId": 1,
         "AllowCustom": true
@@ -487,11 +609,19 @@
       },
       {
         "CountingCircleId": "78f2dace-cac1-50e0-94ee-8ab9ebbdad93",
+        "DomainOfInfluenceId": "4926dbeb-84a1-5e41-bf0a-e670c248e6ad"
+      },
+      {
+        "CountingCircleId": "78f2dace-cac1-50e0-94ee-8ab9ebbdad93",
         "DomainOfInfluenceId": "a4fea864-df16-58dc-bf76-5d33489d01a3"
       },
       {
         "CountingCircleId": "8002687b-4495-55c0-b77c-3cc41060846c",
         "DomainOfInfluenceId": "1779cde4-8a1f-5113-a7d6-5f886476566a"
+      },
+      {
+        "CountingCircleId": "bef1964f-36d4-5b6c-bc79-8ae1f34e2959",
+        "DomainOfInfluenceId": "4926dbeb-84a1-5e41-bf0a-e670c248e6ad"
       },
       {
         "CountingCircleId": "bef1964f-36d4-5b6c-bc79-8ae1f34e2959",

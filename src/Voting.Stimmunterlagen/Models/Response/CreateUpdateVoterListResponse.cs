@@ -2,7 +2,6 @@
 // For license information see LICENSE file
 
 using System;
-using System.Collections.Generic;
 
 namespace Voting.Stimmunterlagen.Models.Response;
 
@@ -14,5 +13,5 @@ public class CreateUpdateVoterListResponse
 
     public int NumberOfVoters { get; init; }
 
-    public List<CreateVoterDuplicateResponse> VoterDuplicates { get; init; } = new();
+    public int CountOfVotingCardsForDomainOfInfluenceReturnAddress { get; init; }
 }

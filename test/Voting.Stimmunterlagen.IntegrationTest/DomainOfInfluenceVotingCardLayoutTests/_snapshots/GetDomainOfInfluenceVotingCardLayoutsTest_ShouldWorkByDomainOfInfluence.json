@@ -16,7 +16,15 @@
       },
       "AllowCustom": true,
       "VotingCardType": 1,
-      "DomainOfInfluence": null
+      "DomainOfInfluence": null,
+      "DataConfiguration": {
+        "IncludePersonId": false,
+        "IncludeDateOfBirth": false,
+        "IncludeReligion": false,
+        "IncludeIsHouseholder": false,
+        "IncludeDomainOfInfluenceChurch": false,
+        "IncludeDomainOfInfluenceSchool": false
+      }
     }
   ]
 }

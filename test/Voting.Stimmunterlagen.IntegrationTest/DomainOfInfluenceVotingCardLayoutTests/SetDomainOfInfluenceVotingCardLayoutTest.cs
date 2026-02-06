@@ -36,6 +36,10 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
             TemplateId = DmDocServiceMock.TemplateOthers2.Id,
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+            DataConfiguration = new()
+            {
+                IncludeReligion = true,
+            },
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -50,6 +54,26 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
     }
 
     [Fact]
+    public async Task ShouldOverrideOptionsIfStistatMunicipality()
+    {
+        await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
+        {
+            AllowCustom = true,
+            TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+            VotingCardType = VotingCardType.Swiss,
+            DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+            DataConfiguration = new(),
+        });
+
+        var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
+            .SingleAsync(x =>
+                x.VotingCardType == Data.Models.VotingCardType.Swiss
+                && x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid));
+        layout.DataConfiguration.IncludePersonId.Should().BeTrue();
+        layout.DataConfiguration.IncludeDateOfBirth.Should().BeTrue();
+    }
+
+    [Fact]
     public async Task ShouldReset()
     {
         await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
@@ -58,12 +82,17 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
             TemplateId = DmDocServiceMock.TemplateOthers2.Id,
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+            DataConfiguration = new()
+            {
+                IncludeIsHouseholder = true,
+            },
         });
         await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
         {
             AllowCustom = true,
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+            DataConfiguration = new(),
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -75,6 +104,7 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
         layout.DomainOfInfluenceTemplateId.Should().BeNull();
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
         layout.OverriddenTemplateId.Should().BeNull();
+        layout.DataConfiguration.IncludeIsHouseholder.Should().BeFalse();
     }
 
     [Fact]
@@ -93,6 +123,7 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = doiGuid.ToString(),
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -107,6 +138,7 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -121,6 +153,7 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -135,6 +168,7 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundArchivedNotApprovedGemeindeArneggId,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }

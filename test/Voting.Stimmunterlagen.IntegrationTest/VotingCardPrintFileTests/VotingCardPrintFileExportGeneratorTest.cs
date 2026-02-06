@@ -58,6 +58,40 @@ public class VotingCardPrintFileExportGeneratorTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task ShouldWorkWithEmptyVotingCards()
+    {
+        await SeedVoters();
+        _storeMock.SaveFileInMemory = true;
+
+        await ModifyDbEntities<Voter>(
+            v => v.List!.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid,
+            v =>
+            {
+                v.PageInfo = new()
+                {
+                    PageFrom = 10,
+                    PageTo = 11,
+                };
+            });
+
+        var jobId = VotingCardPrintFileExportJobMockData.BundFutureApprovedGemeindeArneggEmptyVcJobGuid;
+
+        await RunJob(jobId);
+        var job = await GetDbEntity<VotingCardPrintFileExportJob>(x =>
+            x.Id == jobId);
+
+        job.Started.Should().Be(MockedClock.UtcNowDate);
+        job.Completed.Should().Be(MockedClock.UtcNowDate);
+        job.Runner.Should().Be(Environment.MachineName);
+        job.State.Should().Be(ExportJobState.Completed);
+
+        _storeMock.AssertFileWritten(DefaultMessageId, job.FileName);
+
+        var csv = Encoding.UTF8.GetString(_storeMock.GetFile(DefaultMessageId));
+        csv.ShouldMatchSnapshot();
+    }
+
+    [Fact]
     public async Task AlreadyLockedShouldThrow()
     {
         using var scope = GetService<IServiceScopeFactory>().CreateScope();
@@ -90,6 +124,7 @@ public class VotingCardPrintFileExportGeneratorTest : BaseWriteableDbTest
         _storeMock.AssertFileNotWritten(DefaultMessageId, job.FileName);
         job.State.Should().Be(ExportJobState.Failed);
         job.Failed.Should().Be(MockedClock.UtcNowDate);
+        job.Completed.Should().BeNull();
     }
 
     private Task SetState(Guid jobId, ExportJobState state)
@@ -98,24 +133,28 @@ public class VotingCardPrintFileExportGeneratorTest : BaseWriteableDbTest
         {
             var job = await db.VotingCardPrintFileExportJobs.FindAsync(jobId);
             job!.State = state;
+            if (state == ExportJobState.Completed)
+            {
+                job.Completed = MockedClock.UtcNowDate;
+            }
+
             db.Update(job);
             await db.SaveChangesAsync();
         });
     }
 
-    private async Task RunJob()
+    private async Task RunJob(Guid? jobId = null)
     {
         using var scope = GetService<IServiceScopeFactory>().CreateScope();
         var generator = scope.ServiceProvider.GetRequiredService<VotingCardPrintFileExportGenerator>();
-        await generator.Run(JobId);
+        await generator.Run(jobId ?? JobId);
     }
 
     private async Task SeedVoters()
     {
         await RunOnDb(async db =>
         {
-            var job = await db.VotingCardPrintFileExportJobs.AsTracking().Include(j => j.VotingCardGeneratorJob!.Layout!.OverriddenTemplate).SingleAsync(j => j.Id == JobId);
-            job.VotingCardGeneratorJob!.Voter.Add(new()
+            var voter1 = new Voter
             {
                 ListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid,
                 FirstName = "Arnd",
@@ -150,8 +189,8 @@ public class VotingCardPrintFileExportGeneratorTest : BaseWriteableDbTest
                     PageTo = 2,
                 },
                 ContestId = ContestMockData.BundFutureApprovedGuid,
-            });
-            job.VotingCardGeneratorJob.Voter.Add(new()
+            };
+            var voter2 = new Voter
             {
                 ListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid,
                 FirstName = "Torsten",
@@ -219,7 +258,65 @@ public class VotingCardPrintFileExportGeneratorTest : BaseWriteableDbTest
                     PageTo = 4,
                 },
                 ContestId = ContestMockData.BundFutureApprovedGuid,
-            });
+            };
+
+            var voter1PrintDisabled = new Voter
+            {
+                ListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissElectoralRegisterGuid,
+                FirstName = "Arnd",
+                LastName = "Thalberg",
+                Street = "Damunt",
+                HouseNumber = "149",
+                DwellingNumber = "2. Stock",
+                Town = "Gündlikon",
+                ForeignZipCode = "DE-91801",
+                Country = { Iso2 = "DE", Name = "Deutschland" },
+                Bfs = "1234",
+                LanguageOfCorrespondence = Languages.German,
+                VotingCardType = VotingCardType.Swiss,
+                DateOfBirth = "1980-07-21",
+                Sex = SexType.Male,
+                VoterType = VoterType.Swiss,
+                PersonId = "3",
+                PersonIdCategory = "Inlandschweizer",
+                MunicipalityName = "Arnegg",
+                SendVotingCardsToDomainOfInfluenceReturnAddress = true,
+                PlacesOfOrigin = new List<VoterPlaceOfOrigin>
+                {
+                    new()
+                    {
+                        Name = "St. Gallen",
+                        Canton = CantonAbbreviation.SG,
+                    },
+                },
+                PageInfo = new()
+                {
+                    PageFrom = 1,
+                    PageTo = 2,
+                },
+                ContestId = ContestMockData.BundFutureApprovedGuid,
+                VotingCardPrintDisabled = true,
+                VoterDuplicate = new DomainOfInfluenceVoterDuplicate
+                {
+                    FirstName = "Arnd",
+                    LastName = "Thalberg",
+                    DateOfBirth = "1980-07-21",
+                    DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+                },
+            };
+
+            db.Voters.Add(voter1PrintDisabled);
+            await db.SaveChangesAsync();
+
+            voter1.VoterDuplicateId = voter1PrintDisabled.VoterDuplicateId;
+
+            var job = await db.VotingCardPrintFileExportJobs
+                .AsTracking()
+                .Include(j => j.VotingCardGeneratorJob!.Layout!.OverriddenTemplate)
+                .SingleAsync(j => j.Id == JobId);
+
+            job.VotingCardGeneratorJob!.Voter.Add(voter1);
+            job.VotingCardGeneratorJob.Voter.Add(voter2);
             job.VotingCardGeneratorJob!.Layout!.OverriddenTemplate!.InternName = "voting_template";
             await db.SaveChangesAsync();
         });

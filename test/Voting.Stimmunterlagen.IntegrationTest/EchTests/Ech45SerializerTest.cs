@@ -27,8 +27,10 @@ public class Ech45SerializerTest : BaseReadOnlyDbTest
     {
     }
 
-    [Fact]
-    public async Task TestEch0045()
+    [Theory]
+    [InlineData(Ech0045Version.V4, "TestEch0045v4")]
+    [InlineData(Ech0045Version.V6, "TestEch0045v6")]
+    public async Task TestEch0045(Ech0045Version version, string testName)
     {
         var contestId = ContestMockData.BundFutureApprovedGuid;
 
@@ -50,14 +52,13 @@ public class Ech45SerializerTest : BaseReadOnlyDbTest
             [voterList.DomainOfInfluenceId] = parentsAndSelf,
         };
 
-        RunScoped<EchService>(serializer =>
+        RunScoped<Ech0045Service>(serializer =>
         {
-            var ech45 = serializer.ToDelivery(contest, voterList, DomainOfInfluenceCanton.Sg, doiHierarchyById);
-            var serializedBytes = serializer.WriteEch0045Xml(ech45);
+            var serializedBytes = serializer.WriteEch0045Xml(version, contest, voterList, DomainOfInfluenceCanton.Sg, doiHierarchyById);
             var serialized = Encoding.UTF8.GetString(serializedBytes);
 
             XmlUtil.ValidateSchema(serialized, Ech0045Schemas.LoadEch0045Schemas());
-            MatchXmlSnapshot(serialized, nameof(TestEch0045));
+            MatchXmlSnapshot(serialized, testName);
         });
     }
 
@@ -86,10 +87,9 @@ public class Ech45SerializerTest : BaseReadOnlyDbTest
             [voterList.DomainOfInfluenceId] = parentsAndSelf,
         };
 
-        RunScoped<EchService>(serializer =>
+        RunScoped<Ech0045Service>(serializer =>
         {
-            var ech45 = serializer.ToDelivery(contest, voterList, DomainOfInfluenceCanton.Sg, doiHierarchyById);
-            var serializedBytes = serializer.WriteEch0045Xml(ech45);
+            var serializedBytes = serializer.WriteEch0045Xml(Ech0045Version.V4, contest, voterList, DomainOfInfluenceCanton.Sg, doiHierarchyById);
             var serialized = Encoding.UTF8.GetString(serializedBytes);
 
             var schemaSet = Ech0045Schemas.LoadEch0045Schemas();

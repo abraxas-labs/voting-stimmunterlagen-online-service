@@ -151,11 +151,21 @@ public class Voter : BaseEntity
 
     public bool IsHouseholder { get; set; }
 
+    public Guid? VoterDuplicateId { get; set; }
+
+    public DomainOfInfluenceVoterDuplicate? VoterDuplicate { get; set; }
+
+    public bool VotingCardPrintDisabled { get; set; }
+
     [NotMapped]
     public int? ResidenceBuildingId { get; set; }
 
     [NotMapped]
     public int? ResidenceApartmentId { get; set; }
+
+    public bool IsMinor { get; set; }
+
+    public ICollection<VoterDomainOfInfluence>? DomainOfInfluences { get; set; }
 
     public string? GetGroupValue(VotingCardGroup group)
     {

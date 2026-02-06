@@ -27,6 +27,7 @@ public class SetDomainOfInfluenceVotingCardLayoutRequestValidatorTest :
         yield return New(x => x.TemplateId = 1000001);
         yield return New(x => x.VotingCardType = VotingCardType.Unspecified);
         yield return New(x => x.VotingCardType = (VotingCardType)6);
+        yield return New(x => x.DataConfiguration = null);
     }
 
     private static SetDomainOfInfluenceVotingCardLayoutRequest New(Action<SetDomainOfInfluenceVotingCardLayoutRequest>? customizer = null)
@@ -36,6 +37,7 @@ public class SetDomainOfInfluenceVotingCardLayoutRequestValidatorTest :
             TemplateId = 2,
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = "4590b3b6-1c0f-45a7-bbda-7d3cf7e7b3c2",
+            DataConfiguration = new(),
         };
         customizer?.Invoke(req);
         return req;

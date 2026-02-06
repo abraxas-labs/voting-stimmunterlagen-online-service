@@ -1,6 +1,7 @@
 ﻿// (c) Copyright by Abraxas Informatik AG
 // For license information see LICENSE file
 
+using System.Collections.Generic;
 using Voting.Stimmunterlagen.Core.Models.Invoice;
 using Voting.Stimmunterlagen.Data.Models;
 
@@ -33,6 +34,12 @@ public class MaterialConfig
     public MaterialContestType ContestType { get; set; }
 
     public MaterialVotingCardFormat VotingCardFormat { get; set; }
+
+    /// <summary>
+    /// Gets or sets, whether the material is only available for specific shipping methods.
+    /// If not set the shipping method does not matter for this material.
+    /// </summary>
+    public List<VotingCardShippingMethod> VotingCardShippingMethods { get; set; } = new();
 
     public bool? IsDuplex { get; set; }
 }

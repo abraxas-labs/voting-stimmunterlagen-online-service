@@ -42,4 +42,14 @@ public class ManualVotingCardGeneratorJobService : Proto.V1.ManualVotingCardGene
             Pdf = await ByteString.FromStreamAsync(pdf, context.CancellationToken),
         };
     }
+
+    public override async Task<TemplatePreview> CreateEmpty(CreateEmptyManualVotingCardGeneratorJobRequest request, ServerCallContext context)
+    {
+        var doiId = GuidParser.Parse(request.DomainOfInfluenceId);
+        await using var pdf = await _manager.CreateEmpty(doiId, context.CancellationToken);
+        return new TemplatePreview
+        {
+            Pdf = await ByteString.FromStreamAsync(pdf, context.CancellationToken),
+        };
+    }
 }

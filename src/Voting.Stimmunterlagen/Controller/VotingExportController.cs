@@ -27,7 +27,7 @@ public class VotingExportController : ControllerBase
     [HttpPost]
     public async Task<FileResult> GenerateExport([FromBody] GenerateVotingExportRequest request, CancellationToken ct)
     {
-        var file = await _votingExportManager.GenerateExport(request.Key, request.DomainOfInfluenceId, ct);
+        var file = await _votingExportManager.GenerateExport(request.Key, request.DomainOfInfluenceId, request.VoterListId, ct);
         return SingleFileResult.Create(new FileModelWrapper(file), ct);
     }
 }

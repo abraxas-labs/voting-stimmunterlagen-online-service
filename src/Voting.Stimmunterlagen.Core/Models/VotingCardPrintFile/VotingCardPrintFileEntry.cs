@@ -81,7 +81,7 @@ public class VotingCardPrintFileEntry
     public VotingCardShippingFranking ShippingAway { get; set; }
 
     [Name("VERSAND_ART")]
-    public VotingCardShippingMethod ShippingMethod { get; set; }
+    public string ShippingMethodCode { get; set; } = string.Empty;
 
     [Name("VERSAND_RUECKWEG")]
     public VotingCardShippingFranking ShippingReturn { get; set; }
@@ -94,4 +94,7 @@ public class VotingCardPrintFileEntry
 
     [Name("AuftrP")]
     public string ContestOrderNumber { get; set; } = string.Empty;
+
+    [Name("RELIGION")]
+    public string ReligionCode { get; set; } = string.Empty;
 }

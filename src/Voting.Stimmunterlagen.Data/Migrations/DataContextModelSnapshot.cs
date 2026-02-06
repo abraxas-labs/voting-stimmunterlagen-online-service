@@ -192,11 +192,17 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("date");
 
+                    b.Property<DateTime?>("DeliveryToPostDeadline")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<Guid?>("DomainOfInfluenceId")
                         .HasColumnType("uuid");
 
                     b.Property<bool>("EVoting")
                         .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ElectoralRegisterEVotingFrom")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("GenerateVotingCardsDeadline")
                         .HasColumnType("timestamp with time zone");
@@ -249,6 +255,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("SecureConnectId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ContestId");
@@ -282,6 +292,12 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<Guid>("ContestId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("CountOfEmptyVotingCards")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("ElectoralRegisterMultipleEnabled")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("ElectoralRegistrationEnabled")
                         .HasColumnType("boolean");
 
@@ -293,6 +309,15 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("GenerateVotingCardsTriggered")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("HasEmptyVotingCards")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsMainVotingCardsDomainOfInfluence")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastCountOfEmptyVotingCardsUpdate")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("LastVoterUpdate")
@@ -418,6 +443,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<Guid>("ContestId")
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Ech0045Version")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("Failed")
                         .HasColumnType("timestamp with time zone");
 
@@ -531,6 +559,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("SecureConnectId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("CountingCircles");
@@ -553,6 +585,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<int>("Canton")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("ElectoralRegisterMultipleEnabled")
+                        .HasColumnType("boolean");
+
                     b.Property<bool>("ElectoralRegistrationEnabled")
                         .HasColumnType("boolean");
 
@@ -562,6 +597,12 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<string>("ExternalPrintingCenterEaiMessageType")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("HasEmptyVotingCards")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsMainVotingCardsDomainOfInfluence")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("LogoRef")
                         .HasColumnType("text");
@@ -682,6 +723,41 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("DomainOfInfluenceHierarchyEntries");
+                });
+
+            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVoterDuplicate", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("DateOfBirth")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("DomainOfInfluenceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("HouseNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DomainOfInfluenceId");
+
+                    b.ToTable("DomainOfInfluenceVoterDuplicates");
                 });
 
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVotingCardConfiguration", b =>
@@ -806,6 +882,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
 
                     b.Property<Guid>("DomainOfInfluenceId")
                         .HasColumnType("uuid");
+
+                    b.Property<bool?>("EVotingApproved")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PoliticalBusinessNumber")
                         .IsRequired()
@@ -1142,6 +1221,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<bool>("IsHouseholder")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsMinor")
+                        .HasColumnType("boolean");
+
                     b.Property<Guid?>("JobId")
                         .HasColumnType("uuid");
 
@@ -1215,8 +1297,14 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("character varying(40)");
 
+                    b.Property<Guid?>("VoterDuplicateId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("VoterType")
                         .HasColumnType("integer");
+
+                    b.Property<bool>("VotingCardPrintDisabled")
+                        .HasColumnType("boolean");
 
                     b.Property<int>("VotingCardType")
                         .HasColumnType("integer");
@@ -1230,45 +1318,40 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.HasIndex("ManualJobId")
                         .IsUnique();
 
+                    b.HasIndex("VoterDuplicateId");
+
                     b.HasIndex("ContestId", "ContestIndex")
                         .IsUnique();
 
                     b.ToTable("Voters");
                 });
 
-            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterDuplicate", b =>
+            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterDomainOfInfluence", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("DateOfBirth")
+                    b.Property<string>("DomainOfInfluenceIdentification")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<string>("DomainOfInfluenceName")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("ListId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PersonId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Sex")
+                    b.Property<int>("DomainOfInfluenceType")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("VoterId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ListId");
+                    b.HasIndex("VoterId");
 
-                    b.ToTable("VoterDuplicates");
+                    b.ToTable("VoterDomainOfInfluence");
                 });
 
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterList", b =>
@@ -1277,22 +1360,26 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("CountOfSendVotingCardsToDomainOfInfluenceReturnAddress")
+                    b.Property<int>("CountOfVotingCards")
                         .HasColumnType("integer");
+
+                    b.Property<int>("CountOfVotingCardsForDomainOfInfluenceReturnAddress")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CountOfVotingCardsForHouseholders")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("CountOfVotingCardsForHouseholdersExclDomainOfInfluenceReturnAddress")
+                        .HasColumnType("integer")
+                        .HasColumnName("CountOfVotingCardsForHouseholdersExclDomainOfInfluenceReturnAd~");
 
                     b.Property<Guid>("DomainOfInfluenceId")
                         .HasColumnType("uuid");
-
-                    b.Property<bool>("HasVoterDuplicates")
-                        .HasColumnType("boolean");
 
                     b.Property<Guid>("ImportId")
                         .HasColumnType("uuid");
 
                     b.Property<int>("Index")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("NumberOfHouseholders")
                         .HasColumnType("integer");
 
                     b.Property<int>("NumberOfVoters")
@@ -1375,6 +1462,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<string>("FileName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("HasEmptyVotingCards")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("LayoutId")
                         .HasColumnType("uuid");
@@ -1707,6 +1797,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                             b1.Property<Guid>("ContestDomainOfInfluenceId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<string>("FrankingLicenceAwayNumber")
+                                .IsRequired()
+                                .HasColumnType("text");
+
                             b1.Property<string>("FrankingLicenceReturnNumber")
                                 .IsRequired()
                                 .HasColumnType("text");
@@ -1812,7 +1906,41 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .WithMany("ContestVotingCardLayouts")
                         .HasForeignKey("TemplateId");
 
+                    b.OwnsOne("Voting.Stimmunterlagen.Data.Models.VotingCardLayoutDataConfiguration", "DataConfiguration", b1 =>
+                        {
+                            b1.Property<Guid>("ContestVotingCardLayoutId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<bool>("IncludeDateOfBirth")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeDomainOfInfluenceChurch")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeDomainOfInfluenceSchool")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeIsHouseholder")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludePersonId")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeReligion")
+                                .HasColumnType("boolean");
+
+                            b1.HasKey("ContestVotingCardLayoutId");
+
+                            b1.ToTable("ContestVotingCardLayouts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ContestVotingCardLayoutId");
+                        });
+
                     b.Navigation("Contest");
+
+                    b.Navigation("DataConfiguration")
+                        .IsRequired();
 
                     b.Navigation("Template");
                 });
@@ -1918,6 +2046,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                             b1.Property<Guid>("DomainOfInfluenceId")
                                 .HasColumnType("uuid");
 
+                            b1.Property<string>("FrankingLicenceAwayNumber")
+                                .IsRequired()
+                                .HasColumnType("text");
+
                             b1.Property<string>("FrankingLicenceReturnNumber")
                                 .IsRequired()
                                 .HasColumnType("text");
@@ -2005,6 +2137,17 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Navigation("ParentDomainOfInfluence");
                 });
 
+            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVoterDuplicate", b =>
+                {
+                    b.HasOne("Voting.Stimmunterlagen.Data.Models.ContestDomainOfInfluence", "DomainOfInfluence")
+                        .WithMany("VoterDuplicates")
+                        .HasForeignKey("DomainOfInfluenceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DomainOfInfluence");
+                });
+
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVotingCardConfiguration", b =>
                 {
                     b.HasOne("Voting.Stimmunterlagen.Data.Models.ContestDomainOfInfluence", "DomainOfInfluence")
@@ -2035,6 +2178,40 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.HasOne("Voting.Stimmunterlagen.Data.Models.Template", "Template")
                         .WithMany("DomainOfInfluenceVotingCardLayouts")
                         .HasForeignKey("TemplateId");
+
+                    b.OwnsOne("Voting.Stimmunterlagen.Data.Models.VotingCardLayoutDataConfiguration", "DataConfiguration", b1 =>
+                        {
+                            b1.Property<Guid>("DomainOfInfluenceVotingCardLayoutId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<bool>("IncludeDateOfBirth")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeDomainOfInfluenceChurch")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeDomainOfInfluenceSchool")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeIsHouseholder")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludePersonId")
+                                .HasColumnType("boolean");
+
+                            b1.Property<bool>("IncludeReligion")
+                                .HasColumnType("boolean");
+
+                            b1.HasKey("DomainOfInfluenceVotingCardLayoutId");
+
+                            b1.ToTable("DomainOfInfluenceVotingCardLayouts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DomainOfInfluenceVotingCardLayoutId");
+                        });
+
+                    b.Navigation("DataConfiguration")
+                        .IsRequired();
 
                     b.Navigation("DomainOfInfluence");
 
@@ -2249,6 +2426,11 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .WithOne("Voter")
                         .HasForeignKey("Voting.Stimmunterlagen.Data.Models.Voter", "ManualJobId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVoterDuplicate", "VoterDuplicate")
+                        .WithMany("Voters")
+                        .HasForeignKey("VoterDuplicateId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.OwnsOne("Voting.Stimmunterlagen.Data.Models.Country", "Country", b1 =>
                         {
@@ -2531,17 +2713,19 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Navigation("PlacesOfOrigin");
 
                     b.Navigation("SwissAbroadPerson");
+
+                    b.Navigation("VoterDuplicate");
                 });
 
-            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterDuplicate", b =>
+            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterDomainOfInfluence", b =>
                 {
-                    b.HasOne("Voting.Stimmunterlagen.Data.Models.VoterList", "List")
-                        .WithMany("VoterDuplicates")
-                        .HasForeignKey("ListId")
+                    b.HasOne("Voting.Stimmunterlagen.Data.Models.Voter", "Voter")
+                        .WithMany("DomainOfInfluences")
+                        .HasForeignKey("VoterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("List");
+                    b.Navigation("Voter");
                 });
 
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterList", b =>
@@ -2662,6 +2846,8 @@ namespace Voting.Stimmunterlagen.Data.Migrations
 
                     b.Navigation("StepStates");
 
+                    b.Navigation("VoterDuplicates");
+
                     b.Navigation("VoterListImports");
 
                     b.Navigation("VoterLists");
@@ -2691,6 +2877,11 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Navigation("RootOfChildrenAndSelf");
                 });
 
+            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVoterDuplicate", b =>
+                {
+                    b.Navigation("Voters");
+                });
+
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVotingCardLayout", b =>
                 {
                     b.Navigation("Jobs");
@@ -2702,8 +2893,7 @@ namespace Voting.Stimmunterlagen.Data.Migrations
 
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.ManualVotingCardGeneratorJob", b =>
                 {
-                    b.Navigation("Voter")
-                        .IsRequired();
+                    b.Navigation("Voter");
                 });
 
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.PoliticalBusiness", b =>
@@ -2736,11 +2926,14 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Navigation("Values");
                 });
 
+            modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.Voter", b =>
+                {
+                    b.Navigation("DomainOfInfluences");
+                });
+
             modelBuilder.Entity("Voting.Stimmunterlagen.Data.Models.VoterList", b =>
                 {
                     b.Navigation("PoliticalBusinessEntries");
-
-                    b.Navigation("VoterDuplicates");
 
                     b.Navigation("Voters");
                 });

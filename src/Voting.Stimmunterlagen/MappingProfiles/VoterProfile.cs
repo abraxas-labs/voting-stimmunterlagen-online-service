@@ -7,7 +7,6 @@ using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Ech.Mapping;
-using Voting.Stimmunterlagen.Models.Response;
 using ProtoModels = Voting.Stimmunterlagen.Proto.V1.Models;
 
 namespace Voting.Stimmunterlagen.MappingProfiles;
@@ -29,7 +28,5 @@ public class VoterProfile : Profile
             .ForMember(dst => dst.DateOfBirth, opts => opts.MapFrom(src => src.DateOfBirth.ToDateTime().ToString(DatePartiallyKnownMapping.YearMonthDayFormat)));
         CreateMap<Country, ProtoModels.Country>()
             .ReverseMap();
-        CreateMap<VoterDuplicate, ProtoModels.VoterDuplicate>();
-        CreateMap<VoterDuplicate, CreateVoterDuplicateResponse>();
     }
 }

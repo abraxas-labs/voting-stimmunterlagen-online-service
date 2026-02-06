@@ -4,6 +4,7 @@
 using System.Threading.Tasks;
 using Abraxas.Voting.Basis.Events.V1;
 using Voting.Lib.Common;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Repositories;
 
 namespace Voting.Stimmunterlagen.Core.EventProcessors;
@@ -11,7 +12,9 @@ namespace Voting.Stimmunterlagen.Core.EventProcessors;
 public class PoliticalAssemblyProcessor :
     IEventProcessor<PoliticalAssemblyCreated>,
     IEventProcessor<PoliticalAssemblyUpdated>,
-    IEventProcessor<PoliticalAssemblyDeleted>
+    IEventProcessor<PoliticalAssemblyDeleted>,
+    IEventProcessor<PoliticalAssemblyPastLocked>,
+    IEventProcessor<PoliticalAssemblyArchived>
 {
     private readonly ContestRepo _contestRepo;
     private readonly ContestBuilder _contestBuilder;
@@ -33,5 +36,13 @@ public class PoliticalAssemblyProcessor :
         var id = GuidParser.Parse(eventData.PoliticalAssemblyId);
         await _contestRepo.DeleteByKeyIfExists(id);
         await _contestRepo.DeleteVoterContestIndexSequence(id);
+    }
+
+    public Task Process(PoliticalAssemblyPastLocked eventData) => _contestBuilder.UpdateState(eventData.PoliticalAssemblyId, ContestState.PastLocked);
+
+    public async Task Process(PoliticalAssemblyArchived eventData)
+    {
+        await _contestBuilder.UpdateState(eventData.PoliticalAssemblyId, ContestState.Archived);
+        await _contestRepo.DeleteVoterContestIndexSequence(GuidParser.Parse(eventData.PoliticalAssemblyId));
     }
 }

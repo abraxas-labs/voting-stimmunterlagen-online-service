@@ -17,7 +17,7 @@ public class UpdateDomainOfInfluenceVotingCardBrickContentRequestValidatorTest
         yield return New(x => x.ContentId = 1);
         yield return New(x => x.ContentId = 1000000);
         yield return New(x => x.Content = RandomStringUtil.GenerateSimpleSingleLineText(1));
-        yield return New(x => x.Content = RandomStringUtil.GenerateSimpleSingleLineText(5000));
+        yield return New(x => x.Content = RandomStringUtil.GenerateSimpleSingleLineText(20000));
     }
 
     protected override IEnumerable<UpdateDomainOfInfluenceVotingCardBrickContentRequest> NotOkMessages()
@@ -25,7 +25,7 @@ public class UpdateDomainOfInfluenceVotingCardBrickContentRequestValidatorTest
         yield return New(x => x.ContentId = 0);
         yield return New(x => x.ContentId = 1000001);
         yield return New(x => x.Content = string.Empty);
-        yield return New(x => x.Content = RandomStringUtil.GenerateSimpleSingleLineText(5001));
+        yield return New(x => x.Content = RandomStringUtil.GenerateSimpleSingleLineText(20001));
     }
 
     private static UpdateDomainOfInfluenceVotingCardBrickContentRequest New(Action<UpdateDomainOfInfluenceVotingCardBrickContentRequest>? customizer = null)

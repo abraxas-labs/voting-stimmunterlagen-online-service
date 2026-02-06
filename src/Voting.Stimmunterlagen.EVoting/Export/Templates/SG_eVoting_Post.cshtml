@@ -239,28 +239,12 @@
                 background-size: contain;
             }
 
-            /*** qrCood www.evote***/
-            .qr-evoting{
+            .web-address-spacing {
                 display: inline-block;
-                width:35px;
-                height:35px;
-                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEX///8AAABVwtN+AAABtUlEQVR4nO3aPXLCMBCG4WVSuOQIPgpHg6P5KD4CpYsMG0ta/dlkhtJe3q9gItDjio1WQiKE+MiPNvmNb930ITYYdZJ7O+MBgTgiS66Dyzpr0Gck6yAlkFIpNwjEGbnGDyPJ0df6Mui8vt7V/AyBeCZD/DMuFmqVBIF8B5F1MJWqsU4JAjkHseQvf9PmzyIfdEoQyElJk9rzr21PeNgne2QI5KRkF1s58sOmd3MgEA+k1kt/wNNtAF6xjkbzEIgXkrcJtj5szvmNiAgEcmQSco29fTm3jJ19WwkxT/MQiCeS5sV6CR+FlBLRVDxLfRgE4oxILRGbpbZyxIZoyUUFgbghqTkaw4yXtU1TfUrbHJVAIH5IKgWtR50xYTDnQdspQSB+SKoXq4bmqHN53ylBIAclYdbUX7TZJlUIBOKJbFJ+rq037SXtBp77yRDIqcnurkJId7Rvt9QCySUGgfggS66DekXzrv3vWpfSTkEgvkh30z7UhZGhVtL2qBMCOT5p2h6J3v7zj/rvlx8C8UBUtSeW/R4ZAjk/sXT1UheLR93wQiC+SJO3i4Wknv+aPQTihBDypfkDmpGVuNPJRH0AAAAASUVORK5CYII=');
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-size: contain;
+                width: 35px;
+                height: 35px;
             }
 
-            /*** qrCood www.election***/
-            .qr-election-evoting{
-                margin-left: 25px;
-                display: inline-block;
-                width:35px;
-                height:35px;
-                background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQAQMAAAC6caSPAAAABlBMVEX///8AAABVwtN+AAABuElEQVR4nO3bMXLDIBCFYTwpUuoIPoqOJh/NR9ERUqrImLAsC0iOPS7N+n9FMgg+VVoLMA6BEB/5il1+04UpXlvvOTWWfsQFAnFENus/JfKdLudRt3yzNV1eYr3DDIE4I1MuhUyCNaySxKeemD0E4pjUeoldAwL5BGKvhKjTpjMEMhAp0Yf/R8mt/+S3QCC+SJcD2V5aI0Mgg5IH6cirgUAGI61eynxIqyL/k9dIKR6pI/MQiBciywRZAZRqmGyrU6Kjdg0I5E1JtOfaHv7coQuANQSb9sigNlOCQMYnltlKpNu03/KoaD224IVA/JAp10X9xuqa/sZDbD8UAvFD9GURdKZ0t+lfZ0rHZQIE4oHoPv8sA/Ub2lpI0sgkxv3kCgLxQsrLQkdJ8Sw6OVKyCLD7QiBvTsrDXw8bn2olRCXtvhCID3KIjaqkeJ0bQSCeyN1ZBclFR9lZhdQ4LnghEA9kszqwI5qhHUw77+tlhkCckf9P2u+ig7KHQEYituAtPZZnDz8EMjyRjth+ZpIj19fHn/wQyKCkRIkubKP9zKT4JzMlCGRY0mW3uylZQ9hPmyAQP4SQD80f1J6isHLSknIAAAAASUVORK5CYII=');
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-size: contain;
-            }
 
             /*** deals ***/
             .deals{
@@ -404,7 +388,7 @@
                         }
                     }
                     @if(nationality != null && municipality != null){
-                        <div class="printer-information"> $$VRSG$|eVot01|KU=@municipality.bfs|FO=BL100|DU=D|ID=@personId|PP=J|VE=@municipality.forwardDeliveryType|VA=@municipality.deliveryType|VR=@municipality.returnDeliveryType|BE=@municipality.attachmentStations|ZU=@voteElement.votingCardIndividualCodes.individualContestCodes[3].codeValue.ToString().Substring(0,22)|SP=@languageMap[nationality.languageOfCorrespondance]</div>
+                    <div class="printer-information"> $$VRSG$|eVot01|KU=@municipality.bfs|FO=BL100|DU=D|ID=@personId|PP=J|VE=@municipality.forwardDeliveryType|VA=@municipality.deliveryType|VR=@municipality.returnDeliveryType|BE=@municipality.attachmentStations|ZU=@voteElement.votingCardIndividualCodes.individualContestCodes[3].codeValue.ToString().Substring(0, 22)|SP=@languageMap[nationality.languageOfCorrespondance]</div>
                     }
                     <div class="logo">
                         @{
@@ -443,6 +427,7 @@
                             <span class="row">Briefliche Stimmabgabe</span>
                             <span class="row">@municipality.returnDeliveryAddress.addressField2</span>
                             <span class="row">@municipality.returnDeliveryAddress.street</span>
+                            <span class="row">@municipality.returnDeliveryAddress.addressAddition</span>
                             <span class="row">@municipality.returnDeliveryAddress.plz @municipality.returnDeliveryAddress.municipality</span>
                         }
                     </div>
@@ -509,7 +494,7 @@
                                 string formattedOpeningDate = openingDateTime.ToString("dddd, dd.MM.yyyy, 'um' HH:mm");
                                 string formattedClosingDate = closingTime.ToString("dddd, dd.MM.yyyy, 'um' HH:mm");
 
-                            <p>Die <b>elektronische Urne </b> öffnet am <b>@formattedOpeningDate Uhr</b> und schliesst am <b>@formattedClosingDate Uhr (MEZ)</b>.</p>
+                            <p>Die <b>elektronische Urne </b> öffnet am <b>@formattedOpeningDate Uhr</b> und schliesst am <b>@formattedClosingDate Uhr</b>.</p>
                         }
                     </div>
                         <br />
@@ -519,9 +504,7 @@
                                         <tr>
                                             <td>Web-Adresse:</td>
                                             <th>https://sg.evoting.ch</th>
-                                            <td>
-                                                <span class="qr-evoting"></span>
-                                            </td>
+                                            <td class="web-address-spacing"></td>
                                         </tr>
                                         <tr>
                                             <td>Initialisierungscode:</td>
@@ -633,7 +616,7 @@
                             @* ------------MajorzWahl-2--------------*@
                             @foreach (var electionGroupBallot in voteElement.votingCardIndividualCodes.electionGroupBallot){
                                 @foreach (var electionInformation in electionGroupBallot.electionInformation){
-                                    @if (electionInformation.candidate != null && electionInformation.list == null){
+                                    @if (electionInformation.candidate.Count > 0 && electionInformation.list.Count == 0){
                                         @if (electionInformation.election != null && electionInformation.election.electionDescription != null){
                                             <div class="poll-title title ">
                                                 @electionInformation.election.electionDescription[0].electionDescription
@@ -664,7 +647,7 @@
                             @* ------------ProporzWahl-1---------------*@
                             @foreach (var electionGroupBallot in voteElement.votingCardIndividualCodes.electionGroupBallot){
                                 @foreach (var electionInformation in electionGroupBallot.electionInformation){
-                                    @if (electionInformation.list != null && electionInformation.candidate == null){
+                                    @if (electionInformation.list.Count > 0 && electionInformation.candidate.Count == 0){
                                         @if (electionInformation.election != null && electionInformation.election.electionDescription != null){
                                             <div class="poll-title title ">
                                                 @electionInformation.election.electionDescription[0].electionDescription

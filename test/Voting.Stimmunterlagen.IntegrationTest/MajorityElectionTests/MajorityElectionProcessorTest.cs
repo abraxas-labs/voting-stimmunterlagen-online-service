@@ -54,7 +54,8 @@ public class MajorityElectionProcessorTest : BaseWriteableDbTest
                 .Where(x => x.PoliticalBusinessId == id)
                 .OrderBy(x => x.SecureConnectId)
                 .ThenBy(x => x.Role)
-                .Select(x => new { x.SecureConnectId, x.Role })
+                .ThenBy(x => x.DomainOfInfluenceId)
+                .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.Name })
                 .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
     }
@@ -84,7 +85,8 @@ public class MajorityElectionProcessorTest : BaseWriteableDbTest
                 .Where(x => x.PoliticalBusinessId == election.Id)
                 .OrderBy(x => x.SecureConnectId)
                 .ThenBy(x => x.Role)
-                .Select(x => new { x.SecureConnectId, x.Role })
+                .ThenBy(x => x.DomainOfInfluenceId)
+                .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.Name })
                 .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
     }
@@ -113,6 +115,32 @@ public class MajorityElectionProcessorTest : BaseWriteableDbTest
         pbAfter.Active
             .Should()
             .BeTrue();
+    }
+
+    [Fact]
+    public async Task MajorityElectionEVotingApprovalUpdated()
+    {
+        await TestEventPublisher.PublishTwice(new MajorityElectionEVotingApprovalUpdated
+        {
+            Approved = true,
+            MajorityElectionId = MajorityElectionMockData.BundFuture5Id,
+        });
+
+        var pbBefore = await GetPoliticalBusiness(MajorityElectionMockData.BundFuture5Guid);
+        pbBefore.EVotingApproved
+            .Should()
+            .BeTrue();
+
+        await TestEventPublisher.Publish(2, new MajorityElectionEVotingApprovalUpdated
+        {
+            Approved = false,
+            MajorityElectionId = MajorityElectionMockData.BundFuture5Id,
+        });
+
+        var pbAfter = await GetPoliticalBusiness(MajorityElectionMockData.BundFuture5Guid);
+        pbAfter.EVotingApproved
+            .Should()
+            .BeFalse();
     }
 
     [Fact]
@@ -215,7 +243,8 @@ public class MajorityElectionProcessorTest : BaseWriteableDbTest
             .Where(x => x.PoliticalBusinessId == pb.Id)
             .OrderBy(x => x.SecureConnectId)
             .ThenBy(x => x.Role)
-            .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.ContestId })
+            .ThenBy(x => x.DomainOfInfluenceId)
+            .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.ContestId, x.DomainOfInfluence.Name })
             .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
         permissions.All(x => x.ContestId == newContestId).Should().BeTrue();

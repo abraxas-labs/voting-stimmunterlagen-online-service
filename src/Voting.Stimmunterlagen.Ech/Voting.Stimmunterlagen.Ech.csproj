@@ -1,6 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="Voting.Lib.Ech.Ech0045_4_0" Version="$(VotingLibVersion)" />
+    <PackageReference Include="Voting.Lib.Ech.Ech0045_6_0" Version="$(VotingLibVersion)" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Voting.Stimmunterlagen.Data\Voting.Stimmunterlagen.Data.csproj" />

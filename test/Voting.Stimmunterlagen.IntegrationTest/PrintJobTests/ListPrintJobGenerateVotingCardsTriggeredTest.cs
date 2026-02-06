@@ -1,12 +1,12 @@
 ﻿// (c) Copyright by Abraxas Informatik AG
 // For license information see LICENSE file
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Snapper;
 using Voting.Lib.Testing.Mocks;
-using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
@@ -56,6 +56,20 @@ public class ListPrintJobGenerateVotingCardsTriggeredTest : BaseWriteableDbGrpcT
         printJobs.PrintJobs_.Should().HaveCount(0);
     }
 
+    [Fact]
+    public async Task ShouldReturnForPrintJobManager()
+    {
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            x => x.Id == DomainOfInfluenceMockData.ContestSchulgemeindeAndwilArneggFutureSchulgemeindeAndwilArneggGuid,
+            x => x.GenerateVotingCardsTriggered = DateTime.UtcNow);
+
+        var printJobs = await AbraxasPrintJobManagerClient.ListGenerateVotingCardsTriggeredAsync(new ListPrintJobGenerateVotingCardsTriggeredRequest
+        {
+            ContestId = ContestMockData.SchulgemeindeAndwilArneggFutureId,
+        });
+        printJobs.PrintJobs_.Should().HaveCount(1);
+    }
+
     protected override async Task AuthorizationTestCall(PrintJobService.PrintJobServiceClient service)
     {
         await service.ListGenerateVotingCardsTriggeredAsync(new ListPrintJobGenerateVotingCardsTriggeredRequest { ContestId = ContestMockData.BundFutureId });
@@ -64,6 +78,5 @@ public class ListPrintJobGenerateVotingCardsTriggeredTest : BaseWriteableDbGrpcT
     protected override IEnumerable<string> UnauthorizedRoles()
     {
         yield return NoRole;
-        yield return Roles.PrintJobManager;
     }
 }

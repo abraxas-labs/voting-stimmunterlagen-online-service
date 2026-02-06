@@ -15,6 +15,7 @@ using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using GroupedDomainOfInfluenceVotingCardLayouts = Voting.Stimmunterlagen.Proto.V1.Models.GroupedDomainOfInfluenceVotingCardLayouts;
+using VotingCardLayoutDataConfiguration = Voting.Stimmunterlagen.Data.Models.VotingCardLayoutDataConfiguration;
 using VotingCardType = Voting.Stimmunterlagen.Data.Models.VotingCardType;
 
 namespace Voting.Stimmunterlagen.Services;
@@ -37,7 +38,8 @@ public class DomainOfInfluenceVotingCardLayoutService : Proto.V1.DomainOfInfluen
             GuidParser.Parse(request.DomainOfInfluenceId),
             _mapper.Map<VotingCardType>(request.VotingCardType),
             request.AllowCustom,
-            request.TemplateId);
+            request.TemplateId,
+            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration));
         return ProtobufEmpty.Instance;
     }
 
@@ -48,7 +50,8 @@ public class DomainOfInfluenceVotingCardLayoutService : Proto.V1.DomainOfInfluen
         await _manager.SetOverriddenLayout(
             GuidParser.Parse(request.DomainOfInfluenceId),
             _mapper.Map<VotingCardType>(request.VotingCardType),
-            request.TemplateId);
+            request.TemplateId,
+            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration));
         return ProtobufEmpty.Instance;
     }
 

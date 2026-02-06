@@ -103,6 +103,28 @@ public class VotingCardGeneratorTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task ShouldWorkWithEmptyVotingCards()
+    {
+        var jobId = VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggEmptyVcJobGuid;
+        await StartRun(jobId);
+
+        var job = await GetDbEntity<VotingCardGeneratorJob>(x =>
+            x.Id == jobId);
+        job.Started.Should().Be(MockedClock.UtcNowDate);
+        job.Runner.Should().Be(Environment.MachineName);
+        job.State.Should().Be(VotingCardGeneratorJobState.Running);
+        job.Completed.Should().Be(null);
+
+        await Complete(jobId);
+
+        job = await GetDbEntity<VotingCardGeneratorJob>(x =>
+            x.Id == jobId);
+        job.Completed.Should().Be(MockedClock.UtcNowDate);
+        job.State.Should().Be(VotingCardGeneratorJobState.Completed);
+        _storeMock.AssertFileWritten(DefaultMessageId, job.FileName);
+    }
+
+    [Fact]
     public async Task AlreadyLockedShouldThrow()
     {
         using var scope = GetService<IServiceScopeFactory>().CreateScope();
@@ -142,12 +164,68 @@ public class VotingCardGeneratorTest : BaseWriteableDbTest
             db => db.VotingCardGeneratorJobs
                 .IncludeLayoutEntities()
                 .Include(x => x.Voter)
+                .ThenInclude(x => x.DomainOfInfluences)
+                .Include(x => x.Voter)
                 .ThenInclude(x => x.List)
                 .FirstAsync(x => x.Id == jobId));
 
         var templateBag = await templateDataBuilder.BuildBag(
             null,
             job.Layout!.DomainOfInfluence!.Contest!,
+            job.Layout!.DataConfiguration,
+            job.Layout!.DomainOfInfluence!,
+            job.Voter,
+            job.Layout!.TemplateDataFieldValues!);
+
+        var serializedData = dataSerializer.Serialize(templateBag);
+        serializedData.ShouldMatchSnapshot();
+    }
+
+    [Fact]
+    public async Task ShouldSerializeTemplateBagWithAllParameters()
+    {
+        var jobId = VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggJob1Guid;
+        var voterId = VoterListMockData.BundArchivedGemeindeArneggSwiss.Voters!.ElementAt(0).Id;
+        await ModifyDbEntities<Voter>(
+            v => voterId == v.Id,
+            v =>
+            {
+                v.JobId = jobId;
+                v.SendVotingCardsToDomainOfInfluenceReturnAddress = true;
+                v.Religion = "111";
+            });
+
+        await ModifyDbEntities<VoterList>(
+            vl => vl.Id == VoterListMockData.BundArchivedGemeindeArneggSwissGuid,
+            vl => vl.SendVotingCardsToDomainOfInfluenceReturnAddress = false);
+
+        using var scope = GetService<IServiceScopeFactory>().CreateScope();
+        var dataSerializer = scope.ServiceProvider.GetRequiredService<IDmDocDataSerializer>();
+        var templateDataBuilder = scope.ServiceProvider.GetRequiredService<TemplateDataBuilder>();
+
+        var job = await RunOnDb(
+            db => db.VotingCardGeneratorJobs
+                .IncludeLayoutEntities()
+                .Include(x => x.Voter)
+                 .ThenInclude(x => x.DomainOfInfluences)
+                .Include(x => x.Voter)
+                .ThenInclude(x => x.List)
+                .FirstAsync(x => x.Id == jobId));
+
+        job.Layout!.DataConfiguration = new()
+        {
+            IncludeDateOfBirth = true,
+            IncludeIsHouseholder = true,
+            IncludePersonId = true,
+            IncludeReligion = true,
+            IncludeDomainOfInfluenceChurch = true,
+            IncludeDomainOfInfluenceSchool = true,
+        };
+
+        var templateBag = await templateDataBuilder.BuildBag(
+            null,
+            job.Layout!.DomainOfInfluence!.Contest!,
+            job.Layout!.DataConfiguration,
             job.Layout!.DomainOfInfluence!,
             job.Voter,
             job.Layout!.TemplateDataFieldValues!);

@@ -29,22 +29,24 @@ public class InvoiceFileEntriesBuilder
 
     public IEnumerable<InvoiceFileEntry> BuildEntries(PrintJob printJob, DateTime timestamp, Contest contest)
     {
+        var countOfEmptyVotingCards = printJob.DomainOfInfluence!.CountOfEmptyVotingCards;
         var voterLists = printJob.DomainOfInfluence!.VoterLists!.ToList();
-        var totalNumberOfVoters = voterLists.Sum(vl => vl.NumberOfVoters);
+        var totalCountOfVotingCards = voterLists.Sum(vl => vl.CountOfVotingCards) + countOfEmptyVotingCards;
 
-        if (totalNumberOfVoters == 0)
+        if (totalCountOfVotingCards == 0)
         {
             yield break;
         }
 
-        var restNumberOfVoters = voterLists
-            .Sum(vl => vl.CountOfSendVotingCardsToDomainOfInfluenceReturnAddress);
+        var restCountOfVotingCards = voterLists
+            .Sum(vl => vl.CountOfVotingCardsForDomainOfInfluenceReturnAddress) + countOfEmptyVotingCards;
 
         var attachmentCounts = printJob.DomainOfInfluence.DomainOfInfluenceAttachmentCounts!;
 
         var attachmentCategorySummaries = _attachmentCategorySummaryBuilder.Build(
             attachmentCounts.Select(doiAc => doiAc.Attachment!).ToList(),
-            voterLists);
+            voterLists,
+            contest.IsPoliticalAssembly);
 
         var attachmentRequiredForVoterListsCount = attachmentCategorySummaries.Count != 0
             ? attachmentCategorySummaries.Max(acs => acs.TotalRequiredForVoterListsCount)
@@ -75,8 +77,8 @@ public class InvoiceFileEntriesBuilder
                 timestamp,
                 materialConfig,
                 attachmentStationsCount,
-                totalNumberOfVoters,
-                restNumberOfVoters,
+                totalCountOfVotingCards,
+                restCountOfVotingCards,
                 attachmentRequiredForVoterListsCount,
                 deliveryFormat);
 
@@ -103,8 +105,8 @@ public class InvoiceFileEntriesBuilder
         DateTime timestamp,
         MaterialConfig materialConfig,
         int attachmentStationsCount,
-        int totalNumberOfVoters,
-        int restNumberOfVoters,
+        int totalCountOfVotingCards,
+        int restCountOfVotingCards,
         int attachmentRequiredForVoterListsCount,
         AttachmentFormat deliveryFormat)
     {
@@ -147,6 +149,12 @@ public class InvoiceFileEntriesBuilder
             return null;
         }
 
+        if (materialConfig.VotingCardShippingMethods.Count > 0
+            && (domainOfInfluence.PrintData == null || !materialConfig.VotingCardShippingMethods.Contains(domainOfInfluence.PrintData.ShippingMethod)))
+        {
+            return null;
+        }
+
         var entry = new InvoiceFileEntry()
         {
             CurrentDate = timestamp,
@@ -162,10 +170,10 @@ public class InvoiceFileEntriesBuilder
                 entry.Amount = 1;
                 break;
             case MaterialCategory.Voter:
-                entry.Amount = totalNumberOfVoters;
+                entry.Amount = totalCountOfVotingCards;
                 break;
             case MaterialCategory.VoterExcludeRest:
-                entry.Amount = totalNumberOfVoters - restNumberOfVoters;
+                entry.Amount = totalCountOfVotingCards - restCountOfVotingCards;
                 break;
             case MaterialCategory.AttachmentStationsSetup:
                 entry.Amount = attachmentStationsCount;
@@ -176,7 +184,7 @@ public class InvoiceFileEntriesBuilder
                     && !domainOfInfluence.DomainOfInfluenceAttachmentCounts!
                     .Any(doiAc => doiAc.Attachment!.Category == AttachmentCategory.BallotEnvelopeCustom && doiAc.RequiredCount > 0))
                 {
-                    entry.Amount = totalNumberOfVoters - restNumberOfVoters;
+                    entry.Amount = totalCountOfVotingCards - restCountOfVotingCards;
                 }
 
                 break;

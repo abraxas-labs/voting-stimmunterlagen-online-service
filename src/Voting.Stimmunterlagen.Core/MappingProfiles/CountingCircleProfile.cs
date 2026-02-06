@@ -11,8 +11,10 @@ public class CountingCircleProfile : Profile
 {
     public CountingCircleProfile()
     {
-        CreateMap<CountingCircleEventData, CountingCircle>();
-        CreateMap<CountingCircleEventData, ContestCountingCircle>();
+        CreateMap<CountingCircleEventData, CountingCircle>()
+            .ForMember(dst => dst.SecureConnectId, opts => opts.MapFrom(src => src.ResponsibleAuthority.SecureConnectId));
+        CreateMap<CountingCircleEventData, ContestCountingCircle>()
+            .ForMember(dst => dst.SecureConnectId, opts => opts.MapFrom(src => src.ResponsibleAuthority.SecureConnectId));
         CreateMap<CountingCircle, ContestCountingCircle>();
     }
 }

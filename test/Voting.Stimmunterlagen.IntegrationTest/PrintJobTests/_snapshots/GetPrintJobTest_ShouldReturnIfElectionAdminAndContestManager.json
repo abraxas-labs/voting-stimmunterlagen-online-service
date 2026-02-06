@@ -19,7 +19,16 @@
     "CanManuallyUploadVoterList": true,
     "LastVoterUpdate": null,
     "GenerateVotingCardsTriggered": null,
-    "EVoting": null
+    "EVoting": null,
+    "ElectoralRegisterMultipleEnabled": false,
+    "StistatMunicipality": true,
+    "Bfs": "1240",
+    "HasEmptyVotingCards": true,
+    "CountOfEmptyVotingCards": 2,
+    "LastCountOfEmptyVotingCardsUpdate": {
+      "Seconds": 1591013700,
+      "Nanos": 0
+    }
   },
   "State": 3,
   "ProcessStartedOn": null,

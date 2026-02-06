@@ -14,4 +14,6 @@ public abstract class VotingCardLayout : BaseEntity
     public Template? Template { get; set; }
 
     public VotingCardType VotingCardType { get; set; }
+
+    public VotingCardLayoutDataConfiguration DataConfiguration { get; set; } = new();
 }

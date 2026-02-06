@@ -37,6 +37,7 @@ public class AttachmentManager
     private readonly AttachmentCategorySummaryBuilder _summaryBuilder;
     private readonly ContestManager _contestManager;
     private readonly DataContext _dbContext;
+    private readonly PoliticalBusinessManager _pbManager;
 
     public AttachmentManager(
         IAuth auth,
@@ -51,7 +52,8 @@ public class AttachmentManager
         DomainOfInfluenceManager doiManager,
         AttachmentCategorySummaryBuilder summaryBuilder,
         ContestManager contestManager,
-        DataContext dbContext)
+        DataContext dbContext,
+        PoliticalBusinessManager pbManager)
     {
         _auth = auth;
         _attachmentRepo = attachmentRepo;
@@ -66,6 +68,7 @@ public class AttachmentManager
         _summaryBuilder = summaryBuilder;
         _contestManager = contestManager;
         _dbContext = dbContext;
+        _pbManager = pbManager;
     }
 
     public async Task<List<AttachmentCategorySummary>> ListCategorySummariesForFilter(Guid contestId, string queryString, AttachmentState? state, bool forPrintJobManagement)
@@ -512,11 +515,7 @@ public class AttachmentManager
                   ?? throw new ForbiddenException("no permissions on contest or domain of influence or the domain of influence cannot have attachments");
 
         EnsureValidAttachmentCounts(attachment, doi.Type, requiredCount);
-
-        var allowedPbIds = doi.PoliticalBusinessPermissionEntries!
-            .Where(x => !x.PoliticalBusiness!.DomainOfInfluence!.ExternalPrintingCenter)
-            .Select(x => x.PoliticalBusinessId)
-            .ToList();
+        var allowedPbIds = _pbManager.ListAttachmentAccessible(doi).ConvertAll(d => d.Id);
 
         if (pbIds.Any(pbId => !allowedPbIds.Contains(pbId)))
         {

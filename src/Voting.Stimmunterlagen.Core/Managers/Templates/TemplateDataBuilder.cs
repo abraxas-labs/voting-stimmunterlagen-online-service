@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Voting.Stimmunterlagen.Core.Models.TemplateData;
 using Voting.Stimmunterlagen.Core.ObjectStorage;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
 using Contest = Voting.Stimmunterlagen.Data.Models.Contest;
 using DomainOfInfluence = Voting.Stimmunterlagen.Core.Models.TemplateData.DomainOfInfluence;
@@ -26,35 +27,51 @@ public class TemplateDataBuilder
         TemplateBag.JobContainerName,
     };
 
-    private static readonly IReadOnlyCollection<Voter> DummyVoter = new List<Voter>()
-    {
-        new()
-        {
-            Salutation = Salutation.Mister,
-            FirstName = "Sven",
-            LastName = "Muster",
-            Street = "Rathausplatz",
-            HouseNumber = "12a",
-            Town = "St. Gallen",
-            SwissZipCode = 9000,
-            Country =
-            {
-                Iso2 = "CH",
-                Name = "Schweiz",
-            },
-            PersonId = "00123456789",
-            DateOfBirth = "2001-01-01",
-            ShipmentNumber = "123456789",
-        },
-    };
-
     private readonly IMapper _mapper;
     private readonly DomainOfInfluenceLogoStorage _logoStorage;
+    private readonly VoterPrintInfoAggregator _voterPrintInfoAggregator;
 
-    public TemplateDataBuilder(IMapper mapper, DomainOfInfluenceLogoStorage logoStorage)
+    public TemplateDataBuilder(IMapper mapper, DomainOfInfluenceLogoStorage logoStorage, VoterPrintInfoAggregator voterPrintInfoAggregator)
     {
         _mapper = mapper;
         _logoStorage = logoStorage;
+        _voterPrintInfoAggregator = voterPrintInfoAggregator;
+    }
+
+    internal static void ApplyDataConfiguration(TemplateBag templateBag, VotingCardLayoutDataConfiguration dataConfig)
+    {
+        foreach (var voter in templateBag.Voters ?? new List<Voter>())
+        {
+            if (!dataConfig.IncludePersonId)
+            {
+                voter.PersonId = null;
+            }
+
+            if (!dataConfig.IncludeReligion)
+            {
+                voter.Religion = null;
+            }
+
+            if (!dataConfig.IncludeDateOfBirth)
+            {
+                voter.DateOfBirth = null;
+            }
+
+            if (!dataConfig.IncludeIsHouseholder)
+            {
+                voter.IsHouseholder = null;
+            }
+
+            if (!dataConfig.IncludeDomainOfInfluenceChurch)
+            {
+                voter.DomainOfInfluenceIdentificationsChurch = null;
+            }
+
+            if (!dataConfig.IncludeDomainOfInfluenceSchool)
+            {
+                voter.DomainOfInfluenceIdentificationsSchool = null;
+            }
+        }
     }
 
     internal ContestDomainOfInfluence GetDummyDomainOfInfluence(string tennantId)
@@ -90,6 +107,7 @@ public class TemplateDataBuilder
     internal Task<TemplateBagWrapper> BuildBag(
         DateTime? contestDate,
         Contest contest,
+        VotingCardLayoutDataConfiguration dataConfig,
         ContestDomainOfInfluence? domainOfInfluence,
         IEnumerable<Data.Models.Voter>? voters,
         IEnumerable<TemplateDataContainer> containers)
@@ -98,12 +116,13 @@ public class TemplateDataBuilder
             .ToDictionary(
                 x => x.Key,
                 x => (object)x.Fields!.ToDictionary(f => f.Key, f => f.Name));
-        return BuildBag(contestDate, contest, domainOfInfluence, voters, values);
+        return BuildBag(contestDate, contest, dataConfig, domainOfInfluence, voters, values);
     }
 
     internal Task<TemplateBagWrapper> BuildBag(
         DateTime? contestDate,
         Contest contest,
+        VotingCardLayoutDataConfiguration dataConfig,
         ContestDomainOfInfluence? domainOfInfluence,
         IEnumerable<Data.Models.Voter>? voters,
         IEnumerable<TemplateDataFieldValue> values)
@@ -114,12 +133,39 @@ public class TemplateDataBuilder
                 x => x.Key,
                 x => (object)x.ToDictionary(y => y.Field!.Key, y => y.Value));
 
-        return BuildBag(contestDate, contest, domainOfInfluence, voters, templateValues);
+        return BuildBag(contestDate, contest, dataConfig, domainOfInfluence, voters, templateValues);
     }
+
+    private IReadOnlyCollection<Voter> GetDummyVoter() => new List<Voter>()
+    {
+        new()
+        {
+            Salutation = Salutation.Mister,
+            FirstName = "Sven",
+            LastName = "Muster",
+            Street = "Rathausplatz",
+            HouseNumber = "12a",
+            Town = "St. Gallen",
+            SwissZipCode = 9000,
+            Country =
+            {
+                Iso2 = "CH",
+                Name = "Schweiz",
+            },
+            PersonId = "00123456789",
+            DateOfBirth = "2001-01-01",
+            ShipmentNumber = "123456789",
+            Religion = "E",
+            IsHouseholder = true,
+            DomainOfInfluenceIdentificationsChurch = "100 101",
+            DomainOfInfluenceIdentificationsSchool = "483 843",
+        },
+    };
 
     private async Task<TemplateBagWrapper> BuildBag(
         DateTime? contestDate, // set to null if preview for template selection
         Contest contest,
+        VotingCardLayoutDataConfiguration dataConfig,
         ContestDomainOfInfluence? domainOfInfluence,
         IEnumerable<Data.Models.Voter>? voters,
         IDictionary<string, object> values)
@@ -127,21 +173,29 @@ public class TemplateDataBuilder
         DomainOfInfluence? templateDoi = null;
         if (domainOfInfluence != null)
         {
+            if (voters != null)
+            {
+                await _voterPrintInfoAggregator.Aggregate(voters, domainOfInfluence.Id);
+            }
+
             templateDoi = _mapper.Map<DomainOfInfluence>(domainOfInfluence);
             templateDoi.Logo = await _logoStorage.TryFetchAsBase64(domainOfInfluence);
             templateDoi.VotingCardColor = BuildVotingCardColor(domainOfInfluence);
         }
 
+        var templateVoters = MapTemplateVoters(voters, contest);
         var templateContest = _mapper.Map<Models.TemplateData.Contest>(contest);
-        var templateVoters = voters == null ? DummyVoter : _mapper.Map<List<Voter>>(voters);
-        return new TemplateBagWrapper(new TemplateBag(
+        var templateBag = new TemplateBag(
             contestDate.HasValue
                 ? new JobData { BricksVersion = contestDate.Value.ToString("yyyy-MM-ddTHH:mm:ss.fffZ") }
                 : null,
             templateContest,
             templateDoi,
             templateVoters,
-            values));
+            values);
+
+        ApplyDataConfiguration(templateBag, dataConfig);
+        return new TemplateBagWrapper(templateBag);
     }
 
     private VotingCardColor? BuildVotingCardColor(ContestDomainOfInfluence doi)
@@ -149,11 +203,9 @@ public class TemplateDataBuilder
         var color = doi.VotingCardColor switch
         {
             Data.Models.VotingCardColor.Blue => new VotingCardColor(20, 0, 0, 0),
-            Data.Models.VotingCardColor.Chamois => new VotingCardColor(0, 5, 20, 0),
             Data.Models.VotingCardColor.Yellow => new VotingCardColor(0, 0, 20, 0),
-            Data.Models.VotingCardColor.Gold => new VotingCardColor(0, 6, 60, 5),
             Data.Models.VotingCardColor.Grey => new VotingCardColor(0, 0, 0, 10),
-            Data.Models.VotingCardColor.Pink => new VotingCardColor(0, 20, 0, 0),
+            Data.Models.VotingCardColor.Pink => new VotingCardColor(0, 10, 0, 0),
             Data.Models.VotingCardColor.Red => new VotingCardColor(0, 21, 24, 0),
             Data.Models.VotingCardColor.Green => new VotingCardColor(15, 0, 15, 0),
             Data.Models.VotingCardColor.Unspecified => null,
@@ -166,5 +218,23 @@ public class TemplateDataBuilder
         }
 
         return color;
+    }
+
+    private IReadOnlyCollection<Voter> MapTemplateVoters(IEnumerable<Data.Models.Voter>? voters, Contest contest)
+    {
+        // Required for voter mapping
+        foreach (var voter in voters ?? new List<Data.Models.Voter>())
+        {
+            voter.Contest = contest;
+        }
+
+        var templateVoters = voters == null ? GetDummyVoter() : _mapper.Map<List<Voter>>(voters);
+
+        foreach (var voter in voters ?? new List<Data.Models.Voter>())
+        {
+            voter.Contest = null;
+        }
+
+        return templateVoters;
     }
 }

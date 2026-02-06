@@ -62,6 +62,7 @@ public static class CountingCircleMockData
         Id = StadtStGallenGuid,
         Name = "Stadt St. Gallen",
         Bfs = "1110",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.StaatskanzleiStGallen,
     };
 
     public static CountingCircle StadtGossau => new()
@@ -69,6 +70,7 @@ public static class CountingCircleMockData
         Id = StadtGossauGuid,
         Name = "Stadt Gossau",
         Bfs = "1120",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.StadtGossau,
     };
 
     public static CountingCircle StadtUzwil => new()
@@ -76,6 +78,7 @@ public static class CountingCircleMockData
         Id = StadtUzwilGuid,
         Name = "Stadt Uzwil",
         Bfs = "1130",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.StadtUzwil,
     };
 
     public static CountingCircle GemeindeArnegg => new()
@@ -83,6 +86,7 @@ public static class CountingCircleMockData
         Id = GemeindeArneggGuid,
         Name = "Gemeinde Arnegg",
         Bfs = "1240",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.GemeindeArnegg,
     };
 
     public static CountingCircle SchulgemeindeArneggAndwil => new()
@@ -90,6 +94,7 @@ public static class CountingCircleMockData
         Id = SchulgemeindeAndwilArneggGuid,
         Name = "Schulgemeinde Andwil Arnegg",
         Bfs = "2000",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.GemeindeArnegg,
     };
 
     public static CountingCircle Auslandschweizer => new()
@@ -97,6 +102,7 @@ public static class CountingCircleMockData
         Id = AuslandschweizerGuid,
         Name = "Auslandschweizer",
         Bfs = "9170",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.Auslandschweizer,
     };
 
     public static IEnumerable<CountingCircle> All

@@ -13,9 +13,11 @@ public class ContestEVotingExportJob : ExportJobBase, IHasContest
 
     public string FileHash { get; set; } = string.Empty;
 
-    public override void PrepareToRun()
+    public Ech0045Version Ech0045Version { get; set; }
+
+    public override void Reset()
     {
-        base.PrepareToRun();
+        base.Reset();
         FileHash = string.Empty;
     }
 }

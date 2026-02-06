@@ -9,6 +9,7 @@ using Abraxas.Voting.Basis.Events.V1.Data;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Voting.Lib.Common;
+using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Core.Managers.EVoting;
 using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
@@ -19,6 +20,7 @@ namespace Voting.Stimmunterlagen.Core.EventProcessors;
 public class ContestBuilder
 {
     private readonly ContestRepo _contestRepo;
+    private readonly VoterRepo _voterRepo;
     private readonly IDbRepository<ContestTranslation> _contestTranslationRepo;
     private readonly IMapper _mapper;
     private readonly ContestDomainOfInfluenceBuilder _contestDomainOfInfluenceBuilder;
@@ -33,6 +35,7 @@ public class ContestBuilder
 
     public ContestBuilder(
         ContestRepo contestRepo,
+        VoterRepo voterRepo,
         IDbRepository<ContestTranslation> contestTranslationRepo,
         IMapper mapper,
         ContestDomainOfInfluenceBuilder contestDomainOfInfluenceBuilder,
@@ -46,6 +49,7 @@ public class ContestBuilder
         ContestOrderNumberStateBuilder contestOrderNumberStateBuilder)
     {
         _contestRepo = contestRepo;
+        _voterRepo = voterRepo;
         _contestTranslationRepo = contestTranslationRepo;
         _mapper = mapper;
         _contestDomainOfInfluenceBuilder = contestDomainOfInfluenceBuilder;
@@ -70,12 +74,20 @@ public class ContestBuilder
             return;
         }
 
+        var oldContestDate = existingContest.Date;
+
         // the domain of influence is immutable for a contest
         var doiId = existingContest.DomainOfInfluenceId;
         _mapper.Map(contestData, existingContest);
+
         existingContest.DomainOfInfluenceId = doiId;
 
         await UpdateExistingContest(existingContest);
+
+        if (oldContestDate != existingContest.Date)
+        {
+            await UpdateExistingVoters(existingContest.Id, existingContest.Date);
+        }
     }
 
     internal async Task CreateOrUpdatePoliticalAssembly(PoliticalAssemblyEventData politicalAssemblyData)
@@ -91,12 +103,19 @@ public class ContestBuilder
             return;
         }
 
+        var oldContestDate = existingContest.Date;
+
         // the domain of influence is immutable for a contest
         var doiId = existingContest.DomainOfInfluenceId;
         _mapper.Map(politicalAssemblyData, existingContest);
         existingContest.DomainOfInfluenceId = doiId;
 
         await UpdateExistingContest(existingContest);
+
+        if (oldContestDate != existingContest.Date)
+        {
+            await UpdateExistingVoters(existingContest.Id, existingContest.Date);
+        }
     }
 
     internal async Task CreateContest(Contest contest)
@@ -116,6 +135,17 @@ public class ContestBuilder
         await SyncContestRelatedData(contest.Id);
 
         await _contestRepo.CreateVoterContestIndexSequence(contest.Id);
+    }
+
+    internal async Task UpdateState(string key, ContestState newState)
+    {
+        var id = GuidParser.Parse(key);
+
+        var contest = await _contestRepo.GetByKey(id)
+                      ?? throw new EntityNotFoundException(nameof(Contest), id);
+
+        contest.State = newState;
+        await _contestRepo.Update(contest);
     }
 
     [Obsolete("contest counting circle options are deprecated")]
@@ -140,6 +170,17 @@ public class ContestBuilder
         }
 
         await _contestRepo.Update(contest);
+    }
+
+    internal async Task UpdateExistingVoters(Guid contestId, DateTime contestDate)
+    {
+        var voters = await _voterRepo.Query().Where(x => x.ContestId == contestId).ToListAsync();
+        foreach (var voter in voters)
+        {
+            voter.IsMinor = DatamatrixMapping.IsMinor(voter.DateOfBirth, contestDate);
+        }
+
+        await _voterRepo.UpdateRange(voters);
     }
 
     private async Task SyncContestRelatedData(Guid contestId)

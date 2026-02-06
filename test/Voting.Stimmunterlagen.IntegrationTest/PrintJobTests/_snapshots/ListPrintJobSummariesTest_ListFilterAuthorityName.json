@@ -24,7 +24,16 @@
           "Seconds": 1578661930,
           "Nanos": 200000000
         },
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": true,
+        "Bfs": "1240",
+        "HasEmptyVotingCards": true,
+        "CountOfEmptyVotingCards": 2,
+        "LastCountOfEmptyVotingCardsUpdate": {
+          "Seconds": 1591013700,
+          "Nanos": 0
+        }
       },
       "State": 6,
       "ProcessStartedOn": {
@@ -48,6 +57,46 @@
       "HasCommunalPoliticalBusinesses": true,
       "TemplateName": "template-100-swiss-arnegg",
       "LastConfirmedStep": 8
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "6d133336-0fc8-565c-8539-6b2ff4fae42b",
+        "Name": "Kirchgemeinde Arnegg",
+        "ShortName": "MU-AG-KI",
+        "AuthorityName": "Kirchgemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "State": 1,
+      "ProcessStartedOn": null,
+      "ProcessEndedOn": null,
+      "DoneOn": null,
+      "AttachmentsDefinedCount": 3,
+      "AttachmentsDeliveredCount": 0,
+      "GenerateVotingCardsTriggered": null,
+      "HasCommunalPoliticalBusinesses": true,
+      "TemplateName": "template-001-swiss",
+      "LastConfirmedStep": 0
     }
   ]
 }

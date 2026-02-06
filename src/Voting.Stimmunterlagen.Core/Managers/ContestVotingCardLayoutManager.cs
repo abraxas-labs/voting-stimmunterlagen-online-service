@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Voting.Lib.Common;
 using Voting.Lib.Iam.Store;
@@ -29,6 +30,7 @@ public class ContestVotingCardLayoutManager
     private readonly ContestManager _contestManager;
     private readonly DataContext _dbContext;
     private readonly IClock _clock;
+    private readonly IMapper _mapper;
 
     public ContestVotingCardLayoutManager(
         IAuth auth,
@@ -38,7 +40,8 @@ public class ContestVotingCardLayoutManager
         DomainOfInfluenceVotingCardLayoutManager doiLayoutManager,
         ContestManager contestManager,
         DataContext dbContext,
-        IClock clock)
+        IClock clock,
+        IMapper mapper)
     {
         _auth = auth;
         _contestLayoutRepo = contestLayoutRepo;
@@ -48,9 +51,10 @@ public class ContestVotingCardLayoutManager
         _contestManager = contestManager;
         _dbContext = dbContext;
         _clock = clock;
+        _mapper = mapper;
     }
 
-    public async Task SetLayout(Guid contestId, VotingCardType vcType, bool allowCustom, int templateId)
+    public async Task SetLayout(Guid contestId, VotingCardType vcType, bool allowCustom, int templateId, VotingCardLayoutDataConfiguration dataConfiguration)
     {
         var existingLayout = await _contestLayoutRepo.Query()
             .AsTracking()
@@ -62,15 +66,24 @@ public class ContestVotingCardLayoutManager
             .FirstOrDefaultAsync(x => x.VotingCardType == vcType && x.ContestId == contestId)
             ?? throw new EntityNotFoundException(nameof(ContestVotingCardLayout), new { contestId, vcType });
 
+        Contest contest = await _contestManager.Get(contestId, false);
+        if (contest.DomainOfInfluence!.StistatMunicipality && !contest!.IsPoliticalAssembly)
+        {
+            dataConfiguration.IncludePersonId = true;
+            dataConfiguration.IncludeDateOfBirth = true;
+        }
+
         var template = await _templateManager.GetOrCreateTemplate(templateId);
         existingLayout.AllowCustom = allowCustom;
         existingLayout.TemplateId = templateId;
+        existingLayout.DataConfiguration = dataConfiguration;
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
 
         var doiLayouts = await _doiLayoutRepo.Query()
             .AsTracking()
             .Include(x => x.TemplateDataFieldValues)
+            .Include(x => x.DomainOfInfluence)
             .Where(x => x.VotingCardType == vcType && x.DomainOfInfluence!.ContestId == contestId)
             .WhereGenerateVotingCardsTriggered(false)
             .ToListAsync();
@@ -86,6 +99,12 @@ public class ContestVotingCardLayoutManager
             doiLayout.OverriddenTemplateId = null;
             doiLayout.TemplateId = existingLayout.TemplateId;
             doiLayout.AllowCustom = existingLayout.AllowCustom;
+            doiLayout.DataConfiguration = _mapper.Map<VotingCardLayoutDataConfiguration>(dataConfiguration);
+            if (doiLayout.DomainOfInfluence!.StistatMunicipality && !contest.IsPoliticalAssembly)
+            {
+                doiLayout.DataConfiguration.IncludePersonId = true;
+                doiLayout.DataConfiguration.IncludeDateOfBirth = true;
+            }
         }
 
         await _doiLayoutRepo.SaveChanges();
@@ -123,6 +142,6 @@ public class ContestVotingCardLayoutManager
             throw new EntityNotFoundException(nameof(layout.Template), new { contestId, vcType });
         }
 
-        return await _templateManager.GetPdfPreview(null, layout.TemplateId.Value, layout.Contest!, cancellationToken: ct);
+        return await _templateManager.GetPdfPreview(null, layout.TemplateId.Value, layout.Contest!, layout.DataConfiguration, cancellationToken: ct);
     }
 }

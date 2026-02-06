@@ -66,7 +66,7 @@ public class SetPrintJobProcessStartedTest : SetPrintJobStateBaseTest
         printJob.ProcessStartedOn.Should().NotBeNull();
 
         printFileExportJobs = await RunOnDb(db => db.VotingCardPrintFileExportJobs.Include(x => x.VotingCardGeneratorJob).ToListAsync());
-        printFileExportJobs.Should().HaveCount(3);
+        printFileExportJobs.Should().HaveCount(4);
         printFileExportJobs.All(x => x.State == Data.Models.ExportJobState.ReadyToRun).Should().BeTrue();
 
         var swissPrintFileExportJob = printFileExportJobs.Single(x => x.VotingCardGeneratorJobId == VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggJob1Guid);

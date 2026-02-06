@@ -25,8 +25,8 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
         var voterListTable = Context.VoterLists.GetDelimitedSchemaAndTableName();
         var voterListIdCol = Context.VoterLists.GetDelimitedColumnName(x => x.Id);
         var voterListDomainOfInfluenceIdCol = Context.VoterLists.GetDelimitedColumnName(x => x.DomainOfInfluenceId);
-        var voterListNumberOfVotersCol = Context.VoterLists.GetDelimitedColumnName(x => x.NumberOfVoters);
-        var voterListNumberOfHouseholdersCol = Context.VoterLists.GetDelimitedColumnName(x => x.NumberOfHouseholders);
+        var voterListCountOfVotingCardsCol = Context.VoterLists.GetDelimitedColumnName(x => x.CountOfVotingCards);
+        var voterListCountOfVotingCardsForHouseholdersCol = Context.VoterLists.GetDelimitedColumnName(x => x.CountOfVotingCardsForHouseholders);
 
         var attachmentTable = Context.Attachments.GetDelimitedSchemaAndTableName();
         var attachmentIdCol = Context.Attachments.GetDelimitedColumnName(x => x.Id);
@@ -47,21 +47,21 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
             $@"
                 update {DelimitedSchemaAndTableName} DOIAC
                 set {doiAcRequiredForVoterListsCountCol} = CASE
-                    WHEN ATT.{attachmentSendOnlyForHouseholderCol} = TRUE THEN VLSUM.""NumberOfHouseholders""
-                    ELSE VLSUM.""NumberOfVoters""
+                    WHEN ATT.{attachmentSendOnlyForHouseholderCol} = TRUE THEN VLSUM.""CountOfVotingCardsForHouseholders""
+                    ELSE VLSUM.""CountOfVotingCards""
                 END
                 from
                 (
                     select
-                        SUM(VLAGG.""VoterListNumberOfVoters"") as ""NumberOfVoters"",
-                        SUM(VLAGG.""VoterListNumberOfHouseholders"") as ""NumberOfHouseholders"",
+                        SUM(VLAGG.""VoterListCountOfVotingCards"") as ""CountOfVotingCards"",
+                        SUM(VLAGG.""VoterListCountOfVotingCardsForHouseholders"") as ""CountOfVotingCardsForHouseholders"",
                         VLAGG.""DoiId"",
                         VLAGG.""AttachmentId""
                     from
                     (
                         select distinct
-                            COALESCE(VL.{voterListNumberOfVotersCol}, 0) as ""VoterListNumberOfVoters"",
-                            COALESCE(VL.{voterListNumberOfHouseholdersCol}, 0) as ""VoterListNumberOfHouseholders"",
+                            COALESCE(VL.{voterListCountOfVotingCardsCol}, 0) as ""VoterListCountOfVotingCards"",
+                            COALESCE(VL.{voterListCountOfVotingCardsForHouseholdersCol}, 0) as ""VoterListCountOfVotingCardsForHouseholders"",
                             COALESCE(VL.{voterListDomainOfInfluenceIdCol}, {{1}}) as ""DoiId"",
                             VL.{voterListIdCol},
                             ATTA.{attachmentIdCol} as ""AttachmentId""
@@ -85,21 +85,21 @@ public class DomainOfInfluenceAttachmentCountRepo : DbRepository<DomainOfInfluen
             $@"
                 update {DelimitedSchemaAndTableName} DOIAC
                 set {doiAcRequiredForVoterListsCountCol} = CASE
-                    WHEN ATT.{attachmentSendOnlyForHouseholderCol} = TRUE THEN VLSUM.""NumberOfHouseholders""
-                    ELSE VLSUM.""NumberOfVoters""
+                    WHEN ATT.{attachmentSendOnlyForHouseholderCol} = TRUE THEN VLSUM.""CountOfVotingCardsForHouseholders""
+                    ELSE VLSUM.""CountOfVotingCards""
                 END
                 from
                 (
                     select
-                        SUM(VLAGG.""VoterListNumberOfVoters"") as ""NumberOfVoters"",
-                        SUM(VLAGG.""VoterListNumberOfHouseholders"") as ""NumberOfHouseholders"",
+                        SUM(VLAGG.""VoterListCountOfVotingCards"") as ""CountOfVotingCards"",
+                        SUM(VLAGG.""VoterListCountOfVotingCardsForHouseholders"") as ""CountOfVotingCardsForHouseholders"",
                         VLAGG.""AttachmentId"",
                         VLAGG.""DoiId""
                     from
                     (
                         select distinct
-                            COALESCE(VL.{voterListNumberOfVotersCol}, 0) as ""VoterListNumberOfVoters"",
-                            COALESCE(VL.{voterListNumberOfHouseholdersCol}, 0) as ""VoterListNumberOfHouseholders"",
+                            COALESCE(VL.{voterListCountOfVotingCardsCol}, 0) as ""VoterListCountOfVotingCards"",
+                            COALESCE(VL.{voterListCountOfVotingCardsForHouseholdersCol}, 0) as ""VoterListCountOfVotingCardsForHouseholders"",
                             PBAE.{politicalBusinessAttachmentEntriesAttachmentIdCol} as ""AttachmentId"",
                             COALESCE(VL.{voterListDomainOfInfluenceIdCol}, {{1}}) as ""DoiId"",
                             VL.{voterListIdCol}

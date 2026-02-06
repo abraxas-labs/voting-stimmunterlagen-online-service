@@ -4,6 +4,7 @@
     "Name": "St.Gallen Tablat (neu)",
     "Bfs": "2345",
     "EVoting": true,
+    "SecureConnectId": "SC-T",
     "Id": "508b9e65-c051-463e-aca7-0fa457babe25"
   },
   "contest_ccs": {
@@ -16,6 +17,7 @@
         "Name": "St.Gallen Tablat (neu)",
         "Bfs": "2345",
         "EVoting": true,
+        "SecureConnectId": "SC-T",
         "Id": "3231018b-d0f4-55b6-b99e-e1442a7ad2a3"
       },
       {
@@ -26,6 +28,7 @@
         "Name": "St.Gallen Tablat (neu)",
         "Bfs": "2345",
         "EVoting": true,
+        "SecureConnectId": "SC-T",
         "Id": "310ee39f-558a-51cb-8618-30d6e16596ea"
       },
       {
@@ -36,6 +39,7 @@
         "Name": "St.Gallen Tablat (neu)",
         "Bfs": "2345",
         "EVoting": true,
+        "SecureConnectId": "SC-T",
         "Id": "0ab12e9e-a8ce-5972-836b-11b1dc827bec"
       },
       {
@@ -46,6 +50,7 @@
         "Name": "St.Gallen Tablat (neu)",
         "Bfs": "2345",
         "EVoting": true,
+        "SecureConnectId": "SC-T",
         "Id": "37444e9b-cc39-511a-8c47-00c93e694c34"
       }
     ]

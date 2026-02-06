@@ -6,7 +6,7 @@
       "Source": 1,
       "NumberOfVoters": 3,
       "Name": "Stimmregister Schweizer Arnegg",
-      "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 3,
+      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 3,
       "PoliticalBusinessIds": [
         "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
         "97aa25ce-0d1c-4330-8d99-46b59bfea4b1",
@@ -19,7 +19,7 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "0b3e449f-8675-42c9-b352-0867c62be4af",
-      "VoterDuplicates": []
+      "CountOfVotingCards": 3
     },
     {
       "Id": "58176a58-d7d8-4936-825c-a93cb8f0c182",
@@ -27,7 +27,7 @@
       "Source": 2,
       "NumberOfVoters": 2,
       "Name": "Stimmregister Arnegg via Stimmregister",
-      "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
+      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0,
       "PoliticalBusinessIds": [
         "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
         "97aa25ce-0d1c-4330-8d99-46b59bfea4b1",
@@ -39,7 +39,7 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "52fc9ddb-87cb-4e73-b5ff-4017009f0e9b",
-      "VoterDuplicates": []
+      "CountOfVotingCards": 2
     },
     {
       "Id": "b4c99c20-330e-4231-ae95-a5cbb05f1c20",
@@ -47,7 +47,7 @@
       "Source": 1,
       "NumberOfVoters": 4,
       "Name": "Stimmregister Schweizer Arnegg",
-      "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
+      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0,
       "PoliticalBusinessIds": [
         "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
         "97aa25ce-0d1c-4330-8d99-46b59bfea4b1"
@@ -58,10 +58,10 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "0b3e449f-8675-42c9-b352-0867c62be4af",
-      "VoterDuplicates": []
+      "CountOfVotingCards": 4
     }
   ],
-  "NumberOfVoters": [
+  "CountOfVotingCards": [
     {
       "PoliticalBusiness": {
         "Id": "0a6f0b72-bd98-4068-a339-284e7bdd37ab",
@@ -84,12 +84,19 @@
           "CanManuallyUploadVoterList": false,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "1000",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
         },
         "PoliticalBusinessType": 2,
-        "Active": true
+        "Active": true,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 0
+      "CountOfVotingCards": 0
     },
     {
       "PoliticalBusiness": {
@@ -113,12 +120,19 @@
           "CanManuallyUploadVoterList": false,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "1100",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
         },
         "PoliticalBusinessType": 2,
-        "Active": true
+        "Active": true,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 0
+      "CountOfVotingCards": 0
     },
     {
       "PoliticalBusiness": {
@@ -146,12 +160,22 @@
           "CanManuallyUploadVoterList": true,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": true,
+          "Bfs": "1240",
+          "HasEmptyVotingCards": true,
+          "CountOfEmptyVotingCards": 2,
+          "LastCountOfEmptyVotingCardsUpdate": {
+            "Seconds": 1591013700,
+            "Nanos": 0
+          }
         },
         "PoliticalBusinessType": 2,
-        "Active": true
+        "Active": true,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 0
+      "CountOfVotingCards": 0
     },
     {
       "PoliticalBusiness": {
@@ -175,12 +199,19 @@
           "CanManuallyUploadVoterList": false,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "1000",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
         },
         "PoliticalBusinessType": 3,
-        "Active": true
+        "Active": true,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 0
+      "CountOfVotingCards": 0
     },
     {
       "PoliticalBusiness": {
@@ -208,12 +239,22 @@
           "CanManuallyUploadVoterList": true,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": true,
+          "Bfs": "1240",
+          "HasEmptyVotingCards": true,
+          "CountOfEmptyVotingCards": 2,
+          "LastCountOfEmptyVotingCardsUpdate": {
+            "Seconds": 1591013700,
+            "Nanos": 0
+          }
         },
         "PoliticalBusinessType": 3,
-        "Active": false
+        "Active": false,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 0
+      "CountOfVotingCards": 0
     },
     {
       "PoliticalBusiness": {
@@ -237,12 +278,19 @@
           "CanManuallyUploadVoterList": false,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "1000",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
         },
         "PoliticalBusinessType": 1,
-        "Active": true
+        "Active": true,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 9
+      "CountOfVotingCards": 9
     },
     {
       "PoliticalBusiness": {
@@ -266,12 +314,19 @@
           "CanManuallyUploadVoterList": false,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "1000",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
         },
         "PoliticalBusinessType": 1,
-        "Active": false
+        "Active": false,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 0
+      "CountOfVotingCards": 0
     },
     {
       "PoliticalBusiness": {
@@ -295,12 +350,19 @@
           "CanManuallyUploadVoterList": false,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "1100",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
         },
         "PoliticalBusinessType": 1,
-        "Active": true
+        "Active": true,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 9
+      "CountOfVotingCards": 9
     },
     {
       "PoliticalBusiness": {
@@ -328,13 +390,104 @@
           "CanManuallyUploadVoterList": true,
           "LastVoterUpdate": null,
           "GenerateVotingCardsTriggered": null,
-          "EVoting": null
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": true,
+          "Bfs": "1240",
+          "HasEmptyVotingCards": true,
+          "CountOfEmptyVotingCards": 2,
+          "LastCountOfEmptyVotingCardsUpdate": {
+            "Seconds": 1591013700,
+            "Nanos": 0
+          }
         },
         "PoliticalBusinessType": 1,
-        "Active": false
+        "Active": false,
+        "EVotingApproved": null
       },
-      "NumberOfVoters": 5
+      "CountOfVotingCards": 5
+    },
+    {
+      "PoliticalBusiness": {
+        "Id": "3de78256-89c4-4a28-98d5-ba3625d173e8",
+        "PoliticalBusinessNumber": "VKI",
+        "OfficialDescription": "bund future approved vote VKI (official) de",
+        "ShortDescription": "bund future approved vote VKI (short) de",
+        "DomainOfInfluence": {
+          "Id": "6d133336-0fc8-565c-8539-6b2ff4fae42b",
+          "Name": "Kirchgemeinde Arnegg",
+          "ShortName": "MU-AG-KI",
+          "AuthorityName": "Kirchgemeinde Arnegg",
+          "Type": 7,
+          "SecureConnectId": "SC-MU-AG",
+          "ResponsibleForVotingCards": true,
+          "ExternalPrintingCenter": false,
+          "ExternalPrintingCenterEaiMessageType": "",
+          "PrintData": {
+            "ShippingAway": 3,
+            "ShippingReturn": 3,
+            "ShippingMethod": 3
+          },
+          "ElectoralRegistrationEnabled": true,
+          "AllowManualVoterListUpload": false,
+          "CanManuallyUploadVoterList": false,
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
+        },
+        "PoliticalBusinessType": 1,
+        "Active": false,
+        "EVotingApproved": null
+      },
+      "CountOfVotingCards": 0
+    },
+    {
+      "PoliticalBusiness": {
+        "Id": "5ef5651c-6662-4221-b073-1cd8b4d42237",
+        "PoliticalBusinessNumber": "VZW",
+        "OfficialDescription": "bund future approved vote VZW (official) de",
+        "ShortDescription": "bund future approved vote VZW (short) de",
+        "DomainOfInfluence": {
+          "Id": "a997e9dd-ca63-5565-9a82-847c22d5f9b1",
+          "Name": "Zweckverband ARA Gossau",
+          "ShortName": "MU-GO-ARA",
+          "AuthorityName": "Stadt St. Gossau",
+          "Type": 10,
+          "SecureConnectId": "SC-MU-GO",
+          "ResponsibleForVotingCards": true,
+          "ExternalPrintingCenter": false,
+          "ExternalPrintingCenterEaiMessageType": "",
+          "PrintData": {
+            "ShippingAway": 3,
+            "ShippingReturn": 6,
+            "ShippingMethod": 1
+          },
+          "ElectoralRegistrationEnabled": true,
+          "AllowManualVoterListUpload": false,
+          "CanManuallyUploadVoterList": false,
+          "LastVoterUpdate": null,
+          "GenerateVotingCardsTriggered": null,
+          "EVoting": null,
+          "ElectoralRegisterMultipleEnabled": false,
+          "StistatMunicipality": false,
+          "Bfs": "",
+          "HasEmptyVotingCards": false,
+          "CountOfEmptyVotingCards": 0,
+          "LastCountOfEmptyVotingCardsUpdate": null
+        },
+        "PoliticalBusinessType": 1,
+        "Active": false,
+        "EVotingApproved": null
+      },
+      "CountOfVotingCards": 0
     }
   ],
-  "TotalNumberOfVoters": 9
+  "TotalNumberOfVoters": 9,
+  "TotalCountOfVotingCards": 9
 }

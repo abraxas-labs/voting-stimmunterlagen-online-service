@@ -41,7 +41,6 @@ public class VotingCardPrintFileBuilder
             entries,
             writer =>
             {
-                writer.Context.TypeConverterCache.AddConverter<VotingCardShippingMethod>(new VotingCardShippingMethodConverter());
                 writer.Context.TypeConverterCache.AddConverter<VotingCardShippingFranking>(new VotingCardShippingFrankingConverter());
                 writer.Context.RegisterClassMap<VotingCardPrintFileEntryMap>();
             });
@@ -99,6 +98,25 @@ public class VotingCardPrintFileBuilder
         var zipCode = voter.SwissZipCode?.ToString() ?? voter.ForeignZipCode;
         var pageFrom = voter.PageInfo?.PageFrom ?? 0;
         var pageTo = voter.PageInfo?.PageTo ?? 0;
+        var religionCode = DatamatrixMapping.MapReligion(voter.Religion, voter.IsMinor, voter.VoterType);
+
+        // A voter can be related to multiple voter lists if he has duplicate entries.
+        // Such a voter should receive just 1 voting card but all attachments of the related voter lists.
+        var listIds = new HashSet<Guid> { voter.ListId!.Value };
+        if (voter.VoterDuplicateId.HasValue)
+        {
+            if (voter.VoterDuplicate == null || voter.VoterDuplicate.Voters == null || voter.VoterDuplicate.Voters.Count < 2)
+            {
+                throw new InvalidOperationException($"Invalid voter duplicate {voter.VoterDuplicateId} provided");
+            }
+
+            listIds.AddRange(voter.VoterDuplicate.Voters!.Select(v => v.ListId!.Value));
+        }
+
+        var pbIds = domainOfInfluence.VoterLists!
+            .Where(vl => listIds.Contains(vl.Id))
+            .SelectMany(vl => vl.PoliticalBusinessEntries!.Select(x => x.PoliticalBusinessId))
+            .ToHashSet();
 
         return new()
         {
@@ -126,17 +144,35 @@ public class VotingCardPrintFileBuilder
             CountryIso2 = voter.Country.Iso2 ?? string.Empty,
             ShippingAway = domainOfInfluence.PrintData!.ShippingAway,
             ShippingReturn = domainOfInfluence.PrintData.ShippingReturn,
-            ShippingMethod = isEVotingVotingCard
-                ? DefaultEVotingShippingMethod
-                : !voter.SendVotingCardsToDomainOfInfluenceReturnAddress
-                ? domainOfInfluence.PrintData.ShippingMethod
-                : VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality,
+            ShippingMethodCode = GetShippingMethodCode(isEVotingVotingCard, voter.SendVotingCardsToDomainOfInfluenceReturnAddress, domainOfInfluence.PrintData.ShippingMethod),
             Language = voter.LanguageOfCorrespondence,
             AdditionalBarcode = string.Empty,
             AttachmentStations = voter.ListId.HasValue
-                ? voterAttachmentDictionary.GetAttachmentStations(voter.List!.PoliticalBusinessEntries!.Select(x => x.PoliticalBusinessId).ToList(), voter.IsHouseholder)
+                ? voterAttachmentDictionary.GetAttachmentStations(pbIds, voter.IsHouseholder)
                 : string.Empty,
             ContestOrderNumber = contestOrderNumber,
+            ReligionCode = religionCode,
+        };
+    }
+
+    private string GetShippingMethodCode(
+        bool isEVotingVotingCard,
+        bool sendVotingCardsToDomainOfInfluenceReturnAddress,
+        VotingCardShippingMethod shippingMethod)
+    {
+        var mappedShippingMethod = isEVotingVotingCard
+            ? DefaultEVotingShippingMethod
+            : !sendVotingCardsToDomainOfInfluenceReturnAddress
+            ? shippingMethod
+            : VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality;
+
+        return mappedShippingMethod switch
+        {
+            VotingCardShippingMethod.PrintingPackagingShippingToCitizen => "A",
+            VotingCardShippingMethod.PrintingPackagingShippingToMunicipality => "B",
+            VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality =>
+                !sendVotingCardsToDomainOfInfluenceReturnAddress ? "C" : "D",
+            _ => throw new InvalidOperationException("Invalid shipping method"),
         };
     }
 }

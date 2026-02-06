@@ -12,7 +12,9 @@ using Microsoft.Extensions.Logging;
 using Voting.Lib.Common;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Extensions;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
@@ -71,6 +73,12 @@ public class VotingCardGenerator
             if (!_config.DmDoc.EnableMock)
             {
                 await _templateManager.TagBricks(job.Layout!);
+            }
+
+            // disable all layout configurations if print job for empty voting cards
+            if (job.HasEmptyVotingCards)
+            {
+                job.Layout!.DataConfiguration = new();
             }
 
             var webhookUrl = _config.DmDoc.GetVotingCardPdfCallbackUrl(job.CallbackToken);
@@ -187,10 +195,19 @@ public class VotingCardGenerator
                 throw new ValidationException("cannot run job online which can only run offline");
         }
 
-        job.Voter = await _voterRepo.Query()
-            .Where(v => v.JobId == id)
-            .OrderBy(config.Sorts)
-            .ToListAsync();
+        if (!job.HasEmptyVotingCards)
+        {
+            job.Voter = await _voterRepo.Query()
+                .Where(v => v.JobId == id)
+                .Include(v => v.DomainOfInfluences)
+                .ToAsyncEnumerable()
+                .OrderBySortingCriteriaAsync(config.Sorts)
+                .ToListAsync(ct);
+        }
+        else
+        {
+            job.Voter = EmptyVoterBuilder.BuildEmptyVoters(job.DomainOfInfluence!.Bfs, job.CountOfVoters);
+        }
 
         // load voter lists separately for memory reasons.
         // it uses significantly less memory than SplitQuery() because it does not load multiple instances of the same entity.

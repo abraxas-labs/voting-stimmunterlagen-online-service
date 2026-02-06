@@ -108,6 +108,7 @@ public class DomainOfInfluenceProcessor :
 
         await _doiCcBuilder.UpdateDomainOfInfluenceCountingCircles(domainOfInfluenceId, countingCircleIds);
         await _doiCcBuilder.UpdateContestDomainOfInfluenceCountingCircles(domainOfInfluenceId, countingCircleIds);
+        await _politicalBusinessPermissionBuilder.UpdatePermissionsForPoliticalBusinessesInTestingPhase();
     }
 
     public Task Process(DomainOfInfluenceLogoUpdated eventData)

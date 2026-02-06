@@ -20,7 +20,7 @@ public class VoterListProfile : Profile
             .ConstructUsing(x => new PoliticalBusinessVoterListEntry { PoliticalBusinessId = x });
         CreateMap<VoterListManager.VoterListsData, ProtoModels.VoterLists>()
             .ForMember(dst => dst.VoterLists_, opts => opts.MapFrom(src => src.VoterLists));
-        CreateMap<VoterListManager.PoliticalBusinessNumberOfVoters, ProtoModels.PoliticalBusinessNumberOfVoters>();
+        CreateMap<VoterListManager.PoliticalBusinessCountOfVotingCards, ProtoModels.PoliticalBusinessCountOfVotingCards>();
         CreateMap<VoterList, ProtoModels.VoterList>()
             .ForMember(dst => dst.PoliticalBusinessIds, opts => opts.MapFrom(x => x.PoliticalBusinessEntries!.Select(y => y.PoliticalBusinessId)))
             .ForMember(dst => dst.Name, opts => opts.MapFrom(src => src.Import!.Name))

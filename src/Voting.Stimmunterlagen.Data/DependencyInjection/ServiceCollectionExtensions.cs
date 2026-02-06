@@ -56,6 +56,7 @@ public static class ServiceCollectionExtensions
             .AddTransient<PoliticalBusinessVoterListEntryRepo>()
             .AddTransient<VoterRepo>()
             .AddTransient<TemplateDataContainerRepo>()
-            .AddTransient<ContestRepo>();
+            .AddTransient<ContestRepo>()
+            .AddTransient<VoterListRepo>();
     }
 }

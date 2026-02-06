@@ -7,7 +7,15 @@
       },
       "AllowCustom": true,
       "VotingCardType": 1,
-      "Contest": null
+      "Contest": null,
+      "DataConfiguration": {
+        "IncludePersonId": false,
+        "IncludeDateOfBirth": false,
+        "IncludeReligion": false,
+        "IncludeIsHouseholder": false,
+        "IncludeDomainOfInfluenceChurch": false,
+        "IncludeDomainOfInfluenceSchool": false
+      }
     }
   ]
 }

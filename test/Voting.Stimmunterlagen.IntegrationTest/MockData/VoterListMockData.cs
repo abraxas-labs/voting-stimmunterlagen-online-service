@@ -40,7 +40,8 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundArchivedGemeindeArneggGuid,
         VotingCardType = VotingCardType.Swiss,
         NumberOfVoters = 3,
-        NumberOfHouseholders = 3,
+        CountOfVotingCardsForHouseholders = 3,
+        CountOfVotingCards = 3,
         SendVotingCardsToDomainOfInfluenceReturnAddress = true,
         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
             {
@@ -81,6 +82,15 @@ public static class VoterListMockData
                         {
                             Name = "St. Gallen",
                             Canton = CantonAbbreviation.SG,
+                        },
+                    },
+                    DomainOfInfluences = new List<VoterDomainOfInfluence>
+                    {
+                        new VoterDomainOfInfluence
+                        {
+                            DomainOfInfluenceIdentification = "AG-SC",
+                            DomainOfInfluenceName = "Arnegg Schulkreis",
+                            DomainOfInfluenceType = DomainOfInfluenceType.Sc,
                         },
                     },
                 },
@@ -158,8 +168,9 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
         VotingCardType = VotingCardType.Swiss,
         NumberOfVoters = 3,
-        NumberOfHouseholders = 3,
-        CountOfSendVotingCardsToDomainOfInfluenceReturnAddress = 3,
+        CountOfVotingCardsForHouseholders = 3,
+        CountOfVotingCards = 3,
+        CountOfVotingCardsForDomainOfInfluenceReturnAddress = 3,
         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
             {
                 new PoliticalBusinessVoterListEntry { PoliticalBusinessId = VoteMockData.BundFutureApproved1Guid },
@@ -274,7 +285,8 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
         VotingCardType = VotingCardType.Swiss,
         NumberOfVoters = 2,
-        NumberOfHouseholders = 2,
+        CountOfVotingCardsForHouseholders = 2,
+        CountOfVotingCards = 2,
         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
             {
                 new PoliticalBusinessVoterListEntry { PoliticalBusinessId = VoteMockData.BundFutureApproved1Guid },
@@ -355,7 +367,8 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
         VotingCardType = VotingCardType.EVoting,
         NumberOfVoters = 4,
-        NumberOfHouseholders = 4,
+        CountOfVotingCardsForHouseholders = 4,
+        CountOfVotingCards = 4,
         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
             {
                 new PoliticalBusinessVoterListEntry { PoliticalBusinessId = VoteMockData.BundFutureApproved1Guid },
@@ -565,7 +578,8 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid,
         VotingCardType = VotingCardType.Swiss,
         NumberOfVoters = 3,
-        NumberOfHouseholders = 3,
+        CountOfVotingCardsForHouseholders = 3,
+        CountOfVotingCards = 3,
         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
             {
                 new PoliticalBusinessVoterListEntry { PoliticalBusinessId = VoteMockData.BundFutureApproved1Guid },
@@ -678,7 +692,8 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid,
         VotingCardType = VotingCardType.EVoting,
         NumberOfVoters = 1,
-        NumberOfHouseholders = 1,
+        CountOfVotingCardsForHouseholders = 1,
+        CountOfVotingCards = 1,
         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
             {
                 new PoliticalBusinessVoterListEntry { PoliticalBusinessId = VoteMockData.BundFutureApproved1Guid },
@@ -727,8 +742,9 @@ public static class VoterListMockData
         DomainOfInfluenceId = DomainOfInfluenceMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggGuid,
         VotingCardType = VotingCardType.Swiss,
         NumberOfVoters = 3,
-        NumberOfHouseholders = 3,
-        CountOfSendVotingCardsToDomainOfInfluenceReturnAddress = 3,
+        CountOfVotingCardsForHouseholders = 3,
+        CountOfVotingCards = 3,
+        CountOfVotingCardsForDomainOfInfluenceReturnAddress = 3,
         Voters = new List<Voter>
             {
                 new Voter

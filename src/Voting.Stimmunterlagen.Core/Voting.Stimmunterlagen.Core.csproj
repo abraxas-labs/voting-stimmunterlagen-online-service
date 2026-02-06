@@ -13,7 +13,7 @@
     <PackageReference Include="Voting.Lib.ImageProcessing" Version="$(VotingLibVersion)" />
     <PackageReference Include="Voting.Lib.Grpc" Version="$(VotingLibVersion)" />
     <PackageReference Include="Voting.Lib.Rest" Version="$(VotingLibVersion)" />
-    <PackageReference Include="Voting.Basis.Eventing.Proto" Version="1.114.0" />
+    <PackageReference Include="Voting.Basis.Eventing.Proto" Version="1.135.0" />
     <PackageReference Include="Voting.Stimmregister.Service.Proto" Version="2.0.1" />
   </ItemGroup>
 

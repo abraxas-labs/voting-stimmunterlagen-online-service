@@ -9,17 +9,12 @@ namespace Voting.Stimmunterlagen.Data.Models;
 public class ManualVotingCardGeneratorJob : BaseEntity, IHasDomainOfInfluenceVotingCardLayout
 {
     private DomainOfInfluenceVotingCardLayout? _layout;
-    private Voter? _voter;
 
     public DateTime Created { get; set; }
 
     public User CreatedBy { get; set; } = new();
 
-    public Voter Voter
-    {
-        get => _voter ?? throw new InvalidOperationException($"{nameof(_voter)} not loaded");
-        set => _voter = value;
-    }
+    public Voter? Voter { get; set; }
 
     public DomainOfInfluenceVotingCardLayout Layout
     {

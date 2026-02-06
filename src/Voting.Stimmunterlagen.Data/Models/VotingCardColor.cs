@@ -5,13 +5,11 @@ namespace Voting.Stimmunterlagen.Data.Models;
 
 public enum VotingCardColor
 {
-    Unspecified,
-    Blue,
-    Chamois,
-    Yellow,
-    Gold,
-    Grey,
-    Pink,
-    Red,
-    Green,
+    Unspecified = 0,
+    Blue = 1,
+    Yellow = 3,
+    Grey = 5,
+    Pink = 6,
+    Red = 7,
+    Green = 8,
 }

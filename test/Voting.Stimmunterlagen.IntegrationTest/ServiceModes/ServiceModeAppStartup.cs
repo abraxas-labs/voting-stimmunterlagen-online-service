@@ -38,7 +38,8 @@ public class ServiceModeAppStartup : TestStartup
         services.TryAddScoped<ContestDomainOfInfluenceBuilder>();
         services.TryAddScoped<ContestCountingCircleBuilder>();
         services.TryAddScoped<DomainOfInfluenceCountingCircleBuilder>();
-        services.TryAddSingleton<TemplateDataBuilder>();
+        services.TryAddScoped<VoterPrintInfoAggregator>();
+        services.TryAddScoped<TemplateDataBuilder>();
         services.TryAddSingleton<ContestManager>();
         services.TryAddSingleton<IDmDocService, DmDocServiceMock>();
         services.TryAddSingleton(AppConfig.Api);

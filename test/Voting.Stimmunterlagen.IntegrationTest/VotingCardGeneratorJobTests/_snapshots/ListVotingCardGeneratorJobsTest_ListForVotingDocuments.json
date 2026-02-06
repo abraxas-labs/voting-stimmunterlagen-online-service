@@ -11,6 +11,16 @@
       "State": 1
     },
     {
+      "Id": "e5fc1527-8465-4a76-a6aa-91f32c3b73f8",
+      "FileName": "empty.pdf",
+      "CountOfVoters": 2,
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "VotingCardType": 1,
+      "State": 1
+    },
+    {
       "Id": "5af3fcaf-ebf5-4c93-9ff5-26e3193e8f51",
       "FileName": "de.pdf",
       "CountOfVoters": 2,

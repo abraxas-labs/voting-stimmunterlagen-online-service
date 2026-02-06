@@ -22,7 +22,13 @@ public abstract class ExportJobBase : BaseEntity
 
     public virtual void PrepareToRun()
     {
+        Reset();
         State = ExportJobState.ReadyToRun;
+    }
+
+    public virtual void Reset()
+    {
+        State = ExportJobState.Pending;
         Completed = null;
         Failed = null;
         Started = null;

@@ -7,7 +7,7 @@ using System.IO;
 using Voting.Lib.Scheduler;
 using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
-using Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration;
+using Voting.Stimmunterlagen.EVoting.Configuration;
 using DomainOfInfluence = Voting.Stimmunterlagen.EVoting.Models.DomainOfInfluence;
 
 namespace Voting.Stimmunterlagen.Core.Configuration;
@@ -23,7 +23,7 @@ public class ContestEVotingExportConfig
 
     public JobConfig Scheduler { get; set; } = new() { Interval = TimeSpan.FromHours(12) };
 
-    public int MaxLogoHeight { get; set; } = 250; // approx 50-150kb.
+    public uint MaxLogoHeight { get; set; } = 250; // approx 50-150kb.
 
     /// <summary>
     /// Gets or sets the "test domain of influence defaults" (Testurnen), which are exported for eVoting.
@@ -36,7 +36,7 @@ public class ContestEVotingExportConfig
     public Dictionary<DomainOfInfluenceCanton, List<DomainOfInfluence>> TestDomainOfInfluences { get; set; } = new();
 
     /// <summary>
-    /// Gets or sets the e text blocks, which are exported for eVoting.
+    /// Gets or sets the domain of influence configs that are applied are applied for the domain of influences, which are exported for eVoting.
     /// </summary>
-    public Dictionary<string, ETextBlocks> ETextBlocks { get; set; } = new();
+    public Dictionary<string, EVotingDomainOfInfluenceConfig> EVotingDomainOfInfluences { get; set; } = new();
 }

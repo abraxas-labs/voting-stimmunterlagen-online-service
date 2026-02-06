@@ -46,10 +46,10 @@ public class RetryVotingCardPrintFileExportJobsTest : BaseWriteableDbGrpcTest<
 
         var jobs = await FindDbEntities<VotingCardPrintFileExportJob>(x =>
             x.VotingCardGeneratorJob!.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid);
-        jobs.Should().HaveCount(3);
-        jobs.Count(x => x.State == ExportJobState.ReadyToRun).Should().Be(2);
+        jobs.Should().HaveCount(4);
+        jobs.Count(x => x.State == ExportJobState.ReadyToRun).Should().Be(3);
         jobs.Count(x => x.State == ExportJobState.Completed).Should().Be(1);
-        GetService<VotingCardPrintFileExportThrottlerMock>().BlockedCount.Should().Be(2);
+        GetService<VotingCardPrintFileExportThrottlerMock>().BlockedCount.Should().Be(3);
     }
 
     [Fact]
@@ -61,8 +61,8 @@ public class RetryVotingCardPrintFileExportJobsTest : BaseWriteableDbGrpcTest<
 
         var jobs = await FindDbEntities<VotingCardPrintFileExportJob>(x =>
             x.VotingCardGeneratorJob!.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid);
-        jobs.Should().HaveCount(3);
-        jobs.Count(x => x.State == ExportJobState.ReadyToRun).Should().Be(1);
+        jobs.Should().HaveCount(4);
+        jobs.Count(x => x.State == ExportJobState.ReadyToRun).Should().Be(2);
     }
 
     [Fact]
@@ -74,8 +74,8 @@ public class RetryVotingCardPrintFileExportJobsTest : BaseWriteableDbGrpcTest<
         await AbraxasPrintJobManagerClient.RetryAsync(NewValidRequest());
         var jobs = await FindDbEntities<VotingCardPrintFileExportJob>(x =>
             x.VotingCardGeneratorJob!.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid);
-        jobs.Should().HaveCount(3);
-        jobs.Count(x => x.State == ExportJobState.ReadyToRun).Should().Be(1);
+        jobs.Should().HaveCount(4);
+        jobs.Count(x => x.State == ExportJobState.ReadyToRun).Should().Be(2);
     }
 
     protected override async Task AuthorizationTestCall(VotingCardPrintFileExportJobService.VotingCardPrintFileExportJobServiceClient service)

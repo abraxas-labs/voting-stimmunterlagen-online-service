@@ -15,9 +15,9 @@ namespace Voting.Stimmunterlagen.Core.Managers.Steps;
 
 public class VoterListsStepManager : ISingleStepManager
 {
-    private readonly IDbRepository<VoterList> _voterListRepo;
+    private readonly VoterListRepo _voterListRepo;
 
-    public VoterListsStepManager(IDbRepository<VoterList> voterListRepo)
+    public VoterListsStepManager(VoterListRepo voterListRepo)
     {
         _voterListRepo = voterListRepo;
     }
@@ -26,13 +26,13 @@ public class VoterListsStepManager : ISingleStepManager
 
     public async Task Approve(Guid domainOfInfluenceId, string tenantId, CancellationToken ct)
     {
-        var hasVoterListWithDuplicates = await _voterListRepo.Query()
-            .WhereHasDomainOfInfluence(domainOfInfluenceId)
-            .AnyAsync(vl => vl.HasVoterDuplicates, cancellationToken: ct);
+        var hasVoterLists = await _voterListRepo.Query()
+            .WhereIsDomainOfInfluenceManager(tenantId)
+            .AnyAsync(vl => vl.DomainOfInfluenceId == domainOfInfluenceId);
 
-        if (hasVoterListWithDuplicates)
+        if (!hasVoterLists)
         {
-            throw new ValidationException("Cannot complete the step while uploaded voter duplicates exists");
+            throw new ValidationException("Cannot approve voter lists step if no voter list are imported");
         }
     }
 

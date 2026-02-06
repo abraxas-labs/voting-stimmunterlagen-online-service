@@ -56,9 +56,18 @@ public abstract class BaseDomainOfInfluence : BaseEntity
     /// </summary>
     public bool ElectoralRegistrationEnabled { get; set; }
 
+    /// <summary>
+    /// Gets or sets a value indicating whether multiple electoral registers are enabled. Also defines whether external voter duplicates are allowed or not.
+    /// </summary>
+    public bool ElectoralRegisterMultipleEnabled { get; set; }
+
     public bool StistatMunicipality { get; set; }
 
     public bool VotingCardFlatRateDisabled { get; set; }
+
+    public bool IsMainVotingCardsDomainOfInfluence { get; set; }
+
+    public bool HasEmptyVotingCards { get; set; }
 }
 
 public abstract class BaseDomainOfInfluence<T, THierarchyEntry> : BaseDomainOfInfluence

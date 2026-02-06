@@ -45,9 +45,17 @@ public class Voter
 
     public string ZipCode => SwissZipCode == 0 ? ForeignZipCode : SwissZipCode.ToString();
 
-    public string DateOfBirth { get; set; } = string.Empty;
+    public string? DateOfBirth { get; set; }
 
-    public string PersonId { get; set; } = string.Empty;
+    public string? PersonId { get; set; }
+
+    public string? Religion { get; set; }
+
+    public bool? IsHouseholder { get; set; }
+
+    public string? DomainOfInfluenceIdentificationsChurch { get; set; }
+
+    public string? DomainOfInfluenceIdentificationsSchool { get; set; }
 
     public Country Country { get; set; } = new();
 

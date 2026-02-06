@@ -54,7 +54,7 @@ public class CreateManualVotingCardGeneratorJobTest : BaseWriteableDbGrpcTest<Ma
         job.Id = Guid.Empty;
         job.LayoutId = Guid.Empty;
         job.Layout.Id = Guid.Empty;
-        job.Voter.Id = Guid.Empty;
+        job.Voter!.Id = Guid.Empty;
         job.Voter.ManualJobId = Guid.Empty;
         job.MatchSnapshot();
     }
@@ -76,6 +76,10 @@ public class CreateManualVotingCardGeneratorJobTest : BaseWriteableDbGrpcTest<Ma
         var resp = await GemeindeArneggElectionAdminClient.CreateAsync(NewValidRequest(x =>
         {
             x.Voter.DateOfBirth = null;
+            x.Voter.Religion = Religion.Unspecified;
+            x.Voter.HouseNumber = string.Empty;
+            x.Voter.PersonId = string.Empty;
+            x.Voter.Salutation = Salutation.Unspecified;
         }));
         resp.Should().NotBeNull();
         resp.Pdf.ShouldBeAPdf();
@@ -90,7 +94,7 @@ public class CreateManualVotingCardGeneratorJobTest : BaseWriteableDbGrpcTest<Ma
         job.Id = Guid.Empty;
         job.LayoutId = Guid.Empty;
         job.Layout.Id = Guid.Empty;
-        job.Voter.Id = Guid.Empty;
+        job.Voter!.Id = Guid.Empty;
         job.Voter.ManualJobId = Guid.Empty;
         job.MatchSnapshot();
     }
@@ -165,6 +169,8 @@ public class CreateManualVotingCardGeneratorJobTest : BaseWriteableDbGrpcTest<Ma
                 PersonId = "10123",
                 DateOfBirth = new DateTime(1991, 10, 18, 0, 0, 0, DateTimeKind.Utc).ToTimestamp(),
                 Salutation = Salutation.Mistress,
+                Religion = Religion.Other,
+                IsHouseholder = false,
             },
         };
         action?.Invoke(req);

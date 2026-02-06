@@ -35,7 +35,7 @@ public class TestStartup : Startup
             .AddVotingLibObjectStorageMock()
             .AddVotingLibIamMocks()
             .AddDokConnectorMock()
-            .AddMockedTimeProvider()
+            .AddMockedClock()
             .RemoveHostedServices()
             .AddMock<IVotingCardGeneratorThrottler, VotingCardGeneratorThrottlerMock>()
             .AddMock<IVotingCardStore, VotingCardStoreMock>()

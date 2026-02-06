@@ -2,6 +2,7 @@
 // For license information see LICENSE file
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,13 +33,15 @@ public class StatisticsByReligionVotingRenderService : IVotingRenderService
         var voterStatistics = await _voterRepo.Query()
             .OrderBy(x => x.Religion)
             .WhereBelongToDomainOfInfluenceOnlyVoterList(context.DomainOfInfluence.Id)
+            .WhereVotingCardPrintEnabled()
+            .Where(v => context.VoterList == null || v.ListId == context.VoterList.Id)
             .GroupBy(v => new { v.Religion, v.Sex, v.SendVotingCardsToDomainOfInfluenceReturnAddress })
             .Select(x => new { x.Key.Religion, x.Key.Sex, x.Key.SendVotingCardsToDomainOfInfluenceReturnAddress, Count = x.Count() })
             .ToListAsync(ct);
 
         var religionCodesByReligiousDenomination = voterStatistics.Select(x => x.Religion).ToHashSet()
             .GroupBy(ReligionMapping.GetReligiousDenomination)
-            .ToDictionary(x => x.Key, x => x.ToList());
+            .ToImmutableSortedDictionary(x => x.Key, x => x.ToList());
 
         var data = new List<Data>();
 
@@ -57,7 +60,7 @@ public class StatisticsByReligionVotingRenderService : IVotingRenderService
         }
 
         var csvData = await _csvService.Render(data, ct: ct);
-        return new FileModel(csvData, FileNameUtils.GenerateFileName(FileNameTemplate, new[] { context.DomainOfInfluence.Bfs }), MimeTypes.CsvMimeType);
+        return new FileModel(csvData, FileNameUtils.GenerateFileName(FileNameTemplate, context.BuildVotingJournalFileNameArgs()), MimeTypes.CsvMimeType);
     }
 
     private class Data

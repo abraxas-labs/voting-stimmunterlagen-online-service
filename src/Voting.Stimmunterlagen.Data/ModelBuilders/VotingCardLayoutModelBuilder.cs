@@ -26,6 +26,8 @@ public class VotingCardLayoutModelBuilder
             .HasOne(x => x.Template!)
             .WithMany(x => x.ContestVotingCardLayouts)
             .HasForeignKey(x => x.TemplateId);
+
+        builder.OwnsOne(x => x.DataConfiguration);
     }
 
     public void Configure(EntityTypeBuilder<DomainOfInfluenceVotingCardLayout> builder)
@@ -49,5 +51,7 @@ public class VotingCardLayoutModelBuilder
             .HasOne(x => x.OverriddenTemplate!)
             .WithMany(x => x.OverriddenDomainOfInfluenceVotingCardLayouts)
             .HasForeignKey(x => x.OverriddenTemplateId);
+
+        builder.OwnsOne(x => x.DataConfiguration);
     }
 }

@@ -11,6 +11,7 @@ using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Managers;
 using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
+using Ech0045Version = Voting.Stimmunterlagen.Data.Models.Ech0045Version;
 
 namespace Voting.Stimmunterlagen.Services;
 
@@ -36,6 +37,13 @@ public class ContestEVotingExportJobService : Proto.V1.ContestEVotingExportJobSe
     public override async Task<Empty> RetryJob(RetryContestEVotingExportJobRequest request, ServerCallContext context)
     {
         await _manager.RetryJob(GuidParser.Parse(request.ContestId));
+        return ProtobufEmpty.Instance;
+    }
+
+    [AuthorizeElectionAdmin]
+    public override async Task<Empty> UpdateAndResetJob(UpdateAndResetContestEVotingExportJobRequest request, ServerCallContext context)
+    {
+        await _manager.UpdateAndResetJob(GuidParser.Parse(request.ContestId), _mapper.Map<Ech0045Version>(request.Ech0045Version));
         return ProtobufEmpty.Instance;
     }
 }

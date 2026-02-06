@@ -51,7 +51,8 @@ public class SecondaryMajorityElectionProcessorTest : BaseWriteableDbTest
                 .Where(x => x.PoliticalBusinessId == election.Id)
                 .OrderBy(x => x.SecureConnectId)
                 .ThenBy(x => x.Role)
-                .Select(x => new { x.SecureConnectId, x.Role })
+                .ThenBy(x => x.DomainOfInfluenceId)
+                .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.Name })
                 .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
     }
@@ -80,7 +81,8 @@ public class SecondaryMajorityElectionProcessorTest : BaseWriteableDbTest
                 .Where(x => x.PoliticalBusinessId == election.Id)
                 .OrderBy(x => x.SecureConnectId)
                 .ThenBy(x => x.Role)
-                .Select(x => new { x.SecureConnectId, x.Role })
+                .ThenBy(x => x.DomainOfInfluenceId)
+                .Select(x => new { x.SecureConnectId, x.Role, x.DomainOfInfluence!.Name })
                 .ToListAsync());
         permissions.ShouldMatchChildSnapshot("permissions");
     }
@@ -109,6 +111,32 @@ public class SecondaryMajorityElectionProcessorTest : BaseWriteableDbTest
         pbAfter.Active
             .Should()
             .BeTrue();
+    }
+
+    [Fact]
+    public async Task SecondaryMajorityElectionEVotingApprovalUpdated()
+    {
+        await TestEventPublisher.PublishTwice(new SecondaryMajorityElectionEVotingApprovalUpdated
+        {
+            Approved = true,
+            SecondaryMajorityElectionId = SecondaryMajorityElectionMockData.BundFuture51Id,
+        });
+
+        var pbBefore = await RunOnDb(db => db.PoliticalBusinesses.SingleAsync(x => x.Id == SecondaryMajorityElectionMockData.BundFuture51Guid));
+        pbBefore.EVotingApproved
+            .Should()
+            .BeTrue();
+
+        await TestEventPublisher.Publish(2, new SecondaryMajorityElectionEVotingApprovalUpdated
+        {
+            Approved = false,
+            SecondaryMajorityElectionId = SecondaryMajorityElectionMockData.BundFuture51Id,
+        });
+
+        var pbAfter = await RunOnDb(db => db.PoliticalBusinesses.SingleAsync(x => x.Id == SecondaryMajorityElectionMockData.BundFuture51Guid));
+        pbAfter.EVotingApproved
+            .Should()
+            .BeFalse();
     }
 
     [Fact]

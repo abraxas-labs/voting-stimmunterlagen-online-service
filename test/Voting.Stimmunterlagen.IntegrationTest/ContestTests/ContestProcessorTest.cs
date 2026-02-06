@@ -84,6 +84,7 @@ public class ContestProcessorTest : BaseWriteableDbTest
         var contestDoiCcs = await RunOnDb(db => db.ContestDomainOfInfluenceCountingCircles
             .Where(x => x.DomainOfInfluence!.ContestId == contest.Id)
             .OrderBy(x => x.CountingCircleId)
+            .ThenBy(x => x.DomainOfInfluenceId)
             .Select(x => new { x.CountingCircleId, x.DomainOfInfluenceId })
             .ToListAsync());
         contestDoiCcs.ShouldMatchChildSnapshot("contest_doi_ccs");
@@ -162,6 +163,7 @@ public class ContestProcessorTest : BaseWriteableDbTest
         var contestDoiCcs = await RunOnDb(db => db.ContestDomainOfInfluenceCountingCircles
             .Where(x => x.DomainOfInfluence!.ContestId == contest.Id)
             .OrderBy(x => x.CountingCircleId)
+            .ThenBy(x => x.DomainOfInfluenceId)
             .Select(x => new { x.CountingCircleId, x.DomainOfInfluenceId })
             .ToListAsync());
         contestDoiCcs.ShouldMatchChildSnapshot("contest_doi_ccs");
@@ -281,6 +283,33 @@ public class ContestProcessorTest : BaseWriteableDbTest
             .Select(x => new { x.Name, x.BasisCountingCircleId, x.Bfs, x.EVoting })
             .ToListAsync());
         contestCountingCircles.ShouldMatchChildSnapshot("counting-circles");
+    }
+
+    [Fact]
+    public async Task UpdateContestShouldChangeMinorFlag()
+    {
+        var contestId = ContestMockData.PoliticalAssemblyBundFutureApprovedId;
+        var domainOfInfluenceId = DomainOfInfluenceMockData.GemeindeArneggId;
+        var minorCount = await RunOnDb(db => db.Voters
+            .Where(x => x.ContestId == Guid.Parse(contestId) && x.IsMinor == true)
+            .CountAsync());
+        minorCount.Should().Be(0);
+        await TestEventPublisher.PublishTwice(new ContestUpdated
+        {
+            Contest = new ContestEventData
+            {
+                Id = contestId,
+                Date = MockedClock.GetTimestampDate(-6000),
+                Description = { LanguageUtil.MockAllLanguages("Contest 01") },
+                DomainOfInfluenceId = domainOfInfluenceId,
+                EVoting = true,
+                State = SharedProto.ContestState.TestingPhase,
+            },
+        });
+        var minorCountAfter = await RunOnDb(db => db.Voters
+            .Where(x => x.ContestId == Guid.Parse(contestId) && x.IsMinor == true)
+            .CountAsync());
+        minorCountAfter.Should().Be(1);
     }
 
     private async Task TestStateChange<T>(T eventData, ContestState targetState)

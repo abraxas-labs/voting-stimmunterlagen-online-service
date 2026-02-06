@@ -91,13 +91,19 @@ public class PrintJobManager
         return await MapToPrintJobSummaries(contestId, printJobs);
     }
 
-    public async Task<List<PrintJob>> ListGenerateVotingCardsTriggered(Guid contestId)
+    public async Task<List<PrintJob>> ListGenerateVotingCardsTriggered(Guid contestId, bool forPrintJobManagement)
     {
-        return await _printJobRepo.Query()
-            .WhereIsContestManager(_auth.Tenant.Id)
+        var query = _printJobRepo.Query()
             .WhereGenerateVotingCardsTriggered()
             .WherePrintJobProcessNotStarted()
-            .Where(x => x.DomainOfInfluence!.ContestId == contestId)
+            .Where(x => x.DomainOfInfluence!.ContestId == contestId);
+
+        if (!forPrintJobManagement)
+        {
+            query = query.WhereIsContestManager(_auth.Tenant.Id);
+        }
+
+        return await query
             .Include(x => x.DomainOfInfluence)
             .OrderBy(x => x.DomainOfInfluence!.Name)
             .ToListAsync();

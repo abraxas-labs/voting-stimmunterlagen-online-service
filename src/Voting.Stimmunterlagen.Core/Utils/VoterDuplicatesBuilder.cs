@@ -3,62 +3,100 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using Voting.Stimmunterlagen.Core.Models.VoterListImport;
 using Voting.Stimmunterlagen.Data.Models;
 
 namespace Voting.Stimmunterlagen.Core.Utils;
 
+public enum VoterDuplicatesBuilderNextVoterResultState
+{
+    Unspecified,
+    NoActionRequired,
+    InternalDuplicate,
+    ExternalDuplicateCreateRequired,
+    ExternalDuplicateReferenceRequired,
+}
+
 public class VoterDuplicatesBuilder
 {
-    private readonly VoterListImport _import;
+    private readonly Guid _domainOfInfluenceId;
+    private readonly HashSet<VoterKey> _existingExternalVoterKeys = new();
+    private readonly HashSet<VoterKey> _existingInternalVoterKeys = new();
+    private readonly List<DomainOfInfluenceVoterDuplicate> _existingVoterDuplicates = new();
+    private readonly Dictionary<VoterKey, List<Guid>> _existingVoterIdsByVoterKey = new();
 
-    private readonly Dictionary<Guid, Dictionary<string, VoterDuplicateCompareRecord>> _existingVoterRecordsDictByListId = new();
-
-    public VoterDuplicatesBuilder(VoterListImport import)
+    public VoterDuplicatesBuilder(Guid domainOfInfluenceId, List<DomainOfInfluenceVoterDuplicate> existingVoterDuplicates, Dictionary<VoterKey, List<Guid>> existingVoterIdsByVoterKey)
     {
-        _import = import;
-
-        foreach (var voterList in import.VoterLists!)
-        {
-            _existingVoterRecordsDictByListId.Add(voterList.Id, new Dictionary<string, VoterDuplicateCompareRecord>());
-        }
+        _domainOfInfluenceId = domainOfInfluenceId;
+        _existingVoterDuplicates.AddRange(existingVoterDuplicates);
+        _existingExternalVoterKeys.AddRange(existingVoterIdsByVoterKey.Keys);
+        _existingVoterIdsByVoterKey.AddRange(existingVoterIdsByVoterKey);
     }
 
-    public void NextVoter(Voter voter)
+    public VoterDuplicatesBuilderNextVoterResult NextVoter(Voter voter)
     {
-        var existingVoterRecordsByPersonId = _existingVoterRecordsDictByListId[voter.ListId!.Value];
-        var currentVoterRecord = new VoterDuplicateCompareRecord(voter.PersonId, voter.FirstName, voter.LastName, voter.DateOfBirth, voter.Sex);
+        var voterKey = BuildVoterKey(voter);
 
-        if (!existingVoterRecordsByPersonId.ContainsKey(currentVoterRecord.PersonId))
+        // Internal (= same Import) duplicate check.
+        if (!_existingInternalVoterKeys.Contains(voterKey))
         {
-            existingVoterRecordsByPersonId.Add(currentVoterRecord.PersonId, currentVoterRecord);
-            return;
+            _existingInternalVoterKeys.Add(voterKey);
+        }
+        else
+        {
+            return new VoterDuplicatesBuilderNextVoterResult(VoterDuplicatesBuilderNextVoterResultState.InternalDuplicate);
         }
 
-        var voterList = _import.VoterLists!.Single(x => x.Id == voter.ListId);
-        voterList.HasVoterDuplicates = true;
-
-        // a person id should only be included once in voter duplicates
-        if (voterList.VoterDuplicates!.Any(d => d.PersonId == currentVoterRecord.PersonId))
+        // External (= same Domain Of Influence) duplicate check
+        if (!_existingExternalVoterKeys.Contains(voterKey))
         {
-            return;
+            _existingExternalVoterKeys.Add(voterKey);
+            return new VoterDuplicatesBuilderNextVoterResult(VoterDuplicatesBuilderNextVoterResultState.NoActionRequired);
         }
 
-        voterList.VoterDuplicates!.Add(MapToVoterDuplicate(currentVoterRecord, voterList.Id));
+        var existingVoterIds = _existingVoterIdsByVoterKey[voterKey]!;
+
+        var existingVoterDuplicate = GetVoterDuplicate(voterKey);
+        if (existingVoterDuplicate != null)
+        {
+            return new VoterDuplicatesBuilderNextVoterResult(
+                VoterDuplicatesBuilderNextVoterResultState.ExternalDuplicateReferenceRequired,
+                new VoterDuplicatesBuilderVoterDuplicateData(existingVoterDuplicate, existingVoterIds));
+        }
+
+        var newVoterDuplicate = MapToVoterDuplicate(voterKey);
+        _existingVoterDuplicates.Add(newVoterDuplicate);
+        return new VoterDuplicatesBuilderNextVoterResult(
+            VoterDuplicatesBuilderNextVoterResultState.ExternalDuplicateCreateRequired,
+            new VoterDuplicatesBuilderVoterDuplicateData(newVoterDuplicate, existingVoterIds));
     }
 
-    private VoterDuplicate MapToVoterDuplicate(VoterDuplicateCompareRecord voterRecord, Guid voterListId)
+    private DomainOfInfluenceVoterDuplicate MapToVoterDuplicate(VoterKey voter)
     {
         return new()
         {
-            PersonId = voterRecord.PersonId,
-            FirstName = voterRecord.FirstName,
-            LastName = voterRecord.LastName,
-            DateOfBirth = voterRecord.DateOfBirth,
-            Sex = voterRecord.Sex,
-            ListId = voterListId,
+            FirstName = voter.FirstName,
+            LastName = voter.LastName,
+            DateOfBirth = voter.DateOfBirth,
+            Street = voter.Street,
+            HouseNumber = voter.HouseNumber,
+            DomainOfInfluenceId = _domainOfInfluenceId,
         };
     }
 
-    private record VoterDuplicateCompareRecord(string PersonId, string FirstName, string LastName, string DateOfBirth, SexType Sex);
+    private DomainOfInfluenceVoterDuplicate? GetVoterDuplicate(VoterKey voterKey)
+    {
+        return _existingVoterDuplicates.Find(d =>
+            d.FirstName == voterKey.FirstName
+            && d.LastName == voterKey.LastName
+            && d.DateOfBirth == voterKey.DateOfBirth
+            && d.Street == voterKey.Street
+            && d.HouseNumber == voterKey.HouseNumber);
+    }
+
+    private VoterKey BuildVoterKey(Voter voter) => new VoterKey(voter.FirstName, voter.LastName, voter.DateOfBirth, voter.Street, voter.HouseNumber);
 }
+
+public record VoterDuplicatesBuilderNextVoterResult(VoterDuplicatesBuilderNextVoterResultState State, VoterDuplicatesBuilderVoterDuplicateData? Data = null);
+
+public record VoterDuplicatesBuilderVoterDuplicateData(DomainOfInfluenceVoterDuplicate VoterDuplicate, List<Guid> ExistingExternalVoterIds);

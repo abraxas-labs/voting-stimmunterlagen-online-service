@@ -48,6 +48,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
                 ParentId = DomainOfInfluenceMockData.KantonStGallenId,
                 ResponsibleForVotingCards = true,
                 ElectoralRegistrationEnabled = true,
+                ElectoralRegisterMultipleEnabled = true,
             },
         };
 
@@ -169,6 +170,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
                 ParentId = DomainOfInfluenceMockData.KantonStGallenId,
                 ResponsibleForVotingCards = true,
                 ElectoralRegistrationEnabled = true,
+                ElectoralRegisterMultipleEnabled = true,
             },
         };
 
@@ -314,6 +316,10 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             },
         };
 
+        var prevPbPermissionsCount = await RunOnDb(db => db.PoliticalBusinessPermissions
+            .Where(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync());
+
         // publish two events to test idempotency
         await TestEventPublisher.PublishTwice(eventData);
 
@@ -344,12 +350,23 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             .OrderBy(x => x.DomainOfInfluenceId)
             .ToListAsync());
         contestDoiCcs.ShouldMatchChildSnapshot("contest_doi_ccs");
+
+        // validate update pb permissions if cc is assigned to a new domain of influence
+        var updatedPbPermissionsCount = await RunOnDb(db => db.PoliticalBusinessPermissions
+            .Where(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync());
+
+        prevPbPermissionsCount.Should().Be(updatedPbPermissionsCount - 2);
     }
 
     [Fact]
     public async Task DomainOfInfluenceVotingCardDataUpdated()
     {
         var guid = DomainOfInfluenceMockData.StadtGossauGuid;
+
+        var prevPbPermissionsCount = await RunOnDb(db => db.PoliticalBusinessPermissions
+            .Where(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid)
+            .CountAsync());
 
         var eventData = new DomainOfInfluenceVotingCardDataUpdated
         {
@@ -364,6 +381,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             SwissPostData = new DomainOfInfluenceVotingCardSwissPostDataEventData
             {
                 InvoiceReferenceNumber = "049844412",
+                FrankingLicenceAwayNumber = "70000001",
                 FrankingLicenceReturnNumber = "094922284",
             },
             ReturnAddress = new DomainOfInfluenceVotingCardReturnAddressEventData
@@ -378,6 +396,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             ExternalPrintingCenterEaiMessageType = "EAI-Gossau",
             StistatMunicipality = false,
             VotingCardFlatRateDisabled = false,
+            IsMainVotingCardsDomainOfInfluence = false,
+            HasEmptyVotingCards = false,
         };
 
         // publish two events to test idempotency
@@ -394,6 +414,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         doi.ExternalPrintingCenterEaiMessageType.Should().Be("EAI-Gossau");
         doi.StistatMunicipality.Should().BeFalse();
         doi.VotingCardFlatRateDisabled.Should().BeFalse();
+        doi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
+        doi.HasEmptyVotingCards.Should().BeFalse();
 
         var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
             .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
@@ -408,9 +430,18 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             contestDoi.ReturnAddress!.ShouldMatchChildSnapshot("ReturnAddress");
             contestDoi.StistatMunicipality.Should().BeFalse();
             contestDoi.VotingCardFlatRateDisabled.Should().BeFalse();
+            contestDoi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
+            contestDoi.HasEmptyVotingCards.Should().BeFalse();
         }
 
         contestDois.Select(x => x.PrintJob).WhereNotNull().Any().Should().BeTrue();
+
+        // test update pb permissions if main voting cards flag changes
+        var updatedPbPermissionsCount = await RunOnDb(db => db.PoliticalBusinessPermissions
+            .Where(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid)
+            .CountAsync());
+
+        prevPbPermissionsCount.Should().Be(updatedPbPermissionsCount + 1);
 
         // test attachment delete with external printing center
         var doiGuid = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid;
@@ -452,6 +483,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             SwissPostData = new DomainOfInfluenceVotingCardSwissPostDataEventData
             {
                 InvoiceReferenceNumber = "049844412",
+                FrankingLicenceAwayNumber = "79912300",
                 FrankingLicenceReturnNumber = "094922284",
             },
             ReturnAddress = new DomainOfInfluenceVotingCardReturnAddressEventData

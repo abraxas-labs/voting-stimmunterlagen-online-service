@@ -27,7 +27,7 @@ public class AttachmentBuilderTest : BaseWriteableDbTest
     [Fact]
     public async Task CleanUpShouldIgnorePoliticalAssemblyWithNoPoliticalBusinessEntry()
     {
-        await _attachmentBuilder.CleanUp(new() { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
+        await _attachmentBuilder.CleanUp(new[] { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
         (await AttachmentExists(AttachmentMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggGuid)).Should().BeTrue();
     }
 
@@ -36,7 +36,7 @@ public class AttachmentBuilderTest : BaseWriteableDbTest
     {
         var attachmentId = AttachmentMockData.BundFutureApprovedGemeindeArneggGuid;
 
-        await _attachmentBuilder.CleanUp(new() { ContestMockData.BundFutureApprovedGuid });
+        await _attachmentBuilder.CleanUp(new[] { ContestMockData.BundFutureApprovedGuid });
         (await AttachmentExists(attachmentId)).Should().BeTrue();
 
         await RunOnDb(async db =>
@@ -49,7 +49,7 @@ public class AttachmentBuilderTest : BaseWriteableDbTest
             await db.SaveChangesAsync();
         });
 
-        await _attachmentBuilder.CleanUp(new() { ContestMockData.BundFutureApprovedGuid });
+        await _attachmentBuilder.CleanUp(new[] { ContestMockData.BundFutureApprovedGuid });
         (await AttachmentExists(attachmentId)).Should().BeFalse();
     }
 
@@ -65,7 +65,7 @@ public class AttachmentBuilderTest : BaseWriteableDbTest
             await db.SaveChangesAsync();
         });
 
-        await _attachmentBuilder.CleanUp(new() { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
+        await _attachmentBuilder.CleanUp(new[] { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
         (await AttachmentExists(AttachmentMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggGuid)).Should().BeFalse();
     }
 

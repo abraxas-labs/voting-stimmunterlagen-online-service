@@ -2,6 +2,7 @@
 // For license information see LICENSE file
 
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -26,11 +27,14 @@ public class CreateVoterListImportTest : BaseVoterListImportRestTest
     {
     }
 
-    [Theory]
-    [InlineData(Ech0045TestFiles.File1Name)]
-    [InlineData(Ech0045TestFiles.File3MinifiedName)]
-    public async Task ShouldWork(string fileName)
+    [Fact]
+    public async Task ShouldWork()
     {
+        var fileName = Ech0045TestFiles.File1Name;
+        var importCount = await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync());
+
         var request = NewRequest();
         CreateUpdateVoterListImportResponse? responseContent = null;
 
@@ -55,6 +59,50 @@ public class CreateVoterListImportTest : BaseVoterListImportRestTest
         voterListImport.SourceId.Should().Be(fileName);
         voterListImport.SourceId = string.Empty;
         voterListImport.MatchSnapshot("data");
+
+        // No import should be deleted with a file import instead of a electoral register import.
+        (await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync())).Should().Be(importCount + 1);
+    }
+
+    [Fact]
+    public async Task ShouldWorkDomainOfInfluenceImport()
+    {
+        var fileName = Ech0045TestFiles.File3NameDomainOfInfluence;
+        var importCount = await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync());
+
+        var request = NewRequest();
+        CreateUpdateVoterListImportResponse? responseContent = null;
+
+        await WithRequest(Ech0045TestFiles.GetTestFilePath(fileName), request, async content =>
+        {
+            using var response = await GemeindeArneggClient.PostAsync(Url, content);
+            response.EnsureSuccessStatusCode();
+            responseContent = await DeserializeHttpResponse(response);
+            responseContent.ImportId.Should().NotBeEmpty();
+            responseContent.ImportId = Guid.Empty;
+            foreach (var voterList in responseContent.VoterLists!)
+            {
+                voterList.Id.Should().NotBeEmpty();
+                voterList.Id = Guid.Empty;
+            }
+        });
+        responseContent.MatchSnapshot("response");
+
+        var voterListImport = await GetByName("my-file-001");
+        voterListImport.Id = Guid.Empty;
+
+        voterListImport.SourceId.Should().Be(fileName);
+        voterListImport.SourceId = string.Empty;
+        voterListImport.MatchSnapshot("data");
+
+        // No import should be deleted with a file import instead of a electoral register import.
+        (await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync())).Should().Be(importCount + 1);
     }
 
     [Fact]
@@ -183,6 +231,118 @@ public class CreateVoterListImportTest : BaseVoterListImportRestTest
 
         doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
         doi.LastVoterUpdate.Should().Be(MockedClock.GetDate());
+    }
+
+    [Fact]
+    public async Task ShouldBeNoSuccessWithInternalDuplicates()
+    {
+        var request = NewRequest();
+        CreateUpdateVoterListImportResponse? responseContent = null;
+
+        await WithRequest(Ech0045TestFiles.FileDuplicates, request, async content =>
+        {
+            using var response = await GemeindeArneggClient.PostAsync(Url, content);
+            response.EnsureSuccessStatusCode();
+            responseContent = await DeserializeHttpResponse(response);
+        });
+        responseContent.MatchSnapshot("response");
+        (await ExistsByName("my-file-001")).Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task ShouldBeNoSuccessWithExternalDuplicatesAndDisabledMultipleElectoralRegisters()
+    {
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            x => x.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.ElectoralRegisterMultipleEnabled = false);
+
+        await ModifyDbEntities<Voter>(
+            x => x.PersonId == "1",
+            x =>
+            {
+                x.FirstName = "Dirk";
+                x.LastName = "Berg";
+                x.DateOfBirth = "1971-05";
+                x.Street = "Mattenstrasse";
+                x.HouseNumber = "71";
+            });
+
+        var request = NewRequest();
+        CreateUpdateVoterListImportResponse? responseContent = null;
+
+        await WithRequest(Ech0045TestFiles.File1, request, async content =>
+        {
+            using var response = await GemeindeArneggClient.PostAsync(Url, content);
+            response.EnsureSuccessStatusCode();
+            responseContent = await DeserializeHttpResponse(response);
+        });
+
+        responseContent.MatchSnapshot("response");
+        (await ExistsByName("my-file-001")).Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task ShouldBeSuccessWithExternalDuplicatesAndEnabledMultipleElectoralRegisters()
+    {
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            x => x.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.ElectoralRegisterMultipleEnabled = true);
+
+        await ModifyDbEntities<Voter>(
+            x => x.PersonId == "1",
+            x =>
+            {
+                x.FirstName = "Dirk";
+                x.LastName = "Berg";
+                x.DateOfBirth = "1971-05";
+                x.Street = "Mattenstrasse";
+                x.HouseNumber = "71";
+            });
+
+        var existingVoterListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid;
+        (await RunOnDb(db => db.VoterLists.SingleAsync(vl => vl.Id == existingVoterListId)))
+            .CountOfVotingCards.Should().Be(3);
+
+        var request = NewRequest();
+        CreateUpdateVoterListImportResponse? responseContent = null;
+
+        await WithRequest(Ech0045TestFiles.File1, request, async content =>
+        {
+            using var response = await GemeindeArneggClient.PostAsync(Url, content);
+            response.EnsureSuccessStatusCode();
+            responseContent = await DeserializeHttpResponse(response);
+            responseContent.Error.Should().BeNull();
+
+            responseContent.ImportId.Should().NotBeEmpty();
+            responseContent.ImportId = Guid.Empty;
+            foreach (var voterList in responseContent.VoterLists!)
+            {
+                voterList.Id.Should().NotBeEmpty();
+                voterList.Id = Guid.Empty;
+            }
+        });
+
+        responseContent.MatchSnapshot("response");
+        (await ExistsByName("my-file-001")).Should().BeTrue();
+
+        // Existing voter list should reduce the number of voting cards
+        // (because the newly added voter is considered for print and not the existing one).
+        (await RunOnDb(db => db.VoterLists.SingleAsync(vl => vl.Id == existingVoterListId)))
+            .CountOfVotingCards.Should().Be(2);
+
+        var voterDuplicate = await RunOnDb(db => db.DomainOfInfluenceVoterDuplicates
+            .Include(d => d.Voters)
+            .SingleAsync(d => d.Voters!.Any(v => v.ListId == existingVoterListId)));
+
+        voterDuplicate.FirstName.Should().Be("Dirk");
+        voterDuplicate.LastName.Should().Be("Berg");
+        voterDuplicate.DateOfBirth.Should().Be("1971-05");
+
+        // The new voter and the existing voter should be included.
+        voterDuplicate.Voters.Should().HaveCount(2);
+
+        voterDuplicate.Voters!.Single(v => v.ListId == existingVoterListId).VotingCardPrintDisabled.Should().BeTrue();
+        voterDuplicate.Voters!.Single(v => v.ListId != existingVoterListId).VotingCardPrintDisabled.Should().BeFalse();
     }
 
     [Fact]

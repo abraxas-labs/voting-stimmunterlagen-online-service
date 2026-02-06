@@ -16,15 +16,24 @@ public static class AttachmentQueryableExtensions
     /// </summary>
     /// <param name="queryable">The queryable.</param>
     /// <param name="tenantId">Tenant id of the current user.</param>
-    /// <param name="domainOfInfluenceId">Domain of influence id.</param>
-    /// <param name="managedPoliticalBusinessIds">Managed political business ids.</param>
+    /// <param name="managedDomainOfInfluenceId">Domain of influence id which is managed by the current user.</param>
+    /// <param name="managedPoliticalBusinessIds">Political business ids which are managed by the corresponding <see cref="managedDomainOfInfluenceId"/>.</param>
     /// <returns>A filtered queryable.</returns>
-    public static IQueryable<Attachment> WhereHasAccess(this IQueryable<Attachment> queryable, string tenantId, Guid domainOfInfluenceId, List<Guid> managedPoliticalBusinessIds)
+    public static IQueryable<Attachment> WhereHasAccess(this IQueryable<Attachment> queryable, string tenantId, Guid managedDomainOfInfluenceId, List<Guid> managedPoliticalBusinessIds)
     {
         return queryable
-            .Where(a => (a.DomainOfInfluenceId == domainOfInfluenceId && a.DomainOfInfluence!.SecureConnectId == tenantId)
-                        || a.DomainOfInfluenceAttachmentCounts!.Any(x => x.DomainOfInfluenceId == domainOfInfluenceId && x.DomainOfInfluence!.SecureConnectId == tenantId)
-                        || (a.PoliticalBusinessEntries!.Any(x => managedPoliticalBusinessIds.Contains(x.PoliticalBusinessId)) && a.DomainOfInfluence!.HierarchyEntries!.Any(x => x.ParentDomainOfInfluenceId == domainOfInfluenceId && x.ParentDomainOfInfluence!.SecureConnectId == tenantId)));
+            .Where(a => (a.DomainOfInfluenceId == managedDomainOfInfluenceId && a.DomainOfInfluence!.SecureConnectId == tenantId)
+                        || a.DomainOfInfluenceAttachmentCounts!.Any(x => x.DomainOfInfluenceId == managedDomainOfInfluenceId && x.DomainOfInfluence!.SecureConnectId == tenantId)
+                        || (a.PoliticalBusinessEntries!.Any(x => managedPoliticalBusinessIds.Contains(x.PoliticalBusinessId)) && a.DomainOfInfluence!.HierarchyEntries!.Any(x => x.ParentDomainOfInfluenceId == managedDomainOfInfluenceId && x.ParentDomainOfInfluence!.SecureConnectId == tenantId)));
+    }
+
+    public static IQueryable<Attachment> WhereHasAccess(this IQueryable<Attachment> queryable, string tenantId, Guid contestId)
+    {
+        return queryable
+            .Where(a => a.DomainOfInfluence!.ContestId == contestId
+                    && (a.DomainOfInfluence!.SecureConnectId == tenantId
+                        || a.DomainOfInfluenceAttachmentCounts!.Any(x => x.DomainOfInfluence!.SecureConnectId == tenantId)
+                        || a.PoliticalBusinessEntries.Any(x => x.PoliticalBusiness!.DomainOfInfluence!.SecureConnectId == tenantId)));
     }
 
     public static IQueryable<Attachment> WhereCanSetDomainOfInfluenceCount(this IQueryable<Attachment> queryable, string tenantId, Guid domainOfInfluenceId)

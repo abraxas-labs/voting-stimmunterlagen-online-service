@@ -21,7 +21,13 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "9170",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "Layouts": [
         {
@@ -57,7 +63,21 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "9170",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
           }
         }
       ]
@@ -83,7 +103,13 @@
         "CanManuallyUploadVoterList": true,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": true,
+        "Bfs": "1240",
+        "HasEmptyVotingCards": true,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "Layouts": [
         {
@@ -125,7 +151,103 @@
             "CanManuallyUploadVoterList": true,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": true,
+            "Bfs": "1240",
+            "HasEmptyVotingCards": true,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
+          }
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "92410218-3790-5a6d-b8ba-5d1296caf1ad",
+        "Name": "Kirchgemeinde Arnegg",
+        "ShortName": "MU-AG-KI",
+        "AuthorityName": "Kirchgemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": null,
+          "OverriddenTemplate": null,
+          "EffectiveTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "92410218-3790-5a6d-b8ba-5d1296caf1ad",
+            "Name": "Kirchgemeinde Arnegg",
+            "ShortName": "MU-AG-KI",
+            "AuthorityName": "Kirchgemeinde Arnegg",
+            "Type": 7,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 3
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
           }
         }
       ]
@@ -151,7 +273,13 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": true,
+        "Bfs": "1120",
+        "HasEmptyVotingCards": true,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "Layouts": [
         {
@@ -190,7 +318,21 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": true,
+            "Bfs": "1120",
+            "HasEmptyVotingCards": true,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
           }
         }
       ]
@@ -216,7 +358,13 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "1110",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "Layouts": [
         {
@@ -252,7 +400,21 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1110",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
           }
         }
       ]
@@ -278,7 +440,13 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": null
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "1130",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       },
       "Layouts": [
         {
@@ -314,7 +482,103 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1130",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
+          }
+        }
+      ]
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "4926dbeb-84a1-5e41-bf0a-e670c248e6ad",
+        "Name": "Zweckverband ARA Gossau",
+        "ShortName": "MU-GO-ARA",
+        "AuthorityName": "Stadt St. Gossau",
+        "Type": 10,
+        "SecureConnectId": "SC-MU-GO",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 6,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "Layouts": [
+        {
+          "ContestTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "DomainOfInfluenceTemplate": null,
+          "OverriddenTemplate": null,
+          "EffectiveTemplate": {
+            "Id": 1,
+            "Name": "template-001-swiss"
+          },
+          "AllowCustom": true,
+          "VotingCardType": 1,
+          "DomainOfInfluence": {
+            "Id": "4926dbeb-84a1-5e41-bf0a-e670c248e6ad",
+            "Name": "Zweckverband ARA Gossau",
+            "ShortName": "MU-GO-ARA",
+            "AuthorityName": "Stadt St. Gossau",
+            "Type": 10,
+            "SecureConnectId": "SC-MU-GO",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 6,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LastVoterUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "DataConfiguration": {
+            "IncludePersonId": false,
+            "IncludeDateOfBirth": false,
+            "IncludeReligion": false,
+            "IncludeIsHouseholder": false,
+            "IncludeDomainOfInfluenceChurch": false,
+            "IncludeDomainOfInfluenceSchool": false
           }
         }
       ]

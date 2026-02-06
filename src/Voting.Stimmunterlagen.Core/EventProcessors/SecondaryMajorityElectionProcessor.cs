@@ -18,7 +18,8 @@ public class SecondaryMajorityElectionProcessor : PoliticalBusinessProcessor<Sec
     IEventProcessor<SecondaryMajorityElectionCreated>,
     IEventProcessor<SecondaryMajorityElectionUpdated>,
     IEventProcessor<SecondaryMajorityElectionDeleted>,
-    IEventProcessor<SecondaryMajorityElectionActiveStateUpdated>
+    IEventProcessor<SecondaryMajorityElectionActiveStateUpdated>,
+    IEventProcessor<SecondaryMajorityElectionEVotingApprovalUpdated>
 {
     private readonly IDbRepository<PoliticalBusiness> _politicalBusinessRepo;
     private readonly IMapper _mapper;
@@ -103,4 +104,9 @@ public class SecondaryMajorityElectionProcessor : PoliticalBusinessProcessor<Sec
         => ProcessActiveStateUpdated(
             eventData.SecondaryMajorityElectionId,
             eventData.Active);
+
+    public Task Process(SecondaryMajorityElectionEVotingApprovalUpdated eventData)
+        => ProcessEVotingApprovalUpdated(
+            eventData.SecondaryMajorityElectionId,
+            eventData.Approved);
 }

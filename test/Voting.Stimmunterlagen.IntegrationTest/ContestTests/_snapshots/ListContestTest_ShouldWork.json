@@ -15,7 +15,11 @@
       "State": 3,
       "IsSingleAttendeeContest": false,
       "GenerateVotingCardsDeadline": null,
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     },
     {
       "Id": "b776848e-4c4b-4bcc-9522-4b5192765a59",
@@ -32,7 +36,11 @@
       "State": 2,
       "IsSingleAttendeeContest": false,
       "GenerateVotingCardsDeadline": null,
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     },
     {
       "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
@@ -61,7 +69,11 @@
         "Seconds": 2010866400,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": true
+      "IsPoliticalAssembly": true,
+      "EVoting": false,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     },
     {
       "Id": "f3393e32-ff61-4007-99f8-51dc7aae52c8",
@@ -78,7 +90,11 @@
       "State": 1,
       "IsSingleAttendeeContest": false,
       "GenerateVotingCardsDeadline": null,
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     },
     {
       "Id": "59280f22-0b30-4498-97d7-d19d3cae02a2",
@@ -104,7 +120,11 @@
         "Seconds": 1579215600,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     },
     {
       "Id": "791018cc-6250-46e4-bc80-4a25f00c4d59",
@@ -133,7 +153,11 @@
         "Seconds": 2010866400,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     },
     {
       "Id": "e2f0b358-e20d-4b46-8d4c-522173d93541",
@@ -162,7 +186,11 @@
         "Seconds": 1579215600,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
     }
   ]
 }

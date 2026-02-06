@@ -27,7 +27,7 @@ public class VoterListBuilderTest : BaseWriteableDbTest
     [Fact]
     public async Task CleanUpShouldIgnorePoliticalAssemblyWithNoPoliticalBusinessEntry()
     {
-        await _voterListBuilder.CleanUp(new() { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
+        await _voterListBuilder.CleanUp(new[] { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
         (await VoterListExists(VoterListMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggSwissGuid)).Should().BeTrue();
     }
 
@@ -36,7 +36,7 @@ public class VoterListBuilderTest : BaseWriteableDbTest
     {
         var voterListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissElectoralRegisterGuid;
 
-        await _voterListBuilder.CleanUp(new() { ContestMockData.BundFutureApprovedGuid });
+        await _voterListBuilder.CleanUp(new[] { ContestMockData.BundFutureApprovedGuid });
         (await VoterListExists(voterListId)).Should().BeTrue();
 
         await RunOnDb(async db =>
@@ -49,7 +49,7 @@ public class VoterListBuilderTest : BaseWriteableDbTest
             await db.SaveChangesAsync();
         });
 
-        await _voterListBuilder.CleanUp(new() { ContestMockData.BundFutureApprovedGuid });
+        await _voterListBuilder.CleanUp(new[] { ContestMockData.BundFutureApprovedGuid });
         (await VoterListExists(voterListId)).Should().BeFalse();
     }
 
@@ -65,7 +65,7 @@ public class VoterListBuilderTest : BaseWriteableDbTest
             await db.SaveChangesAsync();
         });
 
-        await _voterListBuilder.CleanUp(new() { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
+        await _voterListBuilder.CleanUp(new[] { ContestMockData.PoliticalAssemblyBundFutureApprovedGuid });
         (await VoterListExists(VoterListMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggSwissGuid)).Should().BeFalse();
     }
 

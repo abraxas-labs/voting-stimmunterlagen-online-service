@@ -15,10 +15,12 @@ public static class VotingCardPrintFileExportJobMockData
     public const string BundFutureApprovedGemeindeArneggJob1Id = "a0fd9c4f-f73d-4ad6-a898-2df4c901167e";
     public const string BundFutureApprovedGemeindeArneggJob2Id = "036ec07d-f7a4-457e-9144-13ac8f91a4a5";
     public const string BundFutureApprovedGemeindeArneggJob3Id = "9e6b1dcf-cf14-4923-b000-2ffc4de7eb60";
+    public const string BundFutureApprovedGemeindeArneggEmptyVcJobId = "1edab162-90c4-466f-b42c-464208561977";
 
     public static readonly Guid BundFutureApprovedGemeindeArneggJob1Guid = Guid.Parse(BundFutureApprovedGemeindeArneggJob1Id);
     public static readonly Guid BundFutureApprovedGemeindeArneggJob2Guid = Guid.Parse(BundFutureApprovedGemeindeArneggJob2Id);
     public static readonly Guid BundFutureApprovedGemeindeArneggJob3Guid = Guid.Parse(BundFutureApprovedGemeindeArneggJob3Id);
+    public static readonly Guid BundFutureApprovedGemeindeArneggEmptyVcJobGuid = Guid.Parse(BundFutureApprovedGemeindeArneggEmptyVcJobId);
 
     private static VotingCardPrintFileExportJob BundFutureApprovedGemeindeArneggJob1 => new()
     {
@@ -44,6 +46,14 @@ public static class VotingCardPrintFileExportJobMockData
         VotingCardGeneratorJobId = VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggJob3Guid,
     };
 
+    private static VotingCardPrintFileExportJob BundFutureApprovedGemeindeArneggEmptyJob => new()
+    {
+        Id = BundFutureApprovedGemeindeArneggEmptyVcJobGuid,
+        State = ExportJobState.ReadyToRun,
+        FileName = "empty.csv",
+        VotingCardGeneratorJobId = VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggEmptyVcJobGuid,
+    };
+
     private static IEnumerable<VotingCardPrintFileExportJob> All
     {
         get
@@ -51,6 +61,7 @@ public static class VotingCardPrintFileExportJobMockData
             yield return BundFutureApprovedGemeindeArneggJob1;
             yield return BundFutureApprovedGemeindeArneggJob2;
             yield return BundFutureApprovedGemeindeArneggJob3;
+            yield return BundFutureApprovedGemeindeArneggEmptyJob;
         }
     }
 

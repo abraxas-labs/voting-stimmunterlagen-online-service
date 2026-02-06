@@ -71,13 +71,12 @@ public class VoterListManager
                 .ThenInclude(x => x.PoliticalBusiness!.DomainOfInfluence)
             .Include(x => x.DomainOfInfluence!.PoliticalBusinessPermissionEntries!)
                 .ThenInclude(x => x.PoliticalBusiness!.Translations)
-            .Include(x => x.VoterDuplicates!.OrderBy(x => x.FirstName).ThenBy(x => x.LastName))
             .OrderBy(x => x.Index)
             .ToListAsync();
 
-        var numberOfVotersByPoliticalBusiness = voterLists
-            .SelectMany(x => x.PoliticalBusinessEntries!.Select(y => new { y.PoliticalBusinessId, x.NumberOfVoters }))
-            .GroupBy(x => x.PoliticalBusinessId, x => x.NumberOfVoters)
+        var countOfVotingCardsByPoliticalBusiness = voterLists
+            .SelectMany(x => x.PoliticalBusinessEntries!.Select(y => new { y.PoliticalBusinessId, x.CountOfVotingCards }))
+            .GroupBy(x => x.PoliticalBusinessId, x => x.CountOfVotingCards)
             .ToDictionary(x => x.Key, x => x.Sum());
 
         var politicalBusinesses = voterLists
@@ -86,12 +85,13 @@ public class VoterListManager
             .DistinctBy(x => x.Id)
             .OrderBy(x => x.PoliticalBusinessNumber)
             .ThenBy(x => x.ShortDescription)
-            .Select(x => new PoliticalBusinessNumberOfVoters(x, numberOfVotersByPoliticalBusiness.GetValueOrDefault(x.Id, 0)))
+            .Select(x => new PoliticalBusinessCountOfVotingCards(x, countOfVotingCardsByPoliticalBusiness.GetValueOrDefault(x.Id, 0)))
             .ToList();
 
         var totalNumberOfVoters = voterLists.Sum(x => x.NumberOfVoters);
+        var totalNumberOfVotingCards = voterLists.Sum(x => x.CountOfVotingCards);
 
-        return new VoterListsData(voterLists, politicalBusinesses, totalNumberOfVoters);
+        return new VoterListsData(voterLists, politicalBusinesses, totalNumberOfVoters, totalNumberOfVotingCards);
     }
 
     public async Task UpdateLists(
@@ -140,7 +140,7 @@ public class VoterListManager
             var updatedSendVotingCardsToDomainOfInfluenceReturnAddress = updatedList.SendVotingCardsToDomainOfInfluenceReturnAddress.Value;
 
             existingList.SendVotingCardsToDomainOfInfluenceReturnAddress = updatedSendVotingCardsToDomainOfInfluenceReturnAddress;
-            existingList.CountOfSendVotingCardsToDomainOfInfluenceReturnAddress = updatedSendVotingCardsToDomainOfInfluenceReturnAddress
+            existingList.CountOfVotingCardsForDomainOfInfluenceReturnAddress = updatedSendVotingCardsToDomainOfInfluenceReturnAddress
                 ? existingList.NumberOfVoters
                 : 0;
             await _voterRepo.UpdateSendVotingCardsToDomainOfInfluenceReturnAddress(existingList.Id, updatedSendVotingCardsToDomainOfInfluenceReturnAddress);
@@ -240,10 +240,11 @@ public class VoterListManager
 
     public record VoterListsData(
         List<VoterList> VoterLists,
-        List<PoliticalBusinessNumberOfVoters> NumberOfVoters,
-        int TotalNumberOfVoters);
+        List<PoliticalBusinessCountOfVotingCards> CountOfVotingCards,
+        int TotalNumberOfVoters,
+        int TotalCountOfVotingCards);
 
-    public record PoliticalBusinessNumberOfVoters(
+    public record PoliticalBusinessCountOfVotingCards(
         PoliticalBusiness PoliticalBusiness,
-        int NumberOfVoters);
+        int CountOfVotingCards);
 }

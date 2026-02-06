@@ -20,7 +20,44 @@
       "CanManuallyUploadVoterList": true,
       "LastVoterUpdate": null,
       "GenerateVotingCardsTriggered": null,
-      "EVoting": null
+      "EVoting": null,
+      "ElectoralRegisterMultipleEnabled": false,
+      "StistatMunicipality": true,
+      "Bfs": "1240",
+      "HasEmptyVotingCards": true,
+      "CountOfEmptyVotingCards": 2,
+      "LastCountOfEmptyVotingCardsUpdate": {
+        "Seconds": 1591013700,
+        "Nanos": 0
+      }
+    },
+    {
+      "Id": "6d133336-0fc8-565c-8539-6b2ff4fae42b",
+      "Name": "Kirchgemeinde Arnegg",
+      "ShortName": "MU-AG-KI",
+      "AuthorityName": "Kirchgemeinde Arnegg",
+      "Type": 7,
+      "SecureConnectId": "SC-MU-AG",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": false,
+      "ExternalPrintingCenterEaiMessageType": "",
+      "PrintData": {
+        "ShippingAway": 3,
+        "ShippingReturn": 3,
+        "ShippingMethod": 3
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": false,
+      "CanManuallyUploadVoterList": false,
+      "LastVoterUpdate": null,
+      "GenerateVotingCardsTriggered": null,
+      "EVoting": null,
+      "ElectoralRegisterMultipleEnabled": false,
+      "StistatMunicipality": false,
+      "Bfs": "",
+      "HasEmptyVotingCards": false,
+      "CountOfEmptyVotingCards": 0,
+      "LastCountOfEmptyVotingCardsUpdate": null
     }
   ]
 }

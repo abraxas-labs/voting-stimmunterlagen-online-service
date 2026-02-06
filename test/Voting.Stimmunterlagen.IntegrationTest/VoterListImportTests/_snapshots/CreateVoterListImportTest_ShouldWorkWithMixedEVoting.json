@@ -6,16 +6,17 @@
         "Id": "00000000-0000-0000-0000-000000000000",
         "VotingCardType": 1,
         "NumberOfVoters": 3,
-        "VoterDuplicates": []
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0
       },
       {
         "Id": "00000000-0000-0000-0000-000000000000",
         "VotingCardType": 3,
         "NumberOfVoters": 1,
-        "VoterDuplicates": []
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0
       }
     ],
-    "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false
+    "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false,
+    "Error": null
   },
   "data": {
     "DomainOfInfluence": null,
@@ -31,7 +32,10 @@
         "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
         "VotingCardType": 1,
         "NumberOfVoters": 3,
-        "NumberOfHouseholders": 3,
+        "CountOfVotingCards": 3,
+        "CountOfVotingCardsForHouseholders": 0,
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0,
+        "CountOfVotingCardsForHouseholdersExclDomainOfInfluenceReturnAddress": 0,
         "Voters": [
           {
             "Salutation": 0,
@@ -87,9 +91,14 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
-            "IsHouseholder": true,
+            "IsHouseholder": false,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -139,9 +148,14 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
-            "IsHouseholder": true,
+            "IsHouseholder": false,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -231,9 +245,14 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
-            "IsHouseholder": true,
+            "IsHouseholder": false,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],
@@ -255,7 +274,21 @@
           },
           {
             "PoliticalBusiness": null,
+            "PoliticalBusinessId": "3de78256-89c4-4a28-98d5-ba3625d173e8",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
             "PoliticalBusinessId": "4e71e6dd-f040-4862-bd0f-fcdf69aef68b",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "5ef5651c-6662-4221-b073-1cd8b4d42237",
             "VoterList": null,
             "VoterListId": "00000000-0000-0000-0000-000000000000",
             "Id": "00000000-0000-0000-0000-000000000000"
@@ -303,12 +336,9 @@
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],
-        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
         "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
         "ImportId": "00000000-0000-0000-0000-000000000000",
         "Import": null,
-        "HasVoterDuplicates": false,
-        "VoterDuplicates": [],
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -316,7 +346,10 @@
         "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
         "VotingCardType": 3,
         "NumberOfVoters": 1,
-        "NumberOfHouseholders": 1,
+        "CountOfVotingCards": 1,
+        "CountOfVotingCardsForHouseholders": 0,
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0,
+        "CountOfVotingCardsForHouseholdersExclDomainOfInfluenceReturnAddress": 0,
         "Voters": [
           {
             "Salutation": 0,
@@ -372,9 +405,14 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
-            "IsHouseholder": true,
+            "IsHouseholder": false,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],
@@ -396,7 +434,21 @@
           },
           {
             "PoliticalBusiness": null,
+            "PoliticalBusinessId": "3de78256-89c4-4a28-98d5-ba3625d173e8",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
             "PoliticalBusinessId": "4e71e6dd-f040-4862-bd0f-fcdf69aef68b",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "5ef5651c-6662-4221-b073-1cd8b4d42237",
             "VoterList": null,
             "VoterListId": "00000000-0000-0000-0000-000000000000",
             "Id": "00000000-0000-0000-0000-000000000000"
@@ -444,12 +496,9 @@
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],
-        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 0,
         "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
         "ImportId": "00000000-0000-0000-0000-000000000000",
         "Import": null,
-        "HasVoterDuplicates": false,
-        "VoterDuplicates": [],
         "Id": "00000000-0000-0000-0000-000000000000"
       }
     ],

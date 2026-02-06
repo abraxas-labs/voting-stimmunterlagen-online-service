@@ -1,0 +1,450 @@
+<voterDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.ech.ch/xmlns/eCH-0045/6">
+  <deliveryHeader>
+    <senderId xmlns="http://www.ech.ch/xmlns/eCH-0058/5">ABX-VOTING</senderId>
+    <messageId xmlns="http://www.ech.ch/xmlns/eCH-0058/5">mock-id</messageId>
+    <messageType xmlns="http://www.ech.ch/xmlns/eCH-0058/5">1710967</messageType>
+    <sendingApplication xmlns="http://www.ech.ch/xmlns/eCH-0058/5">
+      <manufacturer>Abraxas Informatik AG</manufacturer>
+      <product>Voting.Stimmunterlagen</product>
+      <productVersion>0.0.0.1</productVersion>
+    </sendingApplication>
+    <messageDate xmlns="http://www.ech.ch/xmlns/eCH-0058/5">2020-01-10T13:12:10.2Z</messageDate>
+    <action xmlns="http://www.ech.ch/xmlns/eCH-0058/5">1</action>
+    <testDeliveryFlag xmlns="http://www.ech.ch/xmlns/eCH-0058/5">true</testDeliveryFlag>
+  </deliveryHeader>
+  <voterList>
+    <reportingAuthority>
+      <otherRegister>
+        <registerIdentification>SG</registerIdentification>
+        <registerName>SG</registerName>
+      </otherRegister>
+    </reportingAuthority>
+    <contest>
+      <contestDate>2020-01-12</contestDate>
+      <contestDescription>
+        <contestDescriptionInfo xmlns="http://www.ech.ch/xmlns/eCH-0155/5">
+          <language>de</language>
+          <contestDescription>Contest 001 (BundFuture, approved) de</contestDescription>
+        </contestDescriptionInfo>
+        <contestDescriptionInfo xmlns="http://www.ech.ch/xmlns/eCH-0155/5">
+          <language>fr</language>
+          <contestDescription>Contest 001 (BundFuture, approved) fr</contestDescription>
+        </contestDescriptionInfo>
+        <contestDescriptionInfo xmlns="http://www.ech.ch/xmlns/eCH-0155/5">
+          <language>it</language>
+          <contestDescription>Contest 001 (BundFuture, approved) it</contestDescription>
+        </contestDescriptionInfo>
+        <contestDescriptionInfo xmlns="http://www.ech.ch/xmlns/eCH-0155/5">
+          <language>rm</language>
+          <contestDescription>Contest 001 (BundFuture, approved) rm</contestDescription>
+        </contestDescriptionInfo>
+      </contestDescription>
+    </contest>
+    <numberOfVoters>4</numberOfVoters>
+    <voter>
+      <person>
+        <swiss>
+          <swissDomesticPerson>
+            <personIdentification>
+              <localPersonId xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <personIdCategory>Inlandschweizer</personIdCategory>
+                <personId>104</personId>
+              </localPersonId>
+              <officialName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Baumgartner</officialName>
+              <firstName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Matthias</firstName>
+              <sex xmlns="http://www.ech.ch/xmlns/eCH-0044/4">1</sex>
+              <dateOfBirth xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <year>1965</year>
+              </dateOfBirth>
+            </personIdentification>
+            <languageOfCorrespondance>de</languageOfCorrespondance>
+            <placeOfOrigin>
+              <originName xmlns="http://www.ech.ch/xmlns/eCH-0011/9">Gossau</originName>
+              <canton xmlns="http://www.ech.ch/xmlns/eCH-0011/9">SG</canton>
+            </placeOfOrigin>
+          </swissDomesticPerson>
+          <municipality>
+            <municipalityId xmlns="http://www.ech.ch/xmlns/eCH-0007/6">1234</municipalityId>
+            <municipalityName xmlns="http://www.ech.ch/xmlns/eCH-0007/6">Arnegg</municipalityName>
+          </municipality>
+        </swiss>
+      </person>
+      <dataLock>0</dataLock>
+      <electoralAddress>
+        <person>
+          <firstName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Matthias</firstName>
+          <lastName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Baumgartner</lastName>
+        </person>
+        <addressInformation>
+          <street xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Diesel Street</street>
+          <houseNumber xmlns="http://www.ech.ch/xmlns/eCH-0010/6">1528</houseNumber>
+          <town xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Bekkersdal</town>
+          <foreignZipCode xmlns="http://www.ech.ch/xmlns/eCH-0010/6">1782</foreignZipCode>
+          <country xmlns="http://www.ech.ch/xmlns/eCH-0010/6">
+            <countryIdISO2>SA</countryIdISO2>
+            <countryNameShort>Südafrika</countryNameShort>
+          </country>
+        </addressInformation>
+      </electoralAddress>
+      <isEvoter>true</isEvoter>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CT</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">8acf818a-45da-4738-a546-4c8428a6a6b1</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Kanton St. Gallen</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">KT-SG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">d59da8b8-8af3-4082-afe1-db133bc21897</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Bund</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">f2f20f24-fd80-40c1-9307-8dab12f102bb</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU-AG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+    </voter>
+    <voter>
+      <person>
+        <swissAbroad>
+          <swissAbroadPerson>
+            <personIdentification>
+              <localPersonId xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <personIdCategory>Auslandschweizer</personIdCategory>
+                <personId>102</personId>
+              </localPersonId>
+              <officialName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Meister</officialName>
+              <firstName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Torsten</firstName>
+              <sex xmlns="http://www.ech.ch/xmlns/eCH-0044/4">1</sex>
+              <dateOfBirth xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <yearMonthDay>1962-10-09</yearMonthDay>
+              </dateOfBirth>
+            </personIdentification>
+            <languageOfCorrespondance>it</languageOfCorrespondance>
+            <extension>
+              <postageCode xmlns="">2005</postageCode>
+              <votingPlace xmlns="">
+                <organisation>
+                  <organisationName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Staatskanzlei</organisationName>
+                  <organisationNameAddOn1 xmlns="http://www.ech.ch/xmlns/eCH-0010/6">St. Gallen</organisationNameAddOn1>
+                </organisation>
+                <addressInformation>
+                  <addressLine1 xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Kanton St. Gallen</addressLine1>
+                  <addressLine2 xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Staatskanzlei</addressLine2>
+                  <street xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Regierungsgebäude</street>
+                  <town xmlns="http://www.ech.ch/xmlns/eCH-0010/6">St. Gallen</town>
+                  <swissZipCode xmlns="http://www.ech.ch/xmlns/eCH-0010/6">9001</swissZipCode>
+                  <country xmlns="http://www.ech.ch/xmlns/eCH-0010/6">
+                    <countryIdISO2>CH</countryIdISO2>
+                    <countryNameShort>SWITZERLAND</countryNameShort>
+                  </country>
+                </addressInformation>
+              </votingPlace>
+              <address xmlns="">
+                <line1>Torsten Meister</line1>
+                <line2>Rhosddu Rd 72</line2>
+                <line3>Forest</line3>
+                <line4>SA4 1RQ</line4>
+                <line5 />
+                <line6 />
+                <line7>UNITED KINGDOM</line7>
+              </address>
+              <isHouseholder xmlns="">false</isHouseholder>
+              <residenceBuildingId xsi:nil="true" xmlns="" />
+              <residenceApartmentId xsi:nil="true" xmlns="" />
+            </extension>
+            <placeOfOrigin>
+              <originName xmlns="http://www.ech.ch/xmlns/eCH-0011/9">Zürich</originName>
+              <canton xmlns="http://www.ech.ch/xmlns/eCH-0011/9">ZH</canton>
+            </placeOfOrigin>
+          </swissAbroadPerson>
+          <dateOfRegistration>2000-01-01</dateOfRegistration>
+          <residenceCountry>
+            <countryIdISO2 xmlns="http://www.ech.ch/xmlns/eCH-0008/3">IT</countryIdISO2>
+            <countryNameShort xmlns="http://www.ech.ch/xmlns/eCH-0008/3">Italien</countryNameShort>
+          </residenceCountry>
+          <municipality>
+            <municipalityId xmlns="http://www.ech.ch/xmlns/eCH-0007/6">1234</municipalityId>
+            <municipalityName xmlns="http://www.ech.ch/xmlns/eCH-0007/6">Arnegg</municipalityName>
+          </municipality>
+        </swissAbroad>
+      </person>
+      <dataLock>0</dataLock>
+      <electoralAddress>
+        <person>
+          <lastName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Meister</lastName>
+        </person>
+        <addressInformation>
+          <street xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Rhosddu Rd</street>
+          <houseNumber xmlns="http://www.ech.ch/xmlns/eCH-0010/6">72</houseNumber>
+          <postOfficeBoxText xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Postfach 27</postOfficeBoxText>
+          <town xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Forest</town>
+          <foreignZipCode xmlns="http://www.ech.ch/xmlns/eCH-0010/6">SA4 1RQ</foreignZipCode>
+          <country xmlns="http://www.ech.ch/xmlns/eCH-0010/6">
+            <countryIdISO2>GB</countryIdISO2>
+            <countryNameShort>Vereinigtes Königreich</countryNameShort>
+          </country>
+        </addressInformation>
+      </electoralAddress>
+      <isEvoter>true</isEvoter>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CT</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">8acf818a-45da-4738-a546-4c8428a6a6b1</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Kanton St. Gallen</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">KT-SG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">d59da8b8-8af3-4082-afe1-db133bc21897</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Bund</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">f2f20f24-fd80-40c1-9307-8dab12f102bb</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU-AG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+    </voter>
+    <voter>
+      <person>
+        <swissAbroad>
+          <swissAbroadPerson>
+            <personIdentification>
+              <localPersonId xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <personIdCategory>Auslandschweizer</personIdCategory>
+                <personId>103</personId>
+              </localPersonId>
+              <officialName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Kronig</officialName>
+              <firstName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Patrik</firstName>
+              <sex xmlns="http://www.ech.ch/xmlns/eCH-0044/4">3</sex>
+              <dateOfBirth xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <yearMonth>1991-02</yearMonth>
+              </dateOfBirth>
+            </personIdentification>
+            <languageOfCorrespondance>it</languageOfCorrespondance>
+            <extension>
+              <postageCode xmlns="">2005</postageCode>
+              <votingPlace xmlns="">
+                <organisation>
+                  <organisationName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Staatskanzlei</organisationName>
+                  <organisationNameAddOn1 xmlns="http://www.ech.ch/xmlns/eCH-0010/6">St. Gallen</organisationNameAddOn1>
+                </organisation>
+                <addressInformation>
+                  <addressLine1 xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Kanton St. Gallen</addressLine1>
+                  <addressLine2 xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Staatskanzlei</addressLine2>
+                  <street xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Regierungsgebäude</street>
+                  <town xmlns="http://www.ech.ch/xmlns/eCH-0010/6">St. Gallen</town>
+                  <swissZipCode xmlns="http://www.ech.ch/xmlns/eCH-0010/6">9001</swissZipCode>
+                  <country xmlns="http://www.ech.ch/xmlns/eCH-0010/6">
+                    <countryIdISO2>CH</countryIdISO2>
+                    <countryNameShort>SWITZERLAND</countryNameShort>
+                  </country>
+                </addressInformation>
+              </votingPlace>
+              <address xmlns="">
+                <line1>Patrick Kronig</line1>
+                <line2>Rissik St</line2>
+                <line3>Groblersdal</line3>
+                <line4>1061</line4>
+                <line5 />
+                <line6 />
+                <line7>SOUTH AFRICA</line7>
+              </address>
+              <isHouseholder xmlns="">false</isHouseholder>
+              <residenceBuildingId xsi:nil="true" xmlns="" />
+              <residenceApartmentId xsi:nil="true" xmlns="" />
+            </extension>
+            <placeOfOrigin>
+              <originName xmlns="http://www.ech.ch/xmlns/eCH-0011/9">Basel</originName>
+              <canton xmlns="http://www.ech.ch/xmlns/eCH-0011/9">BS</canton>
+            </placeOfOrigin>
+          </swissAbroadPerson>
+          <dateOfRegistration>2005-03-03</dateOfRegistration>
+          <residenceCountry>
+            <countryIdISO2 xmlns="http://www.ech.ch/xmlns/eCH-0008/3">GB</countryIdISO2>
+            <countryNameShort xmlns="http://www.ech.ch/xmlns/eCH-0008/3">Vereinigtes Königreich</countryNameShort>
+          </residenceCountry>
+          <municipality>
+            <municipalityId xmlns="http://www.ech.ch/xmlns/eCH-0007/6">1234</municipalityId>
+            <municipalityName xmlns="http://www.ech.ch/xmlns/eCH-0007/6">Arnegg</municipalityName>
+          </municipality>
+        </swissAbroad>
+      </person>
+      <dataLock>0</dataLock>
+      <electoralAddress>
+        <person>
+          <lastName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Kronig</lastName>
+        </person>
+        <addressInformation>
+          <street xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Rissik St</street>
+          <houseNumber xmlns="http://www.ech.ch/xmlns/eCH-0010/6">1930</houseNumber>
+          <town xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Groblersdal</town>
+          <foreignZipCode xmlns="http://www.ech.ch/xmlns/eCH-0010/6">1061</foreignZipCode>
+          <country xmlns="http://www.ech.ch/xmlns/eCH-0010/6">
+            <countryIdISO2>SA</countryIdISO2>
+            <countryNameShort>Südafrika</countryNameShort>
+          </country>
+        </addressInformation>
+      </electoralAddress>
+      <isEvoter>true</isEvoter>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CT</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">8acf818a-45da-4738-a546-4c8428a6a6b1</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Kanton St. Gallen</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">KT-SG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">d59da8b8-8af3-4082-afe1-db133bc21897</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Bund</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">f2f20f24-fd80-40c1-9307-8dab12f102bb</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU-AG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+    </voter>
+    <voter>
+      <person>
+        <foreigner>
+          <foreignerPerson>
+            <personIdentification>
+              <localPersonId xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <personIdCategory>Ausländer</personIdCategory>
+                <personId>100</personId>
+              </localPersonId>
+              <officialName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Herz</officialName>
+              <firstName xmlns="http://www.ech.ch/xmlns/eCH-0044/4">Angelika</firstName>
+              <sex xmlns="http://www.ech.ch/xmlns/eCH-0044/4">2</sex>
+              <dateOfBirth xmlns="http://www.ech.ch/xmlns/eCH-0044/4">
+                <yearMonthDay>1980-07-21</yearMonthDay>
+              </dateOfBirth>
+            </personIdentification>
+            <languageOfCorrespondance>de</languageOfCorrespondance>
+            <religionData>
+              <religion xmlns="http://www.ech.ch/xmlns/eCH-0011/9">111</religion>
+            </religionData>
+          </foreignerPerson>
+          <municipality>
+            <municipalityId xmlns="http://www.ech.ch/xmlns/eCH-0007/6">1234</municipalityId>
+            <municipalityName xmlns="http://www.ech.ch/xmlns/eCH-0007/6">Arnegg</municipalityName>
+          </municipality>
+        </foreigner>
+      </person>
+      <dataLock>0</dataLock>
+      <electoralAddress>
+        <person>
+          <mrMrs xmlns="http://www.ech.ch/xmlns/eCH-0010/6">3</mrMrs>
+          <lastName xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Herz</lastName>
+        </person>
+        <addressInformation>
+          <street xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Adamsville Road</street>
+          <houseNumber xmlns="http://www.ech.ch/xmlns/eCH-0010/6">535</houseNumber>
+          <dwellingNumber xmlns="http://www.ech.ch/xmlns/eCH-0010/6">13. Floor</dwellingNumber>
+          <town xmlns="http://www.ech.ch/xmlns/eCH-0010/6">Laredo</town>
+          <foreignZipCode xmlns="http://www.ech.ch/xmlns/eCH-0010/6">TX 78040</foreignZipCode>
+          <country xmlns="http://www.ech.ch/xmlns/eCH-0010/6">
+            <countryIdISO2>US</countryIdISO2>
+            <countryNameShort>Vereinigte Staaten von Amerika</countryNameShort>
+          </country>
+        </addressInformation>
+      </electoralAddress>
+      <isEvoter>true</isEvoter>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CT</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">8acf818a-45da-4738-a546-4c8428a6a6b1</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Kanton St. Gallen</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">KT-SG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">d59da8b8-8af3-4082-afe1-db133bc21897</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Bund</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">CH</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+      <domainOfInfluenceInfo>
+        <domainOfInfluence>
+          <domainOfInfluenceType xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU</domainOfInfluenceType>
+          <domainOfInfluenceIdentification xmlns="http://www.ech.ch/xmlns/eCH-0155/5">f2f20f24-fd80-40c1-9307-8dab12f102bb</domainOfInfluenceIdentification>
+          <domainOfInfluenceName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</domainOfInfluenceName>
+          <domainOfInfluenceShortname xmlns="http://www.ech.ch/xmlns/eCH-0155/5">MU-AG</domainOfInfluenceShortname>
+        </domainOfInfluence>
+        <countingCircle>
+          <countingCircleId xmlns="http://www.ech.ch/xmlns/eCH-0155/5">39d5a7af-54a8-49f3-9385-3b7911ef9bc6</countingCircleId>
+          <countingCircleName xmlns="http://www.ech.ch/xmlns/eCH-0155/5">Gemeinde Arnegg</countingCircleName>
+        </countingCircle>
+      </domainOfInfluenceInfo>
+    </voter>
+  </voterList>
+</voterDelivery>

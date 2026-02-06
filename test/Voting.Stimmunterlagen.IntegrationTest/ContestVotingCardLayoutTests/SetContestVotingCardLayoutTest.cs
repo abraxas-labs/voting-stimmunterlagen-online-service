@@ -36,12 +36,17 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
             ContestId = ContestMockData.BundFutureId,
             TemplateId = DmDocServiceMock.TemplateOthers2.Id,
             VotingCardType = VotingCardType.Swiss,
+            DataConfiguration = new()
+            {
+                IncludePersonId = true,
+            },
         });
 
         var contestLayout = await RunOnDb(db => db.ContestVotingCardLayouts
             .SingleAsync(x => x.VotingCardType == Data.Models.VotingCardType.Swiss && x.ContestId == ContestMockData.BundFutureGuid));
         contestLayout.AllowCustom.Should().BeTrue();
         contestLayout.TemplateId.Should().Be(DmDocServiceMock.TemplateOthers2.Id);
+        contestLayout.DataConfiguration.IncludePersonId.Should().BeTrue();
 
         var doiLayouts = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
             .Where(x => x.VotingCardType == Data.Models.VotingCardType.Swiss && x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid)
@@ -51,6 +56,33 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
         doiLayouts.All(x => x.DomainOfInfluenceTemplateId == null).Should().BeTrue();
         doiLayouts.All(x => x.OverriddenTemplateId == null).Should().BeTrue();
         doiLayouts.All(x => x.EffectiveTemplateId == DmDocServiceMock.TemplateOthers2.Id).Should().BeTrue();
+        doiLayouts.All(x => x.DataConfiguration.IncludePersonId).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task ShouldOverrideOptionsIfStistatMunicipality()
+    {
+        await AbraxasElectionAdminClient.SetLayoutAsync(new SetContestVotingCardLayoutRequest
+        {
+            AllowCustom = true,
+            ContestId = ContestMockData.BundFutureId,
+            TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+            VotingCardType = VotingCardType.Swiss,
+            DataConfiguration = new(),
+        });
+
+        var contestLayout = await RunOnDb(db => db.ContestVotingCardLayouts
+            .SingleAsync(x => x.VotingCardType == Data.Models.VotingCardType.Swiss && x.ContestId == ContestMockData.BundFutureGuid));
+        contestLayout.DataConfiguration.IncludePersonId.Should().BeFalse();
+        contestLayout.DataConfiguration.IncludeDateOfBirth.Should().BeFalse();
+
+        var doiLayouts = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
+            .Where(x => x.VotingCardType == Data.Models.VotingCardType.Swiss && x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid)
+            .ToListAsync());
+        doiLayouts.Count(x => x.DataConfiguration?.IncludePersonId == true).Should().Be(2);
+        doiLayouts.Count(x => x.DataConfiguration?.IncludeDateOfBirth == true).Should().Be(2);
+        doiLayouts.Count(x => x.DataConfiguration?.IncludeIsHouseholder == true).Should().Be(0);
+        doiLayouts.Count(x => x.DataConfiguration?.IncludeReligion == true).Should().Be(0);
     }
 
     [Fact]
@@ -83,6 +115,7 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
             ContestId = ContestMockData.BundFutureApprovedId,
             TemplateId = DmDocServiceMock.TemplateOthers2.Id,
             VotingCardType = VotingCardType.Swiss,
+            DataConfiguration = new(),
         });
 
         var affectedLayout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts.SingleAsync(l => l.DomainOfInfluenceId == affectedDoiGuid));
@@ -109,6 +142,7 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 ContestId = ContestMockData.BundFutureApprovedId,
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -123,6 +157,7 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 ContestId = ContestMockData.BundFutureId,
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -137,6 +172,7 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 ContestId = ContestMockData.SchulgemeindeAndwilArneggFutureId,
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.EVoting,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -151,6 +187,7 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 ContestId = ContestMockData.BundArchivedId,
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }

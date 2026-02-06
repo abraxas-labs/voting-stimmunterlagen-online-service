@@ -14,6 +14,7 @@ public class MajorityElectionProcessor : PoliticalBusinessProcessor<MajorityElec
     IEventProcessor<MajorityElectionCreated>,
     IEventProcessor<MajorityElectionUpdated>,
     IEventProcessor<MajorityElectionActiveStateUpdated>,
+    IEventProcessor<MajorityElectionEVotingApprovalUpdated>,
     IEventProcessor<MajorityElectionDeleted>,
     IEventProcessor<MajorityElectionToNewContestMoved>
 {
@@ -45,6 +46,9 @@ public class MajorityElectionProcessor : PoliticalBusinessProcessor<MajorityElec
 
     public Task Process(MajorityElectionActiveStateUpdated eventData)
         => ProcessActiveStateUpdated(eventData.MajorityElectionId, eventData.Active);
+
+    public Task Process(MajorityElectionEVotingApprovalUpdated eventData)
+        => ProcessEVotingApprovalUpdated(eventData.MajorityElectionId, eventData.Approved);
 
     public Task Process(MajorityElectionToNewContestMoved eventData)
         => ProcessToNewContestMoved(eventData.MajorityElectionId, eventData.NewContestId);

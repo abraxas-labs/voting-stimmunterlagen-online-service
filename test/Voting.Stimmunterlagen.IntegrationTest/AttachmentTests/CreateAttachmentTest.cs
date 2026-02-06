@@ -225,11 +225,11 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     }
 
     [Fact]
-    public async Task ShouldCreateWithTotalNumberOfVotersAsRequiredForVoterListsCount()
+    public async Task ShouldCreateWithTotalCountOfVotingCardsAsRequiredForVoterListsCount()
     {
         await ModifyDbEntities<Data.Models.VoterList>(
             x => x.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid,
-            x => x.NumberOfVoters = 10);
+            x => x.CountOfVotingCards = 10);
 
         var req = NewValidRequest(x => x.SendOnlyToHouseholder = false);
         var response = await GemeindeArneggElectionAdminClient.CreateAsync(req);
@@ -248,11 +248,11 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     }
 
     [Fact]
-    public async Task ShouldCreatePoliticalAssemblyWithTotalNumberOfVotersAsRequiredForVoterListsCount()
+    public async Task ShouldCreatePoliticalAssemblyWithTotalCountOfVotingCardsAsRequiredForVoterListsCount()
     {
         await ModifyDbEntities<Data.Models.VoterList>(
             x => x.Id == VoterListMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggSwissGuid,
-            x => x.NumberOfVoters = 10);
+            x => x.CountOfVotingCards = 10);
 
         var req = NewValidRequest(x =>
         {

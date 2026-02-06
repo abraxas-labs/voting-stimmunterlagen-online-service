@@ -81,7 +81,7 @@ public class UpdateVoterListsTest : BaseWriteableDbGrpcTest<VoterListService.Vot
             .Include(x => x.Voters)
             .SingleAsync(x => x.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid));
         afterSendToDoiReturnAddress.SendVotingCardsToDomainOfInfluenceReturnAddress.Should().BeTrue();
-        afterSendToDoiReturnAddress.CountOfSendVotingCardsToDomainOfInfluenceReturnAddress.Should().Be(3);
+        afterSendToDoiReturnAddress.CountOfVotingCardsForDomainOfInfluenceReturnAddress.Should().Be(3);
         afterSendToDoiReturnAddress.Voters!.Any().Should().BeTrue();
         afterSendToDoiReturnAddress.Voters!.All(v => v.SendVotingCardsToDomainOfInfluenceReturnAddress).Should().BeTrue();
 
@@ -90,7 +90,7 @@ public class UpdateVoterListsTest : BaseWriteableDbGrpcTest<VoterListService.Vot
             .Include(x => x.Voters)
             .SingleAsync(x => x.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid));
         afterNotSendToDoiReturnAddress.SendVotingCardsToDomainOfInfluenceReturnAddress.Should().BeFalse();
-        afterNotSendToDoiReturnAddress.CountOfSendVotingCardsToDomainOfInfluenceReturnAddress.Should().Be(0);
+        afterNotSendToDoiReturnAddress.CountOfVotingCardsForDomainOfInfluenceReturnAddress.Should().Be(0);
         afterNotSendToDoiReturnAddress.Voters!.Any().Should().BeTrue();
         afterNotSendToDoiReturnAddress.Voters!.All(v => v.SendVotingCardsToDomainOfInfluenceReturnAddress).Should().BeFalse();
     }

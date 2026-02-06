@@ -9,6 +9,14 @@
       "State": 2
     },
     {
+      "Id": "1edab162-90c4-466f-b42c-464208561977",
+      "FileName": "empty.csv",
+      "Started": null,
+      "Completed": null,
+      "Failed": null,
+      "State": 2
+    },
+    {
       "Id": "9e6b1dcf-cf14-4923-b000-2ffc4de7eb60",
       "FileName": "fr.csv",
       "Started": null,

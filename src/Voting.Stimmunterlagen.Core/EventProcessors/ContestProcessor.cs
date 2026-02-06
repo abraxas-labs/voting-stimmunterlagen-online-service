@@ -5,7 +5,6 @@ using System;
 using System.Threading.Tasks;
 using Abraxas.Voting.Basis.Events.V1;
 using Voting.Lib.Common;
-using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Repositories;
 
@@ -45,30 +44,19 @@ public class ContestProcessor :
         await _contestRepo.DeleteVoterContestIndexSequence(id);
     }
 
-    public Task Process(ContestTestingPhaseEnded eventData) => UpdateState(eventData.ContestId, ContestState.Active);
+    public Task Process(ContestTestingPhaseEnded eventData) => _contestBuilder.UpdateState(eventData.ContestId, ContestState.Active);
 
-    public Task Process(ContestPastLocked eventData) => UpdateState(eventData.ContestId, ContestState.PastLocked);
+    public Task Process(ContestPastLocked eventData) => _contestBuilder.UpdateState(eventData.ContestId, ContestState.PastLocked);
 
-    public Task Process(ContestPastUnlocked eventData) => UpdateState(eventData.ContestId, ContestState.PastUnlocked);
+    public Task Process(ContestPastUnlocked eventData) => _contestBuilder.UpdateState(eventData.ContestId, ContestState.PastUnlocked);
 
     public async Task Process(ContestArchived eventData)
     {
-        await UpdateState(eventData.ContestId, ContestState.Archived);
+        await _contestBuilder.UpdateState(eventData.ContestId, ContestState.Archived);
         await _contestRepo.DeleteVoterContestIndexSequence(GuidParser.Parse(eventData.ContestId));
     }
 
     [Obsolete("contest counting circle options are deprecated")]
     public Task Process(ContestCountingCircleOptionsUpdated eventData) =>
         _contestBuilder.UpdateContestCountingCircleOptions(eventData.ContestId, eventData.Options);
-
-    private async Task UpdateState(string key, ContestState newState)
-    {
-        var id = GuidParser.Parse(key);
-
-        var contest = await _contestRepo.GetByKey(id)
-                      ?? throw new EntityNotFoundException(nameof(Contest), id);
-
-        contest.State = newState;
-        await _contestRepo.Update(contest);
-    }
 }

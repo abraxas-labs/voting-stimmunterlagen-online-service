@@ -36,6 +36,10 @@ public class ContestDomainOfInfluenceModelBuilder : IEntityTypeConfiguration<Con
             .Property(d => d.LastVoterUpdate)
             .HasUtcConversion();
 
+        builder
+            .Property(d => d.LastCountOfEmptyVotingCardsUpdate)
+            .HasUtcConversion();
+
         builder.OwnsOne(doi => doi.ReturnAddress);
         builder.OwnsOne(doi => doi.PrintData);
         builder.OwnsOne(doi => doi.SwissPostData);

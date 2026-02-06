@@ -42,12 +42,32 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
     }
 
     [Fact]
+    public async Task ShouldOverrideOptionsIfStistatMunicipality()
+    {
+        await GemeindeArneggElectionAdminClient.SetOverriddenLayoutAsync(new()
+        {
+            TemplateId = DmDocServiceMock.TemplateSwissArneggNotSeeded.Id,
+            VotingCardType = VotingCardType.Swiss,
+            DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
+            DataConfiguration = new(),
+        });
+
+        var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
+            .SingleAsync(x =>
+                x.VotingCardType == Data.Models.VotingCardType.Swiss
+                && x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
+        layout.DataConfiguration.IncludePersonId.Should().BeTrue();
+        layout.DataConfiguration.IncludeDateOfBirth.Should().BeTrue();
+    }
+
+    [Fact]
     public async Task ShouldReset()
     {
         await GemeindeArneggElectionAdminClient.SetOverriddenLayoutAsync(new SetOverriddenDomainOfInfluenceVotingCardLayoutRequest
         {
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
+            DataConfiguration = new(),
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -70,6 +90,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateSwissArnegg.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -86,6 +107,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateSwissArneggNotSeeded.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
+                DataConfiguration = new(),
             }),
             StatusCode.InvalidArgument,
             "custom layout is not allowed");
@@ -100,6 +122,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 TemplateId = DmDocServiceMock.TemplateSwissArnegg.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundArchivedGemeindeArneggId,
+                DataConfiguration = new(),
             }),
             StatusCode.NotFound);
     }
@@ -132,6 +155,11 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
             TemplateId = DmDocServiceMock.TemplateSwissArneggNotSeeded.Id,
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
+            DataConfiguration = new()
+            {
+                IncludeDateOfBirth = true,
+                IncludeReligion = true,
+            },
         };
     }
 }

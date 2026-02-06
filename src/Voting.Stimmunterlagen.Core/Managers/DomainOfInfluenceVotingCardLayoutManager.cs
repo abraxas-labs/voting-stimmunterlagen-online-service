@@ -55,7 +55,7 @@ public class DomainOfInfluenceVotingCardLayoutManager
         _dbContext = dbContext;
     }
 
-    public async Task SetLayout(Guid doiId, VotingCardType vcType, bool allowCustom, int? templateId)
+    public async Task SetLayout(Guid doiId, VotingCardType vcType, bool allowCustom, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration)
     {
         var existingLayout = await _doiLayoutRepo.Query()
             .AsTracking()
@@ -73,6 +73,13 @@ public class DomainOfInfluenceVotingCardLayoutManager
         var oldEffectiveTemplateId = existingLayout.EffectiveTemplateId;
         existingLayout.OverriddenTemplateId = null;
         existingLayout.AllowCustom = allowCustom;
+        if (existingLayout.DomainOfInfluence!.StistatMunicipality && !existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
+        {
+            dataConfiguration.IncludePersonId = true;
+            dataConfiguration.IncludeDateOfBirth = true;
+        }
+
+        existingLayout.DataConfiguration = dataConfiguration;
 
         Template? template = null;
         if (templateId == null)
@@ -96,7 +103,7 @@ public class DomainOfInfluenceVotingCardLayoutManager
         await _doiLayoutRepo.SaveChanges();
     }
 
-    public async Task SetOverriddenLayout(Guid doiId, VotingCardType vcType, int? templateId)
+    public async Task SetOverriddenLayout(Guid doiId, VotingCardType vcType, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
 
@@ -116,6 +123,14 @@ public class DomainOfInfluenceVotingCardLayoutManager
         {
             throw new ValidationException("custom layout is not allowed");
         }
+
+        if (existingLayout.DomainOfInfluence!.StistatMunicipality && !existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
+        {
+            dataConfiguration.IncludePersonId = true;
+            dataConfiguration.IncludeDateOfBirth = true;
+        }
+
+        existingLayout.DataConfiguration = dataConfiguration;
 
         Template? template = null;
         if (templateId == null)

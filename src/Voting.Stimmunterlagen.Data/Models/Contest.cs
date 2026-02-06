@@ -38,6 +38,16 @@ public class Contest : BaseEntity
 
     public DateTime? GenerateVotingCardsDeadline { get; set; }
 
+    /// <summary>
+    /// Gets or sets the earliest date where a e-voting municipality can pull electoral registers.
+    /// </summary>
+    public DateTime? ElectoralRegisterEVotingFrom { get; set; }
+
+    /// <summary>
+    /// Gets or sets the "Postaufgabedatum". Only used in communal contests.
+    /// </summary>
+    public DateTime? DeliveryToPostDeadline { get; set; }
+
     public ICollection<ContestVotingCardLayout>? VotingCardLayouts { get; set; }
 
     public bool TestingPhaseEnded => State.TestingPhaseEnded();

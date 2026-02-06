@@ -57,7 +57,7 @@ public class DataContext : DbContext
 
     public DbSet<VoterListImport> VoterListImports { get; set; } = null!;
 
-    public DbSet<VoterDuplicate> VoterDuplicates { get; set; } = null!;
+    public DbSet<DomainOfInfluenceVoterDuplicate> DomainOfInfluenceVoterDuplicates { get; set; } = null!;
 
     public DbSet<ContestVotingCardLayout> ContestVotingCardLayouts { get; set; } = null!;
 

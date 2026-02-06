@@ -4,8 +4,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Voting.Stimmunterlagen.EVoting.Configuration;
 using Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration;
 using Contest = Voting.Stimmunterlagen.EVoting.Models.Contest;
+using ContestConfiguration = Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration.Configuration;
 using DomainOfInfluence = Voting.Stimmunterlagen.EVoting.Models.DomainOfInfluence;
 using DomainOfInfluenceVotingCardReturnAddress = Voting.Stimmunterlagen.EVoting.Models.DomainOfInfluenceVotingCardReturnAddress;
 using VotingCardShippingFranking = Voting.Stimmunterlagen.Data.Models.VotingCardShippingFranking;
@@ -16,22 +18,26 @@ internal static class ConfigurationMapper
 {
     private const string DefaultEVotingDeliveryType = "A";
 
-    internal static Configuration ToConfiguration(
+    internal static ContestConfiguration ToConfiguration(
         this Contest contest,
         List<DomainOfInfluence> testDomainOfInfluences,
         DomainOfInfluence testDomainOfInfluenceDefaults,
-        Dictionary<string, ETextBlocks> eTextBlocksByBfs,
+        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs,
         List<string> certificates)
     {
         return new()
         {
             Polldate = ConvertDateTimeToString(contest.Date),
-            Printings = new() { contest.ToPrinting(testDomainOfInfluences, testDomainOfInfluenceDefaults, eTextBlocksByBfs) },
+            Printings = new() { contest.ToPrinting(testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs) },
             Certificates = certificates,
         };
     }
 
-    private static Printing ToPrinting(this Contest contest, List<DomainOfInfluence> testDomainOfInfluences, DomainOfInfluence testDomainOfInfluenceDefaults, Dictionary<string, ETextBlocks> eTextBlocksByBfs)
+    private static Printing ToPrinting(
+        this Contest contest,
+        List<DomainOfInfluence> testDomainOfInfluences,
+        DomainOfInfluence testDomainOfInfluenceDefaults,
+        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
     {
         var printing = new Printing
         {
@@ -41,7 +47,7 @@ internal static class ConfigurationMapper
         printing.Municipalities = testDomainOfInfluences.ConvertAll(testDoi =>
         {
             testDoi.AppendTestDefaults(testDomainOfInfluenceDefaults);
-            return testDoi.ToMunicipality(contest.Date, eTextBlocksByBfs);
+            return testDoi.ToMunicipality(contest.Date, eVotingDomainOfInfluenceConfigByBfs);
         });
 
         if (contest.ContestDomainOfInfluences?.Any() != true)
@@ -49,13 +55,22 @@ internal static class ConfigurationMapper
             return printing;
         }
 
-        printing.Municipalities.AddRange(contest.ContestDomainOfInfluences.Select(doi => doi.ToMunicipality(contest.Date, eTextBlocksByBfs)));
+        printing.Municipalities.AddRange(contest.ContestDomainOfInfluences.Select(doi => doi.ToMunicipality(contest.Date, eVotingDomainOfInfluenceConfigByBfs)));
 
         return printing;
     }
 
-    private static Municipality ToMunicipality(this DomainOfInfluence domainOfInfluence, DateTime contestDate, Dictionary<string, ETextBlocks> eTextBlocksByBfs)
+    private static Municipality ToMunicipality(this DomainOfInfluence domainOfInfluence, DateTime contestDate, Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
     {
+        var eVotingDomainOfInfluenceConfig = eVotingDomainOfInfluenceConfigByBfs.GetValueOrDefault(domainOfInfluence.Bfs);
+        var eTextBlocks = eVotingDomainOfInfluenceConfig?.ETextBlockValues != null || eVotingDomainOfInfluenceConfig?.ETextBlockValues != null
+            ? new ETextBlocks
+            {
+                ColumnQuantity = eVotingDomainOfInfluenceConfig.ETextBlockColumnQuantity,
+                Values = eVotingDomainOfInfluenceConfig.ETextBlockValues,
+            }
+            : null;
+
         return new()
         {
             Bfs = domainOfInfluence.Bfs,
@@ -64,14 +79,14 @@ internal static class ConfigurationMapper
             DeliveryType = DefaultEVotingDeliveryType,
             ForwardDeliveryType = ConvertShippingFrankingToString(domainOfInfluence.PrintData.ShippingAway),
             ReturnDeliveryType = ConvertShippingFrankingToString(domainOfInfluence.PrintData.ShippingReturn),
-            Etemplate = EVotingDefaults.AuslandschweizerBfs.Equals(domainOfInfluence.Bfs) ? EVotingDefaults.ETemplateAuslandschweizer : EVotingDefaults.ETemplate,
-            Template = EVotingDefaults.AuslandschweizerBfs.Equals(domainOfInfluence.Bfs) ? EVotingDefaults.TemplateAuslandschweizer : EVotingDefaults.Template,
+            Etemplate = EVotingDefaults.AuslandschweizerBfs.Contains(domainOfInfluence.Bfs) ? EVotingDefaults.ETemplateAuslandschweizer : EVotingDefaults.ETemplate,
+            Template = EVotingDefaults.AuslandschweizerBfs.Contains(domainOfInfluence.Bfs) ? EVotingDefaults.TemplateAuslandschweizer : EVotingDefaults.Template,
             PollOpening = ConvertDateTimeToString(contestDate),
             PollClosing = ConvertDateTimeToString(contestDate.AddDays(1)),
             ReturnDeliveryAddress = domainOfInfluence.ReturnAddress.ToDeliveryAddress(),
-            AttachmentStations = string.Empty,
-            ETextBlocks = eTextBlocksByBfs.GetValueOrDefault(domainOfInfluence.Bfs),
-            Stistat = domainOfInfluence.StistatMunicipality,
+            ETextBlocks = eTextBlocks,
+            Stistat = eVotingDomainOfInfluenceConfig?.Stistat != null ? eVotingDomainOfInfluenceConfig.Stistat.Value : domainOfInfluence.StistatMunicipality,
+            AttachmentStations = domainOfInfluence.AttachmentStations,
         };
     }
 
@@ -84,6 +99,7 @@ internal static class ConfigurationMapper
             Street = data.Street,
             AddressField1 = data.AddressLine1,
             AddressField2 = data.AddressLine2,
+            AddressAddition = data.AddressAddition,
             Country = data.Country,
         };
     }

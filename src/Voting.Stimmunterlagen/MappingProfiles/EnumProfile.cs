@@ -28,6 +28,14 @@ public class EnumProfile : Profile
         CreateEnumMap<VotingCardSort, ProtoModels.VotingCardSort>();
         CreateEnumMap<PrintJobState, ProtoModels.PrintJobState>();
         CreateEnumMap<VotingCardGeneratorJobState, ProtoModels.VotingCardGeneratorJobState>();
+
+        // explicitly map deprecated values to default value.
+        CreateMap<Abraxas.Voting.Basis.Shared.V1.VotingCardColor, VotingCardColor>()
+            .ConvertUsingEnumMapping(opt => opt
+                .MapByValue()
+                .MapValue(Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Chamois, VotingCardColor.Unspecified)
+                .MapValue(Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Gold, VotingCardColor.Unspecified))
+            .ReverseMap();
     }
 
     private void CreateEnumMap<T1, T2>()

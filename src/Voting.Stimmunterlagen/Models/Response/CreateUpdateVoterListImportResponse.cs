@@ -13,4 +13,6 @@ public class CreateUpdateVoterListImportResponse
     public List<CreateUpdateVoterListResponse>? VoterLists { get; init; }
 
     public bool AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit { get; set; }
+
+    public VoterListImportErrorResponse? Error { get; set; }
 }

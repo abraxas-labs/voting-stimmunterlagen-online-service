@@ -10,4 +10,6 @@ public class GenerateVotingExportRequest
     public string Key { get; set; } = string.Empty;
 
     public Guid DomainOfInfluenceId { get; set; }
+
+    public Guid? VoterListId { get; set; }
 }

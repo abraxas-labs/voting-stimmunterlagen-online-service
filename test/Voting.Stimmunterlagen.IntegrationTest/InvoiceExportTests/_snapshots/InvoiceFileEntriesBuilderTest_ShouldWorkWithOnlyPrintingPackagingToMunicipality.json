@@ -1,0 +1,114 @@
+{
+  "ContestEntries": [
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.26",
+      "Amount": 1.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "50",
+      "Comment": "",
+      "SapMaterialText": "DV Auftragspauschale Urnengänge"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.29",
+      "Amount": 62.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV Drucken A4-Stimmausweis einseitig"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.36",
+      "Amount": 2.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV Einrichtkosten / Beilagenstation"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.38",
+      "Amount": 50.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV Beilagen mit 2 Beilagenstationen"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.57",
+      "Amount": 1.25,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "Testcomment",
+      "SapMaterialText": "Aufwand in Stunden"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "",
+      "Amount": 9.75,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "",
+      "Comment": "",
+      "SapMaterialText": "Zusatzleistung"
+    }
+  ],
+  "PoliticalAssemblyEntries": [
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.27",
+      "Amount": 1.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "50",
+      "Comment": "",
+      "SapMaterialText": "DV Auftragspauschale Versammlungen"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.29",
+      "Amount": 62.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV Drucken A4-Stimmausweis einseitig"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.36",
+      "Amount": 2.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV Einrichtkosten / Beilagenstation"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.38",
+      "Amount": 62.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV Beilagen mit 2 Beilagenstationen"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.57",
+      "Amount": 1.25,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "Testcomment",
+      "SapMaterialText": "Aufwand in Stunden"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "",
+      "Amount": 9.75,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "",
+      "Comment": "",
+      "SapMaterialText": "Zusatzleistung"
+    }
+  ]
+}

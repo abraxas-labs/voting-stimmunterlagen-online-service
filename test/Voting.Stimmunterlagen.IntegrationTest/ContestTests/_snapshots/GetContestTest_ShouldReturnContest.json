@@ -21,7 +21,13 @@
     "CanManuallyUploadVoterList": false,
     "LastVoterUpdate": null,
     "GenerateVotingCardsTriggered": null,
-    "EVoting": null
+    "EVoting": null,
+    "ElectoralRegisterMultipleEnabled": false,
+    "StistatMunicipality": false,
+    "Bfs": "1000",
+    "HasEmptyVotingCards": false,
+    "CountOfEmptyVotingCards": 0,
+    "LastCountOfEmptyVotingCardsUpdate": null
   },
   "Approved": null,
   "IsApproved": false,
@@ -30,5 +36,9 @@
   "State": 1,
   "IsSingleAttendeeContest": false,
   "GenerateVotingCardsDeadline": null,
-  "IsPoliticalAssembly": false
+  "IsPoliticalAssembly": false,
+  "EVoting": true,
+  "ElectoralRegisterEVotingFrom": null,
+  "DeliveryToPostDeadline": null,
+  "LowestPrintJobsState": 0
 }

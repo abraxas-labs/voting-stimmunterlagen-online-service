@@ -24,7 +24,7 @@
     "Town": "Arnegg",
     "SwissZipCode": 9200,
     "ForeignZipCode": "",
-    "Religion": null,
+    "Religion": "000",
     "ZipCode": "9200",
     "Country": {
       "Iso2": "CH",
@@ -32,7 +32,7 @@
     },
     "SourceIndex": 0,
     "LanguageOfCorrespondence": "de",
-    "Bfs": "1240",
+    "Bfs": "MANUAL",
     "List": null,
     "ListId": null,
     "ManualJobId": "00000000-0000-0000-0000-000000000000",
@@ -52,9 +52,14 @@
     "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
     "Contest": null,
     "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
-    "IsHouseholder": true,
+    "IsHouseholder": false,
+    "VoterDuplicateId": null,
+    "VoterDuplicate": null,
+    "VotingCardPrintDisabled": false,
     "ResidenceBuildingId": null,
     "ResidenceApartmentId": null,
+    "IsMinor": false,
+    "DomainOfInfluences": null,
     "Id": "00000000-0000-0000-0000-000000000000"
   },
   "Layout": {
@@ -73,6 +78,14 @@
     "TemplateId": 1,
     "Template": null,
     "VotingCardType": 1,
+    "DataConfiguration": {
+      "IncludePersonId": false,
+      "IncludeDateOfBirth": false,
+      "IncludeReligion": false,
+      "IncludeIsHouseholder": false,
+      "IncludeDomainOfInfluenceChurch": false,
+      "IncludeDomainOfInfluenceSchool": false
+    },
     "Id": "00000000-0000-0000-0000-000000000000"
   },
   "LayoutId": "00000000-0000-0000-0000-000000000000",

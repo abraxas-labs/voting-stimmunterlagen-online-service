@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CsvHelper.Configuration.Attributes;
 using Microsoft.EntityFrameworkCore;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Extensions;
 using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
@@ -41,7 +42,10 @@ public class VotingJournalVotingRenderService : IVotingRenderService
 
         var data = await _voterRepo.Query()
             .WhereBelongToDomainOfInfluenceOnlyVoterList(context.DomainOfInfluence.Id)
-            .OrderBy(vcConfig.Sorts)
+            .WhereVotingCardPrintEnabled()
+            .Where(v => context.VoterList == null || v.ListId == context.VoterList.Id)
+            .ToAsyncEnumerable()
+            .OrderBySortingCriteriaAsync(vcConfig.Sorts)
             .Select(v => new Data
             {
                 LastName = v.LastName,
@@ -54,7 +58,7 @@ public class VotingJournalVotingRenderService : IVotingRenderService
             .ToListAsync(ct);
 
         var csvData = await _csvService.Render(data, ct: ct);
-        return new FileModel(csvData, FileNameUtils.GenerateFileName(FileNameTemplate, new[] { context.DomainOfInfluence.Bfs }), MimeTypes.CsvMimeType);
+        return new FileModel(csvData, FileNameUtils.GenerateFileName(FileNameTemplate, context.BuildVotingJournalFileNameArgs()), MimeTypes.CsvMimeType);
     }
 
     private static string FormatDateOfBirth(string dateOfBirth)

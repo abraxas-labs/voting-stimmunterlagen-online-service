@@ -8,9 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Newtonsoft.Json;
+using Voting.Stimmunterlagen.EVoting.Configuration;
 using Voting.Stimmunterlagen.EVoting.Mapper;
 using Voting.Stimmunterlagen.EVoting.Models;
-using Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration;
 using Contest = Voting.Stimmunterlagen.EVoting.Models.Contest;
 
 namespace Voting.Stimmunterlagen.EVoting;
@@ -25,17 +25,18 @@ public static class EVotingExportDataBuilder
         byte[] eVotingZipBytes,
         Contest contest,
         byte[] ech0045XmlBytes,
+        string ech0045XmlFileName,
         List<DomainOfInfluence> testDomainOfInfluences,
         DomainOfInfluence testDomainOfInfluenceDefaults,
-        Dictionary<string, ETextBlocks> eTextBlocksByBfs)
+        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
     {
         using var ms = new MemoryStream();
 
         // archive needs to be disposed, otherwise the memory stream will not receive the update.
         using (var baseArchive = new ZipArchive(ms, ZipArchiveMode.Update))
         {
-            AppendEVotingConfiguration(baseArchive, eVotingZipBytes, contest, testDomainOfInfluences, testDomainOfInfluenceDefaults, eTextBlocksByBfs);
-            AppendEch0045(baseArchive, ech0045XmlBytes);
+            AppendEVotingConfiguration(baseArchive, eVotingZipBytes, contest, testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs);
+            AppendEch0045(baseArchive, ech0045XmlBytes, ech0045XmlFileName);
         }
 
         return ms.ToArray();
@@ -47,7 +48,7 @@ public static class EVotingExportDataBuilder
         Contest contest,
         List<DomainOfInfluence> testDomainOfInfluences,
         DomainOfInfluence testDomainOfInfluenceDefaults,
-        Dictionary<string, ETextBlocks> eTextBlocksByBfs)
+        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
     {
         using var ms = new MemoryStream();
         ms.Write(eVotingZipBytes);
@@ -60,7 +61,7 @@ public static class EVotingExportDataBuilder
                 .Select(e => e.FullName)
                 .ToList();
 
-            var config = contest.ToConfiguration(testDomainOfInfluences, testDomainOfInfluenceDefaults, eTextBlocksByBfs, certificates);
+            var config = contest.ToConfiguration(testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs, certificates);
 
             // config has newtonsoft json annotations
             var configJson = JsonConvert.SerializeObject(config);
@@ -76,9 +77,9 @@ public static class EVotingExportDataBuilder
         AddFile(baseArchive, EVotingDefaults.EVotingConfigurationArchiveName, ms.ToArray());
     }
 
-    private static void AppendEch0045(ZipArchive baseArchive, byte[] xmlBytes)
+    private static void AppendEch0045(ZipArchive baseArchive, byte[] xmlBytes, string xmlFileName)
     {
-        AddFile(baseArchive, EVotingDefaults.Ech45FileName, xmlBytes);
+        AddFile(baseArchive, xmlFileName, xmlBytes);
     }
 
     private static void AddFile(ZipArchive archive, string fileName, byte[] fileContent)

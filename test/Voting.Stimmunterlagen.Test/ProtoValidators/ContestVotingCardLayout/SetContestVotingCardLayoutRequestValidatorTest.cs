@@ -25,6 +25,7 @@ public class SetContestVotingCardLayoutRequestValidatorTest : ProtoValidatorBase
         yield return New(x => x.VotingCardType = (VotingCardType)13);
         yield return New(x => x.TemplateId = 0);
         yield return New(x => x.TemplateId = 1000001);
+        yield return New(x => x.DataConfiguration = null);
     }
 
     private static SetContestVotingCardLayoutRequest New(Action<SetContestVotingCardLayoutRequest>? customizer = null)
@@ -35,6 +36,7 @@ public class SetContestVotingCardLayoutRequestValidatorTest : ProtoValidatorBase
             VotingCardType = VotingCardType.Swiss,
             AllowCustom = true,
             TemplateId = 1,
+            DataConfiguration = new(),
         };
         customizer?.Invoke(req);
         return req;

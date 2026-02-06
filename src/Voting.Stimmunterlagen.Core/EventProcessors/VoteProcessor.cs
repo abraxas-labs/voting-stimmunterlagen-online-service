@@ -14,6 +14,7 @@ public class VoteProcessor : PoliticalBusinessProcessor<VoteEventData>,
     IEventProcessor<VoteCreated>,
     IEventProcessor<VoteUpdated>,
     IEventProcessor<VoteActiveStateUpdated>,
+    IEventProcessor<VoteEVotingApprovalUpdated>,
     IEventProcessor<VoteDeleted>,
     IEventProcessor<VoteToNewContestMoved>
 {
@@ -45,6 +46,9 @@ public class VoteProcessor : PoliticalBusinessProcessor<VoteEventData>,
 
     public Task Process(VoteActiveStateUpdated eventData)
         => ProcessActiveStateUpdated(eventData.VoteId, eventData.Active);
+
+    public Task Process(VoteEVotingApprovalUpdated eventData)
+        => ProcessEVotingApprovalUpdated(eventData.VoteId, eventData.Approved);
 
     public Task Process(VoteToNewContestMoved eventData)
         => ProcessToNewContestMoved(eventData.VoteId, eventData.NewContestId);

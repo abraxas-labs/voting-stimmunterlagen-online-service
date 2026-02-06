@@ -31,9 +31,10 @@ public class EVoterByDoiOnContestRenderService : IVotingRenderService
             data.Add(new()
             {
                 DomainOfInfluence = eVoterDoiEntry.DomainOfInfluence.Name,
+                DomainOfInfluenceBfs = eVoterDoiEntry.DomainOfInfluence.Bfs,
                 ParentPoliticalCount = eVoterDoiEntry.ParentPoliticalBusinessesCount,
                 OwnPoliticalCount = eVoterDoiEntry.OwnPoliticalBusinessesCount,
-                NumberOfVoters = eVoterDoiEntry.NumberOfEVoters,
+                NumberOfVoters = eVoterDoiEntry.CountOfVotingCardsForEVoters,
             });
         }
 
@@ -45,6 +46,9 @@ public class EVoterByDoiOnContestRenderService : IVotingRenderService
     {
         [Name("Bezeichnung (Gemeinde)")]
         public string DomainOfInfluence { get; set; } = string.Empty;
+
+        [Name("BFS-Nr.")]
+        public string DomainOfInfluenceBfs { get; set; } = string.Empty;
 
         [Name("Geschäfte auf übergeordneten Wahlkreisen")]
         public int ParentPoliticalCount { get; set; }

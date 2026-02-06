@@ -4,7 +4,7 @@
 using Ech0045_4_0;
 using FluentAssertions;
 using Voting.Stimmunterlagen.Data.Models;
-using Voting.Stimmunterlagen.Ech.Mapping;
+using Voting.Stimmunterlagen.Ech.Mapping.V4;
 using Xunit;
 
 namespace Voting.Stimmunterlagen.Ech.Test.EchMappingTests;

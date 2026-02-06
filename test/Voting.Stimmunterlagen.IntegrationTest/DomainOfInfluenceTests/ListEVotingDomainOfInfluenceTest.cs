@@ -33,7 +33,7 @@ public class ListEVotingDomainOfInfluenceTest : BaseReadOnlyGrpcTest<DomainOfInf
                 Source = VoterListSource.ManualEch45Upload,
                 VoterLists = new List<Data.Models.VoterList>
                 {
-                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid, NumberOfVoters = 1000, VotingCardType = Data.Models.VotingCardType.EVoting },
+                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid, NumberOfVoters = 1000, CountOfVotingCards = 1000, VotingCardType = Data.Models.VotingCardType.EVoting },
                 },
             };
 
@@ -43,7 +43,7 @@ public class ListEVotingDomainOfInfluenceTest : BaseReadOnlyGrpcTest<DomainOfInf
                 Source = VoterListSource.ManualEch45Upload,
                 VoterLists = new List<Data.Models.VoterList>
                 {
-                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid, NumberOfVoters = 1000, VotingCardType = Data.Models.VotingCardType.EVoting },
+                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureBundGuid, NumberOfVoters = 1000, CountOfVotingCards = 1000, VotingCardType = Data.Models.VotingCardType.EVoting },
                 },
             };
 
@@ -53,8 +53,8 @@ public class ListEVotingDomainOfInfluenceTest : BaseReadOnlyGrpcTest<DomainOfInf
                 Source = VoterListSource.ManualEch45Upload,
                 VoterLists = new List<Data.Models.VoterList>
                 {
-                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureKantonStGallenGuid, NumberOfVoters = 1500, VotingCardType = Data.Models.VotingCardType.EVoting },
-                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureKantonStGallenGuid, NumberOfVoters = 1500, VotingCardType = Data.Models.VotingCardType.SwissAbroad },
+                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureKantonStGallenGuid, NumberOfVoters = 1500, CountOfVotingCards = 1499, VotingCardType = Data.Models.VotingCardType.EVoting },
+                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureKantonStGallenGuid, NumberOfVoters = 1500, CountOfVotingCards = 1500, VotingCardType = Data.Models.VotingCardType.SwissAbroad },
                 },
             };
             var stadtGossauImport = new Data.Models.VoterListImport
@@ -63,7 +63,7 @@ public class ListEVotingDomainOfInfluenceTest : BaseReadOnlyGrpcTest<DomainOfInf
                 Source = VoterListSource.ManualEch45Upload,
                 VoterLists = new List<Data.Models.VoterList>
                 {
-                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureStadtGossauGuid, NumberOfVoters = 5000, VotingCardType = Data.Models.VotingCardType.Swiss },
+                    new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureStadtGossauGuid, NumberOfVoters = 5000, CountOfVotingCards = 5000, VotingCardType = Data.Models.VotingCardType.EVoting },
                 },
             };
 

@@ -32,6 +32,8 @@ public class PoliticalBusiness : BaseEntity, IHasContest, IHasContestDomainOfInf
 
     public ICollection<PoliticalBusinessTranslation>? Translations { get; set; }
 
+    public bool? EVotingApproved { get; set; }
+
     public string OfficialDescription => Translations.GetTranslated(x => x.OfficialDescription);
 
     public string ShortDescription => Translations.GetTranslated(x => x.ShortDescription);

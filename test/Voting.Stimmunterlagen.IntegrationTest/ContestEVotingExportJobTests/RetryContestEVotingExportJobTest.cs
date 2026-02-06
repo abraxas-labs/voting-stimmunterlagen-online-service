@@ -8,6 +8,7 @@ using FluentAssertions;
 using Grpc.Core;
 using Voting.Lib.Testing.Utils;
 using Voting.Stimmunterlagen.Auth;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
@@ -29,6 +30,15 @@ public class RetryContestEVotingExportJobTest : BaseWriteableDbGrpcTest<
         : base(factory)
     {
         GetService<ContestEVotingExportThrottlerMock>().ShouldBlock = true;
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.EVoting,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -77,7 +87,23 @@ public class RetryContestEVotingExportJobTest : BaseWriteableDbGrpcTest<
             {
                 ContestId = DefaultContestId,
             }),
-            StatusCode.NotFound);
+            StatusCode.PermissionDenied);
+    }
+
+    [Fact]
+    public async Task ShouldThrowForContestManagerIfEVotingStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.EVoting,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await AbraxasElectionAdminClient.RetryJobAsync(new()
+            {
+                ContestId = DefaultContestId,
+            }),
+            StatusCode.PermissionDenied,
+            "Cannot retry a job if the e-voting step is not approved yet");
     }
 
     [Theory]

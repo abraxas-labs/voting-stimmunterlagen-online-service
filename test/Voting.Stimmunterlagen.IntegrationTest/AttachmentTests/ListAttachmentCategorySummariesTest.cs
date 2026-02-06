@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Grpc.Core;
 using Snapper;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
@@ -49,7 +50,7 @@ public class ListAttachmentCategorySummariesTest : BaseWriteableDbGrpcTest<Attac
             a => a.Id == AttachmentMockData.BundFutureApprovedBund1Guid,
             a => a.SendOnlyToHouseholder = true);
 
-        await ModifyDbEntities<Data.Models.VoterList>(vl => vl.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid, vl => vl.NumberOfHouseholders = 0);
+        await ModifyDbEntities<Data.Models.VoterList>(vl => vl.Id == VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid, vl => vl.CountOfVotingCardsForHouseholders = 0);
 
         // The count should not change if not all attachments of a category are sent to householders.
         summaries = await GemeindeArneggElectionAdminClient.ListCategorySummariesAsync(new()
@@ -165,14 +166,14 @@ public class ListAttachmentCategorySummariesTest : BaseWriteableDbGrpcTest<Attac
     }
 
     [Fact]
-    public async Task ShouldReturnEmptyForPrintJobManagementIfInvalidDoi()
+    public async Task ShouldThrowForPrintJobManagementIfInvalidDoi()
     {
-        var result = await AbraxasPrintJobManagerClient.ListCategorySummariesAsync(new()
-        {
-            DomainOfInfluenceId = "cecb9be3-462f-4412-a023-f76a583ca0d2",
-        });
-
-        result.Summaries.Should().HaveCount(0);
+        await AssertStatus(
+            async () => await AbraxasPrintJobManagerClient.ListCategorySummariesAsync(new()
+            {
+                DomainOfInfluenceId = "cecb9be3-462f-4412-a023-f76a583ca0d2",
+            }),
+            StatusCode.NotFound);
     }
 
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)

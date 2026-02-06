@@ -7,6 +7,7 @@ using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Voting.Stimmunterlagen.Auth;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
@@ -61,6 +62,22 @@ public class UpdateDomainOfInfluenceSettingsTest : BaseWriteableDbGrpcTest<Domai
     {
         return AssertStatus(
             async () => await GemeindeArneggElectionAdminClient.UpdateSettingsAsync(new UpdateDomainOfInfluenceSettingsRequest
+            {
+                DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+                AllowManualVoterListUpload = true,
+            }),
+            StatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceWithoutResponsibleForVotingCardsShouldThrow()
+    {
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            x => x.Id == DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid,
+            x => x.ResponsibleForVotingCards = false);
+
+        await AssertStatus(
+            async () => await AbraxasElectionAdminClient.UpdateSettingsAsync(new UpdateDomainOfInfluenceSettingsRequest
             {
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
                 AllowManualVoterListUpload = true,

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Voting.Lib.Common.Net;
 using Voting.Lib.Iam.Configuration;
-using Voting.Lib.Iam.ServiceTokenHandling;
+using Voting.Lib.Iam.TokenHandling.ServiceToken;
 using Voting.Stimmunterlagen.Data.Configuration;
 
 namespace Voting.Stimmunterlagen.Core.Configuration;

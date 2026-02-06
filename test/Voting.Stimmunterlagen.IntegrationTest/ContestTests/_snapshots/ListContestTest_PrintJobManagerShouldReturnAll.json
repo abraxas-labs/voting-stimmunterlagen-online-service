@@ -27,7 +27,11 @@
         "Seconds": 2010866400,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": true
+      "IsPoliticalAssembly": true,
+      "EVoting": false,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 1
     },
     {
       "Id": "791018cc-6250-46e4-bc80-4a25f00c4d59",
@@ -56,7 +60,11 @@
         "Seconds": 2010866400,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 1
     },
     {
       "Id": "e2f0b358-e20d-4b46-8d4c-522173d93541",
@@ -85,7 +93,11 @@
         "Seconds": 1579215600,
         "Nanos": 0
       },
-      "IsPoliticalAssembly": false
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 1
     }
   ]
 }

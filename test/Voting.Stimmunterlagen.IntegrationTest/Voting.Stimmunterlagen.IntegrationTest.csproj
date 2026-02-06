@@ -14,7 +14,7 @@
     <None Update="TestFiles\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    
+
     <None Update="ContestEVotingExportJobTests\TestFiles\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

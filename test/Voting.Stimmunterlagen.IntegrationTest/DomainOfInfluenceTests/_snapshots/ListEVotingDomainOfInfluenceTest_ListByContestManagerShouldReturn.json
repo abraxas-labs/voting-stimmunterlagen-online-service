@@ -4,7 +4,7 @@
       "EVotingReady": false,
       "ParentPoliticalBusinessesCount": 11,
       "OwnPoliticalBusinessesCount": 0,
-      "NumberOfEVoters": 0,
+      "CountOfVotingCardsForEVoters": 0,
       "DomainOfInfluence": {
         "Id": "1779cde4-8a1f-5113-a7d6-5f886476566a",
         "Name": "Auslandschweizer",
@@ -25,14 +25,20 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": false
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "9170",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       }
     },
     {
       "EVotingReady": false,
       "ParentPoliticalBusinessesCount": 11,
       "OwnPoliticalBusinessesCount": 4,
-      "NumberOfEVoters": 0,
+      "CountOfVotingCardsForEVoters": 0,
       "DomainOfInfluence": {
         "Id": "ba28b300-1b81-58c5-978e-480ef523ca40",
         "Name": "Gemeinde Arnegg",
@@ -53,14 +59,20 @@
         "CanManuallyUploadVoterList": true,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": false
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": true,
+        "Bfs": "1240",
+        "HasEmptyVotingCards": true,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       }
     },
     {
       "EVotingReady": false,
       "ParentPoliticalBusinessesCount": 11,
       "OwnPoliticalBusinessesCount": 2,
-      "NumberOfEVoters": 0,
+      "CountOfVotingCardsForEVoters": 5000,
       "DomainOfInfluence": {
         "Id": "a4fea864-df16-58dc-bf76-5d33489d01a3",
         "Name": "Stadt Gossau",
@@ -81,14 +93,20 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": false
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": true,
+        "Bfs": "1120",
+        "HasEmptyVotingCards": true,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       }
     },
     {
       "EVotingReady": false,
       "ParentPoliticalBusinessesCount": 11,
       "OwnPoliticalBusinessesCount": 0,
-      "NumberOfEVoters": 0,
+      "CountOfVotingCardsForEVoters": 0,
       "DomainOfInfluence": {
         "Id": "664783a2-c094-590b-a6f4-bb9a100bb5b3",
         "Name": "Stadt St. Gallen",
@@ -109,14 +127,20 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": false
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "1110",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       }
     },
     {
       "EVotingReady": true,
       "ParentPoliticalBusinessesCount": 11,
       "OwnPoliticalBusinessesCount": 4,
-      "NumberOfEVoters": 0,
+      "CountOfVotingCardsForEVoters": 0,
       "DomainOfInfluence": {
         "Id": "c647082e-892a-54df-888a-1fcb460ec6ca",
         "Name": "Stadt Uzwil",
@@ -137,7 +161,81 @@
         "CanManuallyUploadVoterList": false,
         "LastVoterUpdate": null,
         "GenerateVotingCardsTriggered": null,
-        "EVoting": true
+        "EVoting": true,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "1130",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      }
+    },
+    {
+      "EVotingReady": false,
+      "ParentPoliticalBusinessesCount": 11,
+      "OwnPoliticalBusinessesCount": 0,
+      "CountOfVotingCardsForEVoters": 0,
+      "DomainOfInfluence": {
+        "Id": "92410218-3790-5a6d-b8ba-5d1296caf1ad",
+        "Name": "Kirchgemeinde Arnegg",
+        "ShortName": "MU-AG-KI",
+        "AuthorityName": "Kirchgemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 3
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      }
+    },
+    {
+      "EVotingReady": false,
+      "ParentPoliticalBusinessesCount": 11,
+      "OwnPoliticalBusinessesCount": 0,
+      "CountOfVotingCardsForEVoters": 0,
+      "DomainOfInfluence": {
+        "Id": "4926dbeb-84a1-5e41-bf0a-e670c248e6ad",
+        "Name": "Zweckverband ARA Gossau",
+        "ShortName": "MU-GO-ARA",
+        "AuthorityName": "Stadt St. Gossau",
+        "Type": 10,
+        "SecureConnectId": "SC-MU-GO",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 6,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LastVoterUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
       }
     }
   ]

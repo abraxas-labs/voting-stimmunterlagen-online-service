@@ -37,6 +37,7 @@ public class VotingCardGeneratorJobManager
     private readonly DocPipeConfig _docPipeConfig;
     private readonly IDmDocDraftCleanupQueue _draftCleanupQueue;
     private readonly ILogger<VotingCardGeneratorJobManager> _logger;
+    private readonly VoterRepo _voterRepo;
 
     public VotingCardGeneratorJobManager(
         IDbRepository<VotingCardGeneratorJob> jobsRepo,
@@ -47,7 +48,8 @@ public class VotingCardGeneratorJobManager
         IDocPipeService docPipeService,
         DocPipeConfig docPipeConfig,
         IDmDocDraftCleanupQueue draftCleanupQueue,
-        ILogger<VotingCardGeneratorJobManager> logger)
+        ILogger<VotingCardGeneratorJobManager> logger,
+        VoterRepo voterRepo)
     {
         _jobsRepo = jobsRepo;
         _auth = auth;
@@ -58,6 +60,7 @@ public class VotingCardGeneratorJobManager
         _docPipeConfig = docPipeConfig;
         _draftCleanupQueue = draftCleanupQueue;
         _logger = logger;
+        _voterRepo = voterRepo;
     }
 
     public async Task<List<VotingCardGeneratorJob>> ListJobs(Guid doiId, bool forPrintJobManagement)
@@ -120,17 +123,27 @@ public class VotingCardGeneratorJobManager
     private async Task UpdateVoterPageInfos(Guid jobId, int draftId)
     {
         var voterPageInfos = await GetVoterPageInfos(draftId);
-        var voterPageInfoByVoterId = voterPageInfos.ToDictionary(x => x.Id);
         _logger.LogInformation("Received {VoterCount} voters for job {JobId}", voterPageInfos.Count, jobId);
 
         var job = await _jobsRepo.Query()
-            .AsTracking()
-            .Include(j => j.Voter)
             .WhereContestIsInTestingPhase()
             .FirstOrDefaultAsync(j => j.Id == jobId)
             ?? throw new EntityNotFoundException(nameof(VotingCardGeneratorJob), jobId);
 
-        foreach (var voter in job.Voter)
+        if (job.HasEmptyVotingCards)
+        {
+            // Empty voting cards are not persisted as "Voter" in the database, so we ignore the page infos.
+            return;
+        }
+
+        var voters = await _voterRepo.Query()
+            .AsTracking()
+            .Where(v => v.JobId == jobId)
+            .ToListAsync();
+
+        var voterPageInfoByVoterId = voterPageInfos.ToDictionary(x => x.Id);
+
+        foreach (var voter in voters)
         {
             if (!voterPageInfoByVoterId.TryGetValue(voter.Id, out var voterPageInfo))
             {

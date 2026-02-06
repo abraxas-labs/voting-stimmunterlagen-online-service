@@ -27,8 +27,9 @@ public class ListManagedByCurrentTenantDomainOfInfluenceTest : BaseReadOnlyGrpcT
         var dois = await StadtGossauElectionAdminClient.ListManagedByCurrentTenantAsync(new ListDomainOfInfluencesRequest
         { ContestId = ContestMockData.BundFutureApprovedId });
 
-        var doi = dois.DomainOfInfluences_.Single();
-        doi.ShortName.Should().Be("MU-GO");
+        dois.DomainOfInfluences_.Count().Should().Be(2);
+        dois.DomainOfInfluences_[0].ShortName.Should().Be("MU-GO");
+        dois.DomainOfInfluences_[1].ShortName.Should().Be("MU-GO-ARA");
     }
 
     [Fact]

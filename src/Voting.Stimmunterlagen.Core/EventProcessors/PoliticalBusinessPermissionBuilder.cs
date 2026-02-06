@@ -18,12 +18,18 @@ public class PoliticalBusinessPermissionBuilder
     private readonly DataContext _dbContext;
     private readonly IDbRepository<PoliticalBusiness> _politicalBusinessRepo;
     private readonly IDbRepository<Contest> _contestRepo;
+    private readonly IDbRepository<ContestDomainOfInfluence> _domainOfInfluenceRepo;
 
-    public PoliticalBusinessPermissionBuilder(DataContext dbContext, IDbRepository<PoliticalBusiness> politicalBusinessRepo, IDbRepository<Contest> contestRepo)
+    public PoliticalBusinessPermissionBuilder(
+        DataContext dbContext,
+        IDbRepository<PoliticalBusiness> politicalBusinessRepo,
+        IDbRepository<Contest> contestRepo,
+        IDbRepository<ContestDomainOfInfluence> domainOfInfluenceRepo)
     {
         _dbContext = dbContext;
         _politicalBusinessRepo = politicalBusinessRepo;
         _contestRepo = contestRepo;
+        _domainOfInfluenceRepo = domainOfInfluenceRepo;
     }
 
     internal async Task UpdatePermissionsForPoliticalBusinessesInTestingPhase()
@@ -32,7 +38,8 @@ public class PoliticalBusinessPermissionBuilder
             .AsTracking()
             .Include(x => x.Contest)
             .Include(x => x.PermissionEntries)
-            .Include(x => x.DomainOfInfluence!.ParentHierarchyEntries!).ThenInclude(x => x.DomainOfInfluence);
+            .Include(x => x.DomainOfInfluence!.ParentHierarchyEntries!).ThenInclude(x => x.DomainOfInfluence)
+            .Include(x => x.DomainOfInfluence!.CountingCircles!).ThenInclude(x => x.CountingCircle);
 
         var politicalBusinesses = await query
             .WhereContestInTestingPhase()
@@ -43,9 +50,11 @@ public class PoliticalBusinessPermissionBuilder
             return;
         }
 
+        var mainVotingCardsDoisByContestId = await GetMainVotingCardsDomainOfInfluencesByContestId();
+
         foreach (var politicalBusiness in politicalBusinesses)
         {
-            UpdatePermissionsForPoliticalBusiness(politicalBusiness);
+            UpdatePermissionsForPoliticalBusiness(politicalBusiness, mainVotingCardsDoisByContestId.GetValueOrDefault(politicalBusiness.ContestId) ?? new());
         }
 
         // save changes, to have up to date data for the single attendee query
@@ -62,9 +71,11 @@ public class PoliticalBusinessPermissionBuilder
             .Include(x => x.Contest)
             .Include(x => x.PermissionEntries)
             .Include(x => x.DomainOfInfluence!.ParentHierarchyEntries!).ThenInclude(x => x.DomainOfInfluence)
+            .Include(x => x.DomainOfInfluence!.CountingCircles!).ThenInclude(x => x.CountingCircle)
             .FirstAsync(x => x.Id == id);
 
-        UpdatePermissionsForPoliticalBusiness(politicalBusiness);
+        var mainVotingCardsDoisByContestId = await GetMainVotingCardsDomainOfInfluencesByContestId(politicalBusiness.ContestId);
+        UpdatePermissionsForPoliticalBusiness(politicalBusiness, mainVotingCardsDoisByContestId.GetValueOrDefault(politicalBusiness.ContestId) ?? new());
 
         // save changes, to have up to date data for the single attendee query
         await _dbContext.SaveChangesAsync();
@@ -97,11 +108,31 @@ public class PoliticalBusinessPermissionBuilder
         }
     }
 
-    private void UpdatePermissionsForPoliticalBusiness(PoliticalBusiness politicalBusiness)
+    private void UpdatePermissionsForPoliticalBusiness(
+        PoliticalBusiness politicalBusiness,
+        List<ContestDomainOfInfluence> mainVotingCardsDomainOfInfluences)
     {
-        var attendeeIds = politicalBusiness.DomainOfInfluence!.ParentHierarchyEntries!
+        var pbSecureConnectId = politicalBusiness.DomainOfInfluence!.SecureConnectId;
+
+        var pbCcSecureConnectIds = politicalBusiness.DomainOfInfluence.CountingCircles!
+            .Select(doiCc => doiCc.CountingCircle!.SecureConnectId)
+            .ToHashSet();
+
+        var hierarchyAttendeeIds = politicalBusiness.DomainOfInfluence!.ParentHierarchyEntries!
             .Where(x => x.DomainOfInfluence!.ResponsibleForVotingCards)
             .Select(x => new { x.DomainOfInfluence!.SecureConnectId, x.DomainOfInfluenceId })
+            .Distinct()
+            .ToList();
+
+        var mainVotingCardsAttendeeIds = mainVotingCardsDomainOfInfluences
+            .Where(x => x.ResponsibleForVotingCards
+                && x.Id != politicalBusiness.DomainOfInfluenceId
+                && x.Role != ContestRole.None
+                && (x.SecureConnectId == pbSecureConnectId || pbCcSecureConnectIds.Contains(x.SecureConnectId)))
+            .Select(x => new { x.SecureConnectId, DomainOfInfluenceId = x.Id })
+            .ToList();
+
+        var attendeeIds = hierarchyAttendeeIds.Concat(mainVotingCardsAttendeeIds)
             .Distinct()
             .ToList();
 
@@ -109,7 +140,7 @@ public class PoliticalBusinessPermissionBuilder
         politicalBusiness.PermissionEntries.Add(new PoliticalBusinessPermissionEntry
         {
             DomainOfInfluenceId = politicalBusiness.DomainOfInfluenceId,
-            SecureConnectId = politicalBusiness.DomainOfInfluence!.SecureConnectId,
+            SecureConnectId = pbSecureConnectId,
             Role = PoliticalBusinessRole.Manager,
         });
 
@@ -118,7 +149,7 @@ public class PoliticalBusinessPermissionBuilder
             politicalBusiness.PermissionEntries.Add(new PoliticalBusinessPermissionEntry
             {
                 DomainOfInfluenceId = politicalBusiness.DomainOfInfluenceId,
-                SecureConnectId = politicalBusiness.DomainOfInfluence!.SecureConnectId,
+                SecureConnectId = pbSecureConnectId,
                 Role = PoliticalBusinessRole.Attendee,
             });
         }
@@ -129,5 +160,15 @@ public class PoliticalBusinessPermissionBuilder
             DomainOfInfluenceId = x.DomainOfInfluenceId,
             Role = PoliticalBusinessRole.Attendee,
         }));
+    }
+
+    private async Task<Dictionary<Guid, List<ContestDomainOfInfluence>>> GetMainVotingCardsDomainOfInfluencesByContestId(Guid? contestId = null)
+    {
+        return await _domainOfInfluenceRepo.Query()
+            .WhereContestInTestingPhase()
+            .Where(doi => doi.IsMainVotingCardsDomainOfInfluence
+                && (contestId == null || doi.ContestId == contestId))
+            .GroupBy(x => x.ContestId)
+            .ToDictionaryAsync(x => x.Key, x => x.ToList());
     }
 }

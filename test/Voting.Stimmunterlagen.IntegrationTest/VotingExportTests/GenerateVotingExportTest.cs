@@ -36,6 +36,21 @@ public class GenerateVotingExportTest : BaseWriteableDbRestTest
     }
 
     [Fact]
+    public async Task ShouldThrowForeignVoterList()
+    {
+        var request = new GenerateVotingExportRequest
+        {
+            Key = VotingExportKeys.VotingJournal,
+            DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            VoterListId = VoterListMockData.BundFutureApprovedStadtGossauSwissGuid,
+        };
+
+        await AssertStatus(
+            () => GemeindeArneggClient.PostAsJsonAsync(ExportEndpoint, request),
+            HttpStatusCode.NotFound);
+    }
+
+    [Fact]
     public async Task ShouldThrowAsPrintJobManager()
     {
         var request = new GenerateVotingExportRequest

@@ -65,23 +65,24 @@ public class ElectoralRegisterService : Proto.V1.ElectoralRegisterService.Electo
     public override async Task<VoterListImportWithElectoralRegisterResponse> CreateVoterListImportWithNewFilterVersion(CreateVoterListImportWithNewElectoralRegisterFilterVersionRequest request, ServerCallContext context)
     {
         var data = _mapper.Map<VoterListImportWithNewElectoralRegisterFilter>(request);
-        var (import, filterVersionId) = await _manager.CreateVoterListImportWithNewFilterVersion(
+        var (result, filterVersionId) = await _manager.CreateVoterListImportWithNewFilterVersion(
             GuidParser.Parse(request.DomainOfInfluenceId),
             data,
             context.CancellationToken);
 
         return new VoterListImportWithElectoralRegisterResponse
         {
-            ImportId = import.Id.ToString(),
+            ImportId = result.Import.Id.ToString(),
             FilterVersionId = filterVersionId.ToString(),
-            VoterLists = { _mapper.Map<List<VoterListImportVoterListResponse>>(import.VoterLists) },
+            VoterLists = { _mapper.Map<List<VoterListImportVoterListResponse>>(result.Import.VoterLists) },
+            Error = result.Success ? null : _mapper.Map<VoterListImportError>(result),
         };
     }
 
     public override async Task<VoterListImportWithElectoralRegisterResponse> UpdateVoterListImportWithNewFilterVersion(UpdateVoterListImportWithNewElectoralRegisterFilterVersionRequest request, ServerCallContext context)
     {
         var data = _mapper.Map<VoterListImportWithNewElectoralRegisterFilter>(request);
-        var (import, filterVersionId) = await _manager.UpdateVoterListImportWithNewFilterVersion(
+        var (result, filterVersionId) = await _manager.UpdateVoterListImportWithNewFilterVersion(
             GuidParser.Parse(request.ImportId),
             data,
             context.CancellationToken);
@@ -90,7 +91,8 @@ public class ElectoralRegisterService : Proto.V1.ElectoralRegisterService.Electo
         {
             ImportId = request.ImportId,
             FilterVersionId = filterVersionId.ToString(),
-            VoterLists = { _mapper.Map<List<VoterListImportVoterListResponse>>(import.VoterLists) },
+            VoterLists = { _mapper.Map<List<VoterListImportVoterListResponse>>(result.Import.VoterLists) },
+            Error = result.Success ? null : _mapper.Map<VoterListImportError>(result),
         };
     }
 }

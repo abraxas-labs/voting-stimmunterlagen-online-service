@@ -14,6 +14,7 @@ public class ProportionalElectionProcessor : PoliticalBusinessProcessor<Proporti
     IEventProcessor<ProportionalElectionCreated>,
     IEventProcessor<ProportionalElectionUpdated>,
     IEventProcessor<ProportionalElectionActiveStateUpdated>,
+    IEventProcessor<ProportionalElectionEVotingApprovalUpdated>,
     IEventProcessor<ProportionalElectionDeleted>,
     IEventProcessor<ProportionalElectionToNewContestMoved>
 {
@@ -45,6 +46,9 @@ public class ProportionalElectionProcessor : PoliticalBusinessProcessor<Proporti
 
     public Task Process(ProportionalElectionActiveStateUpdated eventData)
         => ProcessActiveStateUpdated(eventData.ProportionalElectionId, eventData.Active);
+
+    public Task Process(ProportionalElectionEVotingApprovalUpdated eventData)
+        => ProcessEVotingApprovalUpdated(eventData.ProportionalElectionId, eventData.Approved);
 
     public Task Process(ProportionalElectionToNewContestMoved eventData)
         => ProcessToNewContestMoved(eventData.ProportionalElectionId, eventData.NewContestId);

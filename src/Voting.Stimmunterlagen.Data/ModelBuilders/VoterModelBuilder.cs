@@ -8,7 +8,7 @@ using Voting.Stimmunterlagen.Data.Models;
 namespace Voting.Stimmunterlagen.Data.ModelBuilders;
 
 public class VoterModelBuilder : IEntityTypeConfiguration<Voter>,
-    IEntityTypeConfiguration<VoterDuplicate>
+    IEntityTypeConfiguration<DomainOfInfluenceVoterDuplicate>
 {
     public void Configure(EntityTypeBuilder<Voter> builder)
     {
@@ -46,16 +46,22 @@ public class VoterModelBuilder : IEntityTypeConfiguration<Voter>,
             .IsRequired();
 
         builder
+            .HasOne(x => x.VoterDuplicate)
+            .WithMany(x => x.Voters)
+            .HasForeignKey(x => x.VoterDuplicateId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder
             .HasIndex(x => new { x.ContestId, x.ContestIndex })
             .IsUnique();
     }
 
-    public void Configure(EntityTypeBuilder<VoterDuplicate> builder)
+    public void Configure(EntityTypeBuilder<DomainOfInfluenceVoterDuplicate> builder)
     {
         builder
-            .HasOne(x => x.List)
+            .HasOne(x => x.DomainOfInfluence)
             .WithMany(x => x.VoterDuplicates)
-            .HasForeignKey(x => x.ListId)
+            .HasForeignKey(x => x.DomainOfInfluenceId)
             .IsRequired();
     }
 }

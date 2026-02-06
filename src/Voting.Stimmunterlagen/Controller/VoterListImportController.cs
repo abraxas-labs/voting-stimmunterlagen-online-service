@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Voting.Lib.Rest.Utils;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Managers;
+using Voting.Stimmunterlagen.Core.Models.VoterListImport;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Ech.Converter;
 using Voting.Stimmunterlagen.Models.Request;
@@ -33,18 +34,18 @@ public class VoterListImportController : ControllerBase
     private readonly VoterListImportManager _voterListImportManager;
     private readonly IMapper _mapper;
     private readonly MultipartRequestHelper _multipartHelper;
-    private readonly EchService _echService;
+    private readonly Ech0045Service _ech0045Service;
 
     public VoterListImportController(
         VoterListImportManager voterListImportManager,
         IMapper mapper,
         MultipartRequestHelper multipartHelper,
-        EchService echService)
+        Ech0045Service ech0045Service)
     {
         _voterListImportManager = voterListImportManager;
         _mapper = mapper;
         _multipartHelper = multipartHelper;
-        _echService = echService;
+        _ech0045Service = ech0045Service;
     }
 
     [HttpPost]
@@ -72,7 +73,7 @@ public class VoterListImportController : ControllerBase
 
     private async Task<CreateUpdateVoterListImportResponse> ReadVoterListImport<T>(
         Guid? importId,
-        Func<VoterListImport, XmlReader, CancellationToken, Task> processWithFile,
+        Func<VoterListImport, XmlReader, CancellationToken, Task<VoterListImportResult>> processWithFile,
         Func<VoterListImport, Task> processWithoutFile)
         where T : UpdateVoterListImportRequest
     {
@@ -95,15 +96,16 @@ public class VoterListImportController : ControllerBase
                 voterListImport.Source = VoterListSource.ManualEch45Upload;
                 voterListImport.SourceId = data.FileName ?? string.Empty;
 
-                using var xmlReader = _echService.GetEch0045Reader(data.FileContent);
-                voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = await _echService.IsFromElectoralRegister(xmlReader, HttpContext.RequestAborted);
-                await processWithFile(voterListImport, xmlReader, HttpContext.RequestAborted);
+                using var xmlReader = _ech0045Service.GetEch0045Reader(Ech0045Version.V4, data.FileContent);
+                voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = await _ech0045Service.IsFromElectoralRegister(Ech0045Version.V4, xmlReader, HttpContext.RequestAborted);
+                var voterListImportResult = await processWithFile(voterListImport, xmlReader, HttpContext.RequestAborted);
 
                 return new CreateUpdateVoterListImportResponse
                 {
                     ImportId = voterListImport.Id,
                     VoterLists = _mapper.Map<List<CreateUpdateVoterListResponse>>(voterListImport.VoterLists),
                     AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit,
+                    Error = voterListImportResult.Success ? null : _mapper.Map<VoterListImportErrorResponse>(voterListImportResult),
                 };
             },
             async data =>

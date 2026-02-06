@@ -8,4 +8,7 @@ public enum VotingCardSort
     Unspecified,
     Street,
     Name,
+    Place,
+    Denomination,
+    Household,
 }

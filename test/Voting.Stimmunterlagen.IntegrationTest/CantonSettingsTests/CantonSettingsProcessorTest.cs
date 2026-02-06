@@ -45,6 +45,26 @@ public class CantonSettingsProcessorTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task CantonSettingsCreatedCantonAr()
+    {
+        var id = Guid.Parse("c23f1e84-cbcb-40a6-bf40-b4dce9782a82");
+        var eventData = new CantonSettingsCreated
+        {
+            CantonSettings = new CantonSettingsEventData
+            {
+                Id = id.ToString(),
+                Canton = SharedProto.DomainOfInfluenceCanton.Ar,
+                VotingDocumentsEVotingEaiMessageType = "EVOT-AR",
+            },
+        };
+
+        await TestEventPublisher.PublishTwice(eventData);
+
+        var cantonSettings = await RunOnDb(db => db.CantonSettings.FirstAsync(x => x.Id == id));
+        cantonSettings.Canton.Should().Be(DomainOfInfluenceCanton.Ar);
+    }
+
+    [Fact]
     public async Task CantonSettingsUpdated()
     {
         var id = CantonSettingsMockData.StGallenGuid;

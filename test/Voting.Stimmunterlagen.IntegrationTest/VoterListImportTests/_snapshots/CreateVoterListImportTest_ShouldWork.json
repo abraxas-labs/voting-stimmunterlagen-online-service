@@ -6,17 +6,11 @@
         "Id": "00000000-0000-0000-0000-000000000000",
         "VotingCardType": 1,
         "NumberOfVoters": 4,
-        "VoterDuplicates": [
-          {
-            "PersonId": "1",
-            "FirstName": "Steffen",
-            "LastName": "Krüger",
-            "DateOfBirth": "1952-10"
-          }
-        ]
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 1
       }
     ],
-    "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": true
+    "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": true,
+    "Error": null
   },
   "data": {
     "DomainOfInfluence": null,
@@ -32,7 +26,10 @@
         "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
         "VotingCardType": 1,
         "NumberOfVoters": 4,
-        "NumberOfHouseholders": 4,
+        "CountOfVotingCards": 4,
+        "CountOfVotingCardsForHouseholders": 2,
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 1,
+        "CountOfVotingCardsForHouseholdersExclDomainOfInfluenceReturnAddress": 2,
         "Voters": [
           {
             "Salutation": 2,
@@ -88,9 +85,14 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": true,
-            "IsHouseholder": true,
+            "IsHouseholder": false,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -103,9 +105,9 @@
             "FullName": "Steffen Krüger",
             "AddressLine1": null,
             "AddressLine2": null,
-            "Street": "Scheidweg",
-            "PostOfficeBoxText": null,
-            "HouseNumber": "104",
+            "Street": "",
+            "PostOfficeBoxText": "Postfach 1234",
+            "HouseNumber": null,
             "DwellingNumber": null,
             "Locality": null,
             "Town": "Guschelmuth",
@@ -130,7 +132,7 @@
             "VoterType": 1,
             "DateOfBirth": "1952-10",
             "Sex": 1,
-            "PersonId": "1",
+            "PersonId": "3",
             "PersonIdCategory": "1",
             "MunicipalityName": "Gurmels",
             "PlacesOfOrigin": [
@@ -148,8 +150,13 @@
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
             "IsHouseholder": true,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -199,9 +206,14 @@
             "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
-            "IsHouseholder": true,
+            "IsHouseholder": false,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           },
           {
@@ -292,8 +304,13 @@
             "Contest": null,
             "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
             "IsHouseholder": true,
+            "VoterDuplicateId": null,
+            "VoterDuplicate": null,
+            "VotingCardPrintDisabled": false,
             "ResidenceBuildingId": null,
             "ResidenceApartmentId": null,
+            "IsMinor": false,
+            "DomainOfInfluences": [],
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],
@@ -315,7 +332,21 @@
           },
           {
             "PoliticalBusiness": null,
+            "PoliticalBusinessId": "3de78256-89c4-4a28-98d5-ba3625d173e8",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
             "PoliticalBusinessId": "4e71e6dd-f040-4862-bd0f-fcdf69aef68b",
+            "VoterList": null,
+            "VoterListId": "00000000-0000-0000-0000-000000000000",
+            "Id": "00000000-0000-0000-0000-000000000000"
+          },
+          {
+            "PoliticalBusiness": null,
+            "PoliticalBusinessId": "5ef5651c-6662-4221-b073-1cd8b4d42237",
             "VoterList": null,
             "VoterListId": "00000000-0000-0000-0000-000000000000",
             "Id": "00000000-0000-0000-0000-000000000000"
@@ -363,23 +394,9 @@
             "Id": "00000000-0000-0000-0000-000000000000"
           }
         ],
-        "CountOfSendVotingCardsToDomainOfInfluenceReturnAddress": 1,
         "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
         "ImportId": "00000000-0000-0000-0000-000000000000",
         "Import": null,
-        "HasVoterDuplicates": true,
-        "VoterDuplicates": [
-          {
-            "FirstName": "Steffen",
-            "LastName": "Krüger",
-            "PersonId": "1",
-            "DateOfBirth": "1952-10",
-            "Sex": 1,
-            "ListId": "00000000-0000-0000-0000-000000000000",
-            "List": null,
-            "Id": "00000000-0000-0000-0000-000000000000"
-          }
-        ],
         "Id": "00000000-0000-0000-0000-000000000000"
       }
     ],

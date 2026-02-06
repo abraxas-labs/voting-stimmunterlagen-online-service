@@ -27,6 +27,7 @@ public static class ContestEVotingExportJobMockData
         Completed = MockedClock.GetDate(5, 2),
         Started = MockedClock.GetDate(5),
         State = ExportJobState.Completed,
+        Ech0045Version = Ech0045Version.V4,
         FileHash = "WsoKmJdM8ACdxPXmvlKYpdUUNQZXPkC6vyVt4+0+i4yMFHQYHcahbb9MRxYn7teAlff0mue4kuqCt1CcKvpAVw==",
     };
 

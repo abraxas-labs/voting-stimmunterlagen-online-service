@@ -48,11 +48,11 @@ public class PrintJobService : Proto.V1.PrintJobService.PrintJobServiceBase
             request.State == PrintJobState.Unspecified ? null : _mapper.Map<Data.Models.PrintJobState>(request.State)));
     }
 
-    [AuthorizeElectionAdmin]
+    [AuthorizeElectionAdminOrPrintJobManager]
     public override async Task<PrintJobs> ListGenerateVotingCardsTriggered(ListPrintJobGenerateVotingCardsTriggeredRequest request, ServerCallContext context)
     {
         return _mapper.Map<PrintJobs>(
-            await _printJobManager.ListGenerateVotingCardsTriggered(GuidParser.Parse(request.ContestId)));
+            await _printJobManager.ListGenerateVotingCardsTriggered(GuidParser.Parse(request.ContestId), _appContext.IsPrintJobManagementApp));
     }
 
     [AuthorizePrintJobManager]

@@ -93,8 +93,8 @@ public abstract class PoliticalBusinessProcessor<TPoliticalBusinessBasisProto>
         }
 
         await _politicalBusinessRepo.DeleteByKey(politicalBusiness.Id);
-        await _attachmentBuilder.CleanUp(new() { politicalBusiness.ContestId });
-        await _voterListBuilder.CleanUp(new() { politicalBusiness.ContestId });
+        await _attachmentBuilder.CleanUp(new[] { politicalBusiness.ContestId });
+        await _voterListBuilder.CleanUp(new[] { politicalBusiness.ContestId });
         await SyncForContest(politicalBusiness.ContestId);
     }
 
@@ -105,6 +105,16 @@ public abstract class PoliticalBusinessProcessor<TPoliticalBusinessBasisProto>
                             ?? throw new EntityNotFoundException(nameof(PoliticalBusiness), guid);
 
         existingModel.Active = active;
+        await _politicalBusinessRepo.Update(existingModel);
+    }
+
+    protected async Task ProcessEVotingApprovalUpdated(string id, bool approved)
+    {
+        var guid = GuidParser.Parse(id);
+        var existingModel = await _politicalBusinessRepo.GetByKey(guid)
+                            ?? throw new EntityNotFoundException(nameof(PoliticalBusiness), guid);
+
+        existingModel.EVotingApproved = approved;
         await _politicalBusinessRepo.Update(existingModel);
     }
 

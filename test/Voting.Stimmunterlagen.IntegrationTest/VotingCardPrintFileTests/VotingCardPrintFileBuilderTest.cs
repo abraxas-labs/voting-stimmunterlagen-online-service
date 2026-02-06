@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Voting.Lib.Common;
 using Voting.Lib.Testing.Utils;
@@ -18,6 +19,9 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
 {
     private static readonly Guid PoliticalBusinessId1 = Guid.Parse("2d304f9e-12be-4e32-b214-48498aca99cc");
     private static readonly Guid PoliticalBusinessId2 = Guid.Parse("6827e4d7-9d62-4474-86e6-6abd6ca4d4b2");
+
+    private static readonly Guid VoterListId1 = Guid.Parse("f1ac56e6-d9f1-4174-bf14-a7d23c390c93");
+    private static readonly Guid VoterListId2 = Guid.Parse("96c33f04-174a-45e9-a173-6783b3d4bf35");
 
     private readonly VotingCardPrintFileBuilder _votingCardPrintFileBuilder;
 
@@ -151,11 +155,38 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
         csv.MatchRawSnapshot("VotingCardPrintFileTests", "_snapshots", $"{nameof(VotingCardPrintFileBuilderTest)}_{nameof(ShouldWorkWithEVoting)}.csv");
     }
 
+    [Fact]
+    public async Task ShouldWorkWithDuplicates()
+    {
+        var job = GetJob("voting_template");
+
+        var voter = job.Voter.First();
+        voter.VoterDuplicateId = Guid.Empty;
+        voter.VoterDuplicate = new DomainOfInfluenceVoterDuplicate
+        {
+            Voters = new List<Voter>
+            {
+                voter,
+                new Voter { ListId = VoterListId2 },
+            },
+        };
+
+        var attachments = GetAttachments(AttachmentFormat.A4);
+        var entries = _votingCardPrintFileBuilder.MapToPrintFileEntries(job, attachments, new() { OrderNumber = 955000, IsPoliticalAssembly = false });
+        entries.MatchSnapshot("rawEntries");
+
+        var csvBytes = await _votingCardPrintFileBuilder.BuildPrintFile(job, attachments);
+        using var ms = new MemoryStream(csvBytes);
+        using var streamReader = new StreamReader(ms);
+        var csv = streamReader.ReadToEnd();
+        csv.MatchRawSnapshot("VotingCardPrintFileTests", "_snapshots", $"{nameof(VotingCardPrintFileBuilderTest)}_{nameof(ShouldWorkWithDuplicates)}.csv");
+    }
+
     private VotingCardGeneratorJob GetJob(string templateName, bool isPoliticalAssembly = false)
     {
         var voterList1 = new VoterList()
         {
-            Id = Guid.Parse("f1ac56e6-d9f1-4174-bf14-a7d23c390c93"),
+            Id = VoterListId1,
             PoliticalBusinessEntries = isPoliticalAssembly
                 ? new List<PoliticalBusinessVoterListEntry>()
                 : new List<PoliticalBusinessVoterListEntry>()
@@ -165,12 +196,12 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
         };
         var voterList2 = new VoterList()
         {
-            Id = Guid.Parse("96c33f04-174a-45e9-a173-6783b3d4bf35"),
+            Id = VoterListId2,
             PoliticalBusinessEntries = isPoliticalAssembly
                 ? new List<PoliticalBusinessVoterListEntry>()
                 : new List<PoliticalBusinessVoterListEntry>()
                 {
-                    new() { PoliticalBusinessId = PoliticalBusinessId1 },
+                    new() { PoliticalBusinessId = PoliticalBusinessId2 },
                 },
         };
 
@@ -187,6 +218,7 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                 SwissPostData = new DomainOfInfluenceVotingCardSwissPostData
                 {
                     InvoiceReferenceNumber = "666994573",
+                    FrankingLicenceAwayNumber = "73011100",
                     FrankingLicenceReturnNumber = "669302122",
                 },
                 ReturnAddress = new DomainOfInfluenceVotingCardReturnAddress
@@ -202,13 +234,17 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                     OrderNumber = 999666,
                     IsPoliticalAssembly = isPoliticalAssembly,
                 },
-                VotingCardColor = VotingCardColor.Gold,
+                VoterLists = new List<VoterList>
+                {
+                    voterList1,
+                    voterList2,
+                },
+                VotingCardColor = VotingCardColor.Green,
             },
             Voter = new List<Voter>
             {
                 new Voter
                 {
-                    List = voterList1,
                     ListId = voterList1.Id,
                     FirstName = "Arnd",
                     LastName = "Thalberg",
@@ -244,7 +280,6 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                 },
                 new Voter
                 {
-                    List = voterList2,
                     ListId = voterList2.Id,
                     FirstName = "Torsten",
                     LastName = "Meister",
@@ -328,6 +363,7 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
         var id4 = Guid.Parse("b49b3fd1-20b2-4d49-88fa-679a96bc8fe6");
         var id5 = Guid.Parse("41a1a84b-e308-45e3-9ee5-26dbced6e2e6");
         var id6 = Guid.Parse("3d630880-759f-4764-9060-aff6ea3a2bcf");
+        var id7 = Guid.Parse("12b4fd54-dd95-4a8c-afdd-6b379e19ccba");
 
         return new()
         {
@@ -414,6 +450,21 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                     : new List<PoliticalBusinessAttachmentEntry>()
                     {
                         new() { PoliticalBusinessId = PoliticalBusinessId1, AttachmentId = id6 },
+                    },
+                DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
+                {
+                    new() { RequiredCount = 1 },
+                },
+            },
+            new()
+            {
+                Id = id7,
+                Station = 9,
+                PoliticalBusinessEntries = isPoliticalAssembly
+                    ? new List<PoliticalBusinessAttachmentEntry>()
+                    : new List<PoliticalBusinessAttachmentEntry>()
+                    {
+                        new() { PoliticalBusinessId = PoliticalBusinessId2, AttachmentId = id7 },
                     },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>()
                 {

@@ -4,32 +4,50 @@
       {
         "SecureConnectId": "SC-ABX",
         "Role": 0,
-        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59"
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Bund"
       },
       {
         "SecureConnectId": "SC-MU-AG",
         "Role": 1,
-        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59"
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Kirchgemeinde Arnegg"
+      },
+      {
+        "SecureConnectId": "SC-MU-AG",
+        "Role": 1,
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Gemeinde Arnegg"
       },
       {
         "SecureConnectId": "SC-MU-AS",
         "Role": 1,
-        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59"
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Auslandschweizer"
       },
       {
         "SecureConnectId": "SC-MU-GO",
         "Role": 1,
-        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59"
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Stadt Gossau"
+      },
+      {
+        "SecureConnectId": "SC-MU-GO",
+        "Role": 1,
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Zweckverband ARA Gossau"
       },
       {
         "SecureConnectId": "SC-MU-UZ",
         "Role": 1,
-        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59"
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Stadt Uzwil"
       },
       {
         "SecureConnectId": "SC-SG",
         "Role": 1,
-        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59"
+        "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
+        "Name": "Stadt St. Gallen"
       }
     ]
   }

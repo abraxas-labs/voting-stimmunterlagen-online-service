@@ -11,9 +11,10 @@ using Microsoft.Extensions.Logging;
 using Voting.Lib.Common;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Extensions;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
-using Voting.Stimmunterlagen.Data.QueryableExtensions;
 using Voting.Stimmunterlagen.Data.Repositories;
 
 namespace Voting.Stimmunterlagen.Core.Managers.VotingCardPrintFile;
@@ -137,10 +138,10 @@ public class VotingCardPrintFileExportGenerator
 
         var job = await _jobRepo.Query()
                       .AsNoTrackingWithIdentityResolution()
-                      .Include(x => x.VotingCardGeneratorJob!.Voter)
-                        .ThenInclude(x => x.List!.PoliticalBusinessEntries)
                       .Include(x => x.VotingCardGeneratorJob!.DomainOfInfluence!.VotingCardConfiguration)
                       .Include(x => x.VotingCardGeneratorJob!.DomainOfInfluence!.Contest)
+                      .Include(x => x.VotingCardGeneratorJob!.DomainOfInfluence!.VoterLists!)
+                        .ThenInclude(x => x.PoliticalBusinessEntries)
                       .Include(x => x.VotingCardGeneratorJob!.Layout!.OverriddenTemplate)
                       .Include(x => x.VotingCardGeneratorJob!.Layout!.DomainOfInfluenceTemplate)
                       .Include(x => x.VotingCardGeneratorJob!.Layout!.Template)
@@ -151,12 +152,29 @@ public class VotingCardPrintFileExportGenerator
             ?? throw new InvalidOperationException($"Cannot generate voting cards without a configuration for job {id}");
 
         // ensures that the voters have the same order as in the generated voting cards.
-        job.VotingCardGeneratorJob.Voter = await _voterRepo.Query()
-            .AsNoTrackingWithIdentityResolution()
-            .OrderBy(config.Sorts)
-            .Include(v => v.List!.PoliticalBusinessEntries)
-            .Where(v => v.JobId == job.VotingCardGeneratorJobId)
-            .ToListAsync();
+        if (!job.VotingCardGeneratorJob.HasEmptyVotingCards)
+        {
+            job.VotingCardGeneratorJob.Voter = await _voterRepo.Query()
+                .AsNoTrackingWithIdentityResolution()
+                .Include(v => v.List!.PoliticalBusinessEntries)
+                .Include(v => v.VoterDuplicate!.Voters)
+                .Where(v => v.JobId == job.VotingCardGeneratorJobId)
+                .Include(v => v.DomainOfInfluences)
+                .ToAsyncEnumerable()
+                .OrderBySortingCriteriaAsync(config.Sorts)
+                .ToListAsync(ct);
+        }
+        else
+        {
+            var voter = await _dbContext.Voters
+                .FirstOrDefaultAsync(v => v.List!.DomainOfInfluenceId == job.VotingCardGeneratorJob.DomainOfInfluenceId && v.PageInfo!.PageTo > 0);
+
+            var pagesPerVoter = voter == null
+                ? 0
+                : Math.Max(0, voter.PageInfo!.PageTo - voter.PageInfo.PageFrom + 1);
+
+            job.VotingCardGeneratorJob.Voter = EmptyVoterBuilder.BuildEmptyVoters(job.VotingCardGeneratorJob.DomainOfInfluence.Bfs, job.VotingCardGeneratorJob.CountOfVoters, pagesPerVoter);
+        }
 
         switch (job.State)
         {

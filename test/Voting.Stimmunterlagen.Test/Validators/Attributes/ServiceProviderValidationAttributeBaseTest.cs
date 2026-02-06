@@ -21,7 +21,7 @@ public abstract class ServiceProviderValidationAttributeBaseTest<TAttribute> : I
     {
         _serviceProvider = new ServiceCollection()
             .AddSingleton<AttributeValidator>()
-            .AddMockedTimeProvider()
+            .AddMockedClock()
             .BuildServiceProvider();
         Validator = _serviceProvider.GetRequiredService<AttributeValidator>();
     }

@@ -31,6 +31,8 @@ public static class VoteMockData
     public const string BundFutureApprovedStadtUzwil1Id = "551a9eda-8457-4c9d-9a86-18214b05711d";
     public const string BundFutureApprovedStadtGossau1Id = "6983d26b-dff8-4015-8601-38b310bc0e64";
     public const string BundFutureApprovedGemeindeArnegg1Id = "a9ffc699-3542-45df-8bac-febea9f60c1a";
+    public const string BundFutureApprovedZweckverbandGossauId = "5ef5651c-6662-4221-b073-1cd8b4d42237";
+    public const string BundFutureApprovedKirchgemeindeArneggId = "3de78256-89c4-4a28-98d5-ba3625d173e8";
 
     public static readonly Guid BundArchivedGemeindeArnegg1Guid = Guid.Parse(BundArchivedGemeindeArnegg1Id);
     public static readonly Guid BundArchivedNotApprovedGemeindeArnegg1Guid = Guid.Parse(BundArchivedNotApprovedGemeindeArnegg1Id);
@@ -48,6 +50,8 @@ public static class VoteMockData
     public static readonly Guid BundFutureApprovedStadtUzwil1Guid = Guid.Parse(BundFutureApprovedStadtUzwil1Id);
     public static readonly Guid BundFutureApprovedStadtGossau1Guid = Guid.Parse(BundFutureApprovedStadtGossau1Id);
     public static readonly Guid BundFutureApprovedGemeindeArnegg1Guid = Guid.Parse(BundFutureApprovedGemeindeArnegg1Id);
+    public static readonly Guid BundFutureApprovedZweckverbandGossauGuid = Guid.Parse(BundFutureApprovedZweckverbandGossauId);
+    public static readonly Guid BundFutureApprovedKirchgemeindeArneggGuid = Guid.Parse(BundFutureApprovedKirchgemeindeArneggId);
 
     public static PoliticalBusiness BundArchivedGemeindeArnegg1 => new()
     {
@@ -289,6 +293,36 @@ public static class VoteMockData
         PoliticalBusinessType = PoliticalBusinessType.Vote,
     };
 
+    public static PoliticalBusiness BundFutureApprovedZweckverbandGossau => new()
+    {
+        Id = BundFutureApprovedZweckverbandGossauGuid,
+        PoliticalBusinessNumber = "VZW",
+        Translations = TranslationUtil.CreateTranslations<PoliticalBusinessTranslation>(
+        (t, x) => t.ShortDescription = x,
+        "bund future approved vote VZW (short)",
+        (t, x) => t.OfficialDescription = x,
+        "bund future approved vote VZW (official)"),
+        Active = false,
+        ContestId = ContestMockData.BundFutureApprovedGuid,
+        DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedZweckverbandGossauGuid,
+        PoliticalBusinessType = PoliticalBusinessType.Vote,
+    };
+
+    public static PoliticalBusiness BundFutureApprovedKirchgemeindeArnegg => new()
+    {
+        Id = BundFutureApprovedKirchgemeindeArneggGuid,
+        PoliticalBusinessNumber = "VKI",
+        Translations = TranslationUtil.CreateTranslations<PoliticalBusinessTranslation>(
+        (t, x) => t.ShortDescription = x,
+        "bund future approved vote VKI (short)",
+        (t, x) => t.OfficialDescription = x,
+        "bund future approved vote VKI (official)"),
+        Active = false,
+        ContestId = ContestMockData.BundFutureApprovedGuid,
+        DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedKirchgemeindeArneggGuid,
+        PoliticalBusinessType = PoliticalBusinessType.Vote,
+    };
+
     public static IEnumerable<PoliticalBusiness> All
     {
         get
@@ -309,6 +343,8 @@ public static class VoteMockData
             yield return BundFutureApproved2;
             yield return BundFutureApprovedStadtGossau1;
             yield return BundFutureApprovedGemeindeArnegg1;
+            yield return BundFutureApprovedZweckverbandGossau;
+            yield return BundFutureApprovedKirchgemeindeArnegg;
         }
     }
 

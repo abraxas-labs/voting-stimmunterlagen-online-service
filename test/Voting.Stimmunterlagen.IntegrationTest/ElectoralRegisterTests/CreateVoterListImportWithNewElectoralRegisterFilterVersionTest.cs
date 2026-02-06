@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
+using Voting.Lib.Testing.Mocks;
 using Voting.Lib.Testing.Utils;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Data.Models;
@@ -31,6 +32,14 @@ public class CreateVoterListImportWithNewElectoralRegisterFilterVersionTest : Ba
     [Fact]
     public async Task ShouldWork()
     {
+        var existingImportIds = await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .Select(i => i.Id)
+            .ToListAsync());
+        existingImportIds.Should().HaveCount(2);
+        existingImportIds.Contains(VoterListImportMockData.BundFutureApprovedGemeindeArneggGuid).Should().BeTrue();
+        existingImportIds.Contains(VoterListImportMockData.BundFutureApprovedGemeindeArneggElectoralRegisterGuid).Should().BeTrue();
+
         var response = await GemeindeArneggElectionAdminClient.CreateVoterListImportWithNewFilterVersionAsync(NewRequest());
         var importId = response.ImportId;
         response.ImportId.Should().NotBeEmpty();
@@ -47,6 +56,54 @@ public class CreateVoterListImportWithNewElectoralRegisterFilterVersionTest : Ba
 
         var voterListImport = await GetVoterListImport(importId);
         voterListImport.MatchSnapshot("data");
+
+        // Existing electoral voter list imports should be deleted of that domain of influence.
+        existingImportIds = await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .Select(i => i.Id)
+            .ToListAsync());
+        existingImportIds.Should().HaveCount(2);
+        existingImportIds.Contains(VoterListImportMockData.BundFutureApprovedGemeindeArneggGuid).Should().BeTrue();
+        existingImportIds.Contains(VoterListImportMockData.BundFutureApprovedGemeindeArneggElectoralRegisterGuid).Should().BeFalse();
+        existingImportIds.Contains(Guid.Parse(importId)).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task ShouldWorkWithMultipleElectoralRegisters()
+    {
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            x => x.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.ElectoralRegisterMultipleEnabled = true);
+
+        var response = await GemeindeArneggElectionAdminClient.CreateVoterListImportWithNewFilterVersionAsync(NewRequest());
+        var importId = response.ImportId;
+
+        (await RunOnDb(db => db.VoterListImports
+            .Where(i => i.Id == VoterListImportMockData.BundFutureApprovedGemeindeArneggElectoralRegisterGuid
+                || i.Id == Guid.Parse(response.ImportId))
+            .CountAsync())).Should().Be(2);
+    }
+
+    [Fact]
+    public async Task ShouldBeNoSuccessWithExternalDuplicatesAndDisabledMultipleElectoralRegisters()
+    {
+        await ModifyDbEntities<ContestDomainOfInfluence>(
+            x => x.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.ElectoralRegisterMultipleEnabled = false);
+
+        await ModifyDbEntities<Voter>(
+            x => x.PersonId == "1",
+            x =>
+            {
+                x.FirstName = "Dirk";
+                x.LastName = "Berg";
+                x.DateOfBirth = "1971-05";
+                x.Street = "Mattenstrasse";
+                x.HouseNumber = "71";
+            });
+
+        var response = await GemeindeArneggElectionAdminClient.CreateVoterListImportWithNewFilterVersionAsync(NewRequest());
+        response.MatchSnapshot("response");
     }
 
     [Fact]
@@ -86,6 +143,61 @@ public class CreateVoterListImportWithNewElectoralRegisterFilterVersionTest : Ba
             StatusCode.PermissionDenied);
     }
 
+    [Fact]
+    public async Task ShouldThrowElectoralRegisterEVotingDisabledInEVotingDomainOfInfluence()
+    {
+        await ModifyDbEntities<Contest>(
+            x => x.Id == ContestMockData.BundFutureApprovedGuid,
+            x =>
+            {
+                x.ElectoralRegisterEVotingFrom = MockedClock.GetDate(1);
+                x.EVoting = true;
+            });
+
+        await ModifyDbEntities<ContestCountingCircle>(
+            x => x.Id == CountingCircleMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.EVoting = true);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.CreateVoterListImportWithNewFilterVersionAsync(NewRequest()),
+            StatusCode.PermissionDenied,
+            "Cannot create or update electoral registers yet because electoral register e-voting is not active yet");
+    }
+
+    [Fact]
+    public async Task ShouldWorkElectoralRegisterEVotingDisabledInNonEVotingDomainOfInfluence()
+    {
+        await ModifyDbEntities<Contest>(
+            x => x.Id == ContestMockData.BundFutureApprovedGuid,
+            x =>
+            {
+                x.ElectoralRegisterEVotingFrom = MockedClock.GetDate(0);
+                x.EVoting = true;
+            });
+
+        await ModifyDbEntities<ContestCountingCircle>(
+            x => x.Id == CountingCircleMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.EVoting = true);
+
+        var response = await GemeindeArneggElectionAdminClient.CreateVoterListImportWithNewFilterVersionAsync(NewRequest());
+        response.ImportId.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public async Task ShouldWorkElectoralRegisterEVotingEnabledInEVotingDomainOfInfluence()
+    {
+        await ModifyDbEntities<Contest>(
+            x => x.Id == ContestMockData.BundFutureApprovedGuid,
+            x =>
+            {
+                x.ElectoralRegisterEVotingFrom = MockedClock.GetDate(1);
+                x.EVoting = true;
+            });
+
+        var response = await GemeindeArneggElectionAdminClient.CreateVoterListImportWithNewFilterVersionAsync(NewRequest());
+        response.ImportId.Should().NotBeEmpty();
+    }
+
     protected override async Task AuthorizationTestCall(ElectoralRegisterService.ElectoralRegisterServiceClient service)
         => await service.CreateVoterListImportWithNewFilterVersionAsync(NewRequest());
 
@@ -100,8 +212,6 @@ public class CreateVoterListImportWithNewElectoralRegisterFilterVersionTest : Ba
         var voterListImport = await RunOnDb(db => db.VoterListImports
             .Include(x => x.VoterLists!.OrderBy(vl => vl.VotingCardType))
             .ThenInclude(x => x.Voters!.OrderBy(y => y.LastName))
-            .Include(x => x.VoterLists!)
-            .ThenInclude(x => x.VoterDuplicates)
             .Include(x => x.VoterLists!)
             .ThenInclude(x => x.PoliticalBusinessEntries!.OrderBy(y => y.PoliticalBusinessId))
             .SingleAsync(x => x.Id == Guid.Parse(id)));
@@ -128,13 +238,6 @@ public class CreateVoterListImportWithNewElectoralRegisterFilterVersionTest : Ba
 
                 voter.ContestIndex.Should().NotBe(0);
                 voter.ContestIndex = 0;
-            }
-
-            foreach (var voterDuplicate in voterList.VoterDuplicates!)
-            {
-                voterDuplicate.Id = Guid.Empty;
-                voterDuplicate.ListId = Guid.Empty;
-                voterDuplicate.List = null;
             }
 
             foreach (var pbEntry in voterList.PoliticalBusinessEntries!)

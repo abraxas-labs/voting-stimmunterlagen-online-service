@@ -31,6 +31,8 @@ public class CreateManualVotingCardVoterRequestValidatorTest : ProtoValidatorBas
             Country = CreateCountryRequestValidatorTest.New(),
             LanguageOfCorrespondence = "CH",
             PersonId = "12345",
+            Religion = Religion.Other,
+            IsHouseholder = true,
         };
         customizer?.Invoke(req);
         return req;
@@ -66,6 +68,8 @@ public class CreateManualVotingCardVoterRequestValidatorTest : ProtoValidatorBas
         yield return New(x => x.PersonId = RandomStringUtil.GenerateSimpleSingleLineText(1));
         yield return New(x => x.PersonId = RandomStringUtil.GenerateSimpleSingleLineText(36));
         yield return New(x => x.DateOfBirth = null);
+        yield return New(x => x.PersonId = string.Empty);
+        yield return New(x => x.Religion = Religion.Unspecified);
     }
 
     protected override IEnumerable<CreateManualVotingCardVoterRequest> NotOkMessages()
@@ -90,7 +94,7 @@ public class CreateManualVotingCardVoterRequestValidatorTest : ProtoValidatorBas
         yield return New(x => x.ForeignZipCode = RandomStringUtil.GenerateSimpleSingleLineText(41));
         yield return New(x => x.LanguageOfCorrespondence = RandomStringUtil.GenerateAlphabetic(1));
         yield return New(x => x.LanguageOfCorrespondence = RandomStringUtil.GenerateAlphabetic(3));
-        yield return New(x => x.PersonId = string.Empty);
         yield return New(x => x.PersonId = RandomStringUtil.GenerateSimpleSingleLineText(37));
+        yield return New(x => x.Religion = (Religion)10);
     }
 }

@@ -6,7 +6,6 @@ namespace Voting.Stimmunterlagen.EVoting;
 public static class EVotingDefaults
 {
     public const string ConfigurationFileName = "params.json";
-    public const string Ech45FileName = "eCH-0045.xml";
     public const string EVotingConfigurationArchiveName = "EVoting.zip";
     public const string TemplatesFolderName = "Templates";
 
@@ -15,5 +14,6 @@ public static class EVotingDefaults
     public const string Template = "Templates/SG_eVoting_Post.cshtml";
     public const string ETemplateAuslandschweizer = "Templates/SG_eVoting_Post_Auslandschweizer.cshtml";
     public const string TemplateAuslandschweizer = "Templates/SG_eVoting_Post_Auslandschweizer.cshtml";
-    public const string AuslandschweizerBfs = "9170";
+
+    public static readonly string[] AuslandschweizerBfs = new[] { "9170", "8170" };
 }

@@ -1,6 +1,8 @@
-Bezeichnung (Gemeinde);Geschäfte auf übergeordneten Wahlkreisen;Eigene Geschäfte;Total betroffener E-Voter
-Auslandschweizer;11;0;0
-Gemeinde Arnegg;11;4;0
-Stadt Gossau;11;2;0
-Stadt St. Gallen;11;0;0
-Stadt Uzwil;11;4;0
+Bezeichnung (Gemeinde);BFS-Nr.;Geschäfte auf übergeordneten Wahlkreisen;Eigene Geschäfte;Total betroffener E-Voter
+Auslandschweizer;9170;11;0;0
+Gemeinde Arnegg;1240;11;4;0
+Stadt Gossau;1120;11;2;0
+Stadt St. Gallen;1110;11;0;0
+Stadt Uzwil;1130;11;4;0
+Kirchgemeinde Arnegg;;11;0;0
+Zweckverband ARA Gossau;;11;0;0

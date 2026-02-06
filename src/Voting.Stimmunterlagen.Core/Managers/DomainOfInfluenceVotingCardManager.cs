@@ -90,6 +90,7 @@ public class DomainOfInfluenceVotingCardManager
             .WhereVotingCardType(vcType)
             .WhereBelongToDomainOfInfluence(doiId)
             .Where(x => x.ListId.HasValue)
+            .Include(x => x.DomainOfInfluences)
             .OrderBy(_ => EF.Functions.Random())
             .Take(config.SampleCount)
             .Include(x => x.List)

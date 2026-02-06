@@ -115,15 +115,16 @@
             <eCH-0045:personIdentification xmlns:eCH-0044="http://www.ech.ch/xmlns/eCH-0044/4">
               <eCH-0044:localPersonId>
                 <eCH-0044:personIdCategory>1</eCH-0044:personIdCategory>
-                <eCH-0044:personId>1</eCH-0044:personId>
+                <eCH-0044:personId>3</eCH-0044:personId>
               </eCH-0044:localPersonId>
               <eCH-0044:officialName>Krüger</eCH-0044:officialName>
-              <eCH-0044:firstName>Steffen</eCH-0044:firstName>
+              <eCH-0044:firstName>Steffen Martin</eCH-0044:firstName>
               <eCH-0044:sex>1</eCH-0044:sex>
               <eCH-0044:dateOfBirth>
                 <eCH-0044:yearMonth>1952-10</eCH-0044:yearMonth>
               </eCH-0044:dateOfBirth>
             </eCH-0045:personIdentification>
+            <eCH-0045:callName>Steffen</eCH-0045:callName>
             <eCH-0045:languageOfCorrespondance>de</eCH-0045:languageOfCorrespondance>
             <eCH-0045:extension>
               <isHouseholder xmlns="">false</isHouseholder>
@@ -149,8 +150,8 @@
           <eCH-0010:lastName>Krüger</eCH-0010:lastName>
         </eCH-0010:person>
         <eCH-0010:addressInformation>
-          <eCH-0010:street>Scheidweg</eCH-0010:street>
-          <eCH-0010:houseNumber>104</eCH-0010:houseNumber>
+          <eCH-0010:postOfficeBoxNumber>1234</eCH-0010:postOfficeBoxNumber>
+          <eCH-0010:postOfficeBoxText>Postfach</eCH-0010:postOfficeBoxText>
           <eCH-0010:town>Guschelmuth</eCH-0010:town>
           <eCH-0010:swissZipCode>1792</eCH-0010:swissZipCode>
           <eCH-0010:country>
@@ -192,6 +193,7 @@
             </eCH-0045:personIdentification>
             <eCH-0045:languageOfCorrespondance>de</eCH-0045:languageOfCorrespondance>
             <eCH-0045:extension>
+              <isHouseholder xmlns="">true</isHouseholder>
               <postageCode>1</postageCode>
               <votingPlace>
                 <organisation xmlns:eCH-0010="http://www.ech.ch/xmlns/eCH-0010/6">

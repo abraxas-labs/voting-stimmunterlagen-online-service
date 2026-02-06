@@ -1,0 +1,27 @@
+{
+  "response": {
+    "ImportId": "00000000-0000-0000-0000-000000000000",
+    "FilterVersionId": "49bab8b7-56b1-4aeb-9ac6-d3c2c21a094e",
+    "VoterLists": [
+      {
+        "Id": "00000000-0000-0000-0000-000000000000",
+        "VotingCardType": 1,
+        "NumberOfVoters": 4,
+        "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 0
+      }
+    ],
+    "Error": {
+      "VoterDuplicates": [
+        {
+          "FirstName": "Dirk",
+          "LastName": "Berg",
+          "DateOfBirth": "1971-05",
+          "Street": "Mattenstrasse",
+          "HouseNumber": "71",
+          "ExternalDuplicate": true
+        }
+      ],
+      "VoterDuplicatesCount": 1
+    }
+  }
+}

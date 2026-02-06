@@ -4,11 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Ech0045_4_0;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Voting.Lib.Common;
@@ -29,6 +29,8 @@ namespace Voting.Stimmunterlagen.Core.Managers.EVoting;
 
 public class ContestEVotingExportGenerator
 {
+    private const string XmlFileExtension = ".xml";
+
     private readonly IClock _clock;
     private readonly EVotingContestBuilder _eVotingContestBuilder;
     private readonly IDbRepository<VoterList> _voterListRepo;
@@ -40,7 +42,7 @@ public class ContestEVotingExportGenerator
     private readonly ApiConfig _apiConfig;
     private readonly IDbRepository<Attachment> _attachmentRepo;
     private readonly IDbRepository<ContestDomainOfInfluence> _doiRepo;
-    private readonly EchService _echService;
+    private readonly Ech0045Service _ech0045Service;
     private readonly IEVotingZipStorage _eVotingZipStorage;
     private readonly DataContext _dbContext;
 
@@ -56,7 +58,7 @@ public class ContestEVotingExportGenerator
         ApiConfig apiConfig,
         IDbRepository<Attachment> attachmentRepo,
         IDbRepository<ContestDomainOfInfluence> doiRepo,
-        EchService echService,
+        Ech0045Service ech0045Service,
         IEVotingZipStorage eVotingZipStorage,
         DataContext dbContext)
     {
@@ -71,7 +73,7 @@ public class ContestEVotingExportGenerator
         _apiConfig = apiConfig;
         _attachmentRepo = attachmentRepo;
         _doiRepo = doiRepo;
-        _echService = echService;
+        _ech0045Service = ech0045Service;
         _eVotingZipStorage = eVotingZipStorage;
         _dbContext = dbContext;
     }
@@ -92,22 +94,22 @@ public class ContestEVotingExportGenerator
 
             var voterLists = await FetchVoterLists(contest);
             var attachments = await FetchAttachments(job.ContestId);
-            var voterDelivery = await FetchAccumulatedEch0045(contest, contestDomainOfInfluence.Canton, voterLists);
+            var ech0045XmlBytes = await GetEch0045XmlBytes(job.Ech0045Version, contest, contestDomainOfInfluence.Canton, voterLists);
 
             var eVotingContest = await _eVotingContestBuilder.BuildContest(contest, attachments, voterLists);
             var testDomainOfInfluences = _apiConfig.ContestEVotingExport.TestDomainOfInfluences
                 .GetValueOrDefault(contestDomainOfInfluence.Canton, new List<DomainOfInfluence>());
 
             var eVotingZipBytes = await _eVotingZipStorage.Fetch();
-            var ech0045XmlBytes = _echService.WriteEch0045Xml(voterDelivery);
 
             var exportContent = EVotingExportDataBuilder.BuildEVotingExport(
                 eVotingZipBytes,
                 eVotingContest,
                 ech0045XmlBytes,
+                GetEch0045XmlFileName(job.FileName),
                 testDomainOfInfluences,
                 _apiConfig.ContestEVotingExport.TestDomainOfInfluenceDefaults,
-                _apiConfig.ContestEVotingExport.ETextBlocks);
+                _apiConfig.ContestEVotingExport.EVotingDomainOfInfluences);
 
             await _eVotingStore.SaveContestEVotingExport(
                 job.FileName,
@@ -176,7 +178,7 @@ public class ContestEVotingExportGenerator
         return (job, contest, doi);
     }
 
-    private async Task<VoterDelivery> FetchAccumulatedEch0045(Contest contest, DomainOfInfluenceCanton canton, IReadOnlyCollection<VoterList> voterLists)
+    private async Task<byte[]> GetEch0045XmlBytes(Ech0045Version version, Contest contest, DomainOfInfluenceCanton canton, IReadOnlyCollection<VoterList> voterLists)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
         var domainOfInfluenceIds = contest.ContestDomainOfInfluences?
@@ -192,7 +194,8 @@ public class ContestEVotingExportGenerator
 
         foreach (var voterList in voterLists)
         {
-            accumulatedVoterList.NumberOfVoters += voterList.NumberOfVoters;
+            // The accumulated voter list should not include duplicates.
+            accumulatedVoterList.NumberOfVoters += voterList.CountOfVotingCards;
             voters.AddRange(voterList.Voters ?? Array.Empty<Voter>());
         }
 
@@ -206,7 +209,7 @@ public class ContestEVotingExportGenerator
         var doiHierarchyByDoiId = await _doiManager.GetParentsAndSelfPerDoi(domainOfInfluenceIds);
 
         await transaction.CommitAsync();
-        return _echService.ToDelivery(contest, accumulatedVoterList, canton, doiHierarchyByDoiId);
+        return _ech0045Service.WriteEch0045Xml(version, contest, accumulatedVoterList, canton, doiHierarchyByDoiId);
     }
 
     private async Task<List<VoterList>> FetchVoterLists(Contest contest)
@@ -216,8 +219,8 @@ public class ContestEVotingExportGenerator
 
         var voterLists = await _voterListRepo.Query()
             .AsSplitQuery()
-            .Where(vl => doiIds.Contains(vl.DomainOfInfluenceId) && vl.VotingCardType == VotingCardType.EVoting)
-            .Include(vl => vl.Voters)
+            .Where(vl => doiIds.Contains(vl.DomainOfInfluenceId) && vl.VotingCardType == VotingCardType.EVoting && vl.DomainOfInfluence!.GenerateVotingCardsTriggered.HasValue)
+            .Include(vl => vl.Voters!.Where(v => v.JobId.HasValue))
             .Include(vl => vl.PoliticalBusinessEntries)
             .Include(vl => vl.DomainOfInfluence!.CountingCircles!).ThenInclude(doiCc => doiCc.CountingCircle)
             .ToListAsync();
@@ -278,4 +281,7 @@ public class ContestEVotingExportGenerator
         var exportHash = sha512.ComputeHash(exportContent);
         return Convert.ToBase64String(exportHash);
     }
+
+    private string GetEch0045XmlFileName(string eVotingZipFileName) =>
+        Path.GetFileNameWithoutExtension(eVotingZipFileName) + XmlFileExtension;
 }

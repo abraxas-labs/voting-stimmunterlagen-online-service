@@ -16,6 +16,9 @@ namespace Voting.Stimmunterlagen.Core.Managers.EVoting;
 
 public class ContestEVotingExportJobBuilder
 {
+    private const string Ech0045V4VersionString = "4_0";
+    private const string Ech0045V6VersionString = "4_2";
+
     private readonly IDbRepository<Contest> _contestRepo;
     private readonly IDbRepository<ContestDomainOfInfluence> _doiRepo;
     private readonly IDbRepository<ContestEVotingExportJob> _jobsRepo;
@@ -28,6 +31,23 @@ public class ContestEVotingExportJobBuilder
         _contestRepo = contestRepo;
         _doiRepo = doiRepo;
         _jobsRepo = jobsRepo;
+    }
+
+    internal static string BuildFileName(Contest contest, Ech0045Version ech0045Version)
+    {
+        if (ech0045Version == Ech0045Version.Unspecified)
+        {
+            throw new InvalidOperationException("Cannot generate file name for unspecified eCH-0045 version");
+        }
+
+        var canton = contest.DomainOfInfluence!.Canton.ToString().ToUpper();
+        var description = contest.Translations!.FirstOrDefault(t => t.Language.Equals(Languages.German))?.Description;
+
+        var ech0045VersionString = ech0045Version == Ech0045Version.V6
+            ? Ech0045V6VersionString
+            : Ech0045V4VersionString;
+
+        return $"eCH-0045_v{ech0045VersionString}_{canton}_{contest.Date:yyyyMMdd}_{description}_EVoting.zip";
     }
 
     internal async Task SyncForContest(Guid contestId)
@@ -54,7 +74,7 @@ public class ContestEVotingExportJobBuilder
             var exportJob = contest.EVotingExportJob;
             if (exportJob.State <= ExportJobState.Pending)
             {
-                exportJob.FileName = BuildFileName(contest);
+                exportJob.FileName = BuildFileName(contest, exportJob.Ech0045Version);
                 await _jobsRepo.UpdateIgnoreRelations(exportJob);
             }
 
@@ -82,8 +102,9 @@ public class ContestEVotingExportJobBuilder
         var newExportJob = new ContestEVotingExportJob
         {
             ContestId = existingExportJob.ContestId,
-            FileName = BuildFileName(doi.Contest!),
+            FileName = BuildFileName(doi.Contest!, existingExportJob.Ech0045Version),
             State = ExportJobState.ReadyToRun,
+            Ech0045Version = existingExportJob.Ech0045Version,
         };
         await _jobsRepo.Create(newExportJob);
         return newExportJob.Id;
@@ -94,19 +115,12 @@ public class ContestEVotingExportJobBuilder
         var newJob = new ContestEVotingExportJob
         {
             ContestId = contest.Id,
-            FileName = BuildFileName(contest),
+            FileName = BuildFileName(contest, Ech0045Version.V4),
             State = ExportJobState.Pending,
+            Ech0045Version = Ech0045Version.V4,
         };
 
         await _jobsRepo.Create(newJob);
         return newJob.Id;
-    }
-
-    private string BuildFileName(Contest contest)
-    {
-        var canton = contest.DomainOfInfluence!.Canton.ToString().ToUpper();
-        var description = contest.Translations!.FirstOrDefault(t => t.Language.Equals(Languages.German))?.Description;
-
-        return $"ech0045v4_{canton}_{contest.Date:yyyyMMdd}_{description}_EVoting.zip";
     }
 }

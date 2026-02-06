@@ -8,6 +8,7 @@ using FluentAssertions;
 using Snapper;
 using Voting.Lib.Testing.Mocks;
 using Voting.Stimmunterlagen.Core.Managers.Invoice;
+using Voting.Stimmunterlagen.Core.Models.Invoice;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Xunit;
@@ -30,37 +31,27 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
     [Fact]
     public void ShouldWork()
     {
-        var entries = _builder.BuildEntries(
+        var result = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(),
             MockedClock.GetDate(),
             BuildContest());
-        entries.ShouldMatchSnapshot();
-    }
-
-    [Fact]
-    public void ShouldWorkWithPoliticalAssembly()
-    {
-        var entries = _builder.BuildEntries(
-            BuildPrintJob(),
-            MockedClock.GetDate(),
-            BuildContest(true));
-        entries.ShouldMatchSnapshot();
+        result.ShouldMatchSnapshot();
     }
 
     [Fact]
     public void ShouldWorkWithAttachmentA4()
     {
-        var entries = _builder.BuildEntries(
+        var result = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(p => p.DomainOfInfluence!.DomainOfInfluenceAttachmentCounts!.First().Attachment!.Format = AttachmentFormat.A4),
             MockedClock.GetDate(),
             BuildContest());
-        entries.ShouldMatchSnapshot();
+        result.ShouldMatchSnapshot();
     }
 
     [Fact]
     public void ShouldWorkWithVotingCardA5()
     {
-        var entries = _builder.BuildEntries(
+        var entries = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(p => p.DomainOfInfluence!.VotingCardLayouts!.First().OverriddenTemplate!.InternName = "test_template_a5"),
             MockedClock.GetDate(),
             BuildContest());
@@ -70,7 +61,7 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
     [Fact]
     public void ShouldWorkWithVotingCardA4AndDuplex()
     {
-        var entries = _builder.BuildEntries(
+        var entries = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(p => p.DomainOfInfluence!.VotingCardLayouts!.First().OverriddenTemplate!.InternName = "test_template_duplex"),
             MockedClock.GetDate(),
             BuildContest());
@@ -80,7 +71,7 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
     [Fact]
     public void ShouldWorkWithVotingCardA5AndDuplex()
     {
-        var entries = _builder.BuildEntries(
+        var entries = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(p => p.DomainOfInfluence!.VotingCardLayouts!.First().OverriddenTemplate!.InternName = "test_template_duplex_a5"),
             MockedClock.GetDate(),
             BuildContest());
@@ -90,8 +81,28 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
     [Fact]
     public void ShouldWorkWithExcludedFlatrate()
     {
-        var entries = _builder.BuildEntries(
+        var entries = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(p => p.DomainOfInfluence!.VotingCardFlatRateDisabled = true),
+            MockedClock.GetDate(),
+            BuildContest());
+        entries.ShouldMatchSnapshot();
+    }
+
+    [Fact]
+    public void ShouldWorkWithOnlyPrintingPackagingToMunicipality()
+    {
+        var entries = BuildPoliticalAssemblyAndContestEntries(
+            BuildPrintJob(p => p.DomainOfInfluence!.PrintData!.ShippingMethod = VotingCardShippingMethod.OnlyPrintingPackagingToMunicipality),
+            MockedClock.GetDate(),
+            BuildContest());
+        entries.ShouldMatchSnapshot();
+    }
+
+    [Fact]
+    public void ShouldWorkWithPrintingPackagingShippingToMunicipality()
+    {
+        var entries = BuildPoliticalAssemblyAndContestEntries(
+            BuildPrintJob(p => p.DomainOfInfluence!.PrintData!.ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToMunicipality),
             MockedClock.GetDate(),
             BuildContest());
         entries.ShouldMatchSnapshot();
@@ -141,11 +152,12 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
     [Fact]
     public void ShouldWorkEmpty()
     {
-        var entries = _builder.BuildEntries(
+        var entries = BuildPoliticalAssemblyAndContestEntries(
             BuildPrintJob(p => p.DomainOfInfluence!.VoterLists = new List<VoterList>()),
             MockedClock.GetDate(),
             BuildContest());
-        entries.Should().HaveCount(0);
+        entries.ContestEntries.Should().HaveCount(0);
+        entries.PoliticalAssemblyEntries.Should().HaveCount(0);
     }
 
     private PrintJob BuildPrintJob(Action<PrintJob>? action = null)
@@ -165,6 +177,10 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
                             InternName = "test_template",
                         },
                     },
+                },
+                PrintData = new()
+                {
+                    ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen,
                 },
                 DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>
                 {
@@ -201,7 +217,7 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
                 {
                     new()
                     {
-                        NumberOfVoters = 50,
+                        CountOfVotingCards = 50,
                         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
                         {
                             new() { PoliticalBusinessId = PoliticalBusinessId1 },
@@ -209,7 +225,7 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
                     },
                     new()
                     {
-                        NumberOfVoters = 10,
+                        CountOfVotingCards = 10,
                         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
                         {
                             new() { PoliticalBusinessId = PoliticalBusinessId2 },
@@ -217,8 +233,8 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
                     },
                     new()
                     {
-                        NumberOfVoters = 2,
-                        CountOfSendVotingCardsToDomainOfInfluenceReturnAddress = 2,
+                        CountOfVotingCards = 2,
+                        CountOfVotingCardsForDomainOfInfluenceReturnAddress = 2,
                         SendVotingCardsToDomainOfInfluenceReturnAddress = true,
                         PoliticalBusinessEntries = new List<PoliticalBusinessVoterListEntry>
                         {
@@ -254,4 +270,25 @@ public class InvoiceFileEntriesBuilderTest : BaseWriteableDbTest
             IsPoliticalAssembly = isPoliticalAssembly,
         };
     }
+
+    private InvoiceFileEntriesBuilderTestResult BuildPoliticalAssemblyAndContestEntries(PrintJob printJob, DateTime timestamp, Contest contest)
+    {
+        contest.IsPoliticalAssembly = false;
+        var contestEntries = _builder.BuildEntries(
+            printJob,
+            timestamp,
+            contest)
+            .ToList();
+
+        contest.IsPoliticalAssembly = true;
+        var politicalAssemblyEntries = _builder.BuildEntries(
+            printJob,
+            timestamp,
+            contest)
+            .ToList();
+
+        return new(contestEntries, politicalAssemblyEntries);
+    }
+
+    private record InvoiceFileEntriesBuilderTestResult(List<InvoiceFileEntry> ContestEntries, List<InvoiceFileEntry> PoliticalAssemblyEntries);
 }

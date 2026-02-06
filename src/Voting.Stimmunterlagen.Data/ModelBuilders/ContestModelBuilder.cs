@@ -52,6 +52,12 @@ public class ContestModelBuilder :
         builder.Property(x => x.GenerateVotingCardsDeadline)
             .HasUtcConversion();
 
+        builder.Property(x => x.ElectoralRegisterEVotingFrom)
+            .HasUtcConversion();
+
+        builder.Property(x => x.DeliveryToPostDeadline)
+            .HasUtcConversion();
+
         builder.HasIndex(x => x.State);
     }
 

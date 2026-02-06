@@ -17,10 +17,12 @@ public static class VotingCardGeneratorJobMockData
     public const string BundFutureApprovedGemeindeArneggJob1Id = "d1586336-05d9-49e7-b208-f6e20def0f80";
     public const string BundFutureApprovedGemeindeArneggJob2Id = "638276f2-2c2d-430c-8f66-eefb1473bea3";
     public const string BundFutureApprovedGemeindeArneggJob3Id = "5af3fcaf-ebf5-4c93-9ff5-26e3193e8f51";
+    public const string BundFutureApprovedGemeindeArneggEmptyVcJobId = "e5fc1527-8465-4a76-a6aa-91f32c3b73f8";
 
     public static readonly Guid BundFutureApprovedGemeindeArneggJob1Guid = Guid.Parse(BundFutureApprovedGemeindeArneggJob1Id);
     public static readonly Guid BundFutureApprovedGemeindeArneggJob2Guid = Guid.Parse(BundFutureApprovedGemeindeArneggJob2Id);
     public static readonly Guid BundFutureApprovedGemeindeArneggJob3Guid = Guid.Parse(BundFutureApprovedGemeindeArneggJob3Id);
+    public static readonly Guid BundFutureApprovedGemeindeArneggEmptyVcJobGuid = Guid.Parse(BundFutureApprovedGemeindeArneggEmptyVcJobId);
 
     private static VotingCardGeneratorJob BundFutureApprovedGemeindeArneggJob1 => new()
     {
@@ -54,6 +56,21 @@ public static class VotingCardGeneratorJobMockData
         CountOfVoters = 2,
     };
 
+    private static VotingCardGeneratorJob BundFutureApprovedGemeindeArneggEmptyVcJob => new()
+    {
+        Id = BundFutureApprovedGemeindeArneggEmptyVcJobGuid,
+        State = VotingCardGeneratorJobState.Ready,
+        HasEmptyVotingCards = true,
+        FileName = "empty.pdf",
+        DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+        CountOfVoters = 2,
+        Layout = new DomainOfInfluenceVotingCardLayout
+        {
+            DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            VotingCardType = VotingCardType.Swiss,
+        },
+    };
+
     private static IEnumerable<VotingCardGeneratorJob> All
     {
         get
@@ -61,6 +78,7 @@ public static class VotingCardGeneratorJobMockData
             yield return BundFutureApprovedGemeindeArneggJob1;
             yield return BundFutureApprovedGemeindeArneggJob2;
             yield return BundFutureApprovedGemeindeArneggJob3;
+            yield return BundFutureApprovedGemeindeArneggEmptyVcJob;
         }
     }
 
@@ -77,6 +95,14 @@ public static class VotingCardGeneratorJobMockData
             {
                 job.LayoutId = layoutsByDoiIdAndVcType[(job.Layout!.DomainOfInfluenceId, job.Layout.VotingCardType)].Id;
                 job.Layout = null!;
+
+                if (job.HasEmptyVotingCards)
+                {
+                    var doi = await db.ContestDomainOfInfluences.SingleAsync(doi => doi.Id == job.DomainOfInfluenceId);
+                    doi.CountOfEmptyVotingCards = job.CountOfVoters;
+                    doi.LastCountOfEmptyVotingCardsUpdate = new DateTime(2020, 6, 1, 12, 15, 0, DateTimeKind.Utc);
+                    db.ContestDomainOfInfluences.Update(doi);
+                }
             }
 
             db.VotingCardGeneratorJobs.AddRange(all);

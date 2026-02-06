@@ -14,6 +14,7 @@ public class SetContestDeadlinesRequestValidatorTest : ProtoValidatorBaseTest<Se
     protected override IEnumerable<SetContestDeadlinesRequest> OkMessages()
     {
         yield return New();
+        yield return New(x => x.ElectoralRegisterEVotingFromDate = null);
     }
 
     protected override IEnumerable<SetContestDeadlinesRequest> NotOkMessages()
@@ -33,6 +34,7 @@ public class SetContestDeadlinesRequestValidatorTest : ProtoValidatorBaseTest<Se
             PrintingCenterSignUpDeadlineDate = MockedClock.GetTimestampDate(1),
             AttachmentDeliveryDeadlineDate = MockedClock.GetTimestampDate(1),
             GenerateVotingCardsDeadlineDate = MockedClock.GetTimestampDate(1),
+            ElectoralRegisterEVotingFromDate = MockedClock.GetTimestampDate(1),
         };
         customizer?.Invoke(req);
         return req;

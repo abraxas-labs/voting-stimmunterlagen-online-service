@@ -34,7 +34,13 @@
             "CanManuallyUploadVoterList": false,
             "LastVoterUpdate": null,
             "GenerateVotingCardsTriggered": null,
-            "EVoting": null
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": true,
+            "Bfs": "1120",
+            "HasEmptyVotingCards": true,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
           },
           "PoliticalBusinessIds": [
             "9f93d743-524e-4ea9-aa81-6b3e79c84a6a"
