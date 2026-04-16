@@ -5,15 +5,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ech0007_6_0;
+using Ech0010_6_0;
 using Ech0011_9_0;
 using Ech0044_4_1;
 using Ech0045_6_0;
+using Voting.Lib.Ech.Ech0045_6_0.Models;
 using DataModels = Voting.Stimmunterlagen.Data.Models;
 
 namespace Voting.Stimmunterlagen.Ech.Mapping.V6;
 
 internal static class VoterMapping
 {
+    private const string UnknownBfs = "0000";
+    private const string UnknownMunicipalityName = "?";
+
     public static VotingPersonType ToEchVoter(
         this DataModels.Voter voter,
         DataModels.VotingCardType votingCardType,
@@ -26,6 +31,165 @@ internal static class VoterMapping
             IsEvoter = votingCardType == DataModels.VotingCardType.EVoting,
             DomainOfInfluenceInfo = voter.List!.DomainOfInfluence!.ToEchDomainOfInfluenceInfo(doiHierarchyByDoiId),
         };
+    }
+
+    public static DataModels.Voter ToVoter(this VotingPersonType votingPerson, int index, bool shippingVotingCardsToDeliveryAddress, bool eVotingEnabled)
+    {
+        var address = shippingVotingCardsToDeliveryAddress && votingPerson.DeliveryAddress != null
+            ? votingPerson.DeliveryAddress
+            : new PersonMailAddressType
+            {
+                AddressInformation = votingPerson.ElectoralAddress.AddressInformation,
+                Person = votingPerson.ElectoralAddress.Person,
+            };
+
+        var voter = new DataModels.Voter
+        {
+            Salutation = address.Person.MrMrs.ToSalutation(),
+            AddressFirstName = address.Person.FirstName,
+            AddressLastName = address.Person.LastName,
+            Title = address.Person.Title,
+            AddressLine1 = address.AddressInformation.AddressLine1,
+            AddressLine2 = address.AddressInformation.AddressLine2,
+            Street = address.AddressInformation.Street ?? string.Empty,
+            HouseNumber = address.AddressInformation.HouseNumber,
+            DwellingNumber = address.AddressInformation.DwellingNumber,
+            PostOfficeBoxText = address.AddressInformation.PostOfficeBoxText.AddPostOfficeBoxNumber(address.AddressInformation.PostOfficeBoxNumber),
+            Locality = address.AddressInformation.Locality,
+            Town = address.AddressInformation.Town ?? string.Empty,
+            SwissZipCode = (int?)address.AddressInformation.SwissZipCode,
+            ForeignZipCode = address.AddressInformation.ForeignZipCode,
+            Country = address.AddressInformation.Country.ToCountry(),
+            SourceIndex = index,
+        };
+
+        if (votingPerson.DomainOfInfluenceInfo?.Any() == true)
+        {
+            voter.DomainOfInfluences = votingPerson.DomainOfInfluenceInfo
+                .Where(doi => doi.DomainOfInfluence.DomainOfInfluenceTypeProperty
+                    is Ech0155_5_1.DomainOfInfluenceTypeType.Sc
+                     or Ech0155_5_1.DomainOfInfluenceTypeType.Ki)
+                .Select(doi => new DataModels.VoterDomainOfInfluence
+                {
+                    DomainOfInfluenceType = doi.DomainOfInfluence.DomainOfInfluenceTypeProperty.ToDomainOfInfluenceType(),
+                    DomainOfInfluenceIdentification = doi.DomainOfInfluence.DomainOfInfluenceIdentification,
+                    DomainOfInfluenceName = doi.DomainOfInfluence.DomainOfInfluenceName,
+                })
+                .ToList();
+        }
+
+        MapEchPersonToVoter(votingPerson.Person, voter);
+        voter.VotingCardType = GetVotingCardType(votingPerson, voter.SendVotingCardsToDomainOfInfluenceReturnAddress, eVotingEnabled);
+
+        return voter;
+    }
+
+    private static void MapEchPersonToVoter(VotingPersonTypePerson? person, DataModels.Voter voter)
+    {
+        if (person?.Swiss != null)
+        {
+            voter.VoterType = DataModels.VoterType.Swiss;
+            MapEchPersonToVoter(
+                person.Swiss,
+                voter,
+                x => x.SwissDomesticPerson.PersonIdentification,
+                x => x.SwissDomesticPerson.LanguageOfCorrespondance,
+                x => x.SwissDomesticPerson.CallName,
+                x => x.Municipality,
+                x => x.SwissDomesticPerson.PlaceOfOrigin,
+                x => x.SwissDomesticPerson.ReligionData,
+                x => x.SwissDomesticPerson.Extension);
+            return;
+        }
+
+        if (person?.SwissAbroad != null)
+        {
+            voter.VoterType = DataModels.VoterType.SwissAbroad;
+            MapEchPersonToVoter(
+                person.SwissAbroad,
+                voter,
+                x => x.SwissAbroadPerson.PersonIdentification,
+                x => x.SwissAbroadPerson.LanguageOfCorrespondance,
+                x => x.SwissAbroadPerson.CallName,
+                x => x.Municipality,
+                x => x.SwissAbroadPerson.PlaceOfOrigin,
+                x => x.SwissAbroadPerson.ReligionData,
+                x => x.SwissAbroadPerson.Extension,
+                (x, ext) => voter.SwissAbroadPerson = x.ToSwissAbroadPerson(ext!));
+            return;
+        }
+
+        if (person?.Foreigner != null)
+        {
+            voter.VoterType = DataModels.VoterType.Foreigner;
+            MapEchPersonToVoter(
+                person.Foreigner,
+                voter,
+                x => x.ForeignerPerson.PersonIdentification,
+                x => x.ForeignerPerson.LanguageOfCorrespondance,
+                x => x.ForeignerPerson.CallName,
+                x => x.Municipality,
+                _ => new List<PlaceOfOriginType>(),
+                x => x.ForeignerPerson.ReligionData,
+                x => x.ForeignerPerson.Extension);
+            return;
+        }
+
+        throw new InvalidOperationException("Person could not be mapped to voter.");
+    }
+
+    private static void MapEchPersonToVoter<TNationality>(
+        TNationality nationality,
+        DataModels.Voter voter,
+        Func<TNationality, PersonIdentificationType> personIdentificationSelector,
+        Func<TNationality, LanguageType> languageOfCorrespondanceSelector,
+        Func<TNationality, string> callNameSelector,
+        Func<TNationality, SwissMunicipalityType?> municipalitySelector,
+        Func<TNationality, List<PlaceOfOriginType>> placeOfOriginSelector,
+        Func<TNationality, ReligionDataType?> religionSelector,
+        Func<TNationality, object>? personExtensionSelector = null,
+        Action<TNationality, SwissPersonExtension?>? extension = null)
+    {
+        voter.LanguageOfCorrespondence = LanguageMapping.ToLanguage(languageOfCorrespondanceSelector(nationality));
+        voter.Religion = religionSelector(nationality)?.Religion;
+
+        var personExtension = personExtensionSelector != null
+            ? SwissPersonExtensionMapping.GetExtension(personExtensionSelector(nationality))
+            : null;
+
+        var personIdentification = personIdentificationSelector(nationality);
+        var callName = callNameSelector(nationality);
+
+        voter.FirstName = string.IsNullOrWhiteSpace(callName)
+            ? personIdentification.FirstName
+            : callName;
+
+        voter.LastName = personIdentification.OfficialName;
+        voter.Sex = personIdentification.Sex.ToSexType();
+        voter.PersonId = personIdentification.LocalPersonId.PersonId;
+        voter.PersonIdCategory = personIdentification.LocalPersonId.PersonIdCategory;
+        voter.DateOfBirth = personIdentification.DateOfBirth.ToDateString();
+
+        if (personExtension != null)
+        {
+            voter.SendVotingCardsToDomainOfInfluenceReturnAddress = personExtension.SendVotingCardsToDomainOfInfluenceReturnAddress.HasValue && personExtension.SendVotingCardsToDomainOfInfluenceReturnAddress.Value;
+            voter.IsHouseholder = personExtension.IsHouseholder;
+            voter.ResidenceBuildingId = personExtension.ResidenceBuildingId;
+            voter.ResidenceApartmentId = personExtension.ResidenceApartmentId;
+        }
+
+        voter.PlacesOfOrigin = placeOfOriginSelector(nationality).ToList()
+            .ConvertAll(x => new DataModels.VoterPlaceOfOrigin
+            {
+                Name = x.OriginName,
+                Canton = x.Canton.ToCantonAbbreviation(),
+            });
+
+        var municipality = municipalitySelector(nationality);
+        voter.Bfs = municipality?.MunicipalityId?.ToString() ?? UnknownBfs;
+        voter.MunicipalityName = municipality?.MunicipalityName ?? UnknownMunicipalityName;
+
+        extension?.Invoke(nationality, personExtension);
     }
 
     private static ElectoralAddressType GetEchElectoralAddress(DataModels.Voter voter)
@@ -144,5 +308,13 @@ internal static class VoterMapping
         }
 
         return nationality;
+    }
+
+    private static DataModels.VotingCardType GetVotingCardType(VotingPersonType votingPerson, bool sendVotingCardsToDomainOfInfluenceReturnAddress, bool eVotingEnabled)
+    {
+        // "Nicht zustellen" does not exist in E-Voting, we automatically map them to "Swiss" voting cards.
+        return votingPerson.IsEvoter == true && !sendVotingCardsToDomainOfInfluenceReturnAddress && eVotingEnabled
+            ? DataModels.VotingCardType.EVoting
+            : DataModels.VotingCardType.Swiss;
     }
 }

@@ -7,6 +7,18 @@ namespace Voting.Stimmunterlagen.Data.Models;
 // (otherwise EF Core might have issues to include the owned entity: https://github.com/dotnet/efcore/issues/25359)
 public class DomainOfInfluenceVotingCardPrintData
 {
+    public DomainOfInfluenceVotingCardPrintData()
+    {
+    }
+
+    public DomainOfInfluenceVotingCardPrintData(DomainOfInfluenceVotingCardPrintData doiPrintData)
+    {
+        ShippingAway = doiPrintData.ShippingAway;
+        ShippingReturn = doiPrintData.ShippingReturn;
+        ShippingMethod = doiPrintData.ShippingMethod;
+        ShippingVotingCardsToDeliveryAddress = doiPrintData.ShippingVotingCardsToDeliveryAddress;
+    }
+
     public VotingCardShippingFranking ShippingAway { get; set; }
 
     public VotingCardShippingFranking ShippingReturn { get; set; }

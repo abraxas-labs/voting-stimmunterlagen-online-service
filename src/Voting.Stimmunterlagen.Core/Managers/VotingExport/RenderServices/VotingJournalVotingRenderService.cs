@@ -50,10 +50,12 @@ public class VotingJournalVotingRenderService : IVotingRenderService
             {
                 LastName = v.LastName,
                 FirstName = v.FirstName,
-                Address = $"{v.Street} {v.HouseNumber} {v.ZipCode} {v.Town}",
-                PersonId = DatamatrixMapping.MapPersonId(v.PersonId),
-                ReligiousDenomination = ReligionMapping.GetReligiousDenomination(v.Religion),
-                DateOfBirth = FormatDateOfBirth(v.DateOfBirth),
+                Street = $"{v.Street ?? string.Empty} {v.HouseNumber ?? string.Empty}".Trim(),
+                PostalCode = v.ZipCode ?? string.Empty,
+                Town = v.Town ?? string.Empty,
+                PersonId = DatamatrixMapping.MapPersonId(v.PersonId ?? string.Empty),
+                ReligiousDenomination = ReligionMapping.GetReligiousDenomination(v.Religion ?? string.Empty),
+                DateOfBirth = FormatDateOfBirth(v.DateOfBirth ?? string.Empty),
             })
             .ToListAsync(ct);
 
@@ -74,8 +76,14 @@ public class VotingJournalVotingRenderService : IVotingRenderService
         [Name("Vorname")]
         public string FirstName { get; set; } = string.Empty;
 
-        [Name("Adresse")]
-        public string Address { get; set; } = string.Empty;
+        [Name("Strasse")]
+        public string Street { get; set; } = string.Empty;
+
+        [Name("Postleitzahl")]
+        public string PostalCode { get; set; } = string.Empty;
+
+        [Name("Ort")]
+        public string Town { get; set; } = string.Empty;
 
         [Name("Personen-Nr")]
         public string PersonId { get; set; } = string.Empty;

@@ -395,6 +395,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             ExternalPrintingCenter = false,
             ExternalPrintingCenterEaiMessageType = "EAI-Gossau",
             StistatMunicipality = false,
+            StistatExportEaiMessageType = "1234567",
             VotingCardFlatRateDisabled = false,
             IsMainVotingCardsDomainOfInfluence = false,
             HasEmptyVotingCards = false,
@@ -412,6 +413,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         doi.SwissPostData!.ShouldMatchChildSnapshot("SwissPostData");
         doi.ExternalPrintingCenter.Should().BeFalse();
         doi.ExternalPrintingCenterEaiMessageType.Should().Be("EAI-Gossau");
+        doi.StistatExportEaiMessageType.Should().Be("1234567");
         doi.StistatMunicipality.Should().BeFalse();
         doi.VotingCardFlatRateDisabled.Should().BeFalse();
         doi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
@@ -428,6 +430,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             contestDoi.PrintData!.ShouldMatchChildSnapshot("PrintData");
             contestDoi.ReturnAddress.Should().NotBeNull();
             contestDoi.ReturnAddress!.ShouldMatchChildSnapshot("ReturnAddress");
+            contestDoi.StistatExportEaiMessageType.Should().Be("1234567");
             contestDoi.StistatMunicipality.Should().BeFalse();
             contestDoi.VotingCardFlatRateDisabled.Should().BeFalse();
             contestDoi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();

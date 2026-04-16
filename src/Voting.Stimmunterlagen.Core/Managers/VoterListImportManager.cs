@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Voting.Lib.Common;
@@ -16,13 +15,14 @@ using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.EventProcessors;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Managers.Stistat;
 using Voting.Stimmunterlagen.Core.Models.VoterListImport;
 using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
 using Voting.Stimmunterlagen.Data.Repositories;
-using Voting.Stimmunterlagen.Ech.Converter;
+using Voting.Stimmunterlagen.Ech;
 
 namespace Voting.Stimmunterlagen.Core.Managers;
 
@@ -34,7 +34,6 @@ public class VoterListImportManager
     private readonly IDbRepository<ContestDomainOfInfluence> _doiRepo;
     private readonly IAuth _auth;
     private readonly IClock _clock;
-    private readonly Ech0045Service _ech0045Service;
     private readonly int _voterListInsertBatchSize;
     private readonly AttachmentManager _attachmentManager;
     private readonly VoterListRepo _voterListRepo;
@@ -44,15 +43,14 @@ public class VoterListImportManager
     private readonly ILogger<VoterListImportManager> _logger;
     private readonly VoterListImportBatchHandler _voterListImportBatchHandler;
     private readonly VoterListBuilder _voterListBuilder;
+    private readonly StistatExportManager _stistatExportManager;
 
     public VoterListImportManager(
         IDbRepository<VoterListImport> repo,
         IDbRepository<ContestDomainOfInfluence> doiRepo,
         IAuth auth,
         IClock clock,
-        Ech0045Service ech0045Service,
         ApiConfig config,
-        DbContextOptions dbContextOptions,
         AttachmentManager attachmentManager,
         VoterListRepo voterListRepo,
         IDbRepository<Voter> voterRepo,
@@ -60,13 +58,13 @@ public class VoterListImportManager
         DataContext dbContext,
         ILogger<VoterListImportManager> logger,
         VoterListImportBatchHandler voterListImportBatchHandler,
-        VoterListBuilder voterListBuilder)
+        VoterListBuilder voterListBuilder,
+        StistatExportManager stistatExportManager)
     {
         _repo = repo;
         _doiRepo = doiRepo;
         _auth = auth;
         _clock = clock;
-        _ech0045Service = ech0045Service;
         _attachmentManager = attachmentManager;
         _voterListRepo = voterListRepo;
         _voterRepo = voterRepo;
@@ -76,6 +74,7 @@ public class VoterListImportManager
         _voterListImportBatchHandler = voterListImportBatchHandler;
         _voterListInsertBatchSize = config.VoterListInsertBatchSize;
         _voterListBuilder = voterListBuilder;
+        _stistatExportManager = stistatExportManager;
     }
 
     public async Task<VoterListImport> Get(Guid id)
@@ -104,19 +103,23 @@ public class VoterListImportManager
         await _voterListBuilder.CleanUpDuplicatesAndUpdateVotingCardCountsForDomainOfInfluence(new[] { import.DomainOfInfluenceId });
     }
 
-    public Task<VoterListImportResult> Create(VoterListImport import, XmlReader eCh0045Reader, CancellationToken ct)
+    public Task<VoterListImportResult> Create(VoterListImport import, Ech0045Reader eCh0045Reader, CancellationToken ct)
         => Create(import, eCh0045Reader, null, ct);
 
-    public Task<VoterListImportResult> Update(VoterListImport import, XmlReader eCh0045Reader, CancellationToken ct)
+    public Task<VoterListImportResult> Update(VoterListImport import, Ech0045Reader eCh0045Reader, CancellationToken ct)
         => UpdateInternal(import, eCh0045Reader, ct: ct);
 
     public Task<VoterListImportResult> Update(VoterListImport import)
         => UpdateInternal(import);
 
-    public Task<VoterListImportResult> Update(VoterListImport import, XmlReader eCh0045Reader, int expectedVoterCount, CancellationToken ct)
+    public Task<VoterListImportResult> Update(VoterListImport import, Ech0045Reader eCh0045Reader, int expectedVoterCount, CancellationToken ct)
         => UpdateInternal(import, eCh0045Reader, expectedVoterCount, ct);
 
-    public async Task<VoterListImportResult> Create(VoterListImport import, XmlReader eCh0045Reader, int? expectedVoterCount, CancellationToken ct)
+    public async Task<VoterListImportResult> Create(
+        VoterListImport import,
+        Ech0045Reader eCh0045Reader,
+        int? expectedVoterCount,
+        CancellationToken ct)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted, ct);
         var doi = await GetDomainOfInfluence(import.DomainOfInfluenceId, ct);
@@ -149,6 +152,7 @@ public class VoterListImportManager
 
         if (result.Success)
         {
+            await _stistatExportManager.RunExportIfNeeded(doi, ct);
             await transaction.CommitAsync();
         }
         else
@@ -164,7 +168,11 @@ public class VoterListImportManager
         return result;
     }
 
-    private async Task<VoterListImportResult> UpdateInternal(VoterListImport import, XmlReader? eCh0045Reader = null, int? expectedVoterCount = null, CancellationToken ct = default)
+    private async Task<VoterListImportResult> UpdateInternal(
+        VoterListImport import,
+        Ech0045Reader? eCh0045Reader = null,
+        int? expectedVoterCount = null,
+        CancellationToken ct = default)
     {
         var tenantId = _auth.Tenant.Id;
 
@@ -218,6 +226,7 @@ public class VoterListImportManager
 
         if (result.Success)
         {
+            await _stistatExportManager.RunExportIfNeeded(doi, ct);
             await transaction.CommitAsync();
         }
 
@@ -302,7 +311,7 @@ public class VoterListImportManager
 
     private async Task<VoterListImportResult> CreateVoters(
         VoterListImport import,
-        XmlReader eCh0045Reader,
+        Ech0045Reader eCh0045Reader,
         bool shippingVotingCardsToDeliveryAddress,
         bool electoralRegisterMultipleEnabled,
         Guid contestId,
@@ -313,7 +322,7 @@ public class VoterListImportManager
         int? expectedVoterCount,
         CancellationToken ct)
     {
-        var voters = _ech0045Service.ReadVoters(Ech0045Version.V4, eCh0045Reader, shippingVotingCardsToDeliveryAddress, eVotingEnabled, ct);
+        var voters = eCh0045Reader.ReadVoters(shippingVotingCardsToDeliveryAddress, eVotingEnabled, ct);
         var listByVcType = import.VoterLists!.ToDictionary(x => x.VotingCardType, x => x);
 
         var voterDuplicatesBuilder = new VoterDuplicatesBuilder(
@@ -342,7 +351,7 @@ public class VoterListImportManager
                 ct);
         }
 
-        await UpdateHouseholders(import, voterHouseholdBuilder, ct);
+        await UpdateHouseholders(voterHouseholdBuilder, ct);
 
         var voterCounter = import.VoterLists!.Sum(vl => vl.NumberOfVoters);
 
@@ -362,10 +371,8 @@ public class VoterListImportManager
         };
     }
 
-    private async Task UpdateHouseholders(VoterListImport import, VoterHouseholdBuilder voterHouseholdBuilder, CancellationToken ct)
+    private async Task UpdateHouseholders(VoterHouseholdBuilder voterHouseholdBuilder, CancellationToken ct)
     {
-        var listById = import.VoterLists!.ToDictionary(x => x.Id, x => x);
-
         foreach (var households in voterHouseholdBuilder.GetHouseholdsByListId())
         {
             var votersToUpdate = households.Value.Values.Where(v => !v.IsHouseholder).Select(v => v.PersonId).ToList();

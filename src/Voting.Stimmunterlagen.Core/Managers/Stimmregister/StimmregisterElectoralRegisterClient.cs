@@ -20,6 +20,7 @@ namespace Voting.Stimmunterlagen.Core.Managers.Stimmregister;
 public class StimmregisterElectoralRegisterClient
 {
     private static readonly Uri EchExportApiPath = new("v1/export/ech-0045", UriKind.Relative);
+    private static readonly Uri StistatExportApiPath = new("v1/export/stistat", UriKind.Relative);
     private readonly FilterService.FilterServiceClient _filterClient;
     private readonly HttpClient _httpClient;
     private readonly IMapper _mapper;
@@ -78,11 +79,19 @@ public class StimmregisterElectoralRegisterClient
 
     public async Task<Stream> StreamEch0045(Guid filterVersionId, CancellationToken ct)
     {
-        var request = new EchExportRequest(filterVersionId);
+        var request = new ExportRequest(filterVersionId);
         var response = await _httpClient.PostAsJsonAsync(EchExportApiPath, request, ct);
         response.EnsureSuccessStatusCode();
         return await response.Content.ReadAsStreamAsync(ct);
     }
 
-    private record EchExportRequest(Guid VersionId);
+    public async Task<Stream> StreamStistat(Guid filterVersionId, CancellationToken ct)
+    {
+        var request = new ExportRequest(filterVersionId);
+        var response = await _httpClient.PostAsJsonAsync(StistatExportApiPath, request, ct);
+        response.EnsureSuccessStatusCode();
+        return await response.Content.ReadAsStreamAsync(ct);
+    }
+
+    private sealed record ExportRequest(Guid VersionId);
 }

@@ -44,4 +44,14 @@ public class ContestDomainOfInfluenceRepo : DbRepository<DataContext, ContestDom
             .ToListAsync();
         return items.ToDictionary(x => x.BasisDomainOfInfluenceId, x => x.Id);
     }
+
+    public async Task<List<Guid>> GetContestIdsByBasisDoiId(Guid basisDoiId)
+    {
+        return await Query()
+            .AsNoTracking()
+            .Where(x => x.BasisDomainOfInfluenceId == basisDoiId)
+            .Select(x => x.ContestId)
+            .Distinct()
+            .ToListAsync();
+    }
 }

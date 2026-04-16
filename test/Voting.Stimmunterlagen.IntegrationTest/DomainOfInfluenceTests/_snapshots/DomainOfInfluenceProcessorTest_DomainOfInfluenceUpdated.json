@@ -48,6 +48,8 @@
     "ElectoralRegistrationEnabled": true,
     "ElectoralRegisterMultipleEnabled": true,
     "StistatMunicipality": true,
+    "StistatExportEaiMessageType": "",
+    "StistatExportEnabled": false,
     "VotingCardFlatRateDisabled": false,
     "IsMainVotingCardsDomainOfInfluence": true,
     "HasEmptyVotingCards": true,

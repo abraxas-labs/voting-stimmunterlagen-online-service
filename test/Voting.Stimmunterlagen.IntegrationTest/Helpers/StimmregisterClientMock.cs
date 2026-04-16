@@ -19,12 +19,15 @@ namespace Voting.Stimmunterlagen.IntegrationTest.Helpers;
 public static class StimmregisterClientMock
 {
     private static readonly string TestFile1Content = File.ReadAllText(Ech0045TestFiles.File1);
+    private static readonly string StistatTestFile1Content = File.ReadAllText(StistatTestFiles.File1);
 
     public static HttpMessageHandler CreateHttpClientMock()
     {
         var mock = new MockHttpMessageHandler();
         mock.When("*/v1/export/ech-0045")
             .Respond("text/xml", TestFile1Content);
+        mock.When("*/v1/export/stistat")
+            .Respond("text/csv", StistatTestFile1Content);
         return mock;
     }
 

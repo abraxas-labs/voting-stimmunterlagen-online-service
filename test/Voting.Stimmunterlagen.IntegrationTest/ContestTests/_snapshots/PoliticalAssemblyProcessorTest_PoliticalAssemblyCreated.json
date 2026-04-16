@@ -58,6 +58,8 @@
       "ElectoralRegistrationEnabled": true,
       "ElectoralRegisterMultipleEnabled": false,
       "StistatMunicipality": false,
+      "StistatExportEaiMessageType": "STISTAT-SG",
+      "StistatExportEnabled": true,
       "VotingCardFlatRateDisabled": false,
       "IsMainVotingCardsDomainOfInfluence": false,
       "HasEmptyVotingCards": false,

@@ -24,6 +24,7 @@ public class VotingCardPrintFileBuilder
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA4 = "V4";
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5 = "V5";
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA5 = "V5A5";
+    private const string DocIdContestWithAttchmentFormatA4LayoutA5 = "U4A5";
     private static readonly VotingCardShippingMethod DefaultEVotingShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen;
 
     private readonly CsvService _csvService;
@@ -64,36 +65,63 @@ public class VotingCardPrintFileBuilder
         var hasC4ShippmentFormat = attachments.Any(x => x.Format == AttachmentFormat.A4);
         var hasA4Format = isEVotingJob || !job.Layout!.IsA5Template();
         var isDuplex = !isEVotingJob && job.Layout!.IsDuplexTemplate();
-        var docId = contest.IsPoliticalAssembly
-            ? hasC4ShippmentFormat ? DocIdPoliticalAssemblyWithAttachmentFormatA4 : hasA4Format
-                ? DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5 : DocIdPoliticalAssemblyWithAttachmentFormatA5
-            : hasC4ShippmentFormat ? DocIdContestWithAttachmentFormatA4 : hasA4Format
-                ? DocIdContestWithAttachmentFormatA4ShippmentC5 : DocIdContestWithAttachmentFormatA5;
+        string docId = GetDocId(contest.IsPoliticalAssembly, hasC4ShippmentFormat, hasA4Format);
         var form = hasA4Format ? DefaultForm : ThickForm;
+        var customerSubdivision = job.DomainOfInfluence!.ShortName + job.DomainOfInfluence.Type.ToString().ToUpper();
 
         foreach (var voter in job.Voter)
         {
             yield return MapToPrintFileEntry(
                 voter,
-                job.DomainOfInfluence!,
+                job.DomainOfInfluence!.VoterLists!,
                 voterAttachmentDictionary,
-                contestOrderNumber,
-                docId,
-                form,
-                isDuplex,
-                isEVotingJob);
+                new PrintJobContext { ContestOrderNumber = contestOrderNumber, CustomerSubdivision = customerSubdivision, DocId = docId, Form = form, IsDuplex = isDuplex, IsEVotingJob = isEVotingJob, VotingCardLayout = job.Layout, });
         }
+    }
+
+    private static string GetDocId(bool isPoliticalAssembly, bool hasC4ShippmentFormat, bool hasA4Format)
+    {
+        string docId;
+
+        if (isPoliticalAssembly)
+        {
+            if (hasC4ShippmentFormat)
+            {
+                docId = hasA4Format
+                    ? DocIdPoliticalAssemblyWithAttachmentFormatA4
+                    : DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5;
+            }
+            else
+            {
+                docId = hasA4Format
+                    ? DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5
+                    : DocIdPoliticalAssemblyWithAttachmentFormatA5;
+            }
+        }
+        else
+        {
+            if (hasC4ShippmentFormat)
+            {
+                docId = hasA4Format
+                    ? DocIdContestWithAttachmentFormatA4
+                    : DocIdContestWithAttchmentFormatA4LayoutA5;
+            }
+            else
+            {
+                docId = hasA4Format
+                    ? DocIdContestWithAttachmentFormatA4ShippmentC5
+                    : DocIdContestWithAttachmentFormatA5;
+            }
+        }
+
+        return docId;
     }
 
     private VotingCardPrintFileEntry MapToPrintFileEntry(
         Voter voter,
-        ContestDomainOfInfluence domainOfInfluence,
+        ICollection<VoterList> voterLists,
         VoterAttachmentDictionary voterAttachmentDictionary,
-        string contestOrderNumber,
-        string docId,
-        string form,
-        bool isDuplex,
-        bool isEVotingVotingCard)
+        PrintJobContext printjob)
     {
         var zipCode = voter.SwissZipCode?.ToString() ?? voter.ForeignZipCode;
         var pageFrom = voter.PageInfo?.PageFrom ?? 0;
@@ -113,21 +141,21 @@ public class VotingCardPrintFileBuilder
             listIds.AddRange(voter.VoterDuplicate.Voters!.Select(v => v.ListId!.Value));
         }
 
-        var pbIds = domainOfInfluence.VoterLists!
+        var pbIds = voterLists
             .Where(vl => listIds.Contains(vl.Id))
             .SelectMany(vl => vl.PoliticalBusinessEntries!.Select(x => x.PoliticalBusinessId))
             .ToHashSet();
 
         return new()
         {
-            DocId = docId,
+            DocId = printjob.DocId,
             Bfs = voter.Bfs,
-            Form = form,
+            Form = printjob.Form,
             PersonId = voter.PersonId,
             FullName = voter.FullName,
             SendSort = string.Empty,
-            CustomerSubdivision = string.Empty,
-            IsDuplexPrint = isDuplex,
+            CustomerSubdivision = printjob.CustomerSubdivision,
+            IsDuplexPrint = printjob.IsDuplex,
             TotalPages = voter.PageInfo != null ? pageTo - pageFrom + 1 : 0,
             PageFrom = pageFrom,
             PageTo = pageTo,
@@ -142,15 +170,15 @@ public class VotingCardPrintFileBuilder
             AddressLine5 = (zipCode == null ? string.Empty : zipCode + " ") + voter.Town,
             AddressLine6 = voter.Country.Name,
             CountryIso2 = voter.Country.Iso2 ?? string.Empty,
-            ShippingAway = domainOfInfluence.PrintData!.ShippingAway,
-            ShippingReturn = domainOfInfluence.PrintData.ShippingReturn,
-            ShippingMethodCode = GetShippingMethodCode(isEVotingVotingCard, voter.SendVotingCardsToDomainOfInfluenceReturnAddress, domainOfInfluence.PrintData.ShippingMethod),
+            ShippingAway = printjob.VotingCardLayout?.PrintData?.ShippingAway ?? VotingCardShippingFranking.Unspecified,
+            ShippingReturn = printjob.VotingCardLayout?.PrintData?.ShippingReturn ?? VotingCardShippingFranking.Unspecified,
+            ShippingMethodCode = GetShippingMethodCode(printjob.IsEVotingJob, voter.SendVotingCardsToDomainOfInfluenceReturnAddress, printjob.VotingCardLayout?.PrintData?.ShippingMethod ?? VotingCardShippingMethod.Unspecified),
             Language = voter.LanguageOfCorrespondence,
             AdditionalBarcode = string.Empty,
             AttachmentStations = voter.ListId.HasValue
                 ? voterAttachmentDictionary.GetAttachmentStations(pbIds, voter.IsHouseholder)
                 : string.Empty,
-            ContestOrderNumber = contestOrderNumber,
+            ContestOrderNumber = printjob.ContestOrderNumber,
             ReligionCode = religionCode,
         };
     }
@@ -174,5 +202,22 @@ public class VotingCardPrintFileBuilder
                 !sendVotingCardsToDomainOfInfluenceReturnAddress ? "C" : "D",
             _ => throw new InvalidOperationException("Invalid shipping method"),
         };
+    }
+
+    private class PrintJobContext
+    {
+        public string ContestOrderNumber { get; init; } = string.Empty;
+
+        public string CustomerSubdivision { get; init; } = string.Empty;
+
+        public string DocId { get; init; } = string.Empty;
+
+        public string Form { get; init; } = string.Empty;
+
+        public bool IsDuplex { get; init; }
+
+        public bool IsEVotingJob { get; init; }
+
+        public DomainOfInfluenceVotingCardLayout? VotingCardLayout { get; init; }
     }
 }

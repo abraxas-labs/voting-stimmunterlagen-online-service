@@ -1,4 +1,4 @@
-# ✨ Changelog (`v2.47.2`)
+# ✨ Changelog (`v2.54.1`)
 
 All notable changes to this project will be documented in this file.
 
@@ -8,11 +8,116 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version Info
 
 ```text
-This version -------- v2.47.2
-Previous version ---- v2.15.1
+This version -------- v2.54.1
+Previous version ---- v2.47.2
 Initial version ----- v2.5.1
-Total commits ------- 109
+Total commits ------- 16
 ```
+
+## [v2.54.1] - 2026-04-08
+
+### 🔄 Changed
+
+- update test domain of influence config
+
+## [v2.54.0] - 2026-04-02
+
+### :arrows_counterclockwise: Changed
+
+- VotingCardPrintFileBuilder: new docId DocIdContestWithAttchmentFormatA4LayoutA5 = "U4A5" to recognize template layouts with a5 including attachements a4
+
+## [v2.53.2] - 2026-04-01
+
+### :arrows_counterclockwise: Changed
+
+- VotingCardPrintFileBuilder: get PrintData from snapshotted votingCardLayout
+
+## [v2.53.1] - 2026-04-01
+
+### 🔒 Security
+
+- use latest lib to resolve vulnerabilities in Magick.NET
+
+## [v2.53.0] - 2026-03-30
+
+### :new: Added
+
+- value to CustomerSubdivision in VotingCardFileBuilder
+
+###
+
+## [v2.52.0] - 2026-03-25
+
+### 🆕 Added
+
+- feat(VOTING-6623): stistat export
+
+## [v2.51.2] - 2026-03-17
+
+### 🔄 Changed
+
+- update test domain of influence config
+
+## [v2.51.1] - 2026-03-17
+
+### :arrows_counterclockwise: Changed
+
+- exclude voters with missing date of birth on is minor sync
+- treat nuget vulnerabilty warnings as warning
+
+## [v2.51.0] - 2026-03-05
+
+### :arrows_counterclockwise: Changed
+
+- VotingJournalVotingRenderService: splitted adress to street, postalcode and town
+
+## [v2.50.3] - 2026-03-04
+
+### 🆕 Added
+
+- support eCH-0045 foreigner extensions
+
+## [v2.50.2] - 2026-03-03
+
+### 🔄 Changed
+
+- add additional contest voting card layout builder log info
+
+## [v2.50.1] - 2026-02-26
+
+### :new: Added
+
+- add newly introduced parameter to pass async job priority for start async pdf generation and use default
+
+### :lock: Security
+
+- update magick image processing library to latest non vulnerable version
+
+## [v2.50.0] - 2026-02-18
+
+### 🔄 Changed
+
+- extend auto split to return address applications
+
+## [v2.49.1] - 2026-02-18
+
+### 🔄 Changed
+
+- reorder metrics middleware calls in Startup configuration to catch final response status.
+
+## [v2.49.0] - 2026-02-12
+
+### Changed
+
+- ContestVotingCardLayoutBuilder: synchronize PrintData with DomainOfInfluence unless print is done
+- TemplateManager: take PrintData from Layout.
+- VotingCardLayout model: added PrintDate to store Printdata per Layout
+
+## [v2.48.0] - 2026-02-06
+
+### 🆕 Added
+
+- add eCH-0045 v6 import
 
 ## [v2.47.2] - 2026-02-06
 

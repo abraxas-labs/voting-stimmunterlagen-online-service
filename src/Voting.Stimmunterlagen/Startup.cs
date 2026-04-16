@@ -183,6 +183,8 @@ public class Startup
             return;
         }
 
+        app.UseHttpMetrics();
+        app.UseGrpcMetrics();
         app.UseMiddleware<ExceptionHandler>();
 
         if (AppConfig.Api.EnableGrpcWeb)
@@ -191,8 +193,6 @@ public class Startup
             app.UseCorsFromConfig();
         }
 
-        app.UseHttpMetrics();
-        app.UseGrpcMetrics();
         app.UseAuthentication();
         app.UseAuthorization();
         app.UseMiddleware<IamLoggingHandler>();

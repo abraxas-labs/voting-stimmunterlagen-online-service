@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -11,6 +12,7 @@ using Ech0045_6_0;
 using Voting.Lib.Ech;
 using Voting.Lib.Ech.Ech0045_6_0.Converter;
 using Voting.Stimmunterlagen.Data.Models;
+using Voting.Stimmunterlagen.Ech.Mapping;
 using Voting.Stimmunterlagen.Ech.Mapping.V6;
 
 namespace Voting.Stimmunterlagen.Ech.Converter;
@@ -40,17 +42,25 @@ public class Ech0045_6_0_Converter : IEch0045Converter
 
     public XmlReader GetEch0045Reader(Stream stream)
     {
-        throw new InvalidOperationException("not supported yet");
+        return _ech0045Deserializer.BuildReader(stream);
     }
 
-    public IAsyncEnumerable<Voter> ReadVoters(XmlReader reader, bool shippingVotingCardsToDeliveryAddress, bool eVotingEnabled, CancellationToken cancellationToken)
+    public async IAsyncEnumerable<Voter> ReadVoters(
+        XmlReader reader,
+        bool shippingVotingCardsToDeliveryAddress,
+        bool eVotingEnabled,
+        [EnumeratorCancellation] CancellationToken cancellationToken)
     {
-        throw new InvalidOperationException("not supported yet");
+        await foreach (var (i, votingPersonType) in _ech0045Deserializer.ReadVoters(reader, cancellationToken))
+        {
+            yield return votingPersonType.ToVoter(i, shippingVotingCardsToDeliveryAddress, eVotingEnabled);
+        }
     }
 
-    public Task<bool> IsFromElectoralRegister(XmlReader reader, CancellationToken cancellationToken)
+    public async Task<bool> IsFromAutoSendVotingCardsToDomainOfInfluenceReturnAddressSplitApp(XmlReader reader, CancellationToken cancellationToken)
     {
-        throw new InvalidOperationException("not supported yet");
+        var deliveryHeader = await _ech0045Deserializer.ReadDeliveryHeader(reader, cancellationToken);
+        return DeliveryHeaderMapping.IsFromAutoSendVotingCardsToDomainOfInfluenceReturnAddressSplitApp(deliveryHeader);
     }
 
     private VoterDelivery ToDelivery(

@@ -354,6 +354,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("StistatExportEaiMessageType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<bool>("StistatMunicipality")
                         .HasColumnType("boolean");
 
@@ -629,6 +633,10 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ShortName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StistatExportEaiMessageType")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -1937,10 +1945,37 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                                 .HasForeignKey("ContestVotingCardLayoutId");
                         });
 
+                    b.OwnsOne("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVotingCardPrintData", "PrintData", b1 =>
+                        {
+                            b1.Property<Guid>("ContestVotingCardLayoutId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("ShippingAway")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("ShippingMethod")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("ShippingReturn")
+                                .HasColumnType("integer");
+
+                            b1.Property<bool>("ShippingVotingCardsToDeliveryAddress")
+                                .HasColumnType("boolean");
+
+                            b1.HasKey("ContestVotingCardLayoutId");
+
+                            b1.ToTable("ContestVotingCardLayouts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ContestVotingCardLayoutId");
+                        });
+
                     b.Navigation("Contest");
 
                     b.Navigation("DataConfiguration")
                         .IsRequired();
+
+                    b.Navigation("PrintData");
 
                     b.Navigation("Template");
                 });
@@ -2210,6 +2245,31 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                                 .HasForeignKey("DomainOfInfluenceVotingCardLayoutId");
                         });
 
+                    b.OwnsOne("Voting.Stimmunterlagen.Data.Models.DomainOfInfluenceVotingCardPrintData", "PrintData", b1 =>
+                        {
+                            b1.Property<Guid>("DomainOfInfluenceVotingCardLayoutId")
+                                .HasColumnType("uuid");
+
+                            b1.Property<int>("ShippingAway")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("ShippingMethod")
+                                .HasColumnType("integer");
+
+                            b1.Property<int>("ShippingReturn")
+                                .HasColumnType("integer");
+
+                            b1.Property<bool>("ShippingVotingCardsToDeliveryAddress")
+                                .HasColumnType("boolean");
+
+                            b1.HasKey("DomainOfInfluenceVotingCardLayoutId");
+
+                            b1.ToTable("DomainOfInfluenceVotingCardLayouts");
+
+                            b1.WithOwner()
+                                .HasForeignKey("DomainOfInfluenceVotingCardLayoutId");
+                        });
+
                     b.Navigation("DataConfiguration")
                         .IsRequired();
 
@@ -2218,6 +2278,8 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Navigation("DomainOfInfluenceTemplate");
 
                     b.Navigation("OverriddenTemplate");
+
+                    b.Navigation("PrintData");
 
                     b.Navigation("Template");
                 });

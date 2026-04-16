@@ -13,12 +13,15 @@ public static class Ech0045TestFiles
     public const string File4MixedEVotingName = "eCH-0045-testfile4-mixed-evoting.xml";
     public const string File5MissingExtensionsName = "eCH-0045-testfile5-missing-extensions.xml";
     public const string FileDuplicatesName = "eCH-0045-testfile-duplicates.xml";
+    public const string FileV6Name = "eCH-0045-testfile-v6.xml";
 
     public static string File1 => GetTestFilePath(File1Name);
 
     public static string File2Invalid => GetTestFilePath(File2InvalidName);
 
     public static string FileDuplicates => GetTestFilePath(FileDuplicatesName);
+
+    public static string FileV6 => GetTestFilePath(FileV6Name);
 
     public static string GetTestFilePath(string fileName)
     {

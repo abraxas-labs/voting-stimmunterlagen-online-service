@@ -29,27 +29,32 @@ public class DomainOfInfluenceVotingCardLayoutBuilder : VotingCardLayoutBuilder<
         var dois = await _context.ContestDomainOfInfluences
             .AsTracking()
             .Where(predicate)
+            .Where(c => !_context.StepStates.Any(s =>
+                s.DomainOfInfluenceId == c.Id &&
+                s.Step == Step.GenerateVotingCards &&
+                s.Approved)) // keep only those that DO NOT have generated cards
             .Include(x => x.VotingCardLayouts)
             .Include(x => x.PoliticalBusinessPermissionEntries)
             .Include(x => x.Contest)
+            .Join(_context.DomainOfInfluences, c => c.BasisDomainOfInfluenceId, d => d.Id, (c, d) => new { ContestDomainOfInfluence = c, BasisDomainOfInfluence = d })
             .ToListAsync();
 
         foreach (var doi in dois)
         {
-            SyncVotingCardLayouts(doi);
+            SyncVotingCardLayouts(doi.ContestDomainOfInfluence, doi.BasisDomainOfInfluence);
         }
 
         await _context.SaveChangesAsync();
     }
 
-    private void SyncVotingCardLayouts(ContestDomainOfInfluence doi)
+    private void SyncVotingCardLayouts(ContestDomainOfInfluence contestDomainOfInfluence, DomainOfInfluence doiBasis)
     {
-        if (!doi.UsesVotingCardsInCurrentContest())
+        if (!contestDomainOfInfluence.UsesVotingCardsInCurrentContest())
         {
-            doi.VotingCardLayouts?.Clear();
+            contestDomainOfInfluence.VotingCardLayouts?.Clear();
             return;
         }
 
-        SyncVotingCardLayouts(doi.VotingCardLayouts!);
+        SyncVotingCardLayouts(contestDomainOfInfluence.VotingCardLayouts!, doiBasis.PrintData);
     }
 }

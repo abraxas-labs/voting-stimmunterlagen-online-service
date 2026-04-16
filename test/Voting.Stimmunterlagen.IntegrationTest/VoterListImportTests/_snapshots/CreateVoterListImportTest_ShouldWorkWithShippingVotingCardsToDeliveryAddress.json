@@ -14,7 +14,7 @@
       "NumberOfVoters": 4,
       "CountOfVotingCards": 4,
       "CountOfVotingCardsForHouseholders": 2,
-      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 1,
+      "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 2,
       "CountOfVotingCardsForHouseholdersExclDomainOfInfluenceReturnAddress": 2,
       "Voters": [
         {
@@ -191,7 +191,7 @@
           "ContestIndex": 0,
           "ContestId": "791018cc-6250-46e4-bc80-4a25f00c4d59",
           "Contest": null,
-          "SendVotingCardsToDomainOfInfluenceReturnAddress": false,
+          "SendVotingCardsToDomainOfInfluenceReturnAddress": true,
           "IsHouseholder": false,
           "VoterDuplicateId": null,
           "VoterDuplicate": null,

@@ -67,6 +67,40 @@ public class CreateVoterListImportTest : BaseVoterListImportRestTest
     }
 
     [Fact]
+    public async Task ShouldWorkV6()
+    {
+        var fileName = Ech0045TestFiles.FileV6Name;
+        var importCount = await RunOnDb(db => db.VoterListImports
+            .Where(i => i.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .CountAsync());
+
+        var request = NewRequest();
+        CreateUpdateVoterListImportResponse? responseContent = null;
+
+        await WithRequest(Ech0045TestFiles.GetTestFilePath(fileName), request, async content =>
+        {
+            using var response = await GemeindeArneggClient.PostAsync(Url, content);
+            response.EnsureSuccessStatusCode();
+            responseContent = await DeserializeHttpResponse(response);
+            responseContent.ImportId.Should().NotBeEmpty();
+            responseContent.ImportId = Guid.Empty;
+            foreach (var voterList in responseContent.VoterLists!)
+            {
+                voterList.Id.Should().NotBeEmpty();
+                voterList.Id = Guid.Empty;
+            }
+        });
+        responseContent.MatchSnapshot("response");
+
+        var voterListImport = await GetByName("my-file-001");
+        voterListImport.Id = Guid.Empty;
+
+        voterListImport.SourceId.Should().Be(fileName);
+        voterListImport.SourceId = string.Empty;
+        voterListImport.MatchSnapshot("data");
+    }
+
+    [Fact]
     public async Task ShouldWorkDomainOfInfluenceImport()
     {
         var fileName = Ech0045TestFiles.File3NameDomainOfInfluence;

@@ -14,6 +14,7 @@ using Voting.Stimmunterlagen.Core.Managers.EVoting;
 using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Repositories;
+using Voting.Stimmunterlagen.Ech.Mapping;
 
 namespace Voting.Stimmunterlagen.Core.EventProcessors;
 
@@ -174,7 +175,9 @@ public class ContestBuilder
 
     internal async Task UpdateExistingVoters(Guid contestId, DateTime contestDate)
     {
-        var voters = await _voterRepo.Query().Where(x => x.ContestId == contestId).ToListAsync();
+        var voters = await _voterRepo.Query().Where(x => x.ContestId == contestId)
+            .Where(v => v.DateOfBirth != DatePartiallyKnownMapping.UnspecifiedDateString)
+            .ToListAsync();
         foreach (var voter in voters)
         {
             voter.IsMinor = DatamatrixMapping.IsMinor(voter.DateOfBirth, contestDate);

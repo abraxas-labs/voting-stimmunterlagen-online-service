@@ -20,6 +20,7 @@ using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Core.Models.TemplateData;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Repositories;
@@ -110,16 +111,15 @@ public class TemplateManager
         DateTime? contestDate,
         DomainOfInfluenceVotingCardLayout layout,
         IEnumerable<Voter>? voters = null,
-        CancellationToken ct = default)
-        => GetPdfPreview(
-            contestDate,
-            layout.EffectiveTemplateId ?? throw new EntityNotFoundException(nameof(DomainOfInfluenceVotingCardLayout), new { layout.DomainOfInfluenceId, layout.VotingCardType }),
-            layout.DomainOfInfluence!.Contest!,
-            layout.DataConfiguration,
-            layout.DomainOfInfluence!,
-            layout.TemplateDataFieldValues!,
-            voters,
-            ct);
+        CancellationToken ct = default) => GetPdfPreview(
+                contestDate,
+                layout.EffectiveTemplateId ?? throw new EntityNotFoundException(nameof(DomainOfInfluenceVotingCardLayout), new { layout.DomainOfInfluenceId, layout.VotingCardType }),
+                layout.DomainOfInfluence!.Contest!,
+                layout.DataConfiguration,
+                TemplateBagMapping.MapLayoutToDoi(layout),
+                layout.TemplateDataFieldValues!,
+                voters,
+                ct);
 
     internal async Task<Stream> GetPdfPreview(
         DateTime? contestDate,
@@ -146,13 +146,12 @@ public class TemplateManager
             ?? throw new EntityNotFoundException(
                 nameof(DomainOfInfluenceVotingCardLayout),
                 new { layout.DomainOfInfluenceId, layout.VotingCardType });
-
         var templateBag = await BuildTemplateBag(
             contestDate,
             templateId,
             layout.DomainOfInfluence!.Contest!,
             layout.DataConfiguration,
-            layout.DomainOfInfluence,
+            TemplateBagMapping.MapLayoutToDoi(layout),
             layout.TemplateDataFieldValues!,
             voters,
             ct);
@@ -170,17 +169,16 @@ public class TemplateManager
             ?? throw new EntityNotFoundException(
                 nameof(DomainOfInfluenceVotingCardLayout),
                 new { layout.DomainOfInfluenceId, layout.VotingCardType });
-
         var templateBag = await BuildTemplateBag(
             contestDate,
             templateId,
             layout.DomainOfInfluence!.Contest!,
             layout.DataConfiguration,
-            layout.DomainOfInfluence,
+            TemplateBagMapping.MapLayoutToDoi(layout),
             layout.TemplateDataFieldValues!,
             voters,
             ct);
-        var draft = await _dmDoc.StartAsyncPdfGeneration(templateId, templateBag, webhookUrl, SerialLetterBulkRoot, ct);
+        var draft = await _dmDoc.StartAsyncPdfGeneration(templateId, templateBag, webhookUrl, SerialLetterBulkRoot, null, ct);
         return draft.Id;
     }
 

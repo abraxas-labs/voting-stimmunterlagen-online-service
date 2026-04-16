@@ -63,6 +63,10 @@ public abstract class BaseDomainOfInfluence : BaseEntity
 
     public bool StistatMunicipality { get; set; }
 
+    public string StistatExportEaiMessageType { get; set; } = string.Empty;
+
+    public bool StistatExportEnabled => !string.IsNullOrEmpty(StistatExportEaiMessageType);
+
     public bool VotingCardFlatRateDisabled { get; set; }
 
     public bool IsMainVotingCardsDomainOfInfluence { get; set; }

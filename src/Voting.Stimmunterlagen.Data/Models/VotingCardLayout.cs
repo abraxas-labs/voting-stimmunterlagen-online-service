@@ -16,4 +16,6 @@ public abstract class VotingCardLayout : BaseEntity
     public VotingCardType VotingCardType { get; set; }
 
     public VotingCardLayoutDataConfiguration DataConfiguration { get; set; } = new();
+
+    public DomainOfInfluenceVotingCardPrintData? PrintData { get; set; }
 }

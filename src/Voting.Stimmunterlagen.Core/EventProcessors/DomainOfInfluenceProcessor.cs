@@ -39,6 +39,7 @@ public class DomainOfInfluenceProcessor :
     private readonly AttachmentBuilder _attachmentBuilder;
     private readonly DomainOfInfluenceCountingCircleBuilder _doiCcBuilder;
     private readonly DomainOfInfluenceCantonDefaultsBuilder _domainOfInfluenceCantonDefaultsBuilder;
+    private readonly ContestVotingCardLayoutBuilder _contestVotingCardLayoutBuilder;
 
     public DomainOfInfluenceProcessor(
         IMapper mapper,
@@ -53,7 +54,8 @@ public class DomainOfInfluenceProcessor :
         PrintJobBuilder printJobBuilder,
         AttachmentBuilder attachmentBuilder,
         DomainOfInfluenceCountingCircleBuilder doiCcBuilder,
-        DomainOfInfluenceCantonDefaultsBuilder domainOfInfluenceCantonDefaultsBuilder)
+        DomainOfInfluenceCantonDefaultsBuilder domainOfInfluenceCantonDefaultsBuilder,
+        ContestVotingCardLayoutBuilder contestVotingCardLayoutBuilder)
     {
         _mapper = mapper;
         _doiRepo = doiRepo;
@@ -68,6 +70,7 @@ public class DomainOfInfluenceProcessor :
         _attachmentBuilder = attachmentBuilder;
         _doiCcBuilder = doiCcBuilder;
         _domainOfInfluenceCantonDefaultsBuilder = domainOfInfluenceCantonDefaultsBuilder;
+        _contestVotingCardLayoutBuilder = contestVotingCardLayoutBuilder;
     }
 
     public async Task Process(DomainOfInfluenceCreated eventData)
@@ -131,6 +134,11 @@ public class DomainOfInfluenceProcessor :
             doi => _mapper.Map(eventData, doi),
             doi => _mapper.Map(eventData, doi));
         await SyncForDomainOfInfluence(doiId);
+        var contestIds = await _contestDoiRepo.GetContestIdsByBasisDoiId(doiId);
+        foreach (var contestId in contestIds)
+        {
+            await _contestVotingCardLayoutBuilder.Sync(contestId);
+        }
     }
 
     private async Task Update(DomainOfInfluenceEventData updatedDomainOfInfluence)

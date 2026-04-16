@@ -44,9 +44,10 @@ public static class DatamatrixMapping
 
     public static bool IsMinor(string birthDate, DateTime contestDate)
     {
-        var dateOfBirthDate = (!string.IsNullOrEmpty(birthDate) && birthDate != DatePartiallyKnownMapping.UnspecifiedDateString
+        var dateOfBirthDate = !string.IsNullOrEmpty(birthDate) && birthDate != DatePartiallyKnownMapping.UnspecifiedDateString
             ? DatePartiallyKnownMapping.ToDateTime(birthDate)
-            : (DateTime?)null) ?? throw new ValidationException($"Date format mismatch, cannot calculate minor flag with birthdate: {birthDate}");
+            : throw new ValidationException($"Date format mismatch, cannot calculate minor flag with birthdate: {birthDate}");
+
         return dateOfBirthDate != default && dateOfBirthDate.AddYears(18) > contestDate;
     }
 

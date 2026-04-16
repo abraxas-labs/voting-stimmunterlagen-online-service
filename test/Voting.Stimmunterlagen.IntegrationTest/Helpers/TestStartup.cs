@@ -14,6 +14,7 @@ using Voting.Stimmregister.Proto.V1.Services;
 using Voting.Stimmunterlagen.Core.Managers.EVoting;
 using Voting.Stimmunterlagen.Core.Managers.Generator;
 using Voting.Stimmunterlagen.Core.Managers.Stimmregister;
+using Voting.Stimmunterlagen.Core.Managers.Stistat;
 using Voting.Stimmunterlagen.Core.Managers.VotingCardPrintFile;
 using Voting.Stimmunterlagen.Core.ObjectStorage;
 using Voting.Stimmunterlagen.IntegrationTest.MockData.Mapping;
@@ -43,6 +44,7 @@ public class TestStartup : Startup
             .AddMock<IContestEVotingStore, ContestEVotingStoreMock>()
             .AddMock<IVotingCardPrintFileStore, VotingCardPrintFileStoreMock>()
             .AddMock<IVotingCardPrintFileExportThrottler, VotingCardPrintFileExportThrottlerMock>()
+            .AddMock<IStistatFileStore, StistatFileStoreMock>()
             .AddMock<IEchMessageIdProvider, MockEchMessageIdProvider>()
             .AddMock<FilterService.FilterServiceClient>(StimmregisterClientMock.ConfigureFilterClientMock)
             .AddMock<IEVotingZipStorage, EVotingZipStorageMock>()

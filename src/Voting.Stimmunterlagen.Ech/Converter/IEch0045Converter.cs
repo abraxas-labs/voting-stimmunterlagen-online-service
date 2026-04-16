@@ -23,5 +23,5 @@ public interface IEch0045Converter
 
     IAsyncEnumerable<Voter> ReadVoters(XmlReader reader, bool shippingVotingCardsToDeliveryAddress, bool eVotingEnabled, CancellationToken cancellationToken);
 
-    Task<bool> IsFromElectoralRegister(XmlReader reader, CancellationToken cancellationToken);
+    Task<bool> IsFromAutoSendVotingCardsToDomainOfInfluenceReturnAddressSplitApp(XmlReader reader, CancellationToken cancellationToken);
 }

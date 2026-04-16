@@ -101,7 +101,7 @@ public class ElectoralRegisterManager
         };
 
         var echData = await _client.StreamEch0045(filterVersionId, ct);
-        using var eCh0045Reader = _ech0045Service.GetEch0045Reader(Ech0045Version.V4, echData);
+        using var eCh0045Reader = await _ech0045Service.GetEch0045Reader(echData, ct);
         return await _voterListImportManager.Create(import, eCh0045Reader, GetNumberOfVoters(filterVersion), ct);
     }
 
@@ -130,7 +130,7 @@ public class ElectoralRegisterManager
         voterListImport.Name = BuildName(filter, filterVersion);
         voterListImport.LastUpdate = filterVersion.CreatedAt.Date;
         var echData = await _client.StreamEch0045(filterVersionId, ct);
-        using var eCh0045Reader = _ech0045Service.GetEch0045Reader(Ech0045Version.V4, echData);
+        using var eCh0045Reader = await _ech0045Service.GetEch0045Reader(echData, ct);
         return await _voterListImportManager.Update(voterListImport, eCh0045Reader, GetNumberOfVoters(filterVersion), ct);
     }
 

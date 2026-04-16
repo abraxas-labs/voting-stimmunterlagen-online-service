@@ -97,6 +97,7 @@ public static class DomainOfInfluenceMockData
         {
             VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
         },
+        StistatExportEaiMessageType = "STISTAT-SG",
         ElectoralRegistrationEnabled = true,
     };
 

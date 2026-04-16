@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Xml;
 using AutoMapper;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Features;
@@ -16,6 +15,7 @@ using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Managers;
 using Voting.Stimmunterlagen.Core.Models.VoterListImport;
 using Voting.Stimmunterlagen.Data.Models;
+using Voting.Stimmunterlagen.Ech;
 using Voting.Stimmunterlagen.Ech.Converter;
 using Voting.Stimmunterlagen.Models.Request;
 using Voting.Stimmunterlagen.Models.Response;
@@ -73,7 +73,7 @@ public class VoterListImportController : ControllerBase
 
     private async Task<CreateUpdateVoterListImportResponse> ReadVoterListImport<T>(
         Guid? importId,
-        Func<VoterListImport, XmlReader, CancellationToken, Task<VoterListImportResult>> processWithFile,
+        Func<VoterListImport, Ech0045Reader, CancellationToken, Task<VoterListImportResult>> processWithFile,
         Func<VoterListImport, Task> processWithoutFile)
         where T : UpdateVoterListImportRequest
     {
@@ -96,9 +96,9 @@ public class VoterListImportController : ControllerBase
                 voterListImport.Source = VoterListSource.ManualEch45Upload;
                 voterListImport.SourceId = data.FileName ?? string.Empty;
 
-                using var xmlReader = _ech0045Service.GetEch0045Reader(Ech0045Version.V4, data.FileContent);
-                voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = await _ech0045Service.IsFromElectoralRegister(Ech0045Version.V4, xmlReader, HttpContext.RequestAborted);
-                var voterListImportResult = await processWithFile(voterListImport, xmlReader, HttpContext.RequestAborted);
+                using var ech0045Reader = await _ech0045Service.GetEch0045Reader(data.FileContent, HttpContext.RequestAborted);
+                voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = await ech0045Reader.IsFromAutoSendVotingCardsToDomainOfInfluenceReturnAddressSplitApp(HttpContext.RequestAborted);
+                var voterListImportResult = await processWithFile(voterListImport, ech0045Reader, HttpContext.RequestAborted);
 
                 return new CreateUpdateVoterListImportResponse
                 {

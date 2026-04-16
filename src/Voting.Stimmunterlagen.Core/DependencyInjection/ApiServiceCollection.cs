@@ -15,6 +15,7 @@ using Voting.Stimmunterlagen.Core.Managers.Generator;
 using Voting.Stimmunterlagen.Core.Managers.Invoice;
 using Voting.Stimmunterlagen.Core.Managers.Steps;
 using Voting.Stimmunterlagen.Core.Managers.Stimmregister;
+using Voting.Stimmunterlagen.Core.Managers.Stistat;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
 using Voting.Stimmunterlagen.Core.Managers.VotingCardPrintFile;
 using Voting.Stimmunterlagen.Core.Managers.VotingExport;
@@ -48,6 +49,7 @@ internal static class ApiServiceCollection
             .AddScoped<VoterListManager>()
             .AddScoped<VoterListImportManager>()
             .AddScoped<VoterListImportBatchHandler>()
+            .AddScoped<StistatExportManager>()
             .AddScoped<TemplateManager>()
             .AddScoped<ManualVotingCardGeneratorJob>()
             .AddScoped<ContestVotingCardLayoutManager>()
@@ -158,7 +160,8 @@ internal static class ApiServiceCollection
             return services
                 .AddSingleton<IVotingCardStore, FileSystemVotingCardStore>()
                 .AddSingleton<IContestEVotingStore, FileSystemContestEVotingStore>()
-                .AddSingleton<IVotingCardPrintFileStore, FileSystemVotingCardPrintFileStore>();
+                .AddSingleton<IVotingCardPrintFileStore, FileSystemVotingCardPrintFileStore>()
+                .AddSingleton<IStistatFileStore, FileSystemStistatFileStore>();
         }
 #endif
 
@@ -166,6 +169,7 @@ internal static class ApiServiceCollection
             .AddSingleton<IVotingCardStore, DokConnectVotingCardStore>()
             .AddSingleton<IContestEVotingStore, DokConnectContestEVotingStore>()
             .AddSingleton<IVotingCardPrintFileStore, DokConnectVotingCardPrintFileStore>()
+            .AddSingleton<IStistatFileStore, DokConnectStistatFileStore>()
             .AddEaiDokConnector(config.Api.DokConnector).AddSecureConnectServiceToken(AppConfig.SharedSecureConnectServiceAccountName);
 
         return services;

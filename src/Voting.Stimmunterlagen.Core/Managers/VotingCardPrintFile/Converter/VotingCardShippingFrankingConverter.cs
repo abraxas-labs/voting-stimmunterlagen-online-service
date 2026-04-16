@@ -30,7 +30,7 @@ public class VotingCardShippingFrankingConverter : ITypeConverter
             VotingCardShippingFranking.GasA => "A",
             VotingCardShippingFranking.GasB => "B",
             VotingCardShippingFranking.WithoutFranking => "F",
-            _ => null,
+            _ => string.Empty,
         };
     }
 }

@@ -273,8 +273,12 @@
               <eCH-0044:dateOfBirth>
                 <eCH-0044:yearMonth>1952-10</eCH-0044:yearMonth>
               </eCH-0044:dateOfBirth>
-            </eCH-0045:personIdentification>
+            </eCH-0045:personIdentification>  
             <eCH-0045:languageOfCorrespondance>it</eCH-0045:languageOfCorrespondance>
+            <eCH-0045:extension>
+                <sendVotingCardsToDomainOfInfluenceReturnAddress>true</sendVotingCardsToDomainOfInfluenceReturnAddress>
+                <isHouseholder>false</isHouseholder>
+            </eCH-0045:extension>
           </eCH-0045:foreignerPerson>
           <eCH-0045:municipality xmlns:eCH-0007="http://www.ech.ch/xmlns/eCH-0007/6">
             <eCH-0007:municipalityId>1</eCH-0007:municipalityId>

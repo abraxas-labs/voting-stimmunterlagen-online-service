@@ -53,10 +53,10 @@ public class Ech0045_4_0_Converter : IEch0045Converter
         }
     }
 
-    public async Task<bool> IsFromElectoralRegister(XmlReader reader, CancellationToken cancellationToken)
+    public async Task<bool> IsFromAutoSendVotingCardsToDomainOfInfluenceReturnAddressSplitApp(XmlReader reader, CancellationToken cancellationToken)
     {
         var deliveryHeader = await _ech0045Deserializer.ReadDeliveryHeader(reader, cancellationToken);
-        return DeliveryHeaderMapping.IsFromElectoralRegister(deliveryHeader);
+        return DeliveryHeaderMapping.IsFromAutoSendVotingCardsToDomainOfInfluenceReturnAddressSplitApp(deliveryHeader);
     }
 
     public VoterDelivery ToDelivery(

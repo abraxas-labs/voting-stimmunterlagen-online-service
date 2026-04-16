@@ -304,6 +304,7 @@ public class DmDocServiceMock : IDmDocService
         T templateData,
         string webhookEndpoint,
         string? bulkRoot = null,
+        int? asyncJobPriority = null,
         CancellationToken ct = default)
         => CreateDraft(templateId, templateData, bulkRoot, ct);
 
@@ -312,6 +313,7 @@ public class DmDocServiceMock : IDmDocService
         T templateData,
         string webhookEndpoint,
         string? bulkRoot = null,
+        int? asyncJobPriority = null,
         CancellationToken ct = default)
         => CreateDraft(templateName, templateData, bulkRoot, ct);
 

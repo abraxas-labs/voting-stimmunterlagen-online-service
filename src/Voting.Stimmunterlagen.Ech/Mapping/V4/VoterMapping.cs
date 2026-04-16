@@ -136,7 +136,8 @@ internal static class VoterMapping
                 x => x.ForeignerPerson.CallName,
                 x => x.Municipality,
                 _ => new List<PlaceOfOriginType>(),
-                x => x.ForeignerPerson.ReligionData);
+                x => x.ForeignerPerson.ReligionData,
+                x => x.ForeignerPerson.Extension);
             return;
         }
 

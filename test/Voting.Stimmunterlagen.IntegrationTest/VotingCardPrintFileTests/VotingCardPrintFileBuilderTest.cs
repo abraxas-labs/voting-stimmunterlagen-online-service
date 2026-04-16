@@ -107,6 +107,21 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task ShouldWorkPrintA5AttachementA4()
+    {
+        var job = GetJob("voting_template_a5");
+        var attachments = GetAttachments(AttachmentFormat.A4);
+        var entries = _votingCardPrintFileBuilder.MapToPrintFileEntries(job, attachments, new() { OrderNumber = 955000, IsPoliticalAssembly = false });
+        entries.MatchSnapshot("rawEntries");
+
+        var csvBytes = await _votingCardPrintFileBuilder.BuildPrintFile(job, attachments);
+        using var ms = new MemoryStream(csvBytes);
+        using var streamReader = new StreamReader(ms);
+        var csv = streamReader.ReadToEnd();
+        csv.MatchRawSnapshot("VotingCardPrintFileTests", "_snapshots", $"{nameof(VotingCardPrintFileBuilderTest)}_{nameof(ShouldWorkPrintA5AttachementA4)}.csv");
+    }
+
+    [Fact]
     public async Task ShouldWorkPrintA5AttachementA5Duplex()
     {
         var job = GetJob("voting_template_a5_duplex");
@@ -240,6 +255,8 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                     voterList2,
                 },
                 VotingCardColor = VotingCardColor.Green,
+                ShortName = "SG00",
+                Type = DomainOfInfluenceType.Mu,
             },
             Voter = new List<Voter>
             {
@@ -351,6 +368,12 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
             Layout = new()
             {
                 OverriddenTemplate = new() { InternName = templateName },
+                PrintData = new DomainOfInfluenceVotingCardPrintData
+                {
+                    ShippingAway = VotingCardShippingFranking.B1,
+                    ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen,
+                    ShippingReturn = VotingCardShippingFranking.WithoutFranking,
+                },
             },
         };
     }
