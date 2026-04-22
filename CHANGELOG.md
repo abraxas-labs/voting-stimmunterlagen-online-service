@@ -1,4 +1,4 @@
-# ✨ Changelog (`v2.54.1`)
+# ✨ Changelog (`v2.54.2`)
 
 All notable changes to this project will be documented in this file.
 
@@ -8,11 +8,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version Info
 
 ```text
-This version -------- v2.54.1
-Previous version ---- v2.47.2
+This version -------- v2.54.2
+Previous version ---- v2.54.1
 Initial version ----- v2.5.1
-Total commits ------- 16
+Total commits ------- 1
 ```
+
+## [v2.54.2] - 2026-04-21
+
+### 🔄 Changed
+
+- update test domain of influence config
 
 ## [v2.54.1] - 2026-04-08
 
