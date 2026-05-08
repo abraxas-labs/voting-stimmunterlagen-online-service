@@ -100,7 +100,7 @@ public class ContestProcessorTest : BaseWriteableDbTest
         var layouts = await RunOnDb(db => db.ContestVotingCardLayouts
             .Where(x => x.ContestId == id)
             .OrderBy(x => x.VotingCardType)
-            .Select(x => new { x.VotingCardType, x.TemplateId, x.AllowCustom })
+            .Select(x => new { x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
             .ToListAsync());
         layouts.ShouldMatchChildSnapshot("contest-layouts");
 
@@ -108,11 +108,105 @@ public class ContestProcessorTest : BaseWriteableDbTest
             .Where(x => x.DomainOfInfluence!.ContestId == id)
             .OrderBy(x => x.DomainOfInfluence!.Name)
             .ThenBy(x => x.VotingCardType)
-            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom })
+            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
             .ToListAsync());
         doiLayouts.ShouldMatchChildSnapshot("doi-layouts");
 
         (await HasVoterContestIndexSequence(id)).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task ChangeDoiColorAndContestCreatedShouldWork()
+    {
+        var doiGuid = DomainOfInfluenceMockData.BundId;
+
+        var eventData = new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = doiGuid.ToString(),
+            VotingCardColor = SharedProto.VotingCardColor.Yellow,
+        };
+
+        await TestEventPublisher.Publish(eventData);
+
+        var id = Guid.Parse("47891324-93db-4032-94fd-7650a9262134");
+
+        (await HasVoterContestIndexSequence(id)).Should().BeFalse();
+
+        await TestEventPublisher.Publish(new ContestCreated
+        {
+            Contest = new ContestEventData
+            {
+                Id = id.ToString(),
+                Date = MockedClock.GetTimestampDate(),
+                Description = { LanguageUtil.MockAllLanguages("Contest 01") },
+                DomainOfInfluenceId = doiGuid,
+                EVoting = true,
+                State = SharedProto.ContestState.TestingPhase,
+            },
+        });
+
+        var layouts = await RunOnDb(db => db.ContestVotingCardLayouts
+            .Where(x => x.ContestId == id)
+            .OrderBy(x => x.VotingCardType)
+            .Select(x => new { x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
+            .ToListAsync());
+        layouts.ShouldMatchChildSnapshot("contest-layouts");
+
+        var doiLayouts = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
+            .Where(x => x.DomainOfInfluence!.ContestId == id)
+            .OrderBy(x => x.DomainOfInfluence!.Name)
+            .ThenBy(x => x.VotingCardType)
+            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
+            .ToListAsync());
+        doiLayouts.ShouldMatchChildSnapshot("doi-layouts");
+
+        (await HasVoterContestIndexSequence(id)).Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task ContestCreatedAndChangeDoiColorShouldNotChangeLayoutColor()
+    {
+        var doiGuid = DomainOfInfluenceMockData.BundId;
+
+        var id = Guid.Parse("47891324-93db-4032-94fd-7650a9262134");
+
+        (await HasVoterContestIndexSequence(id)).Should().BeFalse();
+
+        await TestEventPublisher.Publish(new ContestCreated
+        {
+            Contest = new ContestEventData
+            {
+                Id = id.ToString(),
+                Date = MockedClock.GetTimestampDate(),
+                Description = { LanguageUtil.MockAllLanguages("Contest 01") },
+                DomainOfInfluenceId = doiGuid,
+                EVoting = true,
+                State = SharedProto.ContestState.TestingPhase,
+            },
+        });
+
+        var eventData = new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = doiGuid.ToString(),
+            VotingCardColor = SharedProto.VotingCardColor.Yellow,
+        };
+
+        await TestEventPublisher.Publish(eventData);
+
+        var layouts = await RunOnDb(db => db.ContestVotingCardLayouts
+            .Where(x => x.ContestId == id)
+            .OrderBy(x => x.VotingCardType)
+            .Select(x => new { x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
+            .ToListAsync());
+        layouts.ShouldMatchChildSnapshot("contest-layouts");
+
+        var doiLayouts = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
+            .Where(x => x.DomainOfInfluence!.ContestId == id)
+            .OrderBy(x => x.DomainOfInfluence!.Name)
+            .ThenBy(x => x.VotingCardType)
+            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
+            .ToListAsync());
+        doiLayouts.ShouldMatchChildSnapshot("doi-layouts");
     }
 
     [Fact]
@@ -179,7 +273,7 @@ public class ContestProcessorTest : BaseWriteableDbTest
         var layouts = await RunOnDb(db => db.ContestVotingCardLayouts
             .Where(x => x.ContestId == contest.Id)
             .OrderBy(x => x.VotingCardType)
-            .Select(x => new { x.VotingCardType, x.TemplateId, x.AllowCustom })
+            .Select(x => new { x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
             .ToListAsync());
         layouts.ShouldMatchChildSnapshot("contest-layouts");
 
@@ -187,7 +281,7 @@ public class ContestProcessorTest : BaseWriteableDbTest
             .Where(x => x.DomainOfInfluence!.ContestId == contest.Id)
             .OrderBy(x => x.DomainOfInfluence!.Name)
             .ThenBy(x => x.VotingCardType)
-            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom })
+            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
             .ToListAsync());
         doiLayouts.ShouldMatchChildSnapshot("doi-layouts");
     }

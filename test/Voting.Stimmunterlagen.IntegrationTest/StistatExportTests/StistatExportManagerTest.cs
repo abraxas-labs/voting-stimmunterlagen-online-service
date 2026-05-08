@@ -23,6 +23,7 @@ public class StistatExportManagerTest : BaseWriteableDbGrpcTest<ElectoralRegiste
 {
     private const string MessageType = "STISTAT-SG";
 
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
     private readonly StistatFileStoreMock _storeMock;
 
     public StistatExportManagerTest(TestApplicationFactory factory)
@@ -30,6 +31,15 @@ public class StistatExportManagerTest : BaseWriteableDbGrpcTest<ElectoralRegiste
     {
         _storeMock = GetService<StistatFileStoreMock>();
         _storeMock.Clear();
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
     }
 
     [Fact]

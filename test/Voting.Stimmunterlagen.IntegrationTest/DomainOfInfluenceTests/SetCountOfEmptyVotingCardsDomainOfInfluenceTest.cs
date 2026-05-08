@@ -23,6 +23,15 @@ public class SetCountOfEmptyVotingCardsDomainOfInfluenceTest : BaseWriteableDbGr
     {
     }
 
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => (x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid || x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureApprovedGuid) && x.Step == Step.Attachments,
+            x => x.Approved = true);
+    }
+
     [Fact]
     public async Task ShouldWork()
     {
@@ -52,6 +61,10 @@ public class SetCountOfEmptyVotingCardsDomainOfInfluenceTest : BaseWriteableDbGr
     [Fact]
     public async Task ShouldThrowIfContestLocked()
     {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == ContestMockData.BundArchivedGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
+
         await AssertStatus(
             async () => await GemeindeArneggElectionAdminClient.SetCountOfEmptyVotingCardsAsync(
                 new SetCountOfEmptyVotingCardsDomainOfInfluenceRequest
@@ -90,6 +103,23 @@ public class SetCountOfEmptyVotingCardsDomainOfInfluenceTest : BaseWriteableDbGr
                 CountOfEmptyVotingCards = 2,
             }),
             StatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfAttachmentStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid && x.Step == Step.Attachments,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await AbraxasElectionAdminClient.SetCountOfEmptyVotingCardsAsync(new SetCountOfEmptyVotingCardsDomainOfInfluenceRequest
+            {
+                DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+                CountOfEmptyVotingCards = 2,
+            }),
+            StatusCode.InvalidArgument,
+            "The attachment step is not approved yet.");
     }
 
     protected override async Task AuthorizationTestCall(DomainOfInfluenceService.DomainOfInfluenceServiceClient service)

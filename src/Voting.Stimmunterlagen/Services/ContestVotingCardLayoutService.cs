@@ -12,6 +12,7 @@ using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Managers;
 using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
+using VotingCardColor = Voting.Stimmunterlagen.Data.Models.VotingCardColor;
 using VotingCardLayoutDataConfiguration = Voting.Stimmunterlagen.Data.Models.VotingCardLayoutDataConfiguration;
 using VotingCardType = Voting.Stimmunterlagen.Data.Models.VotingCardType;
 
@@ -36,7 +37,8 @@ public class ContestVotingCardLayoutService : Proto.V1.ContestVotingCardLayoutSe
             _mapper.Map<VotingCardType>(request.VotingCardType),
             request.AllowCustom,
             request.TemplateId,
-            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration));
+            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration),
+            _mapper.Map<VotingCardColor>(request.Color));
         return ProtobufEmpty.Instance;
     }
 

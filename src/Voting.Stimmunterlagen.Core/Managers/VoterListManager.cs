@@ -11,6 +11,7 @@ using Voting.Lib.Common;
 using Voting.Lib.Iam.Exceptions;
 using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Managers.Steps;
 using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
@@ -31,6 +32,7 @@ public class VoterListManager
     private readonly VoterRepo _voterRepo;
     private readonly DomainOfInfluenceManager _doiManager;
     private readonly DataContext _dbContext;
+    private readonly StepManager _stepManager;
 
     public VoterListManager(
         IDbRepository<VoterList> repo,
@@ -42,7 +44,8 @@ public class VoterListManager
         IDbRepository<VoterListImport> voterListImportRepo,
         VoterRepo voterRepo,
         DomainOfInfluenceManager doiManager,
-        DataContext dbContext)
+        DataContext dbContext,
+        StepManager stepManager)
     {
         _repo = repo;
         _politicalBusinessVoterListEntryRepo = politicalBusinessVoterListEntryRepo;
@@ -54,6 +57,7 @@ public class VoterListManager
         _voterRepo = voterRepo;
         _doiManager = doiManager;
         _dbContext = dbContext;
+        _stepManager = stepManager;
     }
 
     public async Task<VoterListsData> List(Guid doiId)
@@ -115,6 +119,8 @@ public class VoterListManager
             .ToListAsync();
 
         await EnsureValidUpdate(data, existingLists);
+        var doiId = existingLists[0].DomainOfInfluenceId;
+        await _stepManager.EnsureStepApproved(doiId, Step.Attachments);
         await _politicalBusinessVoterListEntryRepo.DeleteAll(listIds);
 
         foreach (var existingList in existingLists)
@@ -147,7 +153,6 @@ public class VoterListManager
         }
 
         await _repo.UpdateRange(existingLists);
-        var doiId = existingLists[0].DomainOfInfluenceId;
         await _attachmentManager.UpdateRequiredCountForDomainOfInfluence(doiId);
         await _doiManager.UpdateLastVoterUpdate(doiId);
         await transaction.CommitAsync();
@@ -164,6 +169,8 @@ public class VoterListManager
             .WhereDomainOfInfluenceHasPoliticalBusiness(politicalBusinessId)
             .FirstOrDefaultAsync(x => x.Id == voterListId)
             ?? throw new EntityNotFoundException(nameof(VoterList), voterListId);
+
+        await _stepManager.EnsureStepApproved(list.DomainOfInfluenceId, Step.Attachments);
 
         await _politicalBusinessVoterListEntryRepo.Create(new PoliticalBusinessVoterListEntry
         {
@@ -186,6 +193,8 @@ public class VoterListManager
                        .Include(x => x.PoliticalBusinessEntries)
                        .FirstOrDefaultAsync(x => x.Id == voterListId)
                    ?? throw new EntityNotFoundException(nameof(VoterList), voterListId);
+
+        await _stepManager.EnsureStepApproved(list.DomainOfInfluenceId, Step.Attachments);
 
         var entry = list.PoliticalBusinessEntries!.FirstOrDefault(x => x.PoliticalBusinessId == politicalBusinessId)
             ?? throw new EntityNotFoundException(nameof(PoliticalBusinessVoterListEntry), new { voterListId, politicalBusinessId });

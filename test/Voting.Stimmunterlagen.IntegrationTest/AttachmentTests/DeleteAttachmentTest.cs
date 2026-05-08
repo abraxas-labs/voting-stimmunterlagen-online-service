@@ -56,6 +56,28 @@ public class DeleteAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
             StatusCode.NotFound);
     }
 
+    [Fact]
+    public async Task ShouldThrowIfPoliticalBusinessesNotApproved()
+    {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedBundGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await AbraxasElectionAdminClient.DeleteAsync(new() { Id = AttachmentMockData.BundFutureApprovedBund1Id }),
+            StatusCode.InvalidArgument,
+            "The political businesses step is not approved yet.");
+    }
+
+    [Fact]
+    public async Task ShouldDeleteInPoliticalAssembly()
+    {
+        await GemeindeArneggElectionAdminClient.DeleteAsync(new() { Id = AttachmentMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggId });
+
+        var attachment = await RunOnDb(db => db.Attachments.SingleOrDefaultAsync(x => x.Id == AttachmentMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggGuid));
+        attachment.Should().BeNull();
+    }
+
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)
     {
         await service.DeleteAsync(new() { Id = AttachmentMockData.BundFutureApprovedGemeindeArneggId });

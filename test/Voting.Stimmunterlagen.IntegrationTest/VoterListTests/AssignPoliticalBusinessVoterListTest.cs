@@ -9,6 +9,7 @@ using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
 using Voting.Stimmunterlagen.Auth;
+using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
 using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
@@ -19,9 +20,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.VoterListTests;
 
 public class AssignPoliticalBusinessVoterListTest : BaseWriteableDbGrpcTest<VoterListService.VoterListServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public AssignPoliticalBusinessVoterListTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -99,6 +111,19 @@ public class AssignPoliticalBusinessVoterListTest : BaseWriteableDbGrpcTest<Vote
         await AssertStatus(
             async () => await GemeindeArneggElectionAdminClient.AssignPoliticalBusinessAsync(NewValidRequest()),
             StatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfAttachmentStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.AssignPoliticalBusinessAsync(NewValidRequest()),
+            StatusCode.InvalidArgument,
+            "Attachments not found or has not the correct state");
     }
 
     protected override async Task AuthorizationTestCall(VoterListService.VoterListServiceClient service)

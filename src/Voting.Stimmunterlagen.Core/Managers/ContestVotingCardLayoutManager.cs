@@ -13,6 +13,7 @@ using Voting.Lib.Common;
 using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
@@ -54,7 +55,7 @@ public class ContestVotingCardLayoutManager
         _mapper = mapper;
     }
 
-    public async Task SetLayout(Guid contestId, VotingCardType vcType, bool allowCustom, int templateId, VotingCardLayoutDataConfiguration dataConfiguration)
+    public async Task SetLayout(Guid contestId, VotingCardType vcType, bool allowCustom, int templateId, VotingCardLayoutDataConfiguration dataConfiguration, VotingCardColor color)
     {
         var existingLayout = await _contestLayoutRepo.Query()
             .AsTracking()
@@ -77,6 +78,7 @@ public class ContestVotingCardLayoutManager
         existingLayout.AllowCustom = allowCustom;
         existingLayout.TemplateId = templateId;
         existingLayout.DataConfiguration = dataConfiguration;
+        existingLayout.VotingCardColor = color;
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
 
@@ -97,7 +99,10 @@ public class ContestVotingCardLayoutManager
 
             doiLayout.DomainOfInfluenceTemplateId = null;
             doiLayout.OverriddenTemplateId = null;
+            doiLayout.DomainOfInfluenceVotingCardColor = null;
+            doiLayout.OverriddenVotingCardColor = null;
             doiLayout.TemplateId = existingLayout.TemplateId;
+            doiLayout.VotingCardColor = existingLayout.VotingCardColor;
             doiLayout.AllowCustom = existingLayout.AllowCustom;
             doiLayout.DataConfiguration = _mapper.Map<VotingCardLayoutDataConfiguration>(dataConfiguration);
             if (doiLayout.DomainOfInfluence!.StistatMunicipality && !contest.IsPoliticalAssembly)
@@ -142,6 +147,7 @@ public class ContestVotingCardLayoutManager
             throw new EntityNotFoundException(nameof(layout.Template), new { contestId, vcType });
         }
 
-        return await _templateManager.GetPdfPreview(null, layout.TemplateId.Value, layout.Contest!, layout.DataConfiguration, cancellationToken: ct);
+        var doi = DummyDoiBuilder.GetDummyDomainOfInfluence(_auth.Tenant.Id, layout.PrintData, layout.VotingCardColor);
+        return await _templateManager.GetPdfPreview(null, layout.TemplateId.Value, layout.Contest!, layout.DataConfiguration, doi, cancellationToken: ct);
     }
 }

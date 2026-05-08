@@ -5,6 +5,7 @@ using System;
 using AutoMapper;
 using AutoMapper.Extensions.EnumMapping;
 using Voting.Stimmunterlagen.Data.Models;
+using BasisProtoModels = Abraxas.Voting.Basis.Shared.V1;
 using ProtoModels = Voting.Stimmunterlagen.Proto.V1.Models;
 
 namespace Voting.Stimmunterlagen.MappingProfiles;
@@ -28,14 +29,14 @@ public class EnumProfile : Profile
         CreateEnumMap<VotingCardSort, ProtoModels.VotingCardSort>();
         CreateEnumMap<PrintJobState, ProtoModels.PrintJobState>();
         CreateEnumMap<VotingCardGeneratorJobState, ProtoModels.VotingCardGeneratorJobState>();
+        CreateEnumMap<VotingCardColor, ProtoModels.VotingCardColor>();
 
         // explicitly map deprecated values to default value.
-        CreateMap<Abraxas.Voting.Basis.Shared.V1.VotingCardColor, VotingCardColor>()
+        CreateMap<BasisProtoModels.VotingCardColor, VotingCardColor>()
             .ConvertUsingEnumMapping(opt => opt
                 .MapByValue()
-                .MapValue(Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Chamois, VotingCardColor.Unspecified)
-                .MapValue(Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Gold, VotingCardColor.Unspecified))
-            .ReverseMap();
+                .MapValue(BasisProtoModels.VotingCardColor.Chamois, VotingCardColor.Unspecified)
+                .MapValue(BasisProtoModels.VotingCardColor.Gold, VotingCardColor.Unspecified));
     }
 
     private void CreateEnumMap<T1, T2>()

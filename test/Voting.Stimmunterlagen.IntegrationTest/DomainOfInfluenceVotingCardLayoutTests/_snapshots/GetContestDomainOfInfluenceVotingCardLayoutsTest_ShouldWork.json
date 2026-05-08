@@ -78,7 +78,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -166,7 +170,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 8,
+          "DomainOfInfluenceColor": 8,
+          "OverriddenColor": 8,
+          "EffectiveColor": 8
         }
       ]
     },
@@ -248,7 +256,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -333,7 +345,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 8,
+          "OverriddenColor": 0,
+          "EffectiveColor": 8
         }
       ]
     },
@@ -415,7 +431,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -497,7 +517,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -579,7 +603,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     }

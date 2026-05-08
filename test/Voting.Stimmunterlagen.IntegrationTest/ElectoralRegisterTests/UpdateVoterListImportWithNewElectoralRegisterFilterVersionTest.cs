@@ -24,9 +24,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.ElectoralRegisterTests;
 
 public class UpdateVoterListImportWithNewElectoralRegisterFilterVersionTest : BaseWriteableDbGrpcTest<ElectoralRegisterService.ElectoralRegisterServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public UpdateVoterListImportWithNewElectoralRegisterFilterVersionTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -161,6 +172,19 @@ public class UpdateVoterListImportWithNewElectoralRegisterFilterVersionTest : Ba
 
         var response = await GemeindeArneggElectionAdminClient.UpdateVoterListImportWithNewFilterVersionAsync(NewRequest());
         response.ImportId.Should().NotBeEmpty();
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfAttachmentStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.UpdateVoterListImportWithNewFilterVersionAsync(NewRequest()),
+            StatusCode.InvalidArgument,
+            "Attachments not found or has not the correct state");
     }
 
     protected override async Task AuthorizationTestCall(ElectoralRegisterService.ElectoralRegisterServiceClient service)

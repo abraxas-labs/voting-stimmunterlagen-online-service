@@ -22,9 +22,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.AttachmentTests;
 
 public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.AttachmentServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public CreateAttachmentTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -64,6 +75,10 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     [Fact]
     public async Task ShouldCreateInPoliticalAssembly()
     {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = false);
+
         await ModifyDbEntities<Data.Models.VoterList>(
             x => x.Id == VoterListMockData.PoliticalAssemblyBundFutureApprovedGemeindeArneggSwissGuid,
             x => x.NumberOfVoters = 10);
@@ -151,6 +166,10 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     [Fact]
     public async Task ShouldThrowIfContestLocked()
     {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == ContestMockData.BundArchivedGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = true);
+
         await AssertStatus(
             async () => await GemeindeArneggElectionAdminClient.CreateAsync(
                 NewValidRequest(x =>
@@ -271,6 +290,19 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
 
         var doiCount = attachment.DomainOfInfluenceAttachmentCounts!.Single();
         doiCount.RequiredForVoterListsCount.Should().Be(10);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfPoliticalBusinessesNotApproved()
+    {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.CreateAsync(NewValidRequest()),
+            StatusCode.InvalidArgument,
+            "The political businesses step is not approved yet.");
     }
 
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)

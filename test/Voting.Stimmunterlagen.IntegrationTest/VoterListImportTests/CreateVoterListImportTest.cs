@@ -22,9 +22,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.VoterListImportTests;
 
 public class CreateVoterListImportTest : BaseVoterListImportRestTest
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public CreateVoterListImportTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -462,6 +473,21 @@ public class CreateVoterListImportTest : BaseVoterListImportRestTest
         {
             using var response = await StadtGossauClient.PostAsync(Url, content);
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        });
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfAttachmentStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = false);
+
+        var req = NewRequest();
+        await WithRequest(Ech0045TestFiles.File1, req, async content =>
+        {
+            using var response = await GemeindeArneggClient.PostAsync(Url, content);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         });
     }
 

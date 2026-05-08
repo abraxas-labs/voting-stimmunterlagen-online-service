@@ -77,6 +77,21 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task ShouldWorkForPoliticalAssemblyPrintA5AttachementA4()
+    {
+        var job = GetJob("voting_template_a5", true);
+        var attachments = GetAttachments(AttachmentFormat.A4);
+        var entries = _votingCardPrintFileBuilder.MapToPrintFileEntries(job, attachments, new() { OrderNumber = 955000, IsPoliticalAssembly = false });
+        entries.MatchSnapshot("rawEntries");
+
+        var csvBytes = await _votingCardPrintFileBuilder.BuildPrintFile(job, attachments);
+        using var ms = new MemoryStream(csvBytes);
+        using var streamReader = new StreamReader(ms);
+        var csv = streamReader.ReadToEnd();
+        csv.MatchRawSnapshot("VotingCardPrintFileTests", "_snapshots", $"{nameof(VotingCardPrintFileBuilderTest)}_{nameof(ShouldWorkForPoliticalAssemblyPrintA5AttachementA4)}.csv");
+    }
+
+    [Fact]
     public async Task ShouldWorkForPoliticalAssemblyPrintA4AttachementA4()
     {
         var job = GetJob("voting_template", true);

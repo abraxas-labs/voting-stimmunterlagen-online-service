@@ -38,6 +38,7 @@ public class AttachmentManager
     private readonly ContestManager _contestManager;
     private readonly DataContext _dbContext;
     private readonly PoliticalBusinessManager _pbManager;
+    private readonly IDbRepository<StepState> _stepStateRepo;
 
     public AttachmentManager(
         IAuth auth,
@@ -53,7 +54,8 @@ public class AttachmentManager
         AttachmentCategorySummaryBuilder summaryBuilder,
         ContestManager contestManager,
         DataContext dbContext,
-        PoliticalBusinessManager pbManager)
+        PoliticalBusinessManager pbManager,
+        IDbRepository<StepState> stepStateRepo)
     {
         _auth = auth;
         _attachmentRepo = attachmentRepo;
@@ -69,6 +71,7 @@ public class AttachmentManager
         _contestManager = contestManager;
         _dbContext = dbContext;
         _pbManager = pbManager;
+        _stepStateRepo = stepStateRepo;
     }
 
     public async Task<List<AttachmentCategorySummary>> ListCategorySummariesForFilter(Guid contestId, string queryString, AttachmentState? state, bool forPrintJobManagement)
@@ -176,6 +179,7 @@ public class AttachmentManager
 
     public async Task<Guid> Create(Attachment attachment, int requiredCount)
     {
+        await EnsurePoliticalBusinessesStepIsApproved(attachment.DomainOfInfluenceId);
         await EnsureValidCreateOrUpdate(attachment, requiredCount);
         await AddDomainOfInfluenceAttachmentCounts(attachment, requiredCount);
 
@@ -206,6 +210,7 @@ public class AttachmentManager
             ?? throw new EntityNotFoundException(nameof(Attachment), attachment.Id);
 
         attachment.DomainOfInfluenceId = existingAttachment.DomainOfInfluenceId;
+        await EnsurePoliticalBusinessesStepIsApproved(attachment.DomainOfInfluenceId);
         await EnsureValidCreateOrUpdate(attachment, requiredCount);
 
         await SetDomainOfInfluenceAttachmentRequiredCount(existingAttachment, existingAttachment.DomainOfInfluenceId, requiredCount);
@@ -227,6 +232,7 @@ public class AttachmentManager
             .SingleOrDefaultAsync(a => a.Id == id)
                 ?? throw new EntityNotFoundException(nameof(Attachment), id);
 
+        await EnsurePoliticalBusinessesStepIsApproved(attachment.DomainOfInfluenceId);
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
         await _attachmentRepo.DeleteByKey(id);
         await _domainOfInfluenceAttachmentCountRepo.UpdateRequiredForVoterListsCount(attachmentId: id, isPoliticalAssembly: attachment.DomainOfInfluence!.Contest!.IsPoliticalAssembly);
@@ -238,6 +244,10 @@ public class AttachmentManager
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
         await EnsureCanAssignPoliticalBusiness(attachmentId, politicalBusinessId);
+
+        var attachment = await _attachmentRepo.GetByKey(attachmentId)
+                         ?? throw new EntityNotFoundException(nameof(Attachment), attachmentId);
+        await EnsurePoliticalBusinessesStepIsApproved(attachment.DomainOfInfluenceId);
 
         await _politicalBusinessAttachmentEntryRepo.Create(new PoliticalBusinessAttachmentEntry
         {
@@ -255,10 +265,12 @@ public class AttachmentManager
         await EnsureCanAssignPoliticalBusiness(attachmentId, politicalBusinessId);
 
         var existingEntry = await _politicalBusinessAttachmentEntryRepo.Query()
+                                .Include(x => x.Attachment)
                                 .SingleOrDefaultAsync(x =>
                                     x.AttachmentId == attachmentId && x.PoliticalBusinessId == politicalBusinessId)
                             ?? throw new EntityNotFoundException(nameof(PoliticalBusinessAttachmentEntry), new { attachmentId, politicalBusinessId });
 
+        await EnsurePoliticalBusinessesStepIsApproved(existingEntry.Attachment!.DomainOfInfluenceId);
         await _politicalBusinessAttachmentEntryRepo.DeleteByKey(existingEntry.Id);
         await _domainOfInfluenceAttachmentCountRepo.UpdateRequiredForVoterListsCount(attachmentId: attachmentId);
         await _attachmentRepo.UpdateTotalCounts(attachmentId);
@@ -279,6 +291,8 @@ public class AttachmentManager
         {
             throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), domainOfInfluenceId);
         }
+
+        await EnsurePoliticalBusinessesStepIsApproved(domainOfInfluenceId);
 
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
         var attachment = await _attachmentRepo.Query()
@@ -316,6 +330,8 @@ public class AttachmentManager
             .WhereContestIsNotLocked()
             .FirstOrDefaultAsync(a => a.Id == attachmentId)
             ?? throw new EntityNotFoundException(nameof(Attachment), attachmentId);
+
+        await EnsurePoliticalBusinessesStepIsApproved(existingAttachment.DomainOfInfluenceId);
 
         // the count of the attachment owner is always set.
         existingAttachment.DomainOfInfluenceAttachmentCounts = existingAttachment.DomainOfInfluenceAttachmentCounts!
@@ -600,5 +616,23 @@ public class AttachmentManager
             || attachment.Category == AttachmentCategory.BrochureMu
             || attachment.Category == AttachmentCategory.OtherMu
             || attachment.Category == AttachmentCategory.VotingGuideMu;
+    }
+
+    private async Task EnsurePoliticalBusinessesStepIsApproved(Guid domainOfInfluenceId)
+    {
+        var doi = await _domainOfInfluenceRepo.Query()
+                      .Include(x => x.Contest)
+                      .SingleOrDefaultAsync(x => x.Id == domainOfInfluenceId)
+                  ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), domainOfInfluenceId);
+
+        if (doi.Contest!.IsPoliticalAssembly)
+        {
+            return;
+        }
+
+        if (!await _stepStateRepo.Query().AnyAsync(x => x.Approved && x.Step == Step.PoliticalBusinessesApproval && x.DomainOfInfluenceId == domainOfInfluenceId))
+        {
+            throw new ValidationException("The political businesses step is not approved yet.");
+        }
     }
 }

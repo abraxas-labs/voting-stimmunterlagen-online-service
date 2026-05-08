@@ -53,6 +53,13 @@ public abstract class BaseServiceModeTest<TFactory> : BaseTest<TFactory, Service
             return;
         }
 
+        await RunScoped(async (DataContext db) =>
+        {
+            var stepState = await db.StepStates.AsTracking().SingleAsync(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval);
+            stepState.Approved = true;
+            await db.SaveChangesAsync();
+        });
+
         using var channel = CreateGrpcChannel(true, roles: Roles.ElectionAdmin, tenant: MockDataSeeder.SecureConnectTenantIds.GemeindeArnegg);
         var client = new AttachmentService.AttachmentServiceClient(channel);
         var resp = await client.CreateAsync(new CreateAttachmentRequest

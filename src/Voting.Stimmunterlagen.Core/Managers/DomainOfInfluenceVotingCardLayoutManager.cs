@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -29,8 +30,8 @@ public class DomainOfInfluenceVotingCardLayoutManager
     private readonly IDbRepository<TemplateDataFieldValue> _templateValuesRepo;
     private readonly TemplateManager _templateManager;
     private readonly TemplateDataBuilder _templateDataBuilder;
-    private readonly ContestManager _contestManager;
     private readonly DataContext _dbContext;
+    private readonly IDbRepository<StepState> _stepStateRepo;
     private readonly IClock _clock;
 
     public DomainOfInfluenceVotingCardLayoutManager(
@@ -41,8 +42,8 @@ public class DomainOfInfluenceVotingCardLayoutManager
         TemplateManager templateManager,
         TemplateDataBuilder templateDataBuilder,
         IClock clock,
-        ContestManager contestManager,
-        DataContext dbContext)
+        DataContext dbContext,
+        IDbRepository<StepState> stepStateRepo)
     {
         _auth = auth;
         _doiLayoutRepo = doiLayoutRepo;
@@ -51,11 +52,11 @@ public class DomainOfInfluenceVotingCardLayoutManager
         _templateDataBuilder = templateDataBuilder;
         _doiRepo = doiRepo;
         _clock = clock;
-        _contestManager = contestManager;
         _dbContext = dbContext;
+        _stepStateRepo = stepStateRepo;
     }
 
-    public async Task SetLayout(Guid doiId, VotingCardType vcType, bool allowCustom, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration)
+    public async Task SetLayout(Guid doiId, VotingCardType vcType, bool allowCustom, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration, VotingCardColor? color)
     {
         var existingLayout = await _doiLayoutRepo.Query()
             .AsTracking()
@@ -70,8 +71,15 @@ public class DomainOfInfluenceVotingCardLayoutManager
             .FirstOrDefaultAsync(x => x.VotingCardType == vcType && x.DomainOfInfluenceId == doiId)
             ?? throw new EntityNotFoundException(nameof(DomainOfInfluenceVotingCardLayout), new { vcType, doiId });
 
+        if (!existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
+        {
+            await EnsurePoliticalBusinessesStepIsApproved(doiId);
+        }
+
         var oldEffectiveTemplateId = existingLayout.EffectiveTemplateId;
         existingLayout.OverriddenTemplateId = null;
+        existingLayout.OverriddenVotingCardColor = null;
+        existingLayout.DomainOfInfluenceVotingCardColor = color;
         existingLayout.AllowCustom = allowCustom;
         if (existingLayout.DomainOfInfluence!.StistatMunicipality && !existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
         {
@@ -103,9 +111,9 @@ public class DomainOfInfluenceVotingCardLayoutManager
         await _doiLayoutRepo.SaveChanges();
     }
 
-    public async Task SetOverriddenLayout(Guid doiId, VotingCardType vcType, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration)
+    public async Task SetOverriddenLayout(Guid doiId, VotingCardType vcType, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration, VotingCardColor color)
     {
-        await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);
+        await using var transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
         var existingLayout = await _doiLayoutRepo.Query()
             .AsTracking()
@@ -118,6 +126,11 @@ public class DomainOfInfluenceVotingCardLayoutManager
             .WhereContestPrintingCenterSignUpDeadlineNotSetOrNotPast(_clock)
             .FirstOrDefaultAsync()
             ?? throw new EntityNotFoundException(nameof(DomainOfInfluenceVotingCardLayout), new { vcType, doiId });
+
+        if (!existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
+        {
+            await EnsurePoliticalBusinessesStepIsApproved(doiId);
+        }
 
         if (!existingLayout.AllowCustom)
         {
@@ -142,6 +155,8 @@ public class DomainOfInfluenceVotingCardLayoutManager
             template = await _templateManager.GetOrCreateTemplate(templateId.Value);
             existingLayout.OverriddenTemplateId = templateId.Value;
         }
+
+        existingLayout.OverriddenVotingCardColor = color;
 
         SyncTemplateFields(existingLayout, template, true);
         await _doiLayoutRepo.SaveChanges();
@@ -289,5 +304,13 @@ public class DomainOfInfluenceVotingCardLayoutManager
 
         values.Clear();
         values.AddRange(newValues);
+    }
+
+    private async Task EnsurePoliticalBusinessesStepIsApproved(Guid domainOfInfluenceId)
+    {
+        if (!await _stepStateRepo.Query().AnyAsync(x => x.Approved && x.Step == Step.PoliticalBusinessesApproval && x.DomainOfInfluenceId == domainOfInfluenceId))
+        {
+            throw new ValidationException("The political businesses step is not approved yet.");
+        }
     }
 }

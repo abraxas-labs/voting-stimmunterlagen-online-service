@@ -22,9 +22,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.VoterListImportTests;
 
 public class UpdateVoterListImportTest : BaseVoterListImportRestTest
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public UpdateVoterListImportTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -318,14 +329,18 @@ public class UpdateVoterListImportTest : BaseVoterListImportRestTest
     }
 
     [Fact]
-    public Task ShouldThrowContestLocked()
+    public async Task ShouldThrowContestLocked()
     {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == ContestMockData.BundArchivedGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
+
         var req = new UpdateVoterListImportRequest
         {
             Name = "my-file-001",
             LastUpdate = MockedClock.GetDate(-1),
         };
-        return WithRequest(Ech0045TestFiles.File1, req, async content =>
+        await WithRequest(Ech0045TestFiles.File1, req, async content =>
         {
             using var response = await GemeindeArneggClient.PutAsync(UpdateUrl(VoterListImportMockData.BundArchivedGemeindeArneggGuid), content);
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
@@ -341,6 +356,21 @@ public class UpdateVoterListImportTest : BaseVoterListImportRestTest
         {
             using var response = await GemeindeArneggClient.PutAsync(UpdateUrl(VoterListImportMockData.BundFutureApprovedGemeindeArneggGuid), content);
             response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        });
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfAttachmentStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = false);
+
+        var req = NewRequest();
+        await WithRequest(Ech0045TestFiles.File1, req, async content =>
+        {
+            using var response = await GemeindeArneggClient.PutAsync(UpdateUrl(VoterListImportMockData.BundFutureApprovedGemeindeArneggGuid), content);
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         });
     }
 

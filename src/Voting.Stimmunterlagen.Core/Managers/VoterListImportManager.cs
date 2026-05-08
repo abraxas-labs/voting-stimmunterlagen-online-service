@@ -15,6 +15,7 @@ using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.EventProcessors;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Managers.Steps;
 using Voting.Stimmunterlagen.Core.Managers.Stistat;
 using Voting.Stimmunterlagen.Core.Models.VoterListImport;
 using Voting.Stimmunterlagen.Core.Utils;
@@ -44,6 +45,7 @@ public class VoterListImportManager
     private readonly VoterListImportBatchHandler _voterListImportBatchHandler;
     private readonly VoterListBuilder _voterListBuilder;
     private readonly StistatExportManager _stistatExportManager;
+    private readonly StepManager _stepManager;
 
     public VoterListImportManager(
         IDbRepository<VoterListImport> repo,
@@ -59,7 +61,8 @@ public class VoterListImportManager
         ILogger<VoterListImportManager> logger,
         VoterListImportBatchHandler voterListImportBatchHandler,
         VoterListBuilder voterListBuilder,
-        StistatExportManager stistatExportManager)
+        StistatExportManager stistatExportManager,
+        StepManager stepManager)
     {
         _repo = repo;
         _doiRepo = doiRepo;
@@ -75,6 +78,7 @@ public class VoterListImportManager
         _voterListInsertBatchSize = config.VoterListInsertBatchSize;
         _voterListBuilder = voterListBuilder;
         _stistatExportManager = stistatExportManager;
+        _stepManager = stepManager;
     }
 
     public async Task<VoterListImport> Get(Guid id)
@@ -96,6 +100,8 @@ public class VoterListImportManager
             .WhereContestIsNotPastGenerateVotingCardsDeadline(_clock)
             .FirstOrDefaultAsync(a => a.Id == id)
             ?? throw new EntityNotFoundException(nameof(VoterList), id);
+
+        await _stepManager.EnsureStepApproved(import.DomainOfInfluenceId, Step.Attachments);
 
         await _repo.DeleteByKey(id);
         await _attachmentManager.UpdateRequiredCountForDomainOfInfluence(import.DomainOfInfluenceId);
@@ -123,6 +129,7 @@ public class VoterListImportManager
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted, ct);
         var doi = await GetDomainOfInfluence(import.DomainOfInfluenceId, ct);
+        await _stepManager.EnsureStepApproved(doi.Id, Step.Attachments);
         await EnsureValidCreateOrUpdate(import, null, doi);
         var existingVoterKeys = await GetExistingVoterKeys(import.DomainOfInfluenceId, ct);
 
@@ -184,6 +191,7 @@ public class VoterListImportManager
             ?? throw new EntityNotFoundException(nameof(VoterListImport), import.Id);
 
         import.DomainOfInfluenceId = existingImport.DomainOfInfluenceId;
+        await _stepManager.EnsureStepApproved(existingImport.DomainOfInfluenceId, Step.Attachments);
 
         var doi = await GetDomainOfInfluence(import.DomainOfInfluenceId, ct);
         await EnsureValidCreateOrUpdate(import, existingImport, doi);

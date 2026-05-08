@@ -13,7 +13,6 @@ using Voting.Stimmunterlagen.Data.Models;
 using Contest = Voting.Stimmunterlagen.Data.Models.Contest;
 using DomainOfInfluence = Voting.Stimmunterlagen.Core.Models.TemplateData.DomainOfInfluence;
 using Voter = Voting.Stimmunterlagen.Core.Models.TemplateData.Voter;
-using VotingCardColor = Voting.Stimmunterlagen.Core.Models.TemplateData.VotingCardColor;
 
 namespace Voting.Stimmunterlagen.Core.Managers.Templates;
 
@@ -72,20 +71,6 @@ public class TemplateDataBuilder
                 voter.DomainOfInfluenceIdentificationsSchool = null;
             }
         }
-    }
-
-    internal ContestDomainOfInfluence GetDummyDomainOfInfluence(string tennantId)
-    {
-        return new ContestDomainOfInfluence()
-        {
-            Name = "Test-Gemeinde XY",
-            ShortName = "XY",
-            SecureConnectId = tennantId,
-            ReturnAddress = new() { AddressLine1 = "Gemeindeverwaltung XY", AddressLine2 = "Adresszeile 2", Street = "Strasse 99", AddressAddition = "Adress Zusatz", ZipCode = "9999", City = "XY", Country = "SWITZERLAND" },
-            PrintData = new() { ShippingAway = VotingCardShippingFranking.A, ShippingReturn = VotingCardShippingFranking.GasA, ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen, ShippingVotingCardsToDeliveryAddress = false },
-            SwissPostData = new() { InvoiceReferenceNumber = "000000000", FrankingLicenceReturnNumber = "000000000" },
-            LogoRef = string.Empty,
-        };
     }
 
     internal IEnumerable<TemplateDataFieldValue> BuildUserEnteredValues(
@@ -198,16 +183,16 @@ public class TemplateDataBuilder
         return new TemplateBagWrapper(templateBag);
     }
 
-    private VotingCardColor? BuildVotingCardColor(ContestDomainOfInfluence doi)
+    private Models.TemplateData.VotingCardColor? BuildVotingCardColor(ContestDomainOfInfluence doi)
     {
         var color = doi.VotingCardColor switch
         {
-            Data.Models.VotingCardColor.Blue => new VotingCardColor(20, 0, 0, 0),
-            Data.Models.VotingCardColor.Yellow => new VotingCardColor(0, 0, 20, 0),
-            Data.Models.VotingCardColor.Grey => new VotingCardColor(0, 0, 0, 10),
-            Data.Models.VotingCardColor.Pink => new VotingCardColor(0, 10, 0, 0),
-            Data.Models.VotingCardColor.Red => new VotingCardColor(0, 21, 24, 0),
-            Data.Models.VotingCardColor.Green => new VotingCardColor(15, 0, 15, 0),
+            Data.Models.VotingCardColor.Blue => new Models.TemplateData.VotingCardColor(20, 0, 0, 0),
+            Data.Models.VotingCardColor.Yellow => new Models.TemplateData.VotingCardColor(0, 0, 20, 0),
+            Data.Models.VotingCardColor.Grey => new Models.TemplateData.VotingCardColor(0, 0, 0, 10),
+            Data.Models.VotingCardColor.Pink => new Models.TemplateData.VotingCardColor(0, 10, 0, 0),
+            Data.Models.VotingCardColor.Red => new Models.TemplateData.VotingCardColor(0, 21, 24, 0),
+            Data.Models.VotingCardColor.Green => new Models.TemplateData.VotingCardColor(15, 0, 15, 0),
             Data.Models.VotingCardColor.Unspecified => null,
             _ => throw new InvalidOperationException($"{doi.VotingCardColor} is not supported"),
         };

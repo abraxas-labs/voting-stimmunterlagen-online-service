@@ -1,6 +1,7 @@
 // (c) Copyright by Abraxas Informatik AG
 // For license information see LICENSE file
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -20,9 +21,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.DomainOfInfluenceVotingCardLayo
 public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
     BaseWriteableDbGrpcTest<DomainOfInfluenceVotingCardLayoutService.DomainOfInfluenceVotingCardLayoutServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public SetOverriddenDomainOfInfluenceVotingCardLayoutTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -39,6 +51,10 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
         layout.DomainOfInfluenceTemplateId.Should().BeNull();
         layout.OverriddenTemplateId.Should().Be(DmDocServiceMock.TemplateSwissArneggNotSeeded.Id);
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwissArneggNotSeeded.Id);
+        layout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
+        layout.DomainOfInfluenceVotingCardColor.Should().BeNull();
+        layout.OverriddenVotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
+        layout.EffectiveVotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
     }
 
     [Fact]
@@ -50,6 +66,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
             DataConfiguration = new(),
+            Color = VotingCardColor.Yellow,
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -79,6 +96,10 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
         layout.DomainOfInfluenceTemplateId.Should().BeNull();
         layout.OverriddenTemplateId.Should().BeNull();
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
+        layout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
+        layout.DomainOfInfluenceVotingCardColor.Should().BeNull();
+        layout.OverriddenVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
+        layout.EffectiveVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
     }
 
     [Fact]
@@ -91,6 +112,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
                 DataConfiguration = new(),
+                Color = VotingCardColor.Green,
             }),
             StatusCode.NotFound);
     }
@@ -108,6 +130,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
                 DataConfiguration = new(),
+                Color = VotingCardColor.Green,
             }),
             StatusCode.InvalidArgument,
             "custom layout is not allowed");
@@ -123,6 +146,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundArchivedGemeindeArneggId,
                 DataConfiguration = new(),
+                Color = VotingCardColor.Green,
             }),
             StatusCode.NotFound);
     }
@@ -134,6 +158,19 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
         await AssertStatus(
             async () => await GemeindeArneggElectionAdminClient.SetOverriddenLayoutAsync(NewValidRequest()),
             StatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfPoliticalBusinessesNotApproved()
+    {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.SetOverriddenLayoutAsync(NewValidRequest()),
+            StatusCode.InvalidArgument,
+            "The political businesses step is not approved yet.");
     }
 
     protected override async Task AuthorizationTestCall(
@@ -160,6 +197,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 IncludeDateOfBirth = true,
                 IncludeReligion = true,
             },
+            Color = VotingCardColor.Yellow,
         };
     }
 }

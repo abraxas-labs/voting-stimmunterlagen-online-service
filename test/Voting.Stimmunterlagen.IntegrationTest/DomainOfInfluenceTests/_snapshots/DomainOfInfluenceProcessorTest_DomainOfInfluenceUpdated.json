@@ -401,19 +401,22 @@
         "Name": "Gossau updated",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true
+        "AllowCustom": true,
+        "VotingCardColor": 0
       },
       {
         "Name": "Gossau updated",
         "VotingCardType": 1,
         "TemplateId": null,
-        "AllowCustom": true
+        "AllowCustom": true,
+        "VotingCardColor": 0
       },
       {
         "Name": "Gossau updated",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true
+        "AllowCustom": true,
+        "VotingCardColor": 0
       }
     ]
   },

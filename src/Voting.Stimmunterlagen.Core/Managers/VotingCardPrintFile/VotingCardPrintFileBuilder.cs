@@ -24,7 +24,8 @@ public class VotingCardPrintFileBuilder
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA4 = "V4";
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5 = "V5";
     private const string DocIdPoliticalAssemblyWithAttachmentFormatA5 = "V5A5";
-    private const string DocIdContestWithAttchmentFormatA4LayoutA5 = "U4A5";
+    private const string DocIdContestWithAttachmentFormatA4LayoutA5 = "U4A5";
+    private const string DocIdPoliticalAssemblyWithAttachmentFormatA4LayoutA5 = "V4A5";
     private static readonly VotingCardShippingMethod DefaultEVotingShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen;
 
     private readonly CsvService _csvService;
@@ -89,7 +90,7 @@ public class VotingCardPrintFileBuilder
             {
                 docId = hasA4Format
                     ? DocIdPoliticalAssemblyWithAttachmentFormatA4
-                    : DocIdPoliticalAssemblyWithAttachmentFormatA4ShippmentC5;
+                    : DocIdPoliticalAssemblyWithAttachmentFormatA4LayoutA5;
             }
             else
             {
@@ -104,7 +105,7 @@ public class VotingCardPrintFileBuilder
             {
                 docId = hasA4Format
                     ? DocIdContestWithAttachmentFormatA4
-                    : DocIdContestWithAttchmentFormatA4LayoutA5;
+                    : DocIdContestWithAttachmentFormatA4LayoutA5;
             }
             else
             {

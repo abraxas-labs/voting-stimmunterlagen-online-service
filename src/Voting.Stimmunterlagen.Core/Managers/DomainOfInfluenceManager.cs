@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -23,19 +24,22 @@ public class DomainOfInfluenceManager
     private readonly IDbRepository<ContestDomainOfInfluenceHierarchyEntry> _doiHierarchyEntryRepo;
     private readonly IAuth _auth;
     private readonly IClock _clock;
+    private readonly IDbRepository<StepState> _stepStateRepo;
 
     public DomainOfInfluenceManager(
         IDbRepository<Contest> contestRepo,
         IAuth auth,
         IDbRepository<ContestDomainOfInfluence> doiRepo,
         IDbRepository<ContestDomainOfInfluenceHierarchyEntry> doiHierarchyEntryRepo,
-        IClock clock)
+        IClock clock,
+        IDbRepository<StepState> stepStateRepo)
     {
         _contestRepo = contestRepo;
         _auth = auth;
         _doiRepo = doiRepo;
         _doiHierarchyEntryRepo = doiHierarchyEntryRepo;
         _clock = clock;
+        _stepStateRepo = stepStateRepo;
     }
 
     public async Task<List<ContestDomainOfInfluence>> ListManagedByCurrentTenant(Guid contestId)
@@ -109,6 +113,7 @@ public class DomainOfInfluenceManager
 
     public async Task SetCountOfEmptyVotingCards(Guid doiId, int countOfEmptyVotingCards)
     {
+        await EnsureAttachmentStepIsApproved(doiId);
         var doi = await _doiRepo.Query()
             .Where(doi => doi.HasEmptyVotingCards)
             .WhereUsesVotingCardsInCurrentContest()
@@ -177,5 +182,13 @@ public class DomainOfInfluenceManager
         }
 
         return parentsAndSelfByDoiId;
+    }
+
+    private async Task EnsureAttachmentStepIsApproved(Guid domainOfInfluenceId)
+    {
+        if (!await _stepStateRepo.Query().AnyAsync(x => x.Approved && x.Step == Step.Attachments && x.DomainOfInfluenceId == domainOfInfluenceId))
+        {
+            throw new ValidationException("The attachment step is not approved yet.");
+        }
     }
 }

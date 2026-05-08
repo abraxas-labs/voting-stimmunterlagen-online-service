@@ -1,6 +1,7 @@
 ﻿// (c) Copyright by Abraxas Informatik AG
 // For license information see LICENSE file
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,9 +22,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.VoterListImportTests;
 
 public class DeleteVoterListImportTest : BaseWriteableDbGrpcTest<VoterListImportService.VoterListImportServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public DeleteVoterListImportTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -236,6 +248,19 @@ public class DeleteVoterListImportTest : BaseWriteableDbGrpcTest<VoterListImport
         await AssertStatus(
             async () => await AbraxasElectionAdminClient.DeleteAsync(new IdValueRequest { Id = VoterListImportMockData.BundFutureApprovedGemeindeArneggId }),
             StatusCode.NotFound);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfAttachmentStepNotApproved()
+    {
+        await ModifyDbEntities<StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Step.Attachments,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.DeleteAsync(new IdValueRequest { Id = VoterListImportMockData.BundFutureApprovedGemeindeArneggElectoralRegisterId }),
+            StatusCode.InvalidArgument,
+            "Attachments not found or has not the correct state");
     }
 
     protected override async Task AuthorizationTestCall(VoterListImportService.VoterListImportServiceClient service)

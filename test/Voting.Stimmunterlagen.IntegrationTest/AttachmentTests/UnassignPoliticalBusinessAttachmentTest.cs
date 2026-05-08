@@ -19,9 +19,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.AttachmentTests;
 
 public class UnassignPoliticalBusinessAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.AttachmentServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public UnassignPoliticalBusinessAttachmentTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -92,6 +103,19 @@ public class UnassignPoliticalBusinessAttachmentTest : BaseWriteableDbGrpcTest<A
         await AssertStatus(
             async () => await GemeindeArneggElectionAdminClient.UnassignPoliticalBusinessAsync(NewValidRequest()),
             StatusCode.PermissionDenied);
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfPoliticalBusinessesNotApproved()
+    {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.UnassignPoliticalBusinessAsync(NewValidRequest()),
+            StatusCode.InvalidArgument,
+            "The political businesses step is not approved yet.");
     }
 
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)

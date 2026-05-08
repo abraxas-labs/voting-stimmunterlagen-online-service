@@ -18,4 +18,6 @@ public abstract class VotingCardLayout : BaseEntity
     public VotingCardLayoutDataConfiguration DataConfiguration { get; set; } = new();
 
     public DomainOfInfluenceVotingCardPrintData? PrintData { get; set; }
+
+    public VotingCardColor VotingCardColor { get; set; }
 }

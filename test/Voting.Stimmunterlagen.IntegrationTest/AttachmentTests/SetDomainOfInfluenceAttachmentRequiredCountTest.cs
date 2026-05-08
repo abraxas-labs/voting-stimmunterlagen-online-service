@@ -19,9 +19,20 @@ namespace Voting.Stimmunterlagen.IntegrationTest.AttachmentTests;
 
 public class SetDomainOfInfluenceAttachmentRequiredCountTest : BaseWriteableDbGrpcTest<AttachmentService.AttachmentServiceClient>
 {
+    private static readonly Guid DefaultContestGuid = ContestMockData.BundFutureApprovedGuid;
+
     public SetDomainOfInfluenceAttachmentRequiredCountTest(TestApplicationFactory factory)
         : base(factory)
     {
+    }
+
+    public override async Task InitializeAsync()
+    {
+        await base.InitializeAsync();
+
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = true);
     }
 
     [Fact]
@@ -188,6 +199,19 @@ public class SetDomainOfInfluenceAttachmentRequiredCountTest : BaseWriteableDbGr
             async () => await StadtGossauElectionAdminClient.SetDomainOfInfluenceAttachmentRequiredCountAsync(NewValidRequest()),
             StatusCode.NotFound,
             "DomainOfInfluenceAttachmentCount");
+    }
+
+    [Fact]
+    public async Task ShouldThrowIfPoliticalBusinessesNotApproved()
+    {
+        await ModifyDbEntities<Data.Models.StepState>(
+            x => x.DomainOfInfluence!.ContestId == DefaultContestGuid && x.Step == Data.Models.Step.PoliticalBusinessesApproval,
+            x => x.Approved = false);
+
+        await AssertStatus(
+            async () => await StadtGossauElectionAdminClient.SetDomainOfInfluenceAttachmentRequiredCountAsync(NewValidRequest()),
+            StatusCode.InvalidArgument,
+            "The political businesses step is not approved yet.");
     }
 
     protected override async Task AuthorizationTestCall(AttachmentService.AttachmentServiceClient service)
