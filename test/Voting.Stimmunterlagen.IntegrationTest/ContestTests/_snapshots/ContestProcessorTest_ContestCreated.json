@@ -205,8 +205,7 @@
       {
         "VotingCardType": 1,
         "TemplateId": null,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       }
     ]
   },

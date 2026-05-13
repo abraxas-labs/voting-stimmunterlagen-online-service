@@ -191,7 +191,6 @@ public static class DomainOfInfluenceVotingCardLayoutMockData
                 out var doiTemplateId))
             {
                 layout.DomainOfInfluenceTemplateId = doiTemplateId;
-                layout.DomainOfInfluenceVotingCardColor = VotingCardColor.Green;
             }
 
             if (OverriddenTemplates.TryGetValue(
@@ -199,7 +198,6 @@ public static class DomainOfInfluenceVotingCardLayoutMockData
                 out var overriddenTemplateId))
             {
                 layout.OverriddenTemplateId = overriddenTemplateId;
-                layout.OverriddenVotingCardColor = VotingCardColor.Green;
             }
         }
     }

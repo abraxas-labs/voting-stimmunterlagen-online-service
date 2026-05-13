@@ -126,11 +126,12 @@ public class TemplateManager
         int templateId,
         Contest contest,
         VotingCardLayoutDataConfiguration dataConfig,
-        ContestDomainOfInfluence domainOfInfluence,
+        ContestDomainOfInfluence? domainOfInfluence = null,
         IEnumerable<TemplateDataFieldValue>? data = null,
         IEnumerable<Voter>? voters = null,
         CancellationToken cancellationToken = default)
     {
+        domainOfInfluence ??= _templateDataBuilder.GetDummyDomainOfInfluence(_auth.Tenant.Id);
         var templateBag = await BuildTemplateBag(contestDate, templateId, contest, dataConfig, domainOfInfluence, data, voters, cancellationToken);
         return await _dmDoc.PreviewAsPdf(templateId, templateBag, SerialLetterBulkRoot, cancellationToken);
     }

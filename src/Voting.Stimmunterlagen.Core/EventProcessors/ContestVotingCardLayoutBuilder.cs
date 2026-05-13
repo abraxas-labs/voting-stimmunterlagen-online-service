@@ -45,7 +45,7 @@ public class ContestVotingCardLayoutBuilder : VotingCardLayoutBuilder<ContestVot
             .FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new EntityNotFoundException(nameof(Contest), id);
 
-        SyncVotingCardLayouts(contest.VotingCardLayouts!, basisDomainOfInfluence.PrintData, basisDomainOfInfluence.VotingCardColor);
+        SyncVotingCardLayouts(contest.VotingCardLayouts!, basisDomainOfInfluence.PrintData);
 
         await _context.SaveChangesAsync();
     }

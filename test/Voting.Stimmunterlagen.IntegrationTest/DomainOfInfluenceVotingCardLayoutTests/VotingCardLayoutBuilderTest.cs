@@ -40,7 +40,6 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
                 ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
                 ShippingVotingCardsToDeliveryAddress = true,
             },
-            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Green,
         });
 
         var contestDomainOfInfluencesAfterUpdate = await RunOnDb(
@@ -51,7 +50,7 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
 
     [Fact]
 
-    public async Task Should_UpdateContestLayout_WithoutChangingColor()
+    public async Task DomainOfInfluenceVotingCardDataShouldUpdateContestLayout()
     {
         var id = Guid.Parse("d59da8b8-8af3-4082-afe1-db133bc21897");
         var contestVotingCardLayouts =
@@ -78,7 +77,6 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
                 ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
                 ShippingVotingCardsToDeliveryAddress = true,
             },
-            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Yellow,
         });
 
         var contestVotingCardLayoutsAfterUpdate =

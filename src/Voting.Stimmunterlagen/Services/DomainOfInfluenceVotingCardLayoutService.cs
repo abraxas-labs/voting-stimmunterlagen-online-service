@@ -15,7 +15,6 @@ using Voting.Stimmunterlagen.Core.Models;
 using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using GroupedDomainOfInfluenceVotingCardLayouts = Voting.Stimmunterlagen.Proto.V1.Models.GroupedDomainOfInfluenceVotingCardLayouts;
-using VotingCardColor = Voting.Stimmunterlagen.Data.Models.VotingCardColor;
 using VotingCardLayoutDataConfiguration = Voting.Stimmunterlagen.Data.Models.VotingCardLayoutDataConfiguration;
 using VotingCardType = Voting.Stimmunterlagen.Data.Models.VotingCardType;
 
@@ -40,8 +39,7 @@ public class DomainOfInfluenceVotingCardLayoutService : Proto.V1.DomainOfInfluen
             _mapper.Map<VotingCardType>(request.VotingCardType),
             request.AllowCustom,
             request.TemplateId,
-            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration),
-            _mapper.Map<VotingCardColor>(request.Color));
+            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration));
         return ProtobufEmpty.Instance;
     }
 
@@ -53,8 +51,7 @@ public class DomainOfInfluenceVotingCardLayoutService : Proto.V1.DomainOfInfluen
             GuidParser.Parse(request.DomainOfInfluenceId),
             _mapper.Map<VotingCardType>(request.VotingCardType),
             request.TemplateId,
-            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration),
-            _mapper.Map<VotingCardColor>(request.Color));
+            _mapper.Map<VotingCardLayoutDataConfiguration>(request.DataConfiguration));
         return ProtobufEmpty.Instance;
     }
 

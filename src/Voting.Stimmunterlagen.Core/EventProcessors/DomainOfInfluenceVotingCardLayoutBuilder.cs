@@ -55,6 +55,6 @@ public class DomainOfInfluenceVotingCardLayoutBuilder : VotingCardLayoutBuilder<
             return;
         }
 
-        SyncVotingCardLayouts(contestDomainOfInfluence.VotingCardLayouts!, doiBasis.PrintData, doiBasis.VotingCardColor);
+        SyncVotingCardLayouts(contestDomainOfInfluence.VotingCardLayouts!, doiBasis.PrintData);
     }
 }

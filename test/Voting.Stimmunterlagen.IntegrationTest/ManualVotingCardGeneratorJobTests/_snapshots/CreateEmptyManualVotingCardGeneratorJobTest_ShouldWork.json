@@ -16,9 +16,6 @@
     "OverriddenTemplate": null,
     "EffectiveTemplate": null,
     "EffectiveTemplateId": 100,
-    "DomainOfInfluenceVotingCardColor": null,
-    "OverriddenVotingCardColor": 8,
-    "EffectiveVotingCardColor": 8,
     "TemplateDataFieldValues": null,
     "Jobs": [],
     "ManualJobs": [],
@@ -40,7 +37,6 @@
       "ShippingMethod": 3,
       "ShippingVotingCardsToDeliveryAddress": false
     },
-    "VotingCardColor": 8,
     "Id": "00000000-0000-0000-0000-000000000000"
   },
   "LayoutId": "00000000-0000-0000-0000-000000000000",

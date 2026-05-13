@@ -142,7 +142,12 @@ public class Startup
 
         services.AddProtoValidators();
         services.AddScoped<AppContext>();
-        services.AddGrpcReflection();
+
+        if (AppConfig.Api.EnableGrpcReflection)
+        {
+            services.AddGrpcReflection();
+        }
+
         services.AddSwaggerGenerator(_configuration);
         services.AddSecureConnectServiceAccount(AppConfig.SharedSecureConnectServiceAccountName, AppConfig.SharedSecureConnect);
     }
@@ -155,7 +160,12 @@ public class Startup
         }
 
         endpoints.MapControllers();
-        endpoints.MapGrpcReflectionService();
+
+        if (AppConfig.Api.EnableGrpcReflection)
+        {
+            endpoints.MapGrpcReflectionService().RequireAuthorization();
+        }
+
         endpoints.MapGrpcService<ContestService>();
         endpoints.MapGrpcService<DomainOfInfluenceService>();
         endpoints.MapGrpcService<PoliticalBusinessService>();

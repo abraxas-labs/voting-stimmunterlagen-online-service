@@ -509,8 +509,7 @@
       {
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       }
     ]
   },
@@ -520,50 +519,43 @@
         "Name": "Auslandschweizer",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "Gemeinde Arnegg",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 8
+        "AllowCustom": true
       },
       {
         "Name": "Kirchgemeinde Arnegg",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "Stadt Gossau",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "Stadt St. Gallen",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "Stadt Uzwil",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "Zweckverband ARA Gossau",
         "VotingCardType": 1,
         "TemplateId": 1,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       }
     ]
   },

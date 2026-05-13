@@ -56,7 +56,7 @@ public class DomainOfInfluenceVotingCardLayoutManager
         _stepStateRepo = stepStateRepo;
     }
 
-    public async Task SetLayout(Guid doiId, VotingCardType vcType, bool allowCustom, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration, VotingCardColor? color)
+    public async Task SetLayout(Guid doiId, VotingCardType vcType, bool allowCustom, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration)
     {
         var existingLayout = await _doiLayoutRepo.Query()
             .AsTracking()
@@ -78,8 +78,6 @@ public class DomainOfInfluenceVotingCardLayoutManager
 
         var oldEffectiveTemplateId = existingLayout.EffectiveTemplateId;
         existingLayout.OverriddenTemplateId = null;
-        existingLayout.OverriddenVotingCardColor = null;
-        existingLayout.DomainOfInfluenceVotingCardColor = color;
         existingLayout.AllowCustom = allowCustom;
         if (existingLayout.DomainOfInfluence!.StistatMunicipality && !existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
         {
@@ -111,7 +109,7 @@ public class DomainOfInfluenceVotingCardLayoutManager
         await _doiLayoutRepo.SaveChanges();
     }
 
-    public async Task SetOverriddenLayout(Guid doiId, VotingCardType vcType, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration, VotingCardColor color)
+    public async Task SetOverriddenLayout(Guid doiId, VotingCardType vcType, int? templateId, VotingCardLayoutDataConfiguration dataConfiguration)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(IsolationLevel.ReadCommitted);
 
@@ -155,8 +153,6 @@ public class DomainOfInfluenceVotingCardLayoutManager
             template = await _templateManager.GetOrCreateTemplate(templateId.Value);
             existingLayout.OverriddenTemplateId = templateId.Value;
         }
-
-        existingLayout.OverriddenVotingCardColor = color;
 
         SyncTemplateFields(existingLayout, template, true);
         await _doiLayoutRepo.SaveChanges();

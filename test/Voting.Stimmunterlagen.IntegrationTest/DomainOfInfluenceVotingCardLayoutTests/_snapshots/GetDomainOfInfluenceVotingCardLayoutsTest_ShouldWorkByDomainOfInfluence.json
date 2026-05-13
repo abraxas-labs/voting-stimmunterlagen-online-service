@@ -24,11 +24,7 @@
         "IncludeIsHouseholder": false,
         "IncludeDomainOfInfluenceChurch": false,
         "IncludeDomainOfInfluenceSchool": false
-      },
-      "ContestColor": 8,
-      "DomainOfInfluenceColor": 0,
-      "OverriddenColor": 8,
-      "EffectiveColor": 8
+      }
     }
   ]
 }

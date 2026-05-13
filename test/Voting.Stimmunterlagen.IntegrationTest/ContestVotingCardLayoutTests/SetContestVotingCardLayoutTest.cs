@@ -16,7 +16,6 @@ using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using Xunit;
-using VotingCardColor = Voting.Stimmunterlagen.Proto.V1.Models.VotingCardColor;
 using VotingCardType = Voting.Stimmunterlagen.Proto.V1.Models.VotingCardType;
 
 namespace Voting.Stimmunterlagen.IntegrationTest.ContestVotingCardLayoutTests;
@@ -41,7 +40,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
             {
                 IncludePersonId = true,
             },
-            Color = VotingCardColor.Yellow,
         });
 
         var contestLayout = await RunOnDb(db => db.ContestVotingCardLayouts
@@ -49,7 +47,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
         contestLayout.AllowCustom.Should().BeTrue();
         contestLayout.TemplateId.Should().Be(DmDocServiceMock.TemplateOthers2.Id);
         contestLayout.DataConfiguration.IncludePersonId.Should().BeTrue();
-        contestLayout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
 
         var doiLayouts = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
             .Where(x => x.VotingCardType == Data.Models.VotingCardType.Swiss && x.DomainOfInfluence!.ContestId == ContestMockData.BundFutureGuid)
@@ -60,10 +57,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
         doiLayouts.All(x => x.OverriddenTemplateId == null).Should().BeTrue();
         doiLayouts.All(x => x.EffectiveTemplateId == DmDocServiceMock.TemplateOthers2.Id).Should().BeTrue();
         doiLayouts.All(x => x.DataConfiguration.IncludePersonId).Should().BeTrue();
-        doiLayouts.All(x => x.VotingCardColor == Data.Models.VotingCardColor.Yellow).Should().BeTrue();
-        doiLayouts.All(x => x.DomainOfInfluenceVotingCardColor == null).Should().BeTrue();
-        doiLayouts.All(x => x.OverriddenVotingCardColor == null).Should().BeTrue();
-        doiLayouts.All(x => x.EffectiveVotingCardColor == Data.Models.VotingCardColor.Yellow).Should().BeTrue();
     }
 
     [Fact]
@@ -76,7 +69,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
             TemplateId = DmDocServiceMock.TemplateOthers2.Id,
             VotingCardType = VotingCardType.Swiss,
             DataConfiguration = new(),
-            Color = VotingCardColor.Yellow,
         });
 
         var contestLayout = await RunOnDb(db => db.ContestVotingCardLayouts
@@ -115,8 +107,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 l.DomainOfInfluenceTemplateId = DmDocServiceMock.TemplateSwiss.Id;
                 l.OverriddenTemplateId = DmDocServiceMock.TemplateOthers.Id;
                 l.AllowCustom = true;
-                l.DomainOfInfluenceVotingCardColor = Data.Models.VotingCardColor.Unspecified;
-                l.OverriddenVotingCardColor = Data.Models.VotingCardColor.Unspecified;
             });
 
         await AbraxasElectionAdminClient.SetLayoutAsync(new SetContestVotingCardLayoutRequest
@@ -126,7 +116,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
             TemplateId = DmDocServiceMock.TemplateOthers2.Id,
             VotingCardType = VotingCardType.Swiss,
             DataConfiguration = new(),
-            Color = VotingCardColor.Yellow,
         });
 
         var affectedLayout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts.SingleAsync(l => l.DomainOfInfluenceId == affectedDoiGuid));
@@ -136,17 +125,11 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
         unaffectedLayout.DomainOfInfluenceTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
         unaffectedLayout.OverriddenTemplateId.Should().Be(DmDocServiceMock.TemplateOthers.Id);
         unaffectedLayout.AllowCustom.Should().BeTrue();
-        unaffectedLayout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
-        unaffectedLayout.DomainOfInfluenceVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
-        unaffectedLayout.OverriddenVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
 
         affectedLayout.TemplateId.Should().Be(DmDocServiceMock.TemplateOthers2.Id);
         affectedLayout.DomainOfInfluenceTemplateId.Should().Be(null);
         affectedLayout.OverriddenTemplateId.Should().Be(null);
         affectedLayout.AllowCustom.Should().BeFalse();
-        affectedLayout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
-        affectedLayout.DomainOfInfluenceVotingCardColor.Should().Be(null);
-        affectedLayout.OverriddenVotingCardColor.Should().Be(null);
     }
 
     [Fact]
@@ -160,7 +143,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Yellow,
             }),
             StatusCode.NotFound);
     }
@@ -176,7 +158,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Yellow,
             }),
             StatusCode.NotFound);
     }
@@ -192,7 +173,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.EVoting,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Yellow,
             }),
             StatusCode.NotFound);
     }
@@ -208,7 +188,6 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
                 TemplateId = DmDocServiceMock.TemplateOthers2.Id,
                 VotingCardType = VotingCardType.Swiss,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Yellow,
             }),
             StatusCode.NotFound);
     }

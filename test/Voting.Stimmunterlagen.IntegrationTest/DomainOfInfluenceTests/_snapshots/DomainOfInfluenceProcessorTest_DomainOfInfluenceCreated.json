@@ -288,22 +288,19 @@
         "Name": "St.Gallen Tablat (neu)",
         "VotingCardType": 1,
         "TemplateId": null,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "St.Gallen Tablat (neu)",
         "VotingCardType": 1,
         "TemplateId": null,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       },
       {
         "Name": "St.Gallen Tablat (neu)",
         "VotingCardType": 1,
         "TemplateId": null,
-        "AllowCustom": true,
-        "VotingCardColor": 0
+        "AllowCustom": true
       }
     ]
   },

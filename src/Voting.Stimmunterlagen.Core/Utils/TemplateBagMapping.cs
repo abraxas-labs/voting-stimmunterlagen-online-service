@@ -27,7 +27,6 @@ public static class TemplateBagMapping
     {
         var domainOfInfluence = layout.DomainOfInfluence;
         domainOfInfluence!.PrintData = layout.PrintData;
-        domainOfInfluence!.VotingCardColor = layout.EffectiveVotingCardColor;
         return domainOfInfluence;
     }
 }

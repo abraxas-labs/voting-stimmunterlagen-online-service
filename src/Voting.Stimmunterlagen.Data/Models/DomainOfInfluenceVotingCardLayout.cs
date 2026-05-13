@@ -24,12 +24,6 @@ public class DomainOfInfluenceVotingCardLayout : VotingCardLayout, IHasContestDo
 
     public int? EffectiveTemplateId => OverriddenTemplateId ?? DomainOfInfluenceTemplateId ?? TemplateId;
 
-    public VotingCardColor? DomainOfInfluenceVotingCardColor { get; set; }
-
-    public VotingCardColor? OverriddenVotingCardColor { get; set; }
-
-    public VotingCardColor EffectiveVotingCardColor => OverriddenVotingCardColor ?? DomainOfInfluenceVotingCardColor ?? VotingCardColor;
-
     public ICollection<TemplateDataFieldValue>? TemplateDataFieldValues { get; set; }
 
     public ICollection<VotingCardGeneratorJob> Jobs { get; set; } = new HashSet<VotingCardGeneratorJob>();

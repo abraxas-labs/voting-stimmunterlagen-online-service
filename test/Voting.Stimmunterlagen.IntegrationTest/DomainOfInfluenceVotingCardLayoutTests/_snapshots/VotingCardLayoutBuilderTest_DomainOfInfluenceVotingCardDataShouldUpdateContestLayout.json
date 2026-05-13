@@ -17,7 +17,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -36,7 +35,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -55,7 +53,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -74,7 +71,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -93,7 +89,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -112,7 +107,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -131,7 +125,6 @@
           "IncludeDomainOfInfluenceSchool": false
         },
         "PrintData": null,
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       }
     ]
@@ -159,7 +152,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -183,7 +175,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -207,7 +198,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -231,7 +221,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -255,7 +244,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -279,7 +267,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       },
       {
@@ -303,7 +290,6 @@
           "ShippingMethod": 2,
           "ShippingVotingCardsToDeliveryAddress": true
         },
-        "VotingCardColor": 0,
         "Id": "00000000-0000-0000-0000-000000000000"
       }
     ]

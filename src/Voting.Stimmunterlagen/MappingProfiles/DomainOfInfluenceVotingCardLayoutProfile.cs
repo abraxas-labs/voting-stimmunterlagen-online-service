@@ -15,11 +15,7 @@ public class DomainOfInfluenceVotingCardLayoutProfile : Profile
     public DomainOfInfluenceVotingCardLayoutProfile()
     {
         CreateMap<DomainOfInfluenceVotingCardLayout, ProtoModels.DomainOfInfluenceVotingCardLayout>()
-            .ForMember(dst => dst.ContestTemplate, opts => opts.MapFrom(x => x.Template))
-            .ForMember(dst => dst.ContestColor, opts => opts.MapFrom(x => x.VotingCardColor))
-            .ForMember(dst => dst.DomainOfInfluenceColor, opts => opts.MapFrom(x => x.DomainOfInfluenceVotingCardColor))
-            .ForMember(dst => dst.EffectiveColor, opts => opts.MapFrom(x => x.EffectiveVotingCardColor))
-            .ForMember(dst => dst.OverriddenColor, opts => opts.MapFrom(x => x.OverriddenVotingCardColor));
+            .ForMember(dst => dst.ContestTemplate, opts => opts.MapFrom(x => x.Template));
         CreateMap<IEnumerable<DomainOfInfluenceVotingCardLayout>, ProtoModels.DomainOfInfluenceVotingCardLayouts>()
             .ForMember(dst => dst.Layouts, opts => opts.MapFrom(x => x));
 

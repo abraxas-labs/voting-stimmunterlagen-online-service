@@ -1,4 +1,4 @@
-# ✨ Changelog (`v2.56.0`)
+# ✨ Changelog (`v2.57.0`)
 
 All notable changes to this project will be documented in this file.
 
@@ -8,11 +8,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version Info
 
 ```text
-This version -------- v2.56.0
-Previous version ---- v2.54.2
+This version -------- v2.57.0
+Previous version ---- v2.56.0
 Initial version ----- v2.5.1
 Total commits ------- 3
 ```
+
+## [v2.57.0] - 2026-05-11
+
+### :x: Removed
+
+- Voting CardCardColor from ContestVotingCardLayoutBuilder, DomainOfInfluenceVotingCardLayoutBuilder and VotingCardLayoutBuilder
+- DummyDoiBuilder
+- param for setting the color of the layout in ContestVotingCardLayoutService and DomainOfInfluenceVotingCardLayoutService
+- color property mappings for models in DomainOfInfluneceVotingCardLayoutProfile and ContestVotingCardlayoutProfile:
+- properties for color in models DomainOfInfluneceVotingCardLayout and VotingCardLayout
+
+## [v2.56.2] - 2026-05-08
+
+### 🆕 Added
+
+- add additional protection layer for grpc reflection service endpoint
+
+## [v2.56.1] - 2026-05-07
+
+### ❌ Removed
+
+- Remove unused scripts from e-voting cshtml-templates
+- Remove unused font-asset `LibreBarcode128-Regular.ttf` from e-voting delivery packages
 
 ## [v2.56.0] - 2026-05-05
 

@@ -16,7 +16,6 @@ using Voting.Stimmunterlagen.IntegrationTest.MockData;
 using Voting.Stimmunterlagen.Proto.V1;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using Xunit;
-using VotingCardColor = Voting.Stimmunterlagen.Proto.V1.Models.VotingCardColor;
 using VotingCardType = Voting.Stimmunterlagen.Proto.V1.Models.VotingCardType;
 
 namespace Voting.Stimmunterlagen.IntegrationTest.DomainOfInfluenceVotingCardLayoutTests;
@@ -53,7 +52,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
             {
                 IncludeReligion = true,
             },
-            Color = VotingCardColor.Yellow,
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -63,12 +61,8 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
         layout.AllowCustom.Should().BeTrue();
         layout.TemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
         layout.DomainOfInfluenceTemplateId.Should().Be(DmDocServiceMock.TemplateOthers2.Id);
-        layout.OverriddenTemplateId.Should().BeNull();
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateOthers2.Id);
-        layout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
-        layout.DomainOfInfluenceVotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
-        layout.OverriddenVotingCardColor.Should().BeNull();
-        layout.EffectiveVotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
+        layout.OverriddenTemplateId.Should().BeNull();
     }
 
     [Fact]
@@ -81,7 +75,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
             DataConfiguration = new(),
-            Color = VotingCardColor.Yellow,
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -105,7 +98,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
             {
                 IncludeIsHouseholder = true,
             },
-            Color = VotingCardColor.Yellow,
         });
         await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
         {
@@ -125,10 +117,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
         layout.OverriddenTemplateId.Should().BeNull();
         layout.DataConfiguration.IncludeIsHouseholder.Should().BeFalse();
-        layout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
-        layout.DomainOfInfluenceVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
-        layout.OverriddenVotingCardColor.Should().BeNull();
-        layout.EffectiveVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
     }
 
     [Fact]
@@ -148,7 +136,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = doiGuid.ToString(),
                 DataConfiguration = new(),
-                Color = VotingCardColor.Unspecified,
             }),
             StatusCode.NotFound);
     }
@@ -164,7 +151,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Unspecified,
             }),
             StatusCode.NotFound);
     }
@@ -180,7 +166,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Unspecified,
             }),
             StatusCode.NotFound);
     }
@@ -196,7 +181,6 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundArchivedNotApprovedGemeindeArneggId,
                 DataConfiguration = new(),
-                Color = VotingCardColor.Unspecified,
             }),
             StatusCode.NotFound);
     }

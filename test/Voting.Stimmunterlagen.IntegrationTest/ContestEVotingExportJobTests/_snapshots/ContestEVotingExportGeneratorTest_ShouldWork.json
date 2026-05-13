@@ -10,8 +10,6 @@
       "certificates/voting.encryption.receiver.cert.pub.cer",
       "params.json",
       "Templates/",
-      "Templates/assets/",
-      "Templates/assets/LibreBarcode128-Regular.ttf",
       "Templates/SG_eVoting_Post_Auslandschweizer.cshtml",
       "Templates/SG_eVoting_Post.cshtml"
     ]

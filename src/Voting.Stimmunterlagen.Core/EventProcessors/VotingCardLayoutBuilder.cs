@@ -11,7 +11,7 @@ namespace Voting.Stimmunterlagen.Core.EventProcessors;
 public abstract class VotingCardLayoutBuilder<T>
     where T : VotingCardLayout, new()
 {
-    protected void SyncVotingCardLayouts(ICollection<T> votingCardLayouts, DomainOfInfluenceVotingCardPrintData? printData, VotingCardColor color)
+    protected void SyncVotingCardLayouts(ICollection<T> votingCardLayouts, DomainOfInfluenceVotingCardPrintData? printData)
     {
         var layoutsByType = votingCardLayouts.ToDictionary(x => x.VotingCardType);
         foreach (var vcType in Enum.GetValues<VotingCardType>())
@@ -25,7 +25,7 @@ public abstract class VotingCardLayoutBuilder<T>
 
             if (enabled && !hasType)
             {
-                AddLayout(votingCardLayouts, printData, vcType, color);
+                AddLayout(votingCardLayouts, printData, vcType);
             }
 
             if (!enabled && hasType)
@@ -43,9 +43,9 @@ public abstract class VotingCardLayoutBuilder<T>
         }
     }
 
-    private static void AddLayout(ICollection<T> votingCardLayouts, DomainOfInfluenceVotingCardPrintData? printData, VotingCardType vcType, VotingCardColor color)
+    private static void AddLayout(ICollection<T> votingCardLayouts, DomainOfInfluenceVotingCardPrintData? printData, VotingCardType vcType)
     {
-        var layout = new T { VotingCardType = vcType, AllowCustom = true, PrintData = printData is null ? null : new(printData), VotingCardColor = color, };
+        var layout = new T { VotingCardType = vcType, AllowCustom = true, PrintData = printData is null ? null : new(printData) };
         votingCardLayouts.Add(layout);
     }
 
