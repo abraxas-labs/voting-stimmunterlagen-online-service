@@ -12,12 +12,12 @@ namespace Voting.Stimmunterlagen.Core.Managers.EVoting;
 
 public class ContestEVotingExportJobLauncher
 {
-    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<ContestEVotingExportJobLauncher> _logger;
 
-    public ContestEVotingExportJobLauncher(IServiceScopeFactory scopeFactory, ILogger<ContestEVotingExportJobLauncher> logger)
+    public ContestEVotingExportJobLauncher(IServiceProvider serviceProvider, ILogger<ContestEVotingExportJobLauncher> logger)
     {
-        _scopeFactory = scopeFactory;
+        _serviceProvider = serviceProvider;
         _logger = logger;
     }
 
@@ -28,7 +28,7 @@ public class ContestEVotingExportJobLauncher
     {
         try
         {
-            using var scope = _scopeFactory.CreateScope();
+            using var scope = _serviceProvider.CreateScopeCopyAuth();
             var generator = scope.ServiceProvider.GetRequiredService<ContestEVotingExportGenerator>();
             await generator.Run(id);
         }

@@ -391,6 +391,28 @@ public class AttachmentManager
         await _attachmentRepo.Update(existingAttachment);
     }
 
+    public async Task UpdateDelayedDeliveryDate(Guid attachmentId, DateTime? delayedDeliveryDate)
+    {
+        var existingAttachment = await _attachmentRepo.Query()
+            .WhereContestIsNotLocked()
+            .WhereDomainOfInfluenceIsNotExternalPrintingCenter()
+            .FirstOrDefaultAsync(a => a.Id == attachmentId)
+            ?? throw new EntityNotFoundException(nameof(Attachment), attachmentId);
+
+        if (existingAttachment.State is AttachmentState.Delivered)
+        {
+            throw new ValidationException("Cannot set a delayed delivery date if already delivered");
+        }
+
+        if (delayedDeliveryDate.HasValue && delayedDeliveryDate <= existingAttachment.DeliveryPlannedOn)
+        {
+            throw new ValidationException("Delayed delivery date must happen after the planned delivery date");
+        }
+
+        existingAttachment.DelayedDeliveryDate = delayedDeliveryDate;
+        await _attachmentRepo.Update(existingAttachment);
+    }
+
     public async Task SetState(Guid attachmentId, AttachmentState state, string commentContent)
     {
         await using var transaction = await _dbContext.Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted);

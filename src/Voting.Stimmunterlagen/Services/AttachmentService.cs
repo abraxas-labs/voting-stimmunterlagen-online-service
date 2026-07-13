@@ -123,6 +123,16 @@ public class AttachmentService : Proto.V1.AttachmentService.AttachmentServiceBas
     }
 
     [AuthorizePrintJobManager]
+    public override async Task<Empty> UpdateDelayedDeliveryDate(UpdateAttachmentDelayedDeliveryDateRequest request, ServerCallContext context)
+    {
+        await _attachmentManager.UpdateDelayedDeliveryDate(
+            GuidParser.Parse(request.Id),
+            request.DelayedDeliveryDate?.ToDateTime());
+
+        return ProtobufEmpty.Instance;
+    }
+
+    [AuthorizePrintJobManager]
     public override async Task<Empty> SetState(
         SetAttachmentStateRequest request,
         ServerCallContext context)

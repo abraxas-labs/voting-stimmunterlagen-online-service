@@ -25,7 +25,8 @@ public class VoterListProfile : Profile
             .ForMember(dst => dst.PoliticalBusinessIds, opts => opts.MapFrom(x => x.PoliticalBusinessEntries!.Select(y => y.PoliticalBusinessId)))
             .ForMember(dst => dst.Name, opts => opts.MapFrom(src => src.Import!.Name))
             .ForMember(dst => dst.LastUpdate, opts => opts.MapFrom(src => src.Import!.LastUpdate))
-            .ForMember(dst => dst.Source, opts => opts.MapFrom(src => src.Import!.Source));
+            .ForMember(dst => dst.Source, opts => opts.MapFrom(src => src.Import!.Source))
+            .ForMember(dst => dst.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit, opts => opts.MapFrom(src => src.Import!.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit));
         CreateMap<VoterList, CreateUpdateVoterListResponse>();
     }
 }

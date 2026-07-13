@@ -107,6 +107,8 @@ public class ContestCountingCircleBuilder
                 doiCc.Id = Guid.NewGuid();
                 doiCc.DomainOfInfluenceId =
                     StimmunterlagenUuidV5.BuildContestDomainOfInfluence(countingCircle.ContestId, doiCc.DomainOfInfluenceId);
+                doiCc.SourceDomainOfInfluenceId =
+                    StimmunterlagenUuidV5.BuildContestDomainOfInfluence(countingCircle.ContestId, doiCc.SourceDomainOfInfluenceId);
             }
         }
     }

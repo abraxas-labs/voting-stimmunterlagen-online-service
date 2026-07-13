@@ -43,7 +43,10 @@ public class Startup
         services.AddSingleton(AppConfig);
         services.AddCertificatePinning(AppConfig.CertificatePinning);
 
-        services.AddAutoMapper(typeof(Startup), typeof(ContestProfile));
+        services.AddAutoMapper(
+            cfg => cfg.LicenseKey = AppConfig.AutoMapper.LicenseKey,
+            typeof(Startup),
+            typeof(ContestProfile));
 
         services.AddCore(AppConfig);
         services.AddData(AppConfig.Database, ConfigureDatabase);
@@ -149,7 +152,6 @@ public class Startup
         }
 
         services.AddSwaggerGenerator(_configuration);
-        services.AddSecureConnectServiceAccount(AppConfig.SharedSecureConnectServiceAccountName, AppConfig.SharedSecureConnect);
     }
 
     private void MapEndpoints(IEndpointRouteBuilder endpoints)

@@ -28,7 +28,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -49,7 +49,8 @@
           "Station": 1,
           "OrderedCount": 50000,
           "Category": 1,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
         },
         {
           "Id": "4f8bb85c-e120-4cc5-b6a9-8033ee313f35",
@@ -76,7 +77,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -98,7 +99,8 @@
           "Station": null,
           "OrderedCount": 50000,
           "Category": 1,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
         }
       ],
       "TotalOrderedCount": 100000,
@@ -133,7 +135,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -154,7 +156,8 @@
           "Station": null,
           "OrderedCount": 20000,
           "Category": 8,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
         },
         {
           "Id": "b4ff2aa7-ff44-483a-b756-476130f9bf2c",
@@ -185,12 +188,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": true,
             "CanManuallyUploadVoterList": true,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": true,
-            "Bfs": "1240",
+            "Bfs": "3441",
             "HasEmptyVotingCards": true,
             "CountOfEmptyVotingCards": 2,
             "LastCountOfEmptyVotingCardsUpdate": {
@@ -209,7 +212,8 @@
           "Station": null,
           "OrderedCount": 2500,
           "Category": 8,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
         }
       ],
       "TotalOrderedCount": 22500,
@@ -248,12 +252,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": true,
             "CanManuallyUploadVoterList": true,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": true,
-            "Bfs": "1240",
+            "Bfs": "3441",
             "HasEmptyVotingCards": true,
             "CountOfEmptyVotingCards": 2,
             "LastCountOfEmptyVotingCardsUpdate": {
@@ -272,7 +276,8 @@
           "Station": null,
           "OrderedCount": 1000,
           "Category": 12,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
         }
       ],
       "TotalOrderedCount": 1000,

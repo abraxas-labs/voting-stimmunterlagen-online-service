@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Voting.Lib.Common;
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.Exceptions;
+using Voting.Stimmunterlagen.Core.Managers.Templates;
 using Voting.Stimmunterlagen.Core.ObjectStorage;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.FilterExpressions;
@@ -38,6 +39,7 @@ public class ContestEVotingExportGenerator
     private readonly ILogger<ContestEVotingExportGenerator> _logger;
     private readonly IContestEVotingStore _eVotingStore;
     private readonly DomainOfInfluenceManager _doiManager;
+    private readonly TemplateManager _templateManager;
     private readonly IContestEVotingExportThrottler _throttler;
     private readonly ApiConfig _apiConfig;
     private readonly IDbRepository<Attachment> _attachmentRepo;
@@ -54,6 +56,7 @@ public class ContestEVotingExportGenerator
         ILogger<ContestEVotingExportGenerator> logger,
         IContestEVotingStore eVotingStore,
         DomainOfInfluenceManager doiManager,
+        TemplateManager templateManager,
         IContestEVotingExportThrottler throttler,
         ApiConfig apiConfig,
         IDbRepository<Attachment> attachmentRepo,
@@ -69,6 +72,7 @@ public class ContestEVotingExportGenerator
         _logger = logger;
         _eVotingStore = eVotingStore;
         _doiManager = doiManager;
+        _templateManager = templateManager;
         _throttler = throttler;
         _apiConfig = apiConfig;
         _attachmentRepo = attachmentRepo;
@@ -103,13 +107,17 @@ public class ContestEVotingExportGenerator
             var eVotingZipBytes = await _eVotingZipStorage.Fetch();
 
             var exportContent = EVotingExportDataBuilder.BuildEVotingExport(
+                new EVotingExportContext()
+                {
+                    Contest = eVotingContest,
+                    Ech0045XmlFileName = GetEch0045XmlFileName(job.FileName),
+                    TestDomainOfInfluences = testDomainOfInfluences,
+                    TestDomainOfInfluenceDefaults = _apiConfig.ContestEVotingExport.TestDomainOfInfluenceDefaults,
+                    EVotingDomainOfInfluenceConfigByBfs = _apiConfig.ContestEVotingExport.EVotingDomainOfInfluences,
+                    BfsETextBlockValuesDict = await _templateManager.GetBfsBrickContentDictionary(contest.Id, ct),
+                },
                 eVotingZipBytes,
-                eVotingContest,
-                ech0045XmlBytes,
-                GetEch0045XmlFileName(job.FileName),
-                testDomainOfInfluences,
-                _apiConfig.ContestEVotingExport.TestDomainOfInfluenceDefaults,
-                _apiConfig.ContestEVotingExport.EVotingDomainOfInfluences);
+                ech0045XmlBytes);
 
             await _eVotingStore.SaveContestEVotingExport(
                 job.FileName,

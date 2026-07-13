@@ -31,7 +31,8 @@
         "Language": "de",
         "AdditionalBarcode": "",
         "ContestOrderNumber": "955000",
-        "ReligionCode": "X"
+        "ReligionCode": "X",
+        "PostDeliveryDate": ""
       },
       {
         "DocId": "U5",
@@ -63,7 +64,8 @@
         "Language": "it",
         "AdditionalBarcode": "",
         "ContestOrderNumber": "955000",
-        "ReligionCode": "X"
+        "ReligionCode": "X",
+        "PostDeliveryDate": ""
       }
     ]
   }

@@ -99,6 +99,44 @@ public static class DomainOfInfluenceMockData
         },
         StistatExportEaiMessageType = "STISTAT-SG",
         ElectoralRegistrationEnabled = true,
+        CountingCircles = new List<DomainOfInfluenceCountingCircle>
+        {
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtStGallenGuid,
+                SourceDomainOfInfluenceId = StadtStGallenGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+                SourceDomainOfInfluenceId = StadtGossauGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtUzwilGuid,
+                SourceDomainOfInfluenceId = StadtUzwilGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+                SourceDomainOfInfluenceId = GemeindeArneggGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+                SourceDomainOfInfluenceId = ZweckverbandGossauGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+                SourceDomainOfInfluenceId = ZweckverbandGossauGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.AuslandschweizerGuid,
+                SourceDomainOfInfluenceId = AuslandschweizerGuid,
+            },
+        },
     };
 
     public static DomainOfInfluence KantonStGallen => new()
@@ -118,6 +156,44 @@ public static class DomainOfInfluenceMockData
         },
         ElectoralRegistrationEnabled = true,
         Bfs = "1100",
+        CountingCircles = new List<DomainOfInfluenceCountingCircle>
+        {
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtStGallenGuid,
+                SourceDomainOfInfluenceId = StadtStGallenGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+                SourceDomainOfInfluenceId = StadtGossauGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtUzwilGuid,
+                SourceDomainOfInfluenceId = StadtUzwilGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+                SourceDomainOfInfluenceId = GemeindeArneggGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+                SourceDomainOfInfluenceId = ZweckverbandGossauGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+                SourceDomainOfInfluenceId = ZweckverbandGossauGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.AuslandschweizerGuid,
+                SourceDomainOfInfluenceId = AuslandschweizerGuid,
+            },
+        },
     };
 
     public static DomainOfInfluence StadtStGallen => new()
@@ -131,7 +207,7 @@ public static class DomainOfInfluenceMockData
         RootId = BundGuid,
         ResponsibleForVotingCards = true,
         Type = DomainOfInfluenceType.Mu,
-        Bfs = "1110",
+        Bfs = "3203",
         LogoRef = "StGallen_Logo.png",
         Canton = DomainOfInfluenceCanton.Sg,
         CantonDefaults = new DomainOfInfluenceCantonDefaults
@@ -167,6 +243,7 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.StadtStGallenGuid,
+                SourceDomainOfInfluenceId = StadtStGallenGuid,
             },
         },
     };
@@ -188,7 +265,7 @@ public static class DomainOfInfluenceMockData
             VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
         },
         ElectoralRegistrationEnabled = true,
-        Bfs = "1120",
+        Bfs = "3443",
         LogoRef = "gossau-logo.png",
         SapCustomerOrderNumber = "00073100",
         PrintData = new()
@@ -216,11 +293,13 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+                SourceDomainOfInfluenceId = StadtGossauGuid,
             },
         },
         StistatMunicipality = true,
         IsMainVotingCardsDomainOfInfluence = true,
         HasEmptyVotingCards = true,
+        StistatExportEaiMessageType = "1234567",
     };
 
     public static DomainOfInfluence StadtUzwil => new()
@@ -240,7 +319,7 @@ public static class DomainOfInfluenceMockData
             VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
         },
         ElectoralRegistrationEnabled = true,
-        Bfs = "1130",
+        Bfs = "3408",
         LogoRef = "uzwil_logo.png",
         SapCustomerOrderNumber = "00093109",
         PrintData = new()
@@ -271,6 +350,7 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.StadtUzwilGuid,
+                SourceDomainOfInfluenceId = StadtUzwilGuid,
             },
         },
     };
@@ -292,7 +372,7 @@ public static class DomainOfInfluenceMockData
             VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
         },
         ElectoralRegistrationEnabled = true,
-        Bfs = "1240",
+        Bfs = "3441",
         LogoRef = "arnegg_logo.png",
         SapCustomerOrderNumber = "00073101",
         PrintData = new()
@@ -321,6 +401,7 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+                SourceDomainOfInfluenceId = GemeindeArneggGuid,
             },
         },
         StistatMunicipality = true,
@@ -372,6 +453,7 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.SchulgemeindeAndwilArneggGuid,
+                SourceDomainOfInfluenceId = SchulgemeindeAndwilArneggGuid,
             },
         },
         VotingCardFlatRateDisabled = true,
@@ -462,10 +544,12 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.GemeindeArneggGuid,
+                SourceDomainOfInfluenceId = ZweckverbandGossauGuid,
             },
             new()
             {
                 CountingCircleId = CountingCircleMockData.StadtGossauGuid,
+                SourceDomainOfInfluenceId = ZweckverbandGossauGuid,
             },
         },
     };
@@ -515,6 +599,7 @@ public static class DomainOfInfluenceMockData
             new()
             {
                 CountingCircleId = CountingCircleMockData.AuslandschweizerGuid,
+                SourceDomainOfInfluenceId = AuslandschweizerGuid,
             },
         },
     };

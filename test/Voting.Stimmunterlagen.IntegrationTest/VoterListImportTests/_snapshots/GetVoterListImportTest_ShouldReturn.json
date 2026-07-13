@@ -27,7 +27,8 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "0b3e449f-8675-42c9-b352-0867c62be4af",
-      "CountOfVotingCards": 3
+      "CountOfVotingCards": 3,
+      "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false
     },
     {
       "Id": "b4c99c20-330e-4231-ae95-a5cbb05f1c20",
@@ -46,7 +47,8 @@
       },
       "SendVotingCardsToDomainOfInfluenceReturnAddress": null,
       "ImportId": "0b3e449f-8675-42c9-b352-0867c62be4af",
-      "CountOfVotingCards": 4
+      "CountOfVotingCards": 4,
+      "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false
     }
   ],
   "AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit": false

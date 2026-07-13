@@ -127,6 +127,101 @@ public class ContestEVotingExportGeneratorTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task ShouldWorkWithoutDefinedTemplates()
+    {
+        await ModifyDbEntities<ContestCountingCircle>(
+            x => x.Id == CountingCircleMockData.ContestBundFutureApprovedStadtUzwilGuid
+                 || x.Id == CountingCircleMockData.ContestBundFutureApprovedStadtGossauGuid
+                 || x.Id == CountingCircleMockData.ContestBundFutureApprovedGemeindeArneggGuid,
+            x => x.EVoting = true);
+
+        await RunOnDb(async db =>
+        {
+            var attachment = await db.Attachments
+                .AsTracking()
+                .Include(a => a.PoliticalBusinessEntries)
+                .SingleAsync(a => a.Id == AttachmentMockData.BundFutureApprovedBund1Guid);
+            attachment.Station = 11;
+            attachment.PoliticalBusinessEntries.Add(new() { PoliticalBusinessId = VoteMockData.BundFutureApprovedKantonStGallen1Guid });
+
+            // Voters need to belong to a job (= No duplicate) to be considered in the E-Voting export and "Gut zum Druck" step must be completed..
+            var voters = await db.Voters
+                .AsTracking()
+                .Where(v => v.ListId == VoterListMockData.BundFutureApprovedGemeindeArneggEVoterGuid
+                    || v.ListId == VoterListMockData.BundFutureApprovedStadtGossauEVoterGuid)
+                .ToListAsync();
+
+            foreach (var voter in voters)
+            {
+                voter.JobId = VotingCardGeneratorJobMockData.BundFutureApprovedGemeindeArneggJob1Guid;
+            }
+
+            var dois = await db.ContestDomainOfInfluences
+                .AsTracking()
+                .Where(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid || doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid)
+                .ToListAsync();
+
+            foreach (var doi in dois)
+            {
+                doi.GenerateVotingCardsTriggered = MockedClock.UtcNowDate;
+            }
+
+            var layouts = await db.DomainOfInfluenceVotingCardLayouts
+                .AsTracking()
+                .ToListAsync();
+
+            foreach (var layout in layouts)
+            {
+                layout.Template = null;
+                layout.DomainOfInfluenceTemplate = null;
+                layout.OverriddenTemplate = null;
+                layout.TemplateId = null;
+                layout.DomainOfInfluenceTemplateId = null;
+                layout.OverriddenTemplateId = null;
+            }
+
+            await db.SaveChangesAsync();
+        });
+
+        _storeMock.SaveFileInMemory = true;
+
+        await SetState(_defaultJobId, ExportJobState.ReadyToRun);
+        await Run(_defaultJobId);
+        var job = await GetDbEntity<ContestEVotingExportJob>(x =>
+            x.Id == _defaultJobId);
+
+        job.Started.Should().Be(MockedClock.UtcNowDate);
+        job.Completed.Should().Be(MockedClock.UtcNowDate);
+        job.State.Should().Be(ExportJobState.Completed);
+        job.FileHash.Should().NotBeEmpty();
+        _storeMock.AssertFileWritten(_defaultMessageId, job.FileName);
+
+        var fileContent = _storeMock.GetFile(_defaultMessageId);
+
+        using var baseArchiveMs = new MemoryStream(fileContent);
+        using var baseArchive = new ZipArchive(baseArchiveMs);
+        using var eVotingConfigurationArchiveMs = new MemoryStream(ReadFileBytesFromArchive(baseArchive, EVotingDefaults.EVotingConfigurationArchiveName));
+        using var eVotingConfigurationArchive = new ZipArchive(eVotingConfigurationArchiveMs);
+
+        var baseArchiveFileNameEntries = baseArchive.Entries.Select(e => e.FullName).ToList();
+        var eVotingConfigurationArchiveNameEntries = eVotingConfigurationArchive.Entries.Select(e => e.FullName).OrderBy(e => e).ToList();
+        baseArchiveFileNameEntries.MatchSnapshot("baseArchiveFileNames");
+        eVotingConfigurationArchiveNameEntries.MatchSnapshot("eVotingConfigurationArchiveFileNames");
+
+        var configJson = ReadFileStringFromArchive(eVotingConfigurationArchive, EVotingDefaults.ConfigurationFileName);
+        var ech45Xml = ReadFileStringFromArchive(baseArchive, "file-name.xml");
+        var ech45XmlStream = new MemoryStream(Encoding.UTF8.GetBytes(ech45Xml));
+        var ech45Deserialized = new XmlSerializer(typeof(VoterDelivery)).Deserialize(ech45XmlStream);
+
+        JsonConvert.DeserializeObject<Configuration>(configJson).MatchSnapshot("configJson");
+        ech45Deserialized.MatchSnapshot("eCH-45");
+
+        using var sha512 = SHA512.Create();
+        var expectedFileHash = Convert.ToBase64String(sha512.ComputeHash(fileContent));
+        job.FileHash.Should().Be(expectedFileHash);
+    }
+
+    [Fact]
     public async Task ShouldWorkWithNoDoiEVotingReady()
     {
         await ModifyDbEntities<ContestCountingCircle>(

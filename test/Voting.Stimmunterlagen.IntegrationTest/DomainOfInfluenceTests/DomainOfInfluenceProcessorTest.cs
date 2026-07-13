@@ -49,6 +49,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
                 ResponsibleForVotingCards = true,
                 ElectoralRegistrationEnabled = true,
                 ElectoralRegisterMultipleEnabled = true,
+                StistatExportEaiMessageType = "1234567",
+                StistatExportEaiMessageTypeSupported = true,
             },
         };
 
@@ -136,6 +138,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
                 SecureConnectId = secureConnectId,
                 ParentId = DomainOfInfluenceMockData.KantonStGallenId,
                 ResponsibleForVotingCards = true,
+                StistatExportEaiMessageType = "1234567",
+                StistatExportEaiMessageTypeSupported = true,
             },
         });
         (await RunOnDb(db => db.DomainOfInfluences.SingleAsync(x => x.Id == id)))
@@ -149,6 +153,43 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             .ToListAsync());
         updatedContestDoiNames.Should().HaveCount(4);
         updatedContestDoiNames.Distinct().Single().Should().Be("St.Gallen Tablat (neu) 2");
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceCreatedWithDeprecatedStistatExportEaiMessageType()
+    {
+        var id = Guid.Parse("f46f1e84-cbcb-40a6-bf40-b4dce9782a81");
+        var eventData = new DomainOfInfluenceCreated
+        {
+            DomainOfInfluence = new DomainOfInfluenceEventData
+            {
+                Id = id.ToString(),
+                Name = "Gossau updated",
+                AuthorityName = "Gossau updated",
+                ShortName = "MU GO",
+                SecureConnectId = "SC-MU-GO-Updated",
+                ParentId = DomainOfInfluenceMockData.KantonStGallenId,
+                ResponsibleForVotingCards = true,
+                ElectoralRegistrationEnabled = true,
+                ElectoralRegisterMultipleEnabled = true,
+                StistatExportEaiMessageType = "1234567",
+                StistatExportEaiMessageTypeSupported = false,
+            },
+        };
+
+        await TestEventPublisher.Publish(eventData);
+        var doi = await RunOnDb(db => db.DomainOfInfluences.FirstAsync(x => x.Id == id));
+        doi.StistatExportEaiMessageType.Should().Be(string.Empty);
+
+        var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
+            .Where(x => x.BasisDomainOfInfluenceId == id)
+            .OrderBy(x => x.ContestId)
+            .ToListAsync());
+
+        foreach (var contestDoi in contestDois)
+        {
+            contestDoi.StistatExportEaiMessageType.Should().Be(string.Empty);
+        }
     }
 
     [Fact]
@@ -171,6 +212,8 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
                 ResponsibleForVotingCards = true,
                 ElectoralRegistrationEnabled = true,
                 ElectoralRegisterMultipleEnabled = true,
+                StistatExportEaiMessageType = "1234567",
+                StistatExportEaiMessageTypeSupported = true,
             },
         };
 
@@ -268,6 +311,41 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task DomainOfInfluenceUpdatedWithDeprecatedStistatExportEaiMessageType()
+    {
+        var eventData = new DomainOfInfluenceUpdated
+        {
+            DomainOfInfluence = new DomainOfInfluenceEventData
+            {
+                Id = DomainOfInfluenceMockData.StadtGossauId,
+                Name = "Gossau updated",
+                AuthorityName = "Gossau updated",
+                ShortName = "MU GO",
+                SecureConnectId = "SC-MU-GO-Updated",
+                ParentId = DomainOfInfluenceMockData.KantonStGallenId,
+                ResponsibleForVotingCards = true,
+                ElectoralRegistrationEnabled = true,
+                ElectoralRegisterMultipleEnabled = true,
+                StistatExportEaiMessageTypeSupported = false,
+            },
+        };
+
+        await TestEventPublisher.Publish(eventData);
+        var doi = await RunOnDb(db => db.DomainOfInfluences.FirstAsync(x => x.Id == DomainOfInfluenceMockData.StadtGossauGuid));
+        doi.StistatExportEaiMessageType.Should().Be("1234567");
+
+        var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
+            .Where(x => x.BasisDomainOfInfluenceId == DomainOfInfluenceMockData.StadtGossauGuid)
+            .OrderBy(x => x.ContestId)
+            .ToListAsync());
+
+        foreach (var contestDoi in contestDois)
+        {
+            contestDoi.StistatExportEaiMessageType.Should().Be("1234567");
+        }
+    }
+
+    [Fact]
     public async Task DomainOfInfluenceCantonUpdated()
     {
         var eventData = new DomainOfInfluenceUpdated
@@ -304,7 +382,161 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
     }
 
     [Fact]
-    public async Task DomainOfInfluenceCountingCircleEntriesUpdated()
+    public async Task CountingCircleEntriesUpdatedRemove()
+    {
+        var doiId = DomainOfInfluenceMockData.KantonStGallenGuid;
+        var ccId = CountingCircleMockData.SchulgemeindeAndwilArneggGuid;
+        var snapshotDoiId = DomainOfInfluenceMockData.ContestBundFutureApprovedKantonStGallenGuid;
+        var snapshotCcId = StimmunterlagenUuidV5.BuildContestCountingCircle(ContestMockData.BundFutureApprovedGuid, ccId);
+
+        // seed
+        var eventData = new DomainOfInfluenceCountingCircleEntriesUpdated()
+        {
+            DomainOfInfluenceCountingCircleEntries = new DomainOfInfluenceCountingCircleEntriesEventData
+            {
+                Id = doiId.ToString(),
+                CountingCircleIds = { ccId.ToString() },
+            },
+        };
+
+        await TestEventPublisher.PublishTwice(eventData);
+
+        var doiCcSource = new DomainOfInfluenceCountingCircleSource(
+            ContestMockData.BundFutureApprovedGuid,
+            new() { DomainOfInfluenceMockData.BundGuid, doiId, DomainOfInfluenceMockData.GemeindeArneggGuid });
+
+        var result = await LoadDomainOfInfluenceCountingCircleResult(doiCcSource);
+
+        result.DoiCcs[0].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeTrue();
+
+        result.DoiCcs[1].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeTrue();
+
+        result.DoiCcs[2].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[0].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeTrue();
+
+        result.SnapshotDoiCcs[1].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeTrue();
+
+        result.SnapshotDoiCcs[2].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+
+        var originalParentCount = result.DoiCcs[0].Count;
+        var originalSelfCount = result.DoiCcs[1].Count;
+        var originalChildCount = result.DoiCcs[2].Count;
+
+        eventData = new DomainOfInfluenceCountingCircleEntriesUpdated()
+        {
+            DomainOfInfluenceCountingCircleEntries = new DomainOfInfluenceCountingCircleEntriesEventData
+            {
+                Id = doiId.ToString(),
+                CountingCircleIds = { },
+            },
+        };
+
+        await TestEventPublisher.PublishTwice(eventData);
+
+        result = await LoadDomainOfInfluenceCountingCircleResult(doiCcSource);
+
+        result.DoiCcs[0].Count.Should().Be(originalParentCount - 1);
+        result.DoiCcs[0].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.DoiCcs[1].Count.Should().Be(originalSelfCount - 1);
+        result.DoiCcs[1].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.DoiCcs[2].Count.Should().Be(originalChildCount);
+        result.DoiCcs[2].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[0].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[1].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[2].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task CountingCircleEntriesUpdatedAdd()
+    {
+        var doiId = DomainOfInfluenceMockData.KantonStGallenGuid;
+        var ccId = CountingCircleMockData.SchulgemeindeAndwilArneggGuid;
+        var snapshotDoiId = DomainOfInfluenceMockData.ContestBundFutureApprovedKantonStGallenGuid;
+        var snapshotCcId = StimmunterlagenUuidV5.BuildContestCountingCircle(ContestMockData.BundFutureApprovedGuid, ccId);
+
+        var doiCcSource = new DomainOfInfluenceCountingCircleSource(
+            ContestMockData.BundFutureApprovedGuid,
+            new() { DomainOfInfluenceMockData.BundGuid, doiId, DomainOfInfluenceMockData.GemeindeArneggGuid });
+
+        var result = await LoadDomainOfInfluenceCountingCircleResult(doiCcSource);
+
+        result.DoiCcs[0].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.DoiCcs[1].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.DoiCcs[2].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[0].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[1].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[2].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+
+        var originalParentCount = result.DoiCcs[0].Count;
+        var originalSelfCount = result.DoiCcs[1].Count;
+        var originalChildCount = result.DoiCcs[2].Count;
+
+        var eventData = new DomainOfInfluenceCountingCircleEntriesUpdated()
+        {
+            DomainOfInfluenceCountingCircleEntries = new DomainOfInfluenceCountingCircleEntriesEventData
+            {
+                Id = doiId.ToString(),
+                CountingCircleIds = { ccId.ToString() },
+            },
+        };
+
+        await TestEventPublisher.PublishTwice(eventData);
+
+        result = await LoadDomainOfInfluenceCountingCircleResult(doiCcSource);
+
+        result.DoiCcs[0].Count.Should().Be(originalParentCount + 1);
+        result.DoiCcs[0].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeTrue();
+
+        result.DoiCcs[1].Count.Should().Be(originalSelfCount + 1);
+        result.DoiCcs[1].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeTrue();
+
+        result.DoiCcs[2].Count.Should().Be(originalChildCount);
+        result.DoiCcs[2].Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId)
+            .Should().BeFalse();
+
+        result.SnapshotDoiCcs[0].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeTrue();
+
+        result.SnapshotDoiCcs[1].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeTrue();
+
+        result.SnapshotDoiCcs[2].Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId)
+            .Should().BeFalse();
+    }
+
+    [Fact]
+    public async Task CountingCircleEntriesSnapshotsUpdated()
     {
         var id = DomainOfInfluenceMockData.StadtGossauGuid;
         var eventData = new DomainOfInfluenceCountingCircleEntriesUpdated()
@@ -330,8 +562,9 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         // validate assigned counting circles
         var doiCcs = await RunOnDb(db => db.DomainOfInfluenceCountingCircles
             .Where(x => x.DomainOfInfluenceId == id)
-            .Select(x => new { x.DomainOfInfluenceId, x.CountingCircleId })
+            .Select(x => new { x.DomainOfInfluenceId, x.CountingCircleId, x.CountingCircle!.Name })
             .OrderBy(x => x.DomainOfInfluenceId)
+            .ThenBy(x => x.CountingCircleId)
             .ToListAsync());
         doiCcs.ShouldMatchChildSnapshot("doi_ccs");
 
@@ -346,8 +579,9 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         // validate assigned contest counting circles
         var contestDoiCcs = await RunOnDb(db => db.ContestDomainOfInfluenceCountingCircles
             .Where(x => x.DomainOfInfluence!.BasisDomainOfInfluenceId == id)
-            .Select(x => new { x.DomainOfInfluenceId, x.CountingCircleId })
+            .Select(x => new { x.DomainOfInfluenceId, x.CountingCircleId, x.CountingCircle!.Name })
             .OrderBy(x => x.DomainOfInfluenceId)
+            .ThenBy(x => x.CountingCircleId)
             .ToListAsync());
         contestDoiCcs.ShouldMatchChildSnapshot("contest_doi_ccs");
 
@@ -395,7 +629,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             ExternalPrintingCenter = false,
             ExternalPrintingCenterEaiMessageType = "EAI-Gossau",
             StistatMunicipality = false,
-            StistatExportEaiMessageType = "1234567",
+            StistatExportEaiMessageTypeDeprecated = true,
             VotingCardFlatRateDisabled = false,
             IsMainVotingCardsDomainOfInfluence = false,
             HasEmptyVotingCards = false,
@@ -413,11 +647,13 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         doi.SwissPostData!.ShouldMatchChildSnapshot("SwissPostData");
         doi.ExternalPrintingCenter.Should().BeFalse();
         doi.ExternalPrintingCenterEaiMessageType.Should().Be("EAI-Gossau");
-        doi.StistatExportEaiMessageType.Should().Be("1234567");
         doi.StistatMunicipality.Should().BeFalse();
         doi.VotingCardFlatRateDisabled.Should().BeFalse();
         doi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
         doi.HasEmptyVotingCards.Should().BeFalse();
+
+        // StistatExportEaiMessageType should not be updated, since it is deprecated on this event
+        doi.StistatExportEaiMessageType.Should().Be("1234567");
 
         var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
             .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
@@ -430,11 +666,13 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             contestDoi.PrintData!.ShouldMatchChildSnapshot("PrintData");
             contestDoi.ReturnAddress.Should().NotBeNull();
             contestDoi.ReturnAddress!.ShouldMatchChildSnapshot("ReturnAddress");
-            contestDoi.StistatExportEaiMessageType.Should().Be("1234567");
             contestDoi.StistatMunicipality.Should().BeFalse();
             contestDoi.VotingCardFlatRateDisabled.Should().BeFalse();
             contestDoi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
             contestDoi.HasEmptyVotingCards.Should().BeFalse();
+
+            // StistatExportEaiMessageType should not be updated, since it is deprecated on this event
+            contestDoi.StistatExportEaiMessageType.Should().Be("1234567");
         }
 
         contestDois.Select(x => x.PrintJob).WhereNotNull().Any().Should().BeTrue();
@@ -539,6 +777,63 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task DomainOfInfluenceVotingCardDataWithDeprecatedStistatExportEaiMessageTypeUpdated()
+    {
+        var guid = DomainOfInfluenceMockData.StadtGossauGuid;
+
+        var eventData = new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = guid.ToString(),
+            PrintData = new DomainOfInfluenceVotingCardPrintDataEventData
+            {
+                ShippingAway = VotingCardShippingFranking.A,
+                ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen,
+                ShippingReturn = VotingCardShippingFranking.GasB,
+                ShippingVotingCardsToDeliveryAddress = true,
+            },
+            SwissPostData = new DomainOfInfluenceVotingCardSwissPostDataEventData
+            {
+                InvoiceReferenceNumber = "049844412",
+                FrankingLicenceAwayNumber = "70000001",
+                FrankingLicenceReturnNumber = "094922284",
+            },
+            ReturnAddress = new DomainOfInfluenceVotingCardReturnAddressEventData
+            {
+                City = "St. Gallen",
+                Country = "Switzerland",
+                Street = "Bahnhofplatz",
+                ZipCode = "9000",
+                AddressLine1 = "Rathaus",
+            },
+            ExternalPrintingCenter = false,
+            ExternalPrintingCenterEaiMessageType = "EAI-Gossau",
+            StistatMunicipality = false,
+            StistatExportEaiMessageTypeDeprecated = false,
+#pragma warning disable CS0612
+            StistatExportEaiMessageType = "7777777",
+#pragma warning restore CS0612
+            VotingCardFlatRateDisabled = false,
+            IsMainVotingCardsDomainOfInfluence = false,
+            HasEmptyVotingCards = false,
+        };
+
+        await TestEventPublisher.Publish(eventData);
+
+        var doi = await RunOnDb(db => db.DomainOfInfluences.SingleAsync(x => x.Id == DomainOfInfluenceMockData.StadtGossauGuid));
+        doi.StistatExportEaiMessageType.Should().Be("7777777");
+
+        var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
+            .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
+            .Include(x => x.PrintJob)
+            .ToListAsync());
+
+        foreach (var contestDoi in contestDois)
+        {
+            contestDoi.StistatExportEaiMessageType.Should().Be("7777777");
+        }
+    }
+
+    [Fact]
     public async Task DomainOfInfluenceLogoDeleted()
     {
         var eventData = new DomainOfInfluenceLogoDeleted
@@ -587,9 +882,28 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
     [Fact]
     public async Task DomainOfInfluenceDeleted()
     {
+        var doiId = DomainOfInfluenceMockData.StadtGossauGuid;
+        var ccId = CountingCircleMockData.StadtGossauGuid;
+        var snapshotDoiId = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid;
+        var snapshotCcId = StimmunterlagenUuidV5.BuildContestCountingCircle(ContestMockData.BundFutureApprovedGuid, ccId);
+
+        var doiCcSource = new DomainOfInfluenceCountingCircleSource(
+            ContestMockData.BundFutureApprovedGuid,
+            new() { DomainOfInfluenceMockData.BundGuid, DomainOfInfluenceMockData.KantonStGallenGuid, doiId });
+
+        var result = await LoadDomainOfInfluenceCountingCircleResult(doiCcSource);
+        result.DoiCcs.All(doiCc => doiCc.Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId))
+            .Should().BeTrue();
+
+        result.SnapshotDoiCcs.All(doiCc => doiCc.Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId))
+            .Should().BeTrue();
+
+        var originalRootCount = result.DoiCcs[0].Count;
+        var originalParentCount = result.DoiCcs[1].Count;
+
         var eventData = new DomainOfInfluenceDeleted
         {
-            DomainOfInfluenceId = DomainOfInfluenceMockData.StadtGossauId,
+            DomainOfInfluenceId = doiId.ToString(),
         };
 
         // publish two events to test idempotency
@@ -603,5 +917,45 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         var gossauCount = await RunOnDb(db => db.ContestDomainOfInfluences
             .CountAsync(x => x.BasisDomainOfInfluenceId == DomainOfInfluenceMockData.StadtGossauGuid));
         gossauCount.Should().Be(contestsNotInTestingPhaseCount);
+
+        result = await LoadDomainOfInfluenceCountingCircleResult(doiCcSource);
+        result.DoiCcs.All(doiCc => !doiCc.Any(x => x.CountingCircleId == ccId && x.SourceDomainOfInfluenceId == doiId))
+            .Should().BeTrue();
+
+        result.SnapshotDoiCcs.All(doiCc => !doiCc.Any(x => x.CountingCircleId == snapshotCcId && x.SourceDomainOfInfluenceId == snapshotDoiId))
+            .Should().BeTrue();
+
+        result.DoiCcs[0].Count.Should().Be(originalRootCount - 1);
+        result.DoiCcs[1].Count.Should().Be(originalParentCount - 1);
+        result.DoiCcs[2].Count.Should().Be(0);
     }
+
+    private async Task<DomainOfInfluenceCountingCircleResult> LoadDomainOfInfluenceCountingCircleResult(DomainOfInfluenceCountingCircleSource data)
+    {
+        var doiCcs = new List<List<Data.Models.DomainOfInfluenceCountingCircle>>();
+        var snapshotDoiCcs = new List<List<Data.Models.ContestDomainOfInfluenceCountingCircle>>();
+
+        foreach (var id in data.DomainOfInfluenceIds)
+        {
+            doiCcs.Add(
+                await RunOnDb(db => db.DomainOfInfluenceCountingCircles
+                    .Where(doiCc => doiCc.DomainOfInfluenceId == id)
+                    .ToListAsync()));
+
+            snapshotDoiCcs.Add(
+                await RunOnDb(db => db.ContestDomainOfInfluenceCountingCircles
+                    .Where(doiCc => doiCc.DomainOfInfluenceId == StimmunterlagenUuidV5.BuildContestDomainOfInfluence(data.ContestId, id))
+                    .ToListAsync()));
+        }
+
+        return new DomainOfInfluenceCountingCircleResult(doiCcs, snapshotDoiCcs);
+    }
+
+    private record DomainOfInfluenceCountingCircleSource(
+        Guid ContestId,
+        List<Guid> DomainOfInfluenceIds);
+
+    private record DomainOfInfluenceCountingCircleResult(
+        List<List<Data.Models.DomainOfInfluenceCountingCircle>> DoiCcs,
+        List<List<Data.Models.ContestDomainOfInfluenceCountingCircle>> SnapshotDoiCcs);
 }

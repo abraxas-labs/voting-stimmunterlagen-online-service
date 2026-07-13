@@ -94,6 +94,11 @@ public class ManualVotingCardGeneratorJobManager
             throw new ValidationException($"Invalid {nameof(voter.PersonId)} {voter.PersonId}");
         }
 
+        if (!string.IsNullOrWhiteSpace(voter.Religion) && string.IsNullOrWhiteSpace(voter.DateOfBirth))
+        {
+            throw new ValidationException($"Invalid {nameof(voter.Religion)} {voter.Religion}. If religion is selected birthdate must be defined");
+        }
+
         var layout = await GetLayout(doiId, voter.VotingCardType, ct);
 
         voter.Bfs = "MANUAL";
@@ -129,7 +134,6 @@ public class ManualVotingCardGeneratorJobManager
         await _stepManager.EnsureStepApproved(doiId, Step.GenerateVotingCards);
         await _jobsRepo.Create(manualJob);
         var pdf = await _templateManager.GetPdf(layout.DomainOfInfluence!.Contest!.Date, layout, new[] { voter }, ct);
-        await _doiManager.UpdateLastVoterUpdate(doiId);
         await transaction.CommitAsync();
         return pdf;
     }

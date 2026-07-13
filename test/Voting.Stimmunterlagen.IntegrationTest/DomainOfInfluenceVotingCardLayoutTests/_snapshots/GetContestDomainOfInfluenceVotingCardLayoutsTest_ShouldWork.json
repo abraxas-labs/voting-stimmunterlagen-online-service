@@ -19,7 +19,7 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
@@ -61,7 +61,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -78,7 +78,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -101,12 +105,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
         "StistatMunicipality": true,
-        "Bfs": "1240",
+        "Bfs": "3441",
         "HasEmptyVotingCards": true,
         "CountOfEmptyVotingCards": 0,
         "LastCountOfEmptyVotingCardsUpdate": null
@@ -149,12 +153,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": true,
             "CanManuallyUploadVoterList": true,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": true,
-            "Bfs": "1240",
+            "Bfs": "3441",
             "HasEmptyVotingCards": true,
             "CountOfEmptyVotingCards": 0,
             "LastCountOfEmptyVotingCardsUpdate": null
@@ -166,7 +170,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -189,7 +197,7 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
@@ -231,7 +239,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -248,7 +256,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -271,12 +283,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
         "StistatMunicipality": true,
-        "Bfs": "1120",
+        "Bfs": "3443",
         "HasEmptyVotingCards": true,
         "CountOfEmptyVotingCards": 0,
         "LastCountOfEmptyVotingCardsUpdate": null
@@ -316,12 +328,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": true,
-            "Bfs": "1120",
+            "Bfs": "3443",
             "HasEmptyVotingCards": true,
             "CountOfEmptyVotingCards": 0,
             "LastCountOfEmptyVotingCardsUpdate": null
@@ -333,7 +345,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -356,12 +372,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
         "StistatMunicipality": false,
-        "Bfs": "1110",
+        "Bfs": "3203",
         "HasEmptyVotingCards": false,
         "CountOfEmptyVotingCards": 0,
         "LastCountOfEmptyVotingCardsUpdate": null
@@ -398,12 +414,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": false,
-            "Bfs": "1110",
+            "Bfs": "3203",
             "HasEmptyVotingCards": false,
             "CountOfEmptyVotingCards": 0,
             "LastCountOfEmptyVotingCardsUpdate": null
@@ -415,7 +431,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -438,12 +458,12 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
         "StistatMunicipality": false,
-        "Bfs": "1130",
+        "Bfs": "3408",
         "HasEmptyVotingCards": false,
         "CountOfEmptyVotingCards": 0,
         "LastCountOfEmptyVotingCardsUpdate": null
@@ -480,12 +500,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": false,
-            "Bfs": "1130",
+            "Bfs": "3408",
             "HasEmptyVotingCards": false,
             "CountOfEmptyVotingCards": 0,
             "LastCountOfEmptyVotingCardsUpdate": null
@@ -497,7 +517,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     },
@@ -520,7 +544,7 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
@@ -562,7 +586,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -579,7 +603,11 @@
             "IncludeIsHouseholder": false,
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
-          }
+          },
+          "ContestColor": 0,
+          "DomainOfInfluenceColor": 0,
+          "OverriddenColor": 0,
+          "EffectiveColor": 0
         }
       ]
     }

@@ -128,14 +128,22 @@ public class DomainOfInfluenceManager
         await _doiRepo.Update(doi);
     }
 
-    public async Task UpdateLastVoterUpdate(Guid doiId)
+    public async Task UpdateLatestVoterListImportsLastUpdate(Guid doiId)
     {
-        var doi = await _doiRepo.Query()
+        var affectedRows = await _doiRepo.Query()
             .WhereIsManager(_auth.Tenant.Id)
-            .FirstOrDefaultAsync(x => x.Id == doiId)
-            ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), doiId);
-        doi.LastVoterUpdate = _clock.UtcNow;
-        await _doiRepo.Update(doi);
+            .Where(x => x.Id == doiId)
+            .ExecuteUpdateAsync(setters => setters.SetProperty(
+                doi => doi.LatestVoterListImportsLastUpdate,
+                doi => _doiRepo.Query()
+                    .Where(x => x.Id == doi.Id)
+                    .SelectMany(x => x.VoterListImports!)
+                    .Max(i => (DateTime?)i.LastUpdate)));
+
+        if (affectedRows == 0)
+        {
+            throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), doiId);
+        }
     }
 
     internal async Task<string> GetSecureConnectId(Guid id)

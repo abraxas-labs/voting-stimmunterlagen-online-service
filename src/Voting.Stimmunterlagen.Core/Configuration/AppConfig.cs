@@ -5,15 +5,12 @@ using System;
 using System.Collections.Generic;
 using Voting.Lib.Common.Net;
 using Voting.Lib.Iam.Configuration;
-using Voting.Lib.Iam.TokenHandling.ServiceToken;
 using Voting.Stimmunterlagen.Data.Configuration;
 
 namespace Voting.Stimmunterlagen.Core.Configuration;
 
 public class AppConfig
 {
-    public const string SharedSecureConnectServiceAccountName = "SharedSecureConnect";
-
     public ServiceMode ServiceMode { get; set; } = ServiceMode.Hybrid;
 
     public PortConfig Ports { get; set; } = new();
@@ -32,8 +29,6 @@ public class AppConfig
     public SecureConnectConfiguration SecureConnect { get; set; } = new();
 
     public Uri? SecureConnectApi { get; set; }
-
-    public SecureConnectServiceAccountOptions SharedSecureConnect { get; set; } = new();
 
     public long? CacheSizeLimit { get; set; } = 10_000_000; // 10MB
 
@@ -65,4 +60,9 @@ public class AppConfig
     /// Gets or sets the auth store configuration.
     /// </summary>
     public AuthStoreConfig AuthStore { get; set; } = new();
+
+    /// <summary>
+    /// Gets or sets the automapper configuration.
+    /// </summary>
+    public AutoMapperConfig AutoMapper { get; set; } = new();
 }

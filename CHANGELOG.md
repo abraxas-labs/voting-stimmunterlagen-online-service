@@ -1,4 +1,4 @@
-# ✨ Changelog (`v2.57.0`)
+# ✨ Changelog (`v2.66.3`)
 
 All notable changes to this project will be documented in this file.
 
@@ -8,11 +8,178 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version Info
 
 ```text
-This version -------- v2.57.0
-Previous version ---- v2.56.0
+This version -------- v2.66.3
+Previous version ---- v2.57.0
 Initial version ----- v2.5.1
-Total commits ------- 3
+Total commits ------- 22
 ```
+
+## [v2.66.3] - 2026-07-10
+
+### :arrows_counterclockwise: Changed
+
+- ConfigurationMapper: if bfs number is 9178 or 8178 for swiss abroad brick values should be mapped always from configuration file.
+
+## [v2.66.2] - 2026-07-08
+
+### :arrows_counterclockwise: Changed
+
+- ConfigurationMapper: use bick-texts from bfs 3\* for test ballots with 8\*
+- TestDomainOfInfluencesConfig.json: removed brick-texts which are no longer used
+
+## [v2.66.1] - 2026-07-08
+
+### 🆕 Added
+
+- add domain of influence counting circle inheritance
+
+## [v2.66.0] - 2026-07-07
+
+### 🆕 Added
+
+- add contest list paging
+
+## [v2.65.7] - 2026-07-02
+
+### 🔄 Changed
+
+- migrate from connect uploader to connect api provider
+
+## [v2.65.6] - 2026-07-01
+
+### 🔄 Changed
+
+- add auto send split field to voter list and fix voting card sums
+
+## [v2.65.5] - 2026-06-30
+
+### :arrows_counterclockwise: Changed
+
+- Method BuildInvoiceEntry() in InvoiceFileEntriesBuilder: fix mixed up MaterialCategory. AttachmentStationsSetup keep as it was before. AttachmentStations Amount = totalCountOfVotingCards - restCountOfVotingCards
+
+## [v2.65.4] - 2026-06-29
+
+### :new: Added
+
+- DataConfigurationValidator: centralized medhod Validate() to set IncludePersonId and IncludeDateOfBirth if doi is stistat. Validation for IncludeReligion and IncludeDomainOfInfluenceChurch options.
+
+### :arrows_counterclockwise: Changed
+
+- ManualVotingCardGeneratorJobManager: added validation for religion and birthdate in create() method
+
+## [v2.65.3] - 2026-06-25
+
+### :arrows_counterclockwise: Changed
+
+- TemplateManager: fix order of generated bricks from dmdoc. 1. brieflich, 2. urne 3. vorzeitig
+
+## [v2.65.2] - 2026-06-24
+
+### 🔄 Changed
+
+- voter list improvements
+
+## [v2.65.1] - 2026-06-23
+
+### 🆕 Added
+
+- add voter list imports last update flag
+
+## [v2.65.0] - 2026-06-19
+
+### :arrows_counterclockwise: Changed
+
+- VotingCardPrintFileBuilder, VotingcardPrintFileEntry: added PostDeliveryDate from Contest.DeliveryToPostDeadline for printfile export
+
+## [v2.64.1] - 2026-06-18
+
+### 🆕 Added
+
+- add AutoMapper license management
+
+### 🔄 Changed
+
+- bump AutoMapper version to v15.1.3
+
+## [v2.64.0] - 2026-06-18
+
+### :new: Added
+
+- tests and testfiles for allianceName
+
+### :arrows_counterclockwise: Changed
+
+- VoterMapping in V4 and V6: set lastName to allianceName if allianceName is available otherwiase use officialName as before.
+
+## [v2.63.0] - 2026-06-15
+
+### :arrows_counterclockwise: Changed
+
+- appsettings.json made position 1040.05.52 available for contests, changed Category to VoterExcludeRest for 1040.05.35 and 1040.05.69
+- InvoiceFileEntriesBuilder: for MaterialCategory.AttachmentStationsSetup add amount like Category VoterExcludeRest
+
+## [v2.62.1] - 2026-06-11
+
+### 🔄 Changed
+
+- move stistat export eai message type to domain of influence event data
+
+## [v2.62.0] - 2026-06-11
+
+### :arrows_counterclockwise: Changed
+
+- ContestEVotingExportGenerator: added template manager to get all required brick contents from contest
+- TemplateManager: new Mehtod GetBfsBrickContentDictionary to collect the required bricks in a dictionary per bfs
+- TemplateManager: new Mehtod GetBrickContent to get a brick from voting lib with dmdoc intern_name of the brick
+- DmDocServiceMock: added new mocked method GetBrick
+- EVotingExportDataBuilder: added parameter to methods to insert brick contents as dictionary and to map the corresponding brick content for bfs number from the dictionary
+- ConfigurationMapper: added parameter to methods to insert brick contents as dictionary
+
+## [v2.61.0] - 2026-06-05
+
+Revert "feat(VOTING-5243): support custom colors in e-voting voting cards"
+
+This reverts commit a037b7d5ce37bca00e619fda9fe727b00c5e215e and commit 478b9d469abef98e55f8c992a12e30b79ece90cb.
+
+### :x: Removed
+
+- Voting CardCardColor from ContestVotingCardLayoutBuilder, DomainOfInfluenceVotingCardLayoutBuilder and VotingCardLayoutBuilder
+- DummyDoiBuilder
+- param for setting the color of the layout in ContestVotingCardLayoutService and DomainOfInfluenceVotingCardLayoutService
+- color property mappings for models in DomainOfInfluneceVotingCardLayoutProfile and ContestVotingCardlayoutProfile
+- properties for color in models DomainOfInfluneceVotingCardLayout and VotingCardLayout
+- custom colors in e-voting voting cards
+
+## [v2.60.0] - 2026-06-02
+
+### 🆕 Added
+
+- add attachment delayed delivery date
+
+## [v2.59.0] - 2026-05-19
+
+### 🆕 Added
+
+- support custom colors in e-voting voting cards
+
+## [v2.58.1] - 2026-05-18
+
+### 🆕 Added
+
+- add fine distribution invoice positions
+
+## [v2.58.0] - 2026-05-15
+
+### :new: Added
+
+- VotingCardColor from basis to event processors ContestVotingCardLayoutBuilder, DomainOfInfluenceVotingCardLayoutBuilder and VotingCardLayoutBuilder
+- made a single util class to creat dummy doi's: including the selected VotingCardColor
+
+### :arrows_counterclockwise: Changed
+
+- ContestVotingCardLayoutService, DomainOfInfluenceVotingCardLayoutService: new param for setting the color of the layout
+- DomainOfInfluneceVotingCardLayoutProfile and ContestVotingCardlayoutProfile: added color propertiy mappings
+- models DomainOfInfluneceVotingCardLayout and VotingCardLayout: added properies for color and generate migrations
 
 ## [v2.57.0] - 2026-05-11
 

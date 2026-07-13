@@ -39,7 +39,7 @@
     {
       "CurrentDate": "2020-01-10T13:12:10.2Z",
       "SapMaterialNumber": "1040.05.35",
-      "Amount": 62.0,
+      "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
       "Comment": "",
@@ -57,7 +57,7 @@
     {
       "CurrentDate": "2020-01-10T13:12:10.2Z",
       "SapMaterialNumber": "1040.05.38",
-      "Amount": 50.0,
+      "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
       "Comment": "",
@@ -71,6 +71,15 @@
       "SapOrderPosition": "60",
       "Comment": "",
       "SapMaterialText": "DV CAG80 Antwortkuvert C5 postzert"
+    },
+    {
+      "CurrentDate": "2020-01-10T13:12:10.2Z",
+      "SapMaterialNumber": "1040.05.52",
+      "Amount": 60.0,
+      "SapCustomerNumber": "00987",
+      "SapOrderPosition": "60",
+      "Comment": "",
+      "SapMaterialText": "DV CAG89 Fenster Stimmkuvert C4"
     },
     {
       "CurrentDate": "2020-01-10T13:12:10.2Z",
@@ -140,7 +149,7 @@
     {
       "CurrentDate": "2020-01-10T13:12:10.2Z",
       "SapMaterialNumber": "1040.05.35",
-      "Amount": 62.0,
+      "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
       "Comment": "",
@@ -158,7 +167,7 @@
     {
       "CurrentDate": "2020-01-10T13:12:10.2Z",
       "SapMaterialNumber": "1040.05.38",
-      "Amount": 62.0,
+      "Amount": 60.0,
       "SapCustomerNumber": "00987",
       "SapOrderPosition": "60",
       "Comment": "",

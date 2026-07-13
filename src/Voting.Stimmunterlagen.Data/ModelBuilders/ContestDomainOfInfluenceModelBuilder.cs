@@ -33,7 +33,8 @@ public class ContestDomainOfInfluenceModelBuilder : IEntityTypeConfiguration<Con
         builder.HasGinTrigramIndex(x => x.Name);
 
         builder
-            .Property(d => d.LastVoterUpdate)
+            .Property(d => d.LatestVoterListImportsLastUpdate)
+            .HasDateType()
             .HasUtcConversion();
 
         builder
@@ -79,7 +80,7 @@ public class ContestDomainOfInfluenceModelBuilder : IEntityTypeConfiguration<Con
             .IsRequired();
 
         builder
-            .HasIndex(x => new { x.CountingCircleId, x.DomainOfInfluenceId })
+            .HasIndex(x => new { x.CountingCircleId, x.DomainOfInfluenceId, x.SourceDomainOfInfluenceId })
             .IsUnique();
     }
 }

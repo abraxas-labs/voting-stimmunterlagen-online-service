@@ -15,6 +15,7 @@ using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
 using Voting.Stimmunterlagen.Core.Models;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
@@ -79,12 +80,7 @@ public class DomainOfInfluenceVotingCardLayoutManager
         var oldEffectiveTemplateId = existingLayout.EffectiveTemplateId;
         existingLayout.OverriddenTemplateId = null;
         existingLayout.AllowCustom = allowCustom;
-        if (existingLayout.DomainOfInfluence!.StistatMunicipality && !existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly)
-        {
-            dataConfiguration.IncludePersonId = true;
-            dataConfiguration.IncludeDateOfBirth = true;
-        }
-
+        DataConfigurationValidator.Validate(dataConfiguration, existingLayout.DomainOfInfluence!.StistatMunicipality, existingLayout.DomainOfInfluence!.Contest!.IsPoliticalAssembly);
         existingLayout.DataConfiguration = dataConfiguration;
 
         Template? template = null;

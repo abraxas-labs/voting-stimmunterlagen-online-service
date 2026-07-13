@@ -24,6 +24,7 @@ using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Repositories;
+using Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration;
 using Contest = Voting.Stimmunterlagen.Data.Models.Contest;
 using Template = Voting.Stimmunterlagen.Data.Models.Template;
 using Voter = Voting.Stimmunterlagen.Data.Models.Voter;
@@ -40,6 +41,7 @@ public class TemplateManager
 
     private readonly IDmDocService _dmDoc;
     private readonly IDbRepository<DataContext, int, Template> _templateRepo;
+    private readonly IDbRepository<DataContext, DomainOfInfluenceVotingCardLayout> _domainOfInfluenceVotingCardLayoutRepo;
     private readonly TemplateDataContainerRepo _templateDataContainerRepo;
     private readonly TemplateDataBuilder _templateDataBuilder;
     private readonly IAuth _auth;
@@ -48,6 +50,7 @@ public class TemplateManager
     public TemplateManager(
         IDmDocService dmDoc,
         IDbRepository<DataContext, int, Template> templateRepo,
+        IDbRepository<DataContext, DomainOfInfluenceVotingCardLayout> domainOfInfluenceVotingCardLayoutRepo,
         TemplateDataContainerRepo templateDataContainerRepo,
         TemplateDataBuilder templateDataBuilder,
         ILogger<TemplateManager> logger,
@@ -55,10 +58,18 @@ public class TemplateManager
     {
         _dmDoc = dmDoc;
         _templateRepo = templateRepo;
+        _domainOfInfluenceVotingCardLayoutRepo = domainOfInfluenceVotingCardLayoutRepo;
         _templateDataBuilder = templateDataBuilder;
         _logger = logger;
         _auth = auth;
         _templateDataContainerRepo = templateDataContainerRepo;
+    }
+
+    private enum BrickType
+    {
+        Brieflich,
+        Urne,
+        Vorzeitig,
     }
 
     internal async Task<List<Template>> GetTemplates()
@@ -105,6 +116,44 @@ public class TemplateManager
 
         await EnsureHasAccessToTemplate(template);
         return template;
+    }
+
+    internal async Task<Dictionary<string, List<Value>>> GetBfsBrickContentDictionary(Guid contestId, CancellationToken ct)
+    {
+        var doiData = await _domainOfInfluenceVotingCardLayoutRepo.Query().
+        Where(vcl =>
+            (vcl.OverriddenTemplateId != null
+             || vcl.DomainOfInfluenceTemplateId != null
+             || vcl.TemplateId != null) &&
+            !vcl.DomainOfInfluence!.Contest!.IsPoliticalAssembly &&
+            vcl.DomainOfInfluence.Bfs != string.Empty &&
+            vcl.DomainOfInfluence.ContestId == contestId &&
+            vcl.VotingCardType == VotingCardType.Swiss)
+        .Select(vcl => new
+        {
+            vcl.DomainOfInfluence!.Bfs,
+            vcl.DomainOfInfluence.SecureConnectId,
+            InternName =
+                vcl.OverriddenTemplate!.InternName ??
+                vcl.DomainOfInfluenceTemplate!.InternName ??
+                vcl.Template!.InternName,
+        })
+        .ToListAsync(cancellationToken: ct);
+        var doiETextBlocksDict = new Dictionary<string, List<Value>>();
+
+        foreach (var doiLayout in doiData)
+        {
+            var eTextBlockList = new List<Value>
+                {
+                    await GetETextBlockValue(doiLayout.InternName, doiLayout.SecureConnectId, BrickType.Brieflich, ct),
+                    await GetETextBlockValue(doiLayout.InternName, doiLayout.SecureConnectId, BrickType.Urne, ct),
+                    await GetETextBlockValue(doiLayout.InternName, doiLayout.SecureConnectId, BrickType.Vorzeitig, ct),
+                };
+
+            doiETextBlocksDict.Add(doiLayout.Bfs, eTextBlockList);
+        }
+
+        return doiETextBlocksDict;
     }
 
     internal Task<Stream> GetPdfPreview(
@@ -228,6 +277,61 @@ public class TemplateManager
         }
 
         await _dmDoc.TagBricks(bricks.Select(b => b.Id).ToArray(), layout.DomainOfInfluence!.Contest!.Date.ToString("dd.MM.yyyy"));
+    }
+
+    internal async Task<string> GetBrickContent(string name, CancellationToken ct)
+    {
+        try
+        {
+            var brick = await _dmDoc.GetBrick(name, ct);
+            return brick.PreviewData;
+        }
+        catch (DmDocException e)
+        {
+            _logger.LogWarning(e, "Could not resolve brick for tenant {TenantId} and intern_name {Name}", _auth.Tenant.Id, name);
+            return string.Empty;
+        }
+    }
+
+    private async Task<Value> GetETextBlockValue(
+        string templateName,
+        string tenantId,
+        BrickType brickType,
+        CancellationToken ct)
+    {
+        var title = brickType switch
+        {
+            BrickType.Brieflich => "Briefliche Stimmabgabe",
+            BrickType.Urne => "Persönliche Stimmabgabe an der Urne",
+            BrickType.Vorzeitig => "Vorzeitige persönliche Stimmabgabe",
+            _ => throw new ArgumentOutOfRangeException(nameof(brickType), brickType, null),
+        };
+
+        var key = brickType switch
+        {
+            BrickType.Brieflich => $"template_{templateName}__text_brieflich__tenantId_{tenantId}",
+            BrickType.Urne => $"template_{templateName}__urne__tenantId_{tenantId}",
+            BrickType.Vorzeitig => $"template_{templateName}__text_vorzeitig__tenantId_{tenantId}",
+            _ => throw new ArgumentOutOfRangeException(nameof(brickType), brickType, null),
+        };
+
+        string text;
+
+        try
+        {
+            text = await GetBrickContent(key, ct);
+        }
+        catch (Exception ex)
+        {
+            text = string.Empty;
+            _logger.LogWarning(ex, "Could not get brick from dmdoc for key: {Key}", key);
+        }
+
+        return new Value
+        {
+            Title = title,
+            Text = text,
+        };
     }
 
     private async Task<IEnumerable<Brick>[]> GetAllTenantBricks(bool forActiveBricks = false)

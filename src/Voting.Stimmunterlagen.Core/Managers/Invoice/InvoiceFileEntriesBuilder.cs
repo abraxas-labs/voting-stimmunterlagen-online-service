@@ -199,7 +199,7 @@ public class InvoiceFileEntriesBuilder
                     return null;
                 }
 
-                entry.Amount = attachmentRequiredForVoterListsCount;
+                entry.Amount = totalCountOfVotingCards - restCountOfVotingCards;
                 break;
             default:
                 throw new InvalidOperationException($"Invoice material configuration with number '{materialConfig.Number}' has an invalid category: '{materialConfig.Category}'");

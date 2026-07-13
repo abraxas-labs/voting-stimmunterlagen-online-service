@@ -13,6 +13,7 @@ using Voting.Lib.Common;
 using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
 using Voting.Stimmunterlagen.Core.Managers.Templates;
+using Voting.Stimmunterlagen.Core.Utils;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
@@ -67,11 +68,7 @@ public class ContestVotingCardLayoutManager
             ?? throw new EntityNotFoundException(nameof(ContestVotingCardLayout), new { contestId, vcType });
 
         Contest contest = await _contestManager.Get(contestId, false);
-        if (contest.DomainOfInfluence!.StistatMunicipality && !contest!.IsPoliticalAssembly)
-        {
-            dataConfiguration.IncludePersonId = true;
-            dataConfiguration.IncludeDateOfBirth = true;
-        }
+        DataConfigurationValidator.Validate(dataConfiguration, contest.DomainOfInfluence!.StistatMunicipality, contest.IsPoliticalAssembly);
 
         var template = await _templateManager.GetOrCreateTemplate(templateId);
         existingLayout.AllowCustom = allowCustom;
@@ -100,11 +97,7 @@ public class ContestVotingCardLayoutManager
             doiLayout.TemplateId = existingLayout.TemplateId;
             doiLayout.AllowCustom = existingLayout.AllowCustom;
             doiLayout.DataConfiguration = _mapper.Map<VotingCardLayoutDataConfiguration>(dataConfiguration);
-            if (doiLayout.DomainOfInfluence!.StistatMunicipality && !contest.IsPoliticalAssembly)
-            {
-                doiLayout.DataConfiguration.IncludePersonId = true;
-                doiLayout.DataConfiguration.IncludeDateOfBirth = true;
-            }
+            DataConfigurationValidator.Validate(doiLayout.DataConfiguration, doiLayout.DomainOfInfluence!.StistatMunicipality, contest.IsPoliticalAssembly);
         }
 
         await _doiLayoutRepo.SaveChanges();

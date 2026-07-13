@@ -105,6 +105,7 @@ public class VoterListImportController : ControllerBase
                     ImportId = voterListImport.Id,
                     VoterLists = _mapper.Map<List<CreateUpdateVoterListResponse>>(voterListImport.VoterLists),
                     AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit,
+                    LastUpdate = voterListImport.LastUpdate,
                     Error = voterListImportResult.Success ? null : _mapper.Map<VoterListImportErrorResponse>(voterListImportResult),
                 };
             },
@@ -118,6 +119,7 @@ public class VoterListImportController : ControllerBase
                 return new CreateUpdateVoterListImportResponse
                 {
                     ImportId = voterListImport.Id,
+                    LastUpdate = voterListImport.LastUpdate,
                     AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit = voterListImport.AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit,
                 };
             },

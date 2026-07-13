@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Voting.Stimmunterlagen.EVoting.Configuration;
 using Voting.Stimmunterlagen.EVoting.Mapper;
 using Voting.Stimmunterlagen.EVoting.Models;
+using Voting.Stimmunterlagen.OfflineClient.Shared.ContestConfiguration;
 using Contest = Voting.Stimmunterlagen.EVoting.Models.Contest;
 
 namespace Voting.Stimmunterlagen.EVoting;
@@ -22,21 +23,17 @@ public static class EVotingExportDataBuilder
     private const string TemplatesPath = "Export/Templates";
 
     public static byte[] BuildEVotingExport(
+        EVotingExportContext context,
         byte[] eVotingZipBytes,
-        Contest contest,
-        byte[] ech0045XmlBytes,
-        string ech0045XmlFileName,
-        List<DomainOfInfluence> testDomainOfInfluences,
-        DomainOfInfluence testDomainOfInfluenceDefaults,
-        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
+        byte[] ech0045XmlBytes)
     {
         using var ms = new MemoryStream();
 
         // archive needs to be disposed, otherwise the memory stream will not receive the update.
         using (var baseArchive = new ZipArchive(ms, ZipArchiveMode.Update))
         {
-            AppendEVotingConfiguration(baseArchive, eVotingZipBytes, contest, testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs);
-            AppendEch0045(baseArchive, ech0045XmlBytes, ech0045XmlFileName);
+            AppendEVotingConfiguration(baseArchive, eVotingZipBytes, context.Contest, context.TestDomainOfInfluences, context.TestDomainOfInfluenceDefaults, context.EVotingDomainOfInfluenceConfigByBfs, context.BfsETextBlockValuesDict);
+            AppendEch0045(baseArchive, ech0045XmlBytes, context.Ech0045XmlFileName);
         }
 
         return ms.ToArray();
@@ -48,7 +45,8 @@ public static class EVotingExportDataBuilder
         Contest contest,
         List<DomainOfInfluence> testDomainOfInfluences,
         DomainOfInfluence testDomainOfInfluenceDefaults,
-        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
+        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs,
+        Dictionary<string, List<Value>> bfsETextBlockValuesDictuesDict)
     {
         using var ms = new MemoryStream();
         ms.Write(eVotingZipBytes);
@@ -61,7 +59,7 @@ public static class EVotingExportDataBuilder
                 .Select(e => e.FullName)
                 .ToList();
 
-            var config = contest.ToConfiguration(testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs, certificates);
+            var config = contest.ToConfiguration(testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs, certificates, bfsETextBlockValuesDictuesDict);
 
             // config has newtonsoft json annotations
             var configJson = JsonConvert.SerializeObject(config);

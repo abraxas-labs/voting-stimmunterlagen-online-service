@@ -6,8 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="$(AutoMapperVersion)" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-    <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="3.2.0" />
+    <PackageReference Include="AutoMapper.Extensions.EnumMapping" Version="5.0.0" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="$(GrpcAspNetCoreVersion)" />
@@ -20,7 +19,7 @@
     <PackageReference Include="prometheus-net.AspNetCore.HealthChecks" Version="8.2.1" />
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="Serilog.Expressions" Version="4.0.0" />
-    <PackageReference Include="Voting.Stimmunterlagen.Proto" Version="3.16.1" />
+    <PackageReference Include="Voting.Stimmunterlagen.Proto" Version="$(VotingStimmunterlagenProtoVersion)" />
     <PackageReference Include="Voting.Lib.Prometheus" Version="$(VotingLibVersion)" />
   </ItemGroup>
 

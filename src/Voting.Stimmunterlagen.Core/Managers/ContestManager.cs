@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Voting.Lib.Common;
+using Voting.Lib.Database.Models;
 using Voting.Lib.Iam.Exceptions;
 using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.Exceptions;
@@ -26,6 +27,7 @@ public class ContestManager
     private const int AttachmentDeliveryCommunalDeadlineDays = 22;
     private const int GenerateVotingCardsCommunalDeadlineDays = 24;
 
+    private static readonly Pageable _allPage = new(1, 1_000);
     private readonly IDbRepository<Contest> _contestRepo;
     private readonly IAuth _auth;
     private readonly IClock _clock;
@@ -156,7 +158,7 @@ public class ContestManager
                ?? throw new EntityNotFoundException(nameof(Contest), id);
     }
 
-    public async Task<List<Contest>> List(IReadOnlyCollection<ContestState> states, bool forPrintJobManagement)
+    public async Task<Page<Contest>> List(IReadOnlyCollection<ContestState> states, bool forPrintJobManagement, Pageable? pageable)
     {
         var tenantId = _auth.Tenant.Id;
         var query = _contestRepo.Query();
@@ -178,12 +180,19 @@ public class ContestManager
                 .Include(c => c.ContestDomainOfInfluences!).ThenInclude(x => x.PrintJob);
         }
 
-        return await query
+        var page = await query
             .Include(x => x.DomainOfInfluence)
             .Include(x => x.Translations)
             .OrderBy(x => x.Date)
             .ThenBy(x => x.Id)
-            .ToListAsync();
+            .ToPageAsync(pageable ?? _allPage);
+
+        if (pageable == null && page.HasNextPage)
+        {
+            throw new ValidationException("Tried to fetch a large dataset without paging");
+        }
+
+        return page;
     }
 
     public async Task ResetGenerateVotingCardsAndUpdateContestDeadlines(

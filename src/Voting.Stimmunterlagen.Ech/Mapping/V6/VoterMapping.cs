@@ -95,6 +95,7 @@ internal static class VoterMapping
                 x => x.SwissDomesticPerson.PersonIdentification,
                 x => x.SwissDomesticPerson.LanguageOfCorrespondance,
                 x => x.SwissDomesticPerson.CallName,
+                x => x.SwissDomesticPerson.AllianceName,
                 x => x.Municipality,
                 x => x.SwissDomesticPerson.PlaceOfOrigin,
                 x => x.SwissDomesticPerson.ReligionData,
@@ -111,6 +112,7 @@ internal static class VoterMapping
                 x => x.SwissAbroadPerson.PersonIdentification,
                 x => x.SwissAbroadPerson.LanguageOfCorrespondance,
                 x => x.SwissAbroadPerson.CallName,
+                x => x.SwissAbroadPerson.AllianceName,
                 x => x.Municipality,
                 x => x.SwissAbroadPerson.PlaceOfOrigin,
                 x => x.SwissAbroadPerson.ReligionData,
@@ -128,6 +130,7 @@ internal static class VoterMapping
                 x => x.ForeignerPerson.PersonIdentification,
                 x => x.ForeignerPerson.LanguageOfCorrespondance,
                 x => x.ForeignerPerson.CallName,
+                x => x.ForeignerPerson.AllianceName,
                 x => x.Municipality,
                 _ => new List<PlaceOfOriginType>(),
                 x => x.ForeignerPerson.ReligionData,
@@ -144,6 +147,7 @@ internal static class VoterMapping
         Func<TNationality, PersonIdentificationType> personIdentificationSelector,
         Func<TNationality, LanguageType> languageOfCorrespondanceSelector,
         Func<TNationality, string> callNameSelector,
+        Func<TNationality, string> lastNameSelector,
         Func<TNationality, SwissMunicipalityType?> municipalitySelector,
         Func<TNationality, List<PlaceOfOriginType>> placeOfOriginSelector,
         Func<TNationality, ReligionDataType?> religionSelector,
@@ -159,12 +163,14 @@ internal static class VoterMapping
 
         var personIdentification = personIdentificationSelector(nationality);
         var callName = callNameSelector(nationality);
+        var lastName = lastNameSelector(nationality);
 
         voter.FirstName = string.IsNullOrWhiteSpace(callName)
             ? personIdentification.FirstName
             : callName;
-
-        voter.LastName = personIdentification.OfficialName;
+        voter.LastName = string.IsNullOrWhiteSpace(lastName)
+            ? personIdentification.OfficialName
+            : lastName;
         voter.Sex = personIdentification.Sex.ToSexType();
         voter.PersonId = personIdentification.LocalPersonId.PersonId;
         voter.PersonIdCategory = personIdentification.LocalPersonId.PersonIdCategory;

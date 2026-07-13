@@ -60,17 +60,6 @@ public class CreateManualVotingCardGeneratorJobTest : BaseWriteableDbGrpcTest<Ma
     }
 
     [Fact]
-    public async Task ShouldUpdateDomainOfInfluenceLastVoterUpdate()
-    {
-        var doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().BeNull();
-
-        await GemeindeArneggElectionAdminClient.CreateAsync(NewValidRequest());
-        doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().Be(MockedClock.GetDate());
-    }
-
-    [Fact]
     public async Task ShouldWorkWithOnlyRequiredFields()
     {
         var resp = await GemeindeArneggElectionAdminClient.CreateAsync(NewValidRequest(x =>
@@ -137,6 +126,17 @@ public class CreateManualVotingCardGeneratorJobTest : BaseWriteableDbGrpcTest<Ma
             async () => await GemeindeArneggElectionAdminClient.CreateAsync(req),
             StatusCode.InvalidArgument,
             "Iso2");
+    }
+
+    [Fact]
+    public Task ShouldThrowIfNoBirthdateWithReligion()
+    {
+        var req = NewValidRequest();
+        req.Voter.DateOfBirth = null;
+        return AssertStatus(
+            async () => await GemeindeArneggElectionAdminClient.CreateAsync(req),
+            StatusCode.InvalidArgument,
+            "If religion is selected birthdate must be defined");
     }
 
     protected override async Task AuthorizationTestCall(ManualVotingCardGeneratorJobsService.ManualVotingCardGeneratorJobsServiceClient service)

@@ -23,12 +23,13 @@ internal static class ConfigurationMapper
         List<DomainOfInfluence> testDomainOfInfluences,
         DomainOfInfluence testDomainOfInfluenceDefaults,
         Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs,
-        List<string> certificates)
+        List<string> certificates,
+        Dictionary<string, List<Value>> bfsETextBlockValuesDictuesDict)
     {
         return new()
         {
             Polldate = ConvertDateTimeToString(contest.Date),
-            Printings = new() { contest.ToPrinting(testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs) },
+            Printings = new() { contest.ToPrinting(testDomainOfInfluences, testDomainOfInfluenceDefaults, eVotingDomainOfInfluenceConfigByBfs, bfsETextBlockValuesDictuesDict) },
             Certificates = certificates,
         };
     }
@@ -37,7 +38,8 @@ internal static class ConfigurationMapper
         this Contest contest,
         List<DomainOfInfluence> testDomainOfInfluences,
         DomainOfInfluence testDomainOfInfluenceDefaults,
-        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
+        Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs,
+        Dictionary<string, List<Value>> bfsETextBlockValuesDict)
     {
         var printing = new Printing
         {
@@ -47,7 +49,7 @@ internal static class ConfigurationMapper
         printing.Municipalities = testDomainOfInfluences.ConvertAll(testDoi =>
         {
             testDoi.AppendTestDefaults(testDomainOfInfluenceDefaults);
-            return testDoi.ToMunicipality(contest.Date, eVotingDomainOfInfluenceConfigByBfs);
+            return testDoi.ToMunicipality(contest.Date, eVotingDomainOfInfluenceConfigByBfs, bfsETextBlockValuesDict);
         });
 
         if (contest.ContestDomainOfInfluences?.Any() != true)
@@ -55,19 +57,21 @@ internal static class ConfigurationMapper
             return printing;
         }
 
-        printing.Municipalities.AddRange(contest.ContestDomainOfInfluences.Select(doi => doi.ToMunicipality(contest.Date, eVotingDomainOfInfluenceConfigByBfs)));
+        printing.Municipalities.AddRange(contest.ContestDomainOfInfluences.Select(doi => doi.ToMunicipality(contest.Date, eVotingDomainOfInfluenceConfigByBfs, bfsETextBlockValuesDict)));
 
         return printing;
     }
 
-    private static Municipality ToMunicipality(this DomainOfInfluence domainOfInfluence, DateTime contestDate, Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs)
+    private static Municipality ToMunicipality(this DomainOfInfluence domainOfInfluence, DateTime contestDate, Dictionary<string, EVotingDomainOfInfluenceConfig> eVotingDomainOfInfluenceConfigByBfs, Dictionary<string, List<Value>> bfsETextBlockValuesDict)
     {
         var eVotingDomainOfInfluenceConfig = eVotingDomainOfInfluenceConfigByBfs.GetValueOrDefault(domainOfInfluence.Bfs);
-        var eTextBlocks = eVotingDomainOfInfluenceConfig?.ETextBlockValues != null || eVotingDomainOfInfluenceConfig?.ETextBlockValues != null
+        var eVotingDomainOfInfluenceValues = GetVotingDomainOfInfluenceValues(domainOfInfluence, bfsETextBlockValuesDict, eVotingDomainOfInfluenceConfig);
+
+        var eTextBlocks = eVotingDomainOfInfluenceValues != null && eVotingDomainOfInfluenceConfig?.ETextBlockColumnQuantity != null
             ? new ETextBlocks
             {
-                ColumnQuantity = eVotingDomainOfInfluenceConfig.ETextBlockColumnQuantity,
-                Values = eVotingDomainOfInfluenceConfig.ETextBlockValues,
+                ColumnQuantity = eVotingDomainOfInfluenceConfig?.ETextBlockColumnQuantity,
+                Values = eVotingDomainOfInfluenceValues ?? eVotingDomainOfInfluenceConfig?.ETextBlockValues,
             }
             : null;
 
@@ -88,6 +92,32 @@ internal static class ConfigurationMapper
             Stistat = eVotingDomainOfInfluenceConfig?.Stistat != null ? eVotingDomainOfInfluenceConfig.Stistat.Value : domainOfInfluence.StistatMunicipality,
             AttachmentStations = domainOfInfluence.AttachmentStations,
         };
+
+        static List<Value>? GetVotingDomainOfInfluenceValues(DomainOfInfluence domainOfInfluence, Dictionary<string, List<Value>> bfsETextBlockValuesDict, EVotingDomainOfInfluenceConfig? eVotingDomainOfInfluenceConfig)
+        {
+            List<Value>? eVotingDomainOfInfluenceValues = null;
+            if (!BfsIsSwissAbroad(domainOfInfluence.Bfs))
+            {
+                // if bfs is from test ballot starting with 8... brick should be mapped from real bfs starting with 3...
+                var bfs = domainOfInfluence.Bfs.StartsWith("8")
+                    ? "3" + domainOfInfluence.Bfs.Substring(1)
+                    : domainOfInfluence.Bfs;
+
+                eVotingDomainOfInfluenceValues = bfsETextBlockValuesDict.GetValueOrDefault(bfs);
+            }
+
+            if (eVotingDomainOfInfluenceValues == null && eVotingDomainOfInfluenceConfig != null)
+            {
+                eVotingDomainOfInfluenceValues = eVotingDomainOfInfluenceConfig.ETextBlockValues;
+            }
+
+            return eVotingDomainOfInfluenceValues;
+        }
+    }
+
+    private static bool BfsIsSwissAbroad(string bfs)
+    {
+        return bfs == "9170" || bfs == "8170";
     }
 
     private static DeliveryAddress ToDeliveryAddress(this DomainOfInfluenceVotingCardReturnAddress data)

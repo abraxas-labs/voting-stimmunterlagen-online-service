@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Voting.Stimmunterlagen.Data.Models;
 
-public class ContestDomainOfInfluence : BaseDomainOfInfluence<ContestDomainOfInfluence, ContestDomainOfInfluenceHierarchyEntry>,
+public class ContestDomainOfInfluence : BaseDomainOfInfluence<ContestDomainOfInfluence, ContestDomainOfInfluenceCountingCircle, ContestDomainOfInfluenceHierarchyEntry>,
     IHasContest
 {
     public Contest? Contest { get; set; }
@@ -21,8 +21,6 @@ public class ContestDomainOfInfluence : BaseDomainOfInfluence<ContestDomainOfInf
     public DateTime? GenerateVotingCardsTriggered { get; set; }
 
     public ICollection<PoliticalBusiness>? PoliticalBusinesses { get; set; }
-
-    public ICollection<ContestDomainOfInfluenceCountingCircle>? CountingCircles { get; set; }
 
     public ContestRole Role { get; set; }
 
@@ -62,9 +60,9 @@ public class ContestDomainOfInfluence : BaseDomainOfInfluence<ContestDomainOfInf
     public bool CanManuallyUploadVoterList => !ElectoralRegistrationEnabled || AllowManualVoterListUpload;
 
     /// <summary>
-    /// Gets or sets a value indicating when the last voter list was imported or updated or when the last manual voting card was generated.
+    /// Gets or sets a value with the latest <see cref="VoterListImport.LastUpdate"/> time stamp.
     /// </summary>
-    public DateTime? LastVoterUpdate { get; set; }
+    public DateTime? LatestVoterListImportsLastUpdate { get; set; }
 
     public int CountOfEmptyVotingCards { get; set; }
 

@@ -170,7 +170,8 @@ internal static class ApiServiceCollection
             .AddSingleton<IContestEVotingStore, DokConnectContestEVotingStore>()
             .AddSingleton<IVotingCardPrintFileStore, DokConnectVotingCardPrintFileStore>()
             .AddSingleton<IStistatFileStore, DokConnectStistatFileStore>()
-            .AddEaiDokConnector(config.Api.DokConnector).AddSecureConnectServiceToken(AppConfig.SharedSecureConnectServiceAccountName);
+            .AddDokConnectorApi(config.Api.DokConnectorApi)
+            .AddSecureConnectServiceToken(config.Api.ConnectServiceAccount);
 
         return services;
     }

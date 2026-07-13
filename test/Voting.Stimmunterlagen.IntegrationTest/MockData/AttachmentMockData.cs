@@ -128,6 +128,7 @@ public static class AttachmentMockData
         DeliveryPlannedOn = MockedClock.GetDate(20).Date,
         OrderedCount = 7000,
         DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid,
+        DelayedDeliveryDate = MockedClock.GetDate(30).Date,
         State = AttachmentState.Delivered,
         PoliticalBusinessEntries = new List<PoliticalBusinessAttachmentEntry>
             {

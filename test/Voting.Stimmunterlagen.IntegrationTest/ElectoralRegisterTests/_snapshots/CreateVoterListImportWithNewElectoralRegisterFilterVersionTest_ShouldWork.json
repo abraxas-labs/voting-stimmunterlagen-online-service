@@ -10,6 +10,10 @@
         "CountOfVotingCardsForDomainOfInfluenceReturnAddress": 2
       }
     ],
+    "LastUpdate": {
+      "Seconds": 1686096000,
+      "Nanos": 0
+    },
     "Error": null
   },
   "data": {

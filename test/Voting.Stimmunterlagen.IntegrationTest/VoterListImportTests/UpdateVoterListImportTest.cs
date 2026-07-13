@@ -141,18 +141,19 @@ public class UpdateVoterListImportTest : BaseVoterListImportRestTest
     }
 
     [Fact]
-    public async Task ShouldUpdateDomainOfInfluenceLastVoterUpdate()
+    public async Task ShouldUpdateDomainOfInfluenceLatestVoterListImportsLastUpdate()
     {
         var doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().BeNull();
+        doi.LatestVoterListImportsLastUpdate.Should().BeNull();
+        var request = NewRequest();
 
-        await WithRequest(Ech0045TestFiles.GetTestFilePath(Ech0045TestFiles.File1Name), NewRequest(), async content =>
+        await WithRequest(Ech0045TestFiles.GetTestFilePath(Ech0045TestFiles.File1Name), request, async content =>
         {
             using var response = await GemeindeArneggClient.PutAsync(UpdateUrl(VoterListImportMockData.BundFutureApprovedGemeindeArneggGuid), content);
         });
 
         doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().Be(MockedClock.GetDate());
+        doi.LatestVoterListImportsLastUpdate.Should().Be(request.LastUpdate.Date);
     }
 
     [Fact]

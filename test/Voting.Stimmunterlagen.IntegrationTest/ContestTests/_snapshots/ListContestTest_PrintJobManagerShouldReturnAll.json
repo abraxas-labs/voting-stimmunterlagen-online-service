@@ -1,5 +1,14 @@
 {
-  "Contests_": [
+  "PageInfo": {
+    "CurrentPage": 1,
+    "PageSize": 1000,
+    "TotalPages": 1,
+    "ItemsCount": 3,
+    "TotalItemsCount": 3,
+    "HasPreviousPage": false,
+    "HasNextPage": false
+  },
+  "Contests": [
     {
       "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
       "Date": {

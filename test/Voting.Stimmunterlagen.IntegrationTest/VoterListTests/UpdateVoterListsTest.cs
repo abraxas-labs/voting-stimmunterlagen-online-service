@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using Voting.Lib.Testing.Mocks;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
@@ -105,17 +104,6 @@ public class UpdateVoterListsTest : BaseWriteableDbGrpcTest<VoterListService.Vot
         afterNotSendToDoiReturnAddress.CountOfVotingCardsForDomainOfInfluenceReturnAddress.Should().Be(0);
         afterNotSendToDoiReturnAddress.Voters!.Any().Should().BeTrue();
         afterNotSendToDoiReturnAddress.Voters!.All(v => v.SendVotingCardsToDomainOfInfluenceReturnAddress).Should().BeFalse();
-    }
-
-    [Fact]
-    public async Task ShouldUpdateDomainOfInfluenceLastVoterUpdate()
-    {
-        var doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().BeNull();
-
-        await GemeindeArneggElectionAdminClient.UpdateListsAsync(NewValidRequestFromElectoralRegister());
-        doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().Be(MockedClock.GetDate());
     }
 
     [Fact]

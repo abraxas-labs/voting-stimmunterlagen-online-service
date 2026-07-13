@@ -75,6 +75,7 @@ public class ElectoralRegisterService : Proto.V1.ElectoralRegisterService.Electo
             ImportId = result.Import.Id.ToString(),
             FilterVersionId = filterVersionId.ToString(),
             VoterLists = { _mapper.Map<List<VoterListImportVoterListResponse>>(result.Import.VoterLists) },
+            LastUpdate = result.Import.LastUpdate.ToTimestamp(),
             Error = result.Success ? null : _mapper.Map<VoterListImportError>(result),
         };
     }
@@ -92,6 +93,7 @@ public class ElectoralRegisterService : Proto.V1.ElectoralRegisterService.Electo
             ImportId = request.ImportId,
             FilterVersionId = filterVersionId.ToString(),
             VoterLists = { _mapper.Map<List<VoterListImportVoterListResponse>>(result.Import.VoterLists) },
+            LastUpdate = result.Import.LastUpdate.ToTimestamp(),
             Error = result.Success ? null : _mapper.Map<VoterListImportError>(result),
         };
     }

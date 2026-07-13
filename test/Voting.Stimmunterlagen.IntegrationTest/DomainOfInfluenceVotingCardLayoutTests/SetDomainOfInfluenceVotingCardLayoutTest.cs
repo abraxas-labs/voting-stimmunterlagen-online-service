@@ -86,6 +86,41 @@ public class SetDomainOfInfluenceVotingCardLayoutTest :
     }
 
     [Fact]
+    public Task ShouldThrowValidationExeptionWithReligionButNoBirthdateAndIsNotStistat()
+    {
+        ModifyDbEntities<ContestDomainOfInfluence>(
+            doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggGuid,
+            doi => doi.StistatMunicipality = false);
+        return AssertStatus(
+            async () => await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
+            {
+                AllowCustom = true,
+                TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+                VotingCardType = VotingCardType.Swiss,
+                DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+                DataConfiguration = new() { IncludeReligion = true, },
+            }),
+            StatusCode.InvalidArgument,
+            "Enabling the \"religion\" option requires the \"date of birth\" option be enabled");
+    }
+
+    [Fact]
+    public Task ShouldThrowValidationExeptionWithDomainOfInfluenceChurchButNoReligion()
+    {
+        return AssertStatus(
+            async () => await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest
+            {
+                AllowCustom = true,
+                TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+                VotingCardType = VotingCardType.Swiss,
+                DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureGemeindeArneggId,
+                DataConfiguration = new() { IncludeDomainOfInfluenceChurch = true },
+            }),
+            StatusCode.InvalidArgument,
+            "Enabling the \"domain of influence church\" option requires the \"religion\" option be enabled");
+    }
+
+    [Fact]
     public async Task ShouldReset()
     {
         await AbraxasElectionAdminClient.SetLayoutAsync(new SetDomainOfInfluenceVotingCardLayoutRequest

@@ -17,14 +17,14 @@ public class StatisticsByReligionExportTest : VotingCsvExportBaseTest
     {
     }
 
-    protected override string NewRequestExpectedFileName => "Statistics_By_Religion_1240.csv";
+    protected override string NewRequestExpectedFileName => "Statistics_By_Religion_3441.csv";
 
     [Fact]
     public Task TestCsvWithVoterListFilter()
     {
         var request = NewRequest();
         request.VoterListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid;
-        return TestCsvSnapshot(request, "Statistics_By_Religion_1240_Stimmregister Schweizer Arnegg.csv", "VoterList");
+        return TestCsvSnapshot(request, "Statistics_By_Religion_3441_Stimmregister Schweizer Arnegg.csv", "VoterList");
     }
 
     protected override GenerateVotingExportRequest NewRequest()

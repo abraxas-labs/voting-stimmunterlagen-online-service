@@ -32,12 +32,12 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
             "StistatMunicipality": true,
-            "Bfs": "1120",
+            "Bfs": "3443",
             "HasEmptyVotingCards": true,
             "CountOfEmptyVotingCards": 0,
             "LastCountOfEmptyVotingCardsUpdate": null
@@ -53,7 +53,11 @@
           "Station": null,
           "OrderedCount": 7000,
           "Category": 8,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": {
+            "Seconds": 1581206400,
+            "Nanos": 0
+          }
         }
       ],
       "TotalOrderedCount": 7000,

@@ -64,7 +64,7 @@ public class DomainOfInfluenceModelBuilder : IEntityTypeConfiguration<DomainOfIn
             .IsRequired();
 
         builder
-            .HasIndex(x => new { x.CountingCircleId, x.DomainOfInfluenceId })
+            .HasIndex(x => new { x.CountingCircleId, x.DomainOfInfluenceId, x.SourceDomainOfInfluenceId })
             .IsUnique();
     }
 }

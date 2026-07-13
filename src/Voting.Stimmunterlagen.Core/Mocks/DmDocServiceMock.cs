@@ -6,6 +6,8 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -104,7 +106,7 @@ public class DmDocServiceMock : IDmDocService
             1,
             "stimmrechtausweis_text_brieflich",
             "Stimmrechtsausweis Text brieflich",
-            "<html><body><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"null\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">Unterschreiben Sie die Erklärung zur brieflichen Stimmabgabe.</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"null\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">Legen Sie den/die ausgefüllten Stimmzettel in das beiliegende Stimmzettelkuvert.</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"null\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">Legen Sie das Stimmzettelkuvert mit dem/den Stimmzettel/n sowie den unterschriebenen Stimmrechtsausweis in das Antwortkuvert, mit dem Sie das Stimmmaterial erhalten haben.</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"null\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">Übergeben Sie das Antwortkuvert rechtzeitig der Post. Briefliche Stimmen müssen spätestens am Abstimmungssonntag bis zur Schliessung der Urnen bei der Rücksendeadresse eintreffen.</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"null\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">Das Fensterkuvert kann</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"1\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">unfrankiert der Post übergeben werden</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"1\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">in den Briefkasten der Gemeindeverwaltung eingeworfen werden</p><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"1\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">an der Urne abgegeben werden</p></body></html>",
+            "<html><body><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"1\" data-default=\"0\" data-bold=\"null\" data-italic=\"null\" data-text-align=\"null\" data-color=\"null\" data-background-color=\"null\" data-indention-width=\"null\" data-indention-level=\"null\" data-hyphenation=\"null\" data-pre-named-string=\"null\" data-post-named-string=\"null\">brieflich aus der dmdoc API</p></body></html>",
             501,
             "template-001-swiss",
             "SC-ABX"),
@@ -113,7 +115,7 @@ public class DmDocServiceMock : IDmDocService
             2,
             "stimmrechtausweis_text_vorzeitig",
             "Stimmrechtsausweis Text vorzeitig",
-            "<html><body><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"0\">Am <strong>Donnerstag</strong> und <strong>Freitag</strong> vor dem Abstimmungssonntag kann beim Front-Office, Parterre, während der Bürozeit, vorzeitig gestimmt werden.</p></body></html>",
+            "<html><body><p style=\"font-family:'arialpro',sans-serif;font-size:9px;line-feed:11px;margin-top:0px;margin-bottom:0px;\" data-pf-name=\"voting_9pt\" data-overwrite=\"0\">vorzeitig aus der dmdoc API</p></body></html>",
             502,
             "template-001-swiss",
             "SC-ABX"),
@@ -122,7 +124,7 @@ public class DmDocServiceMock : IDmDocService
             101,
             "stimmrechtausweis_zeit_urne",
             "Stimmrechtsausweis Zeit Urne",
-            "<html><body>09:00</body></html>",
+            "<html><body>urne aus der dmdoc API</body></html>",
             601,
             "template-100-swiss-arnegg",
             "SC-ABX"),
@@ -354,6 +356,32 @@ public class DmDocServiceMock : IDmDocService
     {
         // this function can be empty in test cases. It has no functional impact in testing mode.
         return Task.CompletedTask;
+    }
+
+    public Task<Brick> GetBrick(string internName, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(internName))
+        {
+            throw new ArgumentException(nameof(internName));
+        }
+
+        ct.ThrowIfCancellationRequested();
+
+        MockedBrick mockedBrick = internName switch
+        {
+            var name when name.Contains("brieflich") =>
+                MockedBricks.First(b => b.Id == 1),
+
+            var name when name.Contains("vorzeitig") =>
+                MockedBricks.First(b => b.Id == 2),
+
+            var name when name.Contains("urne") =>
+                MockedBricks.First(b => b.Id == 101),
+
+            _ => throw new DmDocException("No response data provided.", new HttpRequestException(null, null, HttpStatusCode.NotFound)),
+        };
+
+        return Task.FromResult<Brick>(mockedBrick);
     }
 
     private Task<Stream> GetExamplePdfStream()

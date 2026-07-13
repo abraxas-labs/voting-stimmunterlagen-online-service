@@ -14,5 +14,7 @@ public class CreateUpdateVoterListImportResponse
 
     public bool AutoSendVotingCardsToDomainOfInfluenceReturnAddressSplit { get; set; }
 
+    public DateTime LastUpdate { get; init; }
+
     public VoterListImportErrorResponse? Error { get; set; }
 }

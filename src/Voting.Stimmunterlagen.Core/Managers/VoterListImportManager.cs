@@ -105,7 +105,7 @@ public class VoterListImportManager
 
         await _repo.DeleteByKey(id);
         await _attachmentManager.UpdateRequiredCountForDomainOfInfluence(import.DomainOfInfluenceId);
-        await _doiManager.UpdateLastVoterUpdate(import.DomainOfInfluenceId);
+        await _doiManager.UpdateLatestVoterListImportsLastUpdate(import.DomainOfInfluenceId);
         await _voterListBuilder.CleanUpDuplicatesAndUpdateVotingCardCountsForDomainOfInfluence(new[] { import.DomainOfInfluenceId });
     }
 
@@ -294,7 +294,7 @@ public class VoterListImportManager
         await _voterListRepo.UpdateRangeIgnoreRelations(voterLists);
         await _voterListRepo.UpdateVotingCardCounts(import.DomainOfInfluenceId);
         await _attachmentManager.UpdateRequiredCountForDomainOfInfluence(import.DomainOfInfluenceId);
-        await _doiManager.UpdateLastVoterUpdate(import.DomainOfInfluenceId);
+        await _doiManager.UpdateLatestVoterListImportsLastUpdate(import.DomainOfInfluenceId);
         import.VoterLists = await _voterListRepo.Query()
             .Where(vl => vl.ImportId == import.Id)
             .OrderBy(vl => vl.VotingCardType)

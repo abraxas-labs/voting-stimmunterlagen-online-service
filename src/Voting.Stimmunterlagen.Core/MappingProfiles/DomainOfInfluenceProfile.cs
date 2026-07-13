@@ -12,8 +12,14 @@ public class DomainOfInfluenceProfile : Profile
 {
     public DomainOfInfluenceProfile()
     {
-        CreateMap<DomainOfInfluenceEventData, DomainOfInfluence>();
-        CreateMap<DomainOfInfluenceEventData, ContestDomainOfInfluence>();
+        CreateMap<DomainOfInfluenceEventData, DomainOfInfluence>()
+            .ForMember(
+                dst => dst.StistatExportEaiMessageType,
+                opts => opts.Condition(src => src.StistatExportEaiMessageTypeSupported));
+        CreateMap<DomainOfInfluenceEventData, ContestDomainOfInfluence>()
+            .ForMember(
+                dst => dst.StistatExportEaiMessageType,
+                opts => opts.Condition(src => src.StistatExportEaiMessageTypeSupported));
         CreateMap<DomainOfInfluence, ContestDomainOfInfluence>()
             .ForMember(dst => dst.LogoRef, opts => opts.PreCondition(x => x.LogoRef != null));
         CreateMap<DomainOfInfluenceCantonDefaults, DomainOfInfluenceCantonDefaults>();
@@ -23,7 +29,13 @@ public class DomainOfInfluenceProfile : Profile
         CreateMap<DomainOfInfluenceVotingCardPrintDataEventData, DomainOfInfluenceVotingCardPrintData>();
         CreateMap<DomainOfInfluenceVotingCardSwissPostDataEventData, DomainOfInfluenceVotingCardSwissPostData>();
         CreateMap<DomainOfInfluenceVotingCardReturnAddressEventData, DomainOfInfluenceVotingCardReturnAddress>();
-        CreateMap<DomainOfInfluenceVotingCardDataUpdated, DomainOfInfluence>();
-        CreateMap<DomainOfInfluenceVotingCardDataUpdated, ContestDomainOfInfluence>();
+        CreateMap<DomainOfInfluenceVotingCardDataUpdated, DomainOfInfluence>()
+            .ForMember(
+                dst => dst.StistatExportEaiMessageType,
+                opts => opts.Condition(src => !src.StistatExportEaiMessageTypeDeprecated));
+        CreateMap<DomainOfInfluenceVotingCardDataUpdated, ContestDomainOfInfluence>()
+            .ForMember(
+                dst => dst.StistatExportEaiMessageType,
+                opts => opts.Condition(src => !src.StistatExportEaiMessageTypeDeprecated));
     }
 }

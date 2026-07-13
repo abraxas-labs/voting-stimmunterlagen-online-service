@@ -12,10 +12,13 @@
         <FileVersion>0.0.0.1</FileVersion>
         <Version>0.0.0.1</Version>
 
-        <VotingLibVersion>20.15.1</VotingLibVersion>
+        <VotingStimmunterlagenProtoVersion>3.20.0</VotingStimmunterlagenProtoVersion>
+        <VotingBasisProtoVersion>1.140.0</VotingBasisProtoVersion>
+        <VotingStimmregisterProtoVersion>2.0.1</VotingStimmregisterProtoVersion>
+        <VotingLibVersion>22.2.0</VotingLibVersion>
         <EfCoreVersion>8.0.2</EfCoreVersion>
         <GrpcAspNetCoreVersion>2.61.0</GrpcAspNetCoreVersion>
-        <AutoMapperVersion>12.0.1</AutoMapperVersion>
+        <AutoMapperVersion>15.1.3</AutoMapperVersion>
     </PropertyGroup>
 
     <ItemGroup>

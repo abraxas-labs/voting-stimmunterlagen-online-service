@@ -97,4 +97,7 @@ public class VotingCardPrintFileEntry
 
     [Name("RELIGION")]
     public string ReligionCode { get; set; } = string.Empty;
+
+    [Name("POSTAUFGABE")]
+    public string PostDeliveryDate { get; set; } = string.Empty;
 }

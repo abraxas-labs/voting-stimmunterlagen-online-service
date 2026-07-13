@@ -24,6 +24,7 @@ public class VoterListManager
 {
     private readonly IDbRepository<VoterList> _repo;
     private readonly IDbRepository<ContestDomainOfInfluence> _doiRepo;
+    private readonly IDbRepository<DomainOfInfluenceVoterDuplicate> _doiVoterDuplicateRepo;
     private readonly PoliticalBusinessVoterListEntryRepo _politicalBusinessVoterListEntryRepo;
     private readonly IAuth _auth;
     private readonly AttachmentManager _attachmentManager;
@@ -38,6 +39,7 @@ public class VoterListManager
         IDbRepository<VoterList> repo,
         IDbRepository<ContestDomainOfInfluence> doiRepo,
         PoliticalBusinessVoterListEntryRepo politicalBusinessVoterListEntryRepo,
+        IDbRepository<DomainOfInfluenceVoterDuplicate> doiVoterDuplicateRepo,
         IAuth auth,
         AttachmentManager attachmentManager,
         IClock clock,
@@ -52,6 +54,7 @@ public class VoterListManager
         _auth = auth;
         _attachmentManager = attachmentManager;
         _doiRepo = doiRepo;
+        _doiVoterDuplicateRepo = doiVoterDuplicateRepo;
         _clock = clock;
         _voterListImportRepo = voterListImportRepo;
         _voterRepo = voterRepo;
@@ -63,6 +66,14 @@ public class VoterListManager
     public async Task<VoterListsData> List(Guid doiId)
     {
         var tenantId = _auth.Tenant.Id;
+
+        var countOfEmptyVotingCards = await _doiRepo.Query()
+            .WhereIsManager(tenantId)
+            .Where(doi => doi.Id == doiId)
+            .Select(doi => (int?)doi.CountOfEmptyVotingCards)
+            .FirstOrDefaultAsync()
+            ?? throw new EntityNotFoundException(nameof(ContestDomainOfInfluence), doiId);
+
         var voterLists = await _repo
             .Query()
             .WhereIsDomainOfInfluenceManager(tenantId)
@@ -78,10 +89,13 @@ public class VoterListManager
             .OrderBy(x => x.Index)
             .ToListAsync();
 
-        var countOfVotingCardsByPoliticalBusiness = voterLists
-            .SelectMany(x => x.PoliticalBusinessEntries!.Select(y => new { y.PoliticalBusinessId, x.CountOfVotingCards }))
-            .GroupBy(x => x.PoliticalBusinessId, x => x.CountOfVotingCards)
-            .ToDictionary(x => x.Key, x => x.Sum());
+        var voterDuplicates = await _doiVoterDuplicateRepo.Query()
+            .WhereIsDomainOfInfluenceManager(tenantId)
+            .Where(d => d.DomainOfInfluenceId == doiId)
+            .Include(d => d.Voters)
+            .ToListAsync();
+
+        var countOfVotingCardsByPoliticalBusiness = CalculateCountOfVotingCardsByPoliticalBusiness(voterLists, voterDuplicates, countOfEmptyVotingCards);
 
         var politicalBusinesses = voterLists
             .SelectMany(x => x.DomainOfInfluence!.PoliticalBusinessPermissionEntries!)
@@ -92,8 +106,8 @@ public class VoterListManager
             .Select(x => new PoliticalBusinessCountOfVotingCards(x, countOfVotingCardsByPoliticalBusiness.GetValueOrDefault(x.Id, 0)))
             .ToList();
 
-        var totalNumberOfVoters = voterLists.Sum(x => x.NumberOfVoters);
-        var totalNumberOfVotingCards = voterLists.Sum(x => x.CountOfVotingCards);
+        var totalNumberOfVoters = voterLists.Sum(x => x.NumberOfVoters) + countOfEmptyVotingCards;
+        var totalNumberOfVotingCards = voterLists.Sum(x => x.CountOfVotingCards) + countOfEmptyVotingCards;
 
         return new VoterListsData(voterLists, politicalBusinesses, totalNumberOfVoters, totalNumberOfVotingCards);
     }
@@ -154,7 +168,6 @@ public class VoterListManager
 
         await _repo.UpdateRange(existingLists);
         await _attachmentManager.UpdateRequiredCountForDomainOfInfluence(doiId);
-        await _doiManager.UpdateLastVoterUpdate(doiId);
         await transaction.CommitAsync();
     }
 
@@ -245,6 +258,44 @@ public class VoterListManager
         {
             throw new ForbiddenException("Invalid political business found");
         }
+    }
+
+    private Dictionary<Guid, int> CalculateCountOfVotingCardsByPoliticalBusiness(List<VoterList> voterLists, List<DomainOfInfluenceVoterDuplicate> voterDuplicates, int countOfEmptyVotingCards)
+    {
+        var countOfVotingCardsByPoliticalBusiness = voterLists
+            .SelectMany(x => x.PoliticalBusinessEntries!.Select(y => new { y.PoliticalBusinessId, x.NumberOfVoters }))
+            .GroupBy(x => x.PoliticalBusinessId, x => x.NumberOfVoters)
+            .ToDictionary(x => x.Key, x => x.Sum() + countOfEmptyVotingCards);
+
+        // To get the count of voting cards of a political business we can't simply sum the "CountOfVotingCards" of the related voter lists.
+        // It could be that a non related voter list contains the "effective" voter (with "VotingCardPrintDisabled"=false), which would
+        // be ignored if we only consider the related voter lists.
+        // To get the correct sum, we need to sum the "NumberOfVoters" of the related voter lists and subtract the duplicates.
+        foreach (var pbId in countOfVotingCardsByPoliticalBusiness.Keys)
+        {
+            var pbVoterListIds = voterLists
+                .Where(vl => vl.PoliticalBusinessEntries!.Any(e => e.PoliticalBusinessId == pbId))
+                .Select(vl => vl.Id)
+                .ToList();
+
+            foreach (var voterDuplicate in voterDuplicates)
+            {
+                var relatedDuplicateVoterCount = voterDuplicate.Voters!
+                    .Count(v => pbVoterListIds.Contains(v.ListId!.Value));
+
+                if (relatedDuplicateVoterCount == 0)
+                {
+                    continue;
+                }
+
+                // The voter duplicate entity always also contains the "effective" voter (with "VotingCardPrintDisabled"=false),
+                // so we always need to subtract 1 to have the effective count of involved duplicates in the related voter lists "NumberOfVoters".
+                var duplicateCount = relatedDuplicateVoterCount - 1;
+                countOfVotingCardsByPoliticalBusiness[pbId] -= duplicateCount;
+            }
+        }
+
+        return countOfVotingCardsByPoliticalBusiness;
     }
 
     public record VoterListsData(

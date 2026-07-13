@@ -25,7 +25,7 @@ public class ListContestTest : BaseReadOnlyGrpcTest<ContestService.ContestServic
     {
         var response = await AbraxasElectionAdminClient.ListAsync(new());
 
-        foreach (var contest in response.Contests_)
+        foreach (var contest in response.Contests)
         {
             contest.DomainOfInfluence.Should().NotBeNull();
             contest.DomainOfInfluence = null;
@@ -45,22 +45,22 @@ public class ListContestTest : BaseReadOnlyGrpcTest<ContestService.ContestServic
                 },
         });
 
-        response.Contests_.All(x => x.State == ContestState.Archived).Should().BeTrue();
-        response.Contests_.Should().HaveCount(2);
+        response.Contests.All(x => x.State == ContestState.Archived).Should().BeTrue();
+        response.Contests.Should().HaveCount(2);
     }
 
     [Fact]
     public async Task UnknownTenantShouldReturnEmpty()
     {
         var response = await UnknownClient.ListAsync(new());
-        response.Contests_.Should().HaveCount(0);
+        response.Contests.Should().HaveCount(0);
     }
 
     [Fact]
     public async Task OtherTenantShouldReturnAll()
     {
         var response = await GemeindeArneggElectionAdminClient.ListAsync(new());
-        response.Contests_.Select(x => x.Id).Should().Contain(ContestMockData.SchulgemeindeAndwilArneggFutureId);
+        response.Contests.Select(x => x.Id).Should().Contain(ContestMockData.SchulgemeindeAndwilArneggFutureId);
     }
 
     [Fact]
@@ -68,7 +68,23 @@ public class ListContestTest : BaseReadOnlyGrpcTest<ContestService.ContestServic
     {
         var response = await GemeindeArneggPrintJobManagerClient.ListAsync(new());
 
-        foreach (var contest in response.Contests_)
+        foreach (var contest in response.Contests)
+        {
+            contest.DomainOfInfluence = null;
+        }
+
+        response.ShouldMatchSnapshot();
+    }
+
+    [Fact]
+    public async Task ShouldWorkWithPaging()
+    {
+        var response = await AbraxasElectionAdminClient.ListAsync(new()
+        {
+            Pageable = new Pageable { Page = 1, PageSize = 5 },
+        });
+
+        foreach (var contest in response.Contests)
         {
             contest.DomainOfInfluence = null;
         }

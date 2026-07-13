@@ -76,7 +76,7 @@ public class VotingCardPrintFileBuilder
                 voter,
                 job.DomainOfInfluence!.VoterLists!,
                 voterAttachmentDictionary,
-                new PrintJobContext { ContestOrderNumber = contestOrderNumber, CustomerSubdivision = customerSubdivision, DocId = docId, Form = form, IsDuplex = isDuplex, IsEVotingJob = isEVotingJob, VotingCardLayout = job.Layout, });
+                new PrintJobContext { ContestOrderNumber = contestOrderNumber, CustomerSubdivision = customerSubdivision, DocId = docId, Form = form, IsDuplex = isDuplex, IsEVotingJob = isEVotingJob, VotingCardLayout = job.Layout, PostDeliveryDate = contest.DeliveryToPostDeadline, });
         }
     }
 
@@ -181,6 +181,7 @@ public class VotingCardPrintFileBuilder
                 : string.Empty,
             ContestOrderNumber = printjob.ContestOrderNumber,
             ReligionCode = religionCode,
+            PostDeliveryDate = printjob.PostDeliveryDate?.ToString("dd.MM.yyyy") ?? string.Empty,
         };
     }
 
@@ -220,5 +221,7 @@ public class VotingCardPrintFileBuilder
         public bool IsEVotingJob { get; init; }
 
         public DomainOfInfluenceVotingCardLayout? VotingCardLayout { get; init; }
+
+        public DateTime? PostDeliveryDate { get; init; }
     }
 }

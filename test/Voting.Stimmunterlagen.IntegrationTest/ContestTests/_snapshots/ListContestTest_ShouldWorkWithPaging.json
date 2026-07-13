@@ -1,0 +1,139 @@
+{
+  "PageInfo": {
+    "CurrentPage": 1,
+    "PageSize": 5,
+    "TotalPages": 2,
+    "ItemsCount": 5,
+    "TotalItemsCount": 7,
+    "HasPreviousPage": false,
+    "HasNextPage": true
+  },
+  "Contests": [
+    {
+      "Id": "8c3cfd59-3077-4596-bdce-eccf1cca9ac7",
+      "Date": {
+        "Seconds": 1578528000,
+        "Nanos": 0
+      },
+      "Description": "Contest 004(BundPast) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": null,
+      "AttachmentDeliveryDeadline": null,
+      "State": 3,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": null,
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
+    },
+    {
+      "Id": "b776848e-4c4b-4bcc-9522-4b5192765a59",
+      "Date": {
+        "Seconds": 1578614400,
+        "Nanos": 0
+      },
+      "Description": "Contest 003 (BundToday) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": null,
+      "AttachmentDeliveryDeadline": null,
+      "State": 2,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": null,
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
+    },
+    {
+      "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
+      "Date": {
+        "Seconds": 1578700800,
+        "Nanos": 0
+      },
+      "Description": "Political assembly 001 (BundFuture) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": true,
+      "EVoting": false,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
+    },
+    {
+      "Id": "f3393e32-ff61-4007-99f8-51dc7aae52c8",
+      "Date": {
+        "Seconds": 1578700800,
+        "Nanos": 0
+      },
+      "Description": "Contest 002 (BundFuture) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": null,
+      "AttachmentDeliveryDeadline": null,
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": null,
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
+    },
+    {
+      "Id": "59280f22-0b30-4498-97d7-d19d3cae02a2",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 000 (BundFuture, archived, not approved) de",
+      "DomainOfInfluence": null,
+      "Approved": null,
+      "IsApproved": false,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 1579129200,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579561200,
+        "Nanos": 0
+      },
+      "State": 5,
+      "IsSingleAttendeeContest": true,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 1579215600,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
+    }
+  ]
+}

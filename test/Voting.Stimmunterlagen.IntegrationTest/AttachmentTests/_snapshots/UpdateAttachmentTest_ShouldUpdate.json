@@ -7,6 +7,7 @@
     "Supplier": "Supplier updated",
     "DeliveryPlannedOn": "2020-01-25T00:00:00Z",
     "DeliveryReceivedOn": null,
+    "DelayedDeliveryDate": null,
     "PoliticalBusinessEntries": [],
     "DomainOfInfluence": null,
     "DomainOfInfluenceId": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",

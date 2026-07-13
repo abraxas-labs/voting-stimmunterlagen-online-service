@@ -23,6 +23,8 @@ public class Attachment : BaseEntity, IHasContestDomainOfInfluence
 
     public DateTime? DeliveryReceivedOn { get; set; }
 
+    public DateTime? DelayedDeliveryDate { get; set; }
+
     public ICollection<PoliticalBusinessAttachmentEntry> PoliticalBusinessEntries { get; set; }
         = new HashSet<PoliticalBusinessAttachmentEntry>();
 

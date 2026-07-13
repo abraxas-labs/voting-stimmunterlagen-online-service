@@ -19,7 +19,7 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": true,
         "CanManuallyUploadVoterList": true,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": {
           "Seconds": 1578661930,
           "Nanos": 200000000
@@ -27,7 +27,7 @@
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,
         "StistatMunicipality": true,
-        "Bfs": "1240",
+        "Bfs": "3441",
         "HasEmptyVotingCards": true,
         "CountOfEmptyVotingCards": 2,
         "LastCountOfEmptyVotingCardsUpdate": {
@@ -77,7 +77,7 @@
         "ElectoralRegistrationEnabled": true,
         "AllowManualVoterListUpload": false,
         "CanManuallyUploadVoterList": false,
-        "LastVoterUpdate": null,
+        "LatestVoterListImportsLastUpdate": null,
         "GenerateVotingCardsTriggered": null,
         "EVoting": null,
         "ElectoralRegisterMultipleEnabled": false,

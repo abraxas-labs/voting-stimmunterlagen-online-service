@@ -6,6 +6,7 @@
   "Supplier": "kdmz",
   "DeliveryPlannedOn": "2020-01-25T00:00:00Z",
   "DeliveryReceivedOn": null,
+  "DelayedDeliveryDate": null,
   "PoliticalBusinessEntries": [],
   "DomainOfInfluence": null,
   "DomainOfInfluenceId": "4d1dcca4-33f1-5236-b8e7-d83a24f3477e",

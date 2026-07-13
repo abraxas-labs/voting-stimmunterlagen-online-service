@@ -86,6 +86,38 @@ public class SetContestVotingCardLayoutTest : BaseWriteableDbGrpcTest<ContestVot
     }
 
     [Fact]
+    public Task ShouldThrowValidationExeptionWithReligionButNoBirthdate()
+    {
+        return AssertStatus(
+            async () => await AbraxasElectionAdminClient.SetLayoutAsync(new SetContestVotingCardLayoutRequest
+            {
+                AllowCustom = true,
+                ContestId = ContestMockData.BundFutureId,
+                TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+                VotingCardType = VotingCardType.Swiss,
+                DataConfiguration = new() { IncludeReligion = true, },
+            }),
+            StatusCode.InvalidArgument,
+            "Enabling the \"religion\" option requires the \"date of birth\" option be enabled");
+    }
+
+    [Fact]
+    public Task ShouldThrowValidationExeptionWithDomainOfInfluenceChurchButNoReligion()
+    {
+        return AssertStatus(
+            async () => await AbraxasElectionAdminClient.SetLayoutAsync(new SetContestVotingCardLayoutRequest
+            {
+                AllowCustom = true,
+                ContestId = ContestMockData.BundFutureId,
+                TemplateId = DmDocServiceMock.TemplateOthers2.Id,
+                VotingCardType = VotingCardType.Swiss,
+                DataConfiguration = new() { IncludeDomainOfInfluenceChurch = true },
+            }),
+            StatusCode.InvalidArgument,
+            "Enabling the \"domain of influence church\" option requires the \"religion\" option be enabled");
+    }
+
+    [Fact]
     public async Task ShouldIgnoreDoisWithVotingCardsAlreadyGenerated()
     {
         var unaffectedDoiGuid = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid;

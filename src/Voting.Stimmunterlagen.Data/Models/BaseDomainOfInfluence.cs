@@ -74,8 +74,9 @@ public abstract class BaseDomainOfInfluence : BaseEntity
     public bool HasEmptyVotingCards { get; set; }
 }
 
-public abstract class BaseDomainOfInfluence<T, THierarchyEntry> : BaseDomainOfInfluence
-    where T : BaseDomainOfInfluence<T, THierarchyEntry>
+public abstract class BaseDomainOfInfluence<T, TDomainOfInfluenceCountingCircle, THierarchyEntry> : BaseDomainOfInfluence
+    where T : BaseDomainOfInfluence<T, TDomainOfInfluenceCountingCircle, THierarchyEntry>
+    where TDomainOfInfluenceCountingCircle : BaseDomainOfInfluenceCountingCircle
     where THierarchyEntry : IDomainOfInfluenceHierarchyEntry<T>
 {
     public T? Parent { get; set; }
@@ -97,4 +98,6 @@ public abstract class BaseDomainOfInfluence<T, THierarchyEntry> : BaseDomainOfIn
     /// to the ParentDomainOfInfluence property of the hierarchy entry.
     /// </summary>
     public ICollection<THierarchyEntry>? HierarchyEntries { get; set; }
+
+    public ICollection<TDomainOfInfluenceCountingCircle>? CountingCircles { get; set; }
 }

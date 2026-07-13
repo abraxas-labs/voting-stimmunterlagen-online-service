@@ -84,6 +84,7 @@ public class CountingCircleProcessor :
         newCountingCircle.DomainOfInfluences = copyFromCc.DomainOfInfluences!.Select(doiCc => new DomainOfInfluenceCountingCircle
         {
             DomainOfInfluenceId = doiCc.DomainOfInfluenceId,
+            SourceDomainOfInfluenceId = doiCc.SourceDomainOfInfluenceId,
         }).ToList();
         await _ccRepo.Create(newCountingCircle);
         await _ccRepo.DeleteRangeByKey(ccIdsToDelete);

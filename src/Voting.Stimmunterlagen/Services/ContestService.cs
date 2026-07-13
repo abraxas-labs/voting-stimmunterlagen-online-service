@@ -7,6 +7,7 @@ using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using Voting.Lib.Common;
+using Voting.Lib.Database.Models;
 using Voting.Lib.Grpc;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Core.Managers;
@@ -15,6 +16,7 @@ using Voting.Stimmunterlagen.Proto.V1.Models;
 using Voting.Stimmunterlagen.Proto.V1.Requests;
 using Voting.Stimmunterlagen.Proto.V1.Responses;
 using ContestState = Voting.Stimmunterlagen.Data.Models.ContestState;
+using Pageable = Voting.Lib.Database.Models.Pageable;
 
 namespace Voting.Stimmunterlagen.Services;
 
@@ -65,15 +67,15 @@ public class ContestService : Proto.V1.ContestService.ContestServiceBase
     }
 
     [AuthorizeElectionAdminOrPrintJobManager]
-    public override async Task<Contests> List(ListContestsRequest request, ServerCallContext context)
+    public override async Task<ListContestsResponse> List(ListContestsRequest request, ServerCallContext context)
     {
-        var contests = await _contestManager.List(
+        var page = await _contestManager.List(
             request.States.Cast<ContestState>().ToList(),
-            _appContext.IsPrintJobManagementApp);
+            _appContext.IsPrintJobManagementApp,
+            _mapper.Map<Pageable>(request.Pageable));
 
-        var contestSummaries = contests.Select(contest => CreateContestSummary(contest)).ToList();
-
-        return _mapper.Map<Contests>(contestSummaries);
+        var contestSummaries = page.Items.ConvertAll(x => CreateContestSummary(x));
+        return _mapper.Map<ListContestsResponse>(new Page<ContestSummary>(contestSummaries, page.TotalItemsCount, page.CurrentPage, page.PageSize));
     }
 
     [AuthorizeElectionAdmin]

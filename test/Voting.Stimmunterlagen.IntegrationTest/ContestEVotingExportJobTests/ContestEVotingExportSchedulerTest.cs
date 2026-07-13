@@ -6,7 +6,9 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Voting.Lib.Common;
+using Voting.Lib.Iam.Store;
 using Voting.Stimmunterlagen.Core.HostedServices;
+using Voting.Stimmunterlagen.Core.Mocks;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
 using Voting.Stimmunterlagen.IntegrationTest.Helpers;
@@ -34,6 +36,12 @@ public class ContestEVotingExportSchedulerTest : BaseWriteableDbTest
         });
 
         using var scope = GetService<IServiceScopeFactory>().CreateScope();
+        var auth = scope.ServiceProvider.GetRequiredService<IAuthStore>();
+        auth.SetValues(
+            "mock-token",
+            "mock-data-seeder",
+            DmDocServiceMock.MockDataSeederTenantId,
+            new[] { Auth.Roles.ElectionAdmin, Auth.Roles.PrintJobManager });
         var scheduler = scope.ServiceProvider.GetRequiredService<ContestEVotingExportScheduler>();
         var clock = scope.ServiceProvider.GetRequiredService<IClock>();
         await scheduler.Run();

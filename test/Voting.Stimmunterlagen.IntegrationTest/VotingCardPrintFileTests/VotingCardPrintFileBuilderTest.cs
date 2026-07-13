@@ -263,6 +263,7 @@ public class VotingCardPrintFileBuilderTest : BaseWriteableDbTest
                 {
                     OrderNumber = 999666,
                     IsPoliticalAssembly = isPoliticalAssembly,
+                    DeliveryToPostDeadline = new(2023, 10, 5),
                 },
                 VoterLists = new List<VoterList>
                 {

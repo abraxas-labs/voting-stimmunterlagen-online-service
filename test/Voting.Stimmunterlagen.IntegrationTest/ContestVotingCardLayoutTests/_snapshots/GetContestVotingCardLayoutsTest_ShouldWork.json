@@ -15,7 +15,8 @@
         "IncludeIsHouseholder": false,
         "IncludeDomainOfInfluenceChurch": false,
         "IncludeDomainOfInfluenceSchool": false
-      }
+      },
+      "Color": 0
     }
   ]
 }

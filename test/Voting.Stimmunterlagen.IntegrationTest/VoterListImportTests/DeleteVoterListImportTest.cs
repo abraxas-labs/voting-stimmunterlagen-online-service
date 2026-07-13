@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Grpc.Core;
 using Microsoft.EntityFrameworkCore;
-using Voting.Lib.Testing.Mocks;
 using Voting.Stimmunterlagen.Auth;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.Repositories;
@@ -69,15 +68,19 @@ public class DeleteVoterListImportTest : BaseWriteableDbGrpcTest<VoterListImport
     }
 
     [Fact]
-    public async Task ShouldUpdateDomainOfInfluenceLastVoterUpdate()
+    public async Task ShouldUpdateDomainOfInfluenceLatestVoterListImportsLastUpdate()
     {
         var doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().BeNull();
+        doi.LatestVoterListImportsLastUpdate.Should().BeNull();
 
         await GemeindeArneggElectionAdminClient.DeleteAsync(new IdValueRequest { Id = VoterListImportMockData.BundFutureApprovedGemeindeArneggId });
 
         doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
-        doi.LastVoterUpdate.Should().Be(MockedClock.GetDate());
+        doi.LatestVoterListImportsLastUpdate.Should().Be(new DateTime(2020, 1, 8, 0, 0, 0, DateTimeKind.Utc));
+
+        await GemeindeArneggElectionAdminClient.DeleteAsync(new IdValueRequest { Id = VoterListImportMockData.BundFutureApprovedGemeindeArneggElectoralRegisterId });
+        doi = await RunOnDb(db => db.ContestDomainOfInfluences.FirstAsync(doi => doi.Id == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid));
+        doi.LatestVoterListImportsLastUpdate.Should().BeNull();
     }
 
     [Fact]

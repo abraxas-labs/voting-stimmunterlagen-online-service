@@ -2,6 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using Voting.Stimmunterlagen.Data;
 
 #nullable disable
 
@@ -79,6 +82,9 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime?>("DelayedDeliveryDate")
+                        .HasColumnType("date");
 
                     b.Property<DateTime>("DeliveryPlannedOn")
                         .HasColumnType("date");
@@ -317,8 +323,8 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<DateTime?>("LastCountOfEmptyVotingCardsUpdate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<DateTime?>("LastVoterUpdate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("LatestVoterListImportsLastUpdate")
+                        .HasColumnType("date");
 
                     b.Property<string>("LogoRef")
                         .HasColumnType("text");
@@ -400,11 +406,14 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<Guid>("DomainOfInfluenceId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("SourceDomainOfInfluenceId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DomainOfInfluenceId");
 
-                    b.HasIndex("CountingCircleId", "DomainOfInfluenceId")
+                    b.HasIndex("CountingCircleId", "DomainOfInfluenceId", "SourceDomainOfInfluenceId")
                         .IsUnique();
 
                     b.ToTable("ContestDomainOfInfluenceCountingCircles");
@@ -698,11 +707,14 @@ namespace Voting.Stimmunterlagen.Data.Migrations
                     b.Property<Guid>("DomainOfInfluenceId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid>("SourceDomainOfInfluenceId")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DomainOfInfluenceId");
 
-                    b.HasIndex("CountingCircleId", "DomainOfInfluenceId")
+                    b.HasIndex("CountingCircleId", "DomainOfInfluenceId", "SourceDomainOfInfluenceId")
                         .IsUnique();
 
                     b.ToTable("DomainOfInfluenceCountingCircles");

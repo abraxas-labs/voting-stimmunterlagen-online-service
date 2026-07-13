@@ -14,6 +14,8 @@ public static class Ech0045TestFiles
     public const string File5MissingExtensionsName = "eCH-0045-testfile5-missing-extensions.xml";
     public const string FileDuplicatesName = "eCH-0045-testfile-duplicates.xml";
     public const string FileV6Name = "eCH-0045-testfile-v6.xml";
+    public const string FileWithAllianceName = "eCH-0045-testfile-with-allianceName.xml";
+    public const string FileWithAllianceNameV6 = "eCH-0045-testfile-with-allianceNameV6.xml";
 
     public static string File1 => GetTestFilePath(File1Name);
 

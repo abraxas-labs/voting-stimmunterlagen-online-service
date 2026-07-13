@@ -28,7 +28,7 @@
             "ElectoralRegistrationEnabled": true,
             "AllowManualVoterListUpload": false,
             "CanManuallyUploadVoterList": false,
-            "LastVoterUpdate": null,
+            "LatestVoterListImportsLastUpdate": null,
             "GenerateVotingCardsTriggered": null,
             "EVoting": null,
             "ElectoralRegisterMultipleEnabled": false,
@@ -49,7 +49,8 @@
           "Station": null,
           "OrderedCount": 20000,
           "Category": 8,
-          "SendOnlyToHouseholder": false
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
         }
       ],
       "TotalOrderedCount": 20000,

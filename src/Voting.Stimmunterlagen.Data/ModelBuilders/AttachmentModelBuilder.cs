@@ -31,6 +31,11 @@ public class AttachmentModelBuilder : IEntityTypeConfiguration<Attachment>,
             .IsRequired();
 
         builder
+            .Property(x => x.DelayedDeliveryDate)
+            .HasDateType()
+            .HasUtcConversion();
+
+        builder
             .HasGinTrigramIndex(x => x.Name);
     }
 

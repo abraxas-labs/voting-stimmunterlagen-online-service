@@ -98,8 +98,11 @@ public class DomainOfInfluenceProcessor :
     {
         var id = GuidParser.Parse(eventData.DomainOfInfluenceId);
         var contestDoiIdsToDelete = await _contestDoiRepo.GetIdsOfContestsInTestingPhaseByBaseId(id);
+
+        await _doiCcBuilder.DeleteAssignedAndInheritedCountingCircles(id);
         await _contestDoiRepo.DeleteRangeByKey(contestDoiIdsToDelete);
         await _doiRepo.DeleteByKeyIfExists(id);
+        await _politicalBusinessPermissionBuilder.UpdatePermissionsForPoliticalBusinessesInTestingPhase();
     }
 
     public async Task Process(DomainOfInfluenceCountingCircleEntriesUpdated eventData)
@@ -110,7 +113,6 @@ public class DomainOfInfluenceProcessor :
             .ToList();
 
         await _doiCcBuilder.UpdateDomainOfInfluenceCountingCircles(domainOfInfluenceId, countingCircleIds);
-        await _doiCcBuilder.UpdateContestDomainOfInfluenceCountingCircles(domainOfInfluenceId, countingCircleIds);
         await _politicalBusinessPermissionBuilder.UpdatePermissionsForPoliticalBusinessesInTestingPhase();
     }
 

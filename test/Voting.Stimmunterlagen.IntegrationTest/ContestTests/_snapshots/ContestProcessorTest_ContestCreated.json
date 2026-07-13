@@ -24,7 +24,7 @@
       "PrintJob": null,
       "AllowManualVoterListUpload": false,
       "CanManuallyUploadVoterList": false,
-      "LastVoterUpdate": null,
+      "LatestVoterListImportsLastUpdate": null,
       "CountOfEmptyVotingCards": 0,
       "LastCountOfEmptyVotingCardsUpdate": null,
       "AdditionalInvoicePositions": null,
@@ -257,8 +257,32 @@
         "DomainOfInfluenceId": "a5c52ce6-52d3-559a-9953-10a4592bafc9"
       },
       {
+        "CountingCircleId": "00c24d7a-4508-5853-a0d1-803402b78c91",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "00c24d7a-4508-5853-a0d1-803402b78c91",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "00c24d7a-4508-5853-a0d1-803402b78c91",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
+      },
+      {
+        "CountingCircleId": "00c24d7a-4508-5853-a0d1-803402b78c91",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
+      },
+      {
         "CountingCircleId": "2c58653b-c3b6-51f4-869f-6e199feff6d2",
         "DomainOfInfluenceId": "5e3e5c7e-1e73-5694-84ec-1b2273f620ea"
+      },
+      {
+        "CountingCircleId": "2c58653b-c3b6-51f4-869f-6e199feff6d2",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "2c58653b-c3b6-51f4-869f-6e199feff6d2",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
       },
       {
         "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",
@@ -269,12 +293,44 @@
         "DomainOfInfluenceId": "ae68fd24-30be-51cc-b122-d24c0fdee518"
       },
       {
+        "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
+      },
+      {
+        "CountingCircleId": "35b577c3-3cc3-56e4-ba82-daf7bf3409da",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
+      },
+      {
         "CountingCircleId": "a7983d64-d4e6-5147-8225-71ea16b82a5f",
         "DomainOfInfluenceId": "d342676e-765c-510f-80a4-148677d6229e"
       },
       {
+        "CountingCircleId": "a7983d64-d4e6-5147-8225-71ea16b82a5f",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "a7983d64-d4e6-5147-8225-71ea16b82a5f",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
+      },
+      {
         "CountingCircleId": "e31d9b1e-770e-5d6d-abe3-2f8c137c919f",
         "DomainOfInfluenceId": "67cffcd2-5e00-5a26-83cb-531cf4249156"
+      },
+      {
+        "CountingCircleId": "e31d9b1e-770e-5d6d-abe3-2f8c137c919f",
+        "DomainOfInfluenceId": "da0b9e81-ccea-5c84-b27b-15b4de4a7a6d"
+      },
+      {
+        "CountingCircleId": "e31d9b1e-770e-5d6d-abe3-2f8c137c919f",
+        "DomainOfInfluenceId": "f57101c0-abb9-52ff-b246-c22af7f12cfc"
       },
       {
         "CountingCircleId": "e4f0e0b3-360a-556c-a03e-cf9936f30587",

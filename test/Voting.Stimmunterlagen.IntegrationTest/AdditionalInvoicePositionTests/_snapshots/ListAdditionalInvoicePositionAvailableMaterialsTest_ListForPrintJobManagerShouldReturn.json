@@ -29,6 +29,16 @@
       "Number": "1040.05.62",
       "Description": "Rückschub Beilagen Porto Dispo-Box",
       "CommentRequired": false
+    },
+    {
+      "Number": "1040.05.70",
+      "Description": "Zustellung Feinverteilung Brief",
+      "CommentRequired": false
+    },
+    {
+      "Number": "1040.05.71",
+      "Description": "Zustellung Feinverteilung Paket",
+      "CommentRequired": false
     }
   ]
 }

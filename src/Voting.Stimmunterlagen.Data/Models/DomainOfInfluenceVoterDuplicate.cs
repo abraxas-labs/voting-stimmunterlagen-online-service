@@ -7,7 +7,7 @@ using Voting.Lib.Database.Models;
 
 namespace Voting.Stimmunterlagen.Data.Models;
 
-public class DomainOfInfluenceVoterDuplicate : BaseEntity
+public class DomainOfInfluenceVoterDuplicate : BaseEntity, IHasContestDomainOfInfluence
 {
     public string FirstName { get; set; } = string.Empty;
 

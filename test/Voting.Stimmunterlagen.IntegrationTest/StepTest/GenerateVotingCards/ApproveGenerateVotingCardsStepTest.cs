@@ -76,12 +76,12 @@ public class ApproveGenerateVotingCardsStepTest : BaseWriteableStepTest
         var swissJob = jobs.Single(x => x.Layout?.VotingCardType == VotingCardType.Swiss && !x.HasEmptyVotingCards);
         swissJob.State.Should().Be(VotingCardGeneratorJobState.Ready);
         swissJob.CountOfVoters.Should().Be(4);
-        swissJob.FileName.Should().Be("U_1240_Gemeinde_Arnegg_1234_de_20200112.pdf");
+        swissJob.FileName.Should().Be("U_3441_Gemeinde_Arnegg_1234_de_20200112.pdf");
 
         var swissJobEmpty = jobs.Single(x => x.Layout?.VotingCardType == VotingCardType.Swiss && x.HasEmptyVotingCards);
         swissJobEmpty.State.Should().Be(VotingCardGeneratorJobState.Ready);
         swissJobEmpty.CountOfVoters.Should().Be(2);
-        swissJobEmpty.FileName.Should().Be("U_1240_Gemeinde_Arnegg_EMPTY_20200112.pdf");
+        swissJobEmpty.FileName.Should().Be("U_3441_Gemeinde_Arnegg_EMPTY_20200112.pdf");
 
         var eVotingJobs = jobs.Where(x => x.State == VotingCardGeneratorJobState.ReadyToRunOffline).ToList();
         eVotingJobs.All(x => x.State == VotingCardGeneratorJobState.ReadyToRunOffline).Should().BeTrue();
@@ -91,7 +91,7 @@ public class ApproveGenerateVotingCardsStepTest : BaseWriteableStepTest
             .Should()
             .BeInAscendingOrder("de.pdf", "it.pdf");
 
-        eVotingJobs.Any(x => x.FileName == "U_1240_Gemeinde_Arnegg_EVoting_1234_de_20200112.pdf")
+        eVotingJobs.Any(x => x.FileName == "U_3441_Gemeinde_Arnegg_EVoting_1234_de_20200112.pdf")
             .Should()
             .BeTrue();
 

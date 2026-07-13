@@ -17,14 +17,14 @@ public class VotingJournalExportTest : VotingCsvExportBaseTest
     {
     }
 
-    protected override string NewRequestExpectedFileName => "Voting_Journal_1240.csv";
+    protected override string NewRequestExpectedFileName => "Voting_Journal_3441.csv";
 
     [Fact]
     public Task TestCsvWithVoterListFilter()
     {
         var request = NewRequest();
         request.VoterListId = VoterListMockData.BundFutureApprovedGemeindeArneggSwissGuid;
-        return TestCsvSnapshot(request, "Voting_Journal_1240_Stimmregister Schweizer Arnegg.csv", "VoterList");
+        return TestCsvSnapshot(request, "Voting_Journal_3441_Stimmregister Schweizer Arnegg.csv", "VoterList");
     }
 
     protected override GenerateVotingExportRequest NewRequest()

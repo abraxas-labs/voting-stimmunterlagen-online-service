@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using Voting.Lib.DokConnector.Configuration;
 using Voting.Lib.Ech.Configuration;
+using Voting.Lib.Iam.TokenHandling.ServiceToken;
 using Voting.Lib.ObjectStorage.Config;
 
 namespace Voting.Stimmunterlagen.Core.Configuration;
@@ -61,7 +62,12 @@ public class ApiConfig
 
     public EVotingZipObjectStorageBucketConfig EVotingZip { get; set; } = new();
 
-    public DokConnectorConfig DokConnector { get; set; } = new();
+    /// <summary>
+    /// Gets or sets the connect service account.
+    /// </summary>
+    public SecureConnectServiceAccountOptions ConnectServiceAccount { get; set; } = new();
+
+    public DokConnectorConfig DokConnectorApi { get; set; } = new();
 
     public HashSet<string> LanguageHeaderIgnoredPaths { get; set; } = new()
     {
