@@ -183,7 +183,7 @@ public class ContestManager
         var page = await query
             .Include(x => x.DomainOfInfluence)
             .Include(x => x.Translations)
-            .OrderBy(x => x.Date)
+            .OrderByDescending(x => x.Date)
             .ThenBy(x => x.Id)
             .ToPageAsync(pageable ?? _allPage);
 

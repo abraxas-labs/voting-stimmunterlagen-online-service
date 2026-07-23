@@ -10,39 +10,6 @@
   },
   "Contests": [
     {
-      "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
-      "Date": {
-        "Seconds": 1578700800,
-        "Nanos": 0
-      },
-      "Description": "Political assembly 001 (BundFuture) de",
-      "DomainOfInfluence": null,
-      "Approved": {
-        "Seconds": 1578575530,
-        "Nanos": 200000000
-      },
-      "IsApproved": true,
-      "PrintingCenterSignUpDeadline": {
-        "Seconds": 2010693600,
-        "Nanos": 0
-      },
-      "AttachmentDeliveryDeadline": {
-        "Seconds": 1579993200,
-        "Nanos": 0
-      },
-      "State": 1,
-      "IsSingleAttendeeContest": false,
-      "GenerateVotingCardsDeadline": {
-        "Seconds": 2010866400,
-        "Nanos": 0
-      },
-      "IsPoliticalAssembly": true,
-      "EVoting": false,
-      "ElectoralRegisterEVotingFrom": null,
-      "DeliveryToPostDeadline": null,
-      "LowestPrintJobsState": 1
-    },
-    {
       "Id": "791018cc-6250-46e4-bc80-4a25f00c4d59",
       "Date": {
         "Seconds": 1578787200,
@@ -104,6 +71,39 @@
       },
       "IsPoliticalAssembly": false,
       "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 1
+    },
+    {
+      "Id": "9f6f500e-480f-4459-97d1-db82eebe7b64",
+      "Date": {
+        "Seconds": 1578700800,
+        "Nanos": 0
+      },
+      "Description": "Political assembly 001 (BundFuture) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
+      "IsSingleAttendeeContest": false,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": true,
+      "EVoting": false,
       "ElectoralRegisterEVotingFrom": null,
       "DeliveryToPostDeadline": null,
       "LowestPrintJobsState": 1

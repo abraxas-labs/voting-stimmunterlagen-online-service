@@ -10,20 +10,29 @@
   },
   "Contests": [
     {
-      "Id": "8c3cfd59-3077-4596-bdce-eccf1cca9ac7",
+      "Id": "59280f22-0b30-4498-97d7-d19d3cae02a2",
       "Date": {
-        "Seconds": 1578528000,
+        "Seconds": 1578787200,
         "Nanos": 0
       },
-      "Description": "Contest 004(BundPast) de",
+      "Description": "Contest 000 (BundFuture, archived, not approved) de",
       "DomainOfInfluence": null,
       "Approved": null,
       "IsApproved": false,
-      "PrintingCenterSignUpDeadline": null,
-      "AttachmentDeliveryDeadline": null,
-      "State": 3,
-      "IsSingleAttendeeContest": false,
-      "GenerateVotingCardsDeadline": null,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 1579129200,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579561200,
+        "Nanos": 0
+      },
+      "State": 5,
+      "IsSingleAttendeeContest": true,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 1579215600,
+        "Nanos": 0
+      },
       "IsPoliticalAssembly": false,
       "EVoting": true,
       "ElectoralRegisterEVotingFrom": null,
@@ -31,20 +40,65 @@
       "LowestPrintJobsState": 0
     },
     {
-      "Id": "b776848e-4c4b-4bcc-9522-4b5192765a59",
+      "Id": "791018cc-6250-46e4-bc80-4a25f00c4d59",
       "Date": {
-        "Seconds": 1578614400,
+        "Seconds": 1578787200,
         "Nanos": 0
       },
-      "Description": "Contest 003 (BundToday) de",
+      "Description": "Contest 001 (BundFuture, approved) de",
       "DomainOfInfluence": null,
-      "Approved": null,
-      "IsApproved": false,
-      "PrintingCenterSignUpDeadline": null,
-      "AttachmentDeliveryDeadline": null,
-      "State": 2,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 2010693600,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579993200,
+        "Nanos": 0
+      },
+      "State": 1,
       "IsSingleAttendeeContest": false,
-      "GenerateVotingCardsDeadline": null,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 2010866400,
+        "Nanos": 0
+      },
+      "IsPoliticalAssembly": false,
+      "EVoting": true,
+      "ElectoralRegisterEVotingFrom": null,
+      "DeliveryToPostDeadline": null,
+      "LowestPrintJobsState": 0
+    },
+    {
+      "Id": "e2f0b358-e20d-4b46-8d4c-522173d93541",
+      "Date": {
+        "Seconds": 1578787200,
+        "Nanos": 0
+      },
+      "Description": "Contest 000 (BundFuture, archived) de",
+      "DomainOfInfluence": null,
+      "Approved": {
+        "Seconds": 1578575530,
+        "Nanos": 200000000
+      },
+      "IsApproved": true,
+      "PrintingCenterSignUpDeadline": {
+        "Seconds": 1579129200,
+        "Nanos": 0
+      },
+      "AttachmentDeliveryDeadline": {
+        "Seconds": 1579561200,
+        "Nanos": 0
+      },
+      "State": 5,
+      "IsSingleAttendeeContest": true,
+      "GenerateVotingCardsDeadline": {
+        "Seconds": 1579215600,
+        "Nanos": 0
+      },
       "IsPoliticalAssembly": false,
       "EVoting": true,
       "ElectoralRegisterEVotingFrom": null,
@@ -99,36 +153,6 @@
       "State": 1,
       "IsSingleAttendeeContest": false,
       "GenerateVotingCardsDeadline": null,
-      "IsPoliticalAssembly": false,
-      "EVoting": true,
-      "ElectoralRegisterEVotingFrom": null,
-      "DeliveryToPostDeadline": null,
-      "LowestPrintJobsState": 0
-    },
-    {
-      "Id": "59280f22-0b30-4498-97d7-d19d3cae02a2",
-      "Date": {
-        "Seconds": 1578787200,
-        "Nanos": 0
-      },
-      "Description": "Contest 000 (BundFuture, archived, not approved) de",
-      "DomainOfInfluence": null,
-      "Approved": null,
-      "IsApproved": false,
-      "PrintingCenterSignUpDeadline": {
-        "Seconds": 1579129200,
-        "Nanos": 0
-      },
-      "AttachmentDeliveryDeadline": {
-        "Seconds": 1579561200,
-        "Nanos": 0
-      },
-      "State": 5,
-      "IsSingleAttendeeContest": true,
-      "GenerateVotingCardsDeadline": {
-        "Seconds": 1579215600,
-        "Nanos": 0
-      },
       "IsPoliticalAssembly": false,
       "EVoting": true,
       "ElectoralRegisterEVotingFrom": null,

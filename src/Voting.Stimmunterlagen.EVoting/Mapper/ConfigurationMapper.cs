@@ -70,8 +70,8 @@ internal static class ConfigurationMapper
         var eTextBlocks = eVotingDomainOfInfluenceValues != null && eVotingDomainOfInfluenceConfig?.ETextBlockColumnQuantity != null
             ? new ETextBlocks
             {
-                ColumnQuantity = eVotingDomainOfInfluenceConfig?.ETextBlockColumnQuantity,
-                Values = eVotingDomainOfInfluenceValues ?? eVotingDomainOfInfluenceConfig?.ETextBlockValues,
+                ColumnQuantity = eVotingDomainOfInfluenceConfig.ETextBlockColumnQuantity,
+                Values = eVotingDomainOfInfluenceValues,
             }
             : null;
 
