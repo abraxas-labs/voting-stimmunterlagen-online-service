@@ -33,6 +33,7 @@ public static class VoteMockData
     public const string BundFutureApprovedGemeindeArnegg1Id = "a9ffc699-3542-45df-8bac-febea9f60c1a";
     public const string BundFutureApprovedZweckverbandGossauId = "5ef5651c-6662-4221-b073-1cd8b4d42237";
     public const string BundFutureApprovedKirchgemeindeArneggId = "3de78256-89c4-4a28-98d5-ba3625d173e8";
+    public const string BundFutureApprovedSynodalwahlkreisArneggId = "84a3b8eb-2326-4b36-bdda-0d687d1ecf58";
 
     public static readonly Guid BundArchivedGemeindeArnegg1Guid = Guid.Parse(BundArchivedGemeindeArnegg1Id);
     public static readonly Guid BundArchivedNotApprovedGemeindeArnegg1Guid = Guid.Parse(BundArchivedNotApprovedGemeindeArnegg1Id);
@@ -52,6 +53,7 @@ public static class VoteMockData
     public static readonly Guid BundFutureApprovedGemeindeArnegg1Guid = Guid.Parse(BundFutureApprovedGemeindeArnegg1Id);
     public static readonly Guid BundFutureApprovedZweckverbandGossauGuid = Guid.Parse(BundFutureApprovedZweckverbandGossauId);
     public static readonly Guid BundFutureApprovedKirchgemeindeArneggGuid = Guid.Parse(BundFutureApprovedKirchgemeindeArneggId);
+    public static readonly Guid BundFutureApprovedSynodalwahlkreisArneggGuid = Guid.Parse(BundFutureApprovedSynodalwahlkreisArneggId);
 
     public static PoliticalBusiness BundArchivedGemeindeArnegg1 => new()
     {
@@ -323,6 +325,21 @@ public static class VoteMockData
         PoliticalBusinessType = PoliticalBusinessType.Vote,
     };
 
+    public static PoliticalBusiness BundFutureApprovedSynodalwahlkreisArnegg => new()
+    {
+        Id = BundFutureApprovedSynodalwahlkreisArneggGuid,
+        PoliticalBusinessNumber = "VSYN",
+        Translations = TranslationUtil.CreateTranslations<PoliticalBusinessTranslation>(
+        (t, x) => t.ShortDescription = x,
+        "bund future approved vote VSYN (short)",
+        (t, x) => t.OfficialDescription = x,
+        "bund future approved vote VSYN (official)"),
+        Active = false,
+        ContestId = ContestMockData.BundFutureApprovedGuid,
+        DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedSynodalwahlkreisArneggGuid,
+        PoliticalBusinessType = PoliticalBusinessType.Vote,
+    };
+
     public static IEnumerable<PoliticalBusiness> All
     {
         get
@@ -345,6 +362,7 @@ public static class VoteMockData
             yield return BundFutureApprovedGemeindeArnegg1;
             yield return BundFutureApprovedZweckverbandGossau;
             yield return BundFutureApprovedKirchgemeindeArnegg;
+            yield return BundFutureApprovedSynodalwahlkreisArnegg;
         }
     }
 

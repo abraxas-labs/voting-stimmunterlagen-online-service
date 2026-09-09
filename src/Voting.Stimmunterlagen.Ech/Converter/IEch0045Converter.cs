@@ -17,7 +17,8 @@ public interface IEch0045Converter
         Contest contest,
         VoterList voterList,
         DomainOfInfluenceCanton canton,
-        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId);
+        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId,
+        bool useEVotingVoterExtension);
 
     XmlReader GetEch0045Reader(Stream stream);
 

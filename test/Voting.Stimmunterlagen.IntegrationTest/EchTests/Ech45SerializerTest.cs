@@ -30,6 +30,7 @@ public class Ech45SerializerTest : BaseReadOnlyDbTest
     [Theory]
     [InlineData(Ech0045Version.V4, "TestEch0045v4")]
     [InlineData(Ech0045Version.V6, "TestEch0045v6")]
+    [InlineData(Ech0045Version.V6WithEVotingVoterExtension, "TestEch0045v6EVotingVoterExtension")]
     public async Task TestEch0045(Ech0045Version version, string testName)
     {
         var contestId = ContestMockData.BundFutureApprovedGuid;

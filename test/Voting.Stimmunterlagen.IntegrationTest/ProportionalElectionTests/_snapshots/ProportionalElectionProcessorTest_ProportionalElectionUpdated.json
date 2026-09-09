@@ -35,6 +35,11 @@
       {
         "SecureConnectId": "SC-MU-AG",
         "Role": 1,
+        "Name": "Synodalwahlkreis Arnegg"
+      },
+      {
+        "SecureConnectId": "SC-MU-AG",
+        "Role": 1,
         "Name": "Kirchgemeinde Arnegg"
       },
       {

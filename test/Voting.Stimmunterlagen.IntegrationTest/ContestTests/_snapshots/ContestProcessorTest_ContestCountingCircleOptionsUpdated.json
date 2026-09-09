@@ -8,6 +8,12 @@
         "EVoting": false
       },
       {
+        "Name": "Ref. Kirche Arnegg",
+        "BasisCountingCircleId": "1b262435-66c4-4f53-9808-df67d9328586",
+        "Bfs": "21240",
+        "EVoting": false
+      },
+      {
         "Name": "Stadt St. Gallen",
         "BasisCountingCircleId": "29240676-b230-4daf-a6d6-48a6151a12f5",
         "Bfs": "1110",

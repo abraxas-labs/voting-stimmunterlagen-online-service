@@ -18,8 +18,8 @@ public class UpdateAttachmentRequestValidatorTest : ProtoValidatorBaseTest<Updat
         yield return New(x => x.Name = RandomStringUtil.GenerateComplexSingleLineText(300));
         yield return New(x => x.Color = string.Empty);
         yield return New(x => x.Color = RandomStringUtil.GenerateComplexSingleLineText(20));
-        yield return New(x => x.Supplier = RandomStringUtil.GenerateComplexSingleLineText(1));
-        yield return New(x => x.Supplier = RandomStringUtil.GenerateComplexSingleLineText(300));
+        yield return New(x => x.Supplier = RandomStringUtil.GenerateComplexMultiLineText(1));
+        yield return New(x => x.Supplier = RandomStringUtil.GenerateComplexMultiLineText(300));
         yield return New(x => x.PoliticalBusinessIds.Clear());
         yield return New(x => x.OrderedCount = 1);
         yield return New(x => x.OrderedCount = 1000000);

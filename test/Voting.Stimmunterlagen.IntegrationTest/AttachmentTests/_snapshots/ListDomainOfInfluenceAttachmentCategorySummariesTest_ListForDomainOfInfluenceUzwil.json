@@ -267,7 +267,8 @@
           "Active": false,
           "EVotingApproved": null
         }
-      ]
+      ],
+      "CanSetRequiredCount": true
     },
     {
       "DomainOfInfluence": {
@@ -420,7 +421,8 @@
           "Active": true,
           "EVotingApproved": null
         }
-      ]
+      ],
+      "CanSetRequiredCount": true
     }
   ]
 }

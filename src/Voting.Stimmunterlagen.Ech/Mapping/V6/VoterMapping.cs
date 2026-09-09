@@ -9,6 +9,7 @@ using Ech0010_6_0;
 using Ech0011_9_0;
 using Ech0044_4_1;
 using Ech0045_6_0;
+using Voting.Lib.Ech.Ech0045_6_0.Converter;
 using Voting.Lib.Ech.Ech0045_6_0.Models;
 using DataModels = Voting.Stimmunterlagen.Data.Models;
 
@@ -22,11 +23,12 @@ internal static class VoterMapping
     public static VotingPersonType ToEchVoter(
         this DataModels.Voter voter,
         DataModels.VotingCardType votingCardType,
-        Dictionary<Guid, List<DataModels.ContestDomainOfInfluence>> doiHierarchyByDoiId)
+        Dictionary<Guid, List<DataModels.ContestDomainOfInfluence>> doiHierarchyByDoiId,
+        PersonExtensionKind personExtensionKind)
     {
         return new VotingPersonType
         {
-            Person = GetEchPerson(voter),
+            Person = GetEchPerson(voter, personExtensionKind),
             ElectoralAddress = GetEchElectoralAddress(voter),
             IsEvoter = votingCardType == DataModels.VotingCardType.EVoting,
             DomainOfInfluenceInfo = voter.List!.DomainOfInfluence!.ToEchDomainOfInfluenceInfo(doiHierarchyByDoiId),
@@ -158,7 +160,7 @@ internal static class VoterMapping
         voter.Religion = religionSelector(nationality)?.Religion;
 
         var personExtension = personExtensionSelector != null
-            ? SwissPersonExtensionMapping.GetExtension(personExtensionSelector(nationality))
+            ? personExtensionSelector(nationality) as SwissPersonExtension
             : null;
 
         var personIdentification = personIdentificationSelector(nationality);
@@ -226,7 +228,7 @@ internal static class VoterMapping
         };
     }
 
-    private static VotingPersonTypePerson GetEchPerson(this DataModels.Voter voter)
+    private static VotingPersonTypePerson GetEchPerson(this DataModels.Voter voter, PersonExtensionKind personExtensionKind)
     {
         if (voter.VoterType == DataModels.VoterType.SwissAbroad && voter.SwissAbroadPerson == null)
         {
@@ -310,7 +312,9 @@ internal static class VoterMapping
 
         if (nationality.SwissAbroad != null)
         {
-            nationality.SwissAbroad.SwissAbroadPerson.Extension = voter.SwissAbroadPerson!.Extension?.ToEchSwissPersonExtension();
+            nationality.SwissAbroad.SwissAbroadPerson.Extension = personExtensionKind is PersonExtensionKind.EVotingVoterExtension_1_0
+                ? voter.SwissAbroadPerson!.ToEchEVotingVoterExtension()
+                : voter.SwissAbroadPerson!.Extension?.ToEchSwissPersonExtension();
         }
 
         return nationality;

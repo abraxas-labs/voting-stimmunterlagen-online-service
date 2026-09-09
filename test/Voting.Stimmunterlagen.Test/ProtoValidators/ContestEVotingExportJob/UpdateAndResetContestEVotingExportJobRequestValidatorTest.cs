@@ -27,7 +27,7 @@ public class UpdateAndResetContestEVotingExportJobRequestValidatorTest : ProtoVa
         var req = new UpdateAndResetContestEVotingExportJobRequest
         {
             ContestId = "6f1311de-5205-4976-9712-516752a373dc",
-            Ech0045Version = Proto.V1.Models.Ech0045Version._4,
+            Ech0045Version = Proto.V1.Models.Ech0045Version.V4,
         };
 
         customizer?.Invoke(req);

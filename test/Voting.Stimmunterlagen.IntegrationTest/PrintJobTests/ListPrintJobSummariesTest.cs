@@ -93,7 +93,7 @@ public class ListPrintJobSummariesTest : BaseWriteableDbGrpcTest<PrintJobService
         {
             ContestId = ContestMockData.BundFutureApprovedId,
         });
-        printJobs.Summaries.Should().HaveCount(6);
+        printJobs.Summaries.Should().HaveCount(7);
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class ListPrintJobSummariesTest : BaseWriteableDbGrpcTest<PrintJobService
         {
             ContestId = ContestMockData.BundFutureApprovedId,
         });
-        printJobs.Summaries.Should().HaveCount(6);
+        printJobs.Summaries.Should().HaveCount(7);
     }
 
     protected override async Task AuthorizationTestCall(PrintJobService.PrintJobServiceClient service)

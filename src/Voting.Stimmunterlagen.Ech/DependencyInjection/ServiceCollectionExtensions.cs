@@ -19,6 +19,7 @@ public static class ServiceCollectionExtensions
             .AddEch0045V6()
             .AddSingleton<Ech0045Service>()
             .AddKeyedSingleton<IEch0045Converter, Ech0045_4_0_Converter>(Ech0045Version.V4)
-            .AddKeyedSingleton<IEch0045Converter, Ech0045_6_0_Converter>(Ech0045Version.V6);
+            .AddKeyedSingleton<IEch0045Converter, Ech0045_6_0_Converter>(Ech0045Version.V6)
+            .AddKeyedSingleton<IEch0045Converter, Ech0045_6_0_Converter>(Ech0045Version.V6WithEVotingVoterExtension);
     }
 }

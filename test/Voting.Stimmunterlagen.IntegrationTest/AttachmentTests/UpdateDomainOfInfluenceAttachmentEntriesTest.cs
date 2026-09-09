@@ -47,6 +47,39 @@ public class UpdateDomainOfInfluenceAttachmentEntriesTest : BaseWriteableDbGrpcT
     }
 
     [Fact]
+    public async Task ShouldUpdateWithMainDomainOfInfluences()
+    {
+        var attachmentId = AttachmentMockData.BundFutureApprovedSynodalwahlkreisArneggGuid;
+        var mainDoiId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid;
+
+        var request1 = new UpdateDomainOfInfluenceAttachmentEntriesRequest
+        {
+            Id = attachmentId.ToString(),
+        };
+
+        await GemeindeArneggElectionAdminClient.UpdateDomainOfInfluenceAttachmentEntriesAsync(request1);
+
+        (await RunOnDb(db => db.DomainOfInfluenceAttachmentCounts
+            .AnyAsync(x => x.DomainOfInfluenceId == mainDoiId && x.AttachmentId == attachmentId)))
+            .Should().BeFalse();
+
+        var request2 = new UpdateDomainOfInfluenceAttachmentEntriesRequest
+        {
+            Id = attachmentId.ToString(),
+            DomainOfInfluenceIds =
+            {
+                mainDoiId.ToString(),
+            },
+        };
+
+        await GemeindeArneggElectionAdminClient.UpdateDomainOfInfluenceAttachmentEntriesAsync(request2);
+
+        (await RunOnDb(db => db.DomainOfInfluenceAttachmentCounts
+            .AnyAsync(x => x.DomainOfInfluenceId == mainDoiId && x.AttachmentId == attachmentId)))
+            .Should().BeTrue();
+    }
+
+    [Fact]
     public async Task ShouldUpdateWithExternalPrintingCenterEntry()
     {
         await RunOnDb(async db =>

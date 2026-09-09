@@ -1,4 +1,4 @@
-# ✨ Changelog (`v2.66.4`)
+# ✨ Changelog (`v2.67.4`)
 
 All notable changes to this project will be documented in this file.
 
@@ -8,11 +8,41 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version Info
 
 ```text
-This version -------- v2.66.4
-Previous version ---- v2.66.3
+This version -------- v2.67.4
+Previous version ---- v2.66.4
 Initial version ----- v2.5.1
-Total commits ------- 2
+Total commits ------- 5
 ```
+
+## [v2.67.4] - 2026-09-07
+
+### 🆕 Added
+
+- add ech-0045 version with e-voting voter extension
+
+## [v2.67.3] - 2026-08-28
+
+### 🔄 Changed
+
+- add domain of influence attachment category summary can set required count
+
+## [v2.67.2] - 2026-08-25
+
+### 🔄 Changed
+
+- support all attendees in attachments
+
+## [v2.67.1] - 2026-08-21
+
+### 🔄 Changed
+
+- support attachment supplier multi line text
+
+## [v2.67.0] - 2026-08-12
+
+### 🆕 Added
+
+- support eCH-0045 e-voting voter extension
 
 ## [v2.66.4] - 2026-07-22
 

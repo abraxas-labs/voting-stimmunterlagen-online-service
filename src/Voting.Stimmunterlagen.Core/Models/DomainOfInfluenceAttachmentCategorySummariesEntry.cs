@@ -11,11 +11,13 @@ public class DomainOfInfluenceAttachmentCategorySummariesEntry
     public DomainOfInfluenceAttachmentCategorySummariesEntry(
         ContestDomainOfInfluence domainOfInfluence,
         IReadOnlyCollection<AttachmentCategorySummary> attachmentCategorySummaries,
-        IReadOnlyCollection<PoliticalBusiness> politicalBusinesses)
+        IReadOnlyCollection<PoliticalBusiness> politicalBusinesses,
+        bool canSetRequiredCount)
     {
         DomainOfInfluence = domainOfInfluence;
         AttachmentCategorySummaries = attachmentCategorySummaries;
         PoliticalBusinesses = politicalBusinesses;
+        CanSetRequiredCount = canSetRequiredCount;
     }
 
     public ContestDomainOfInfluence DomainOfInfluence { get; }
@@ -23,4 +25,6 @@ public class DomainOfInfluenceAttachmentCategorySummariesEntry
     public IReadOnlyCollection<AttachmentCategorySummary> AttachmentCategorySummaries { get; }
 
     public IReadOnlyCollection<PoliticalBusiness> PoliticalBusinesses { get; }
+
+    public bool CanSetRequiredCount { get; }
 }

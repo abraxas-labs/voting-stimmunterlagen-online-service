@@ -206,6 +206,40 @@
     },
     {
       "EVotingReady": false,
+      "ParentPoliticalBusinessesCount": 8,
+      "OwnPoliticalBusinessesCount": 0,
+      "CountOfVotingCardsForEVoters": 0,
+      "DomainOfInfluence": {
+        "Id": "7d333514-b8b3-512f-9696-cfec451fbb18",
+        "Name": "Synodalwahlkreis Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LatestVoterListImportsLastUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": false,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      }
+    },
+    {
+      "EVotingReady": false,
       "ParentPoliticalBusinessesCount": 11,
       "OwnPoliticalBusinessesCount": 0,
       "CountOfVotingCardsForEVoters": 0,

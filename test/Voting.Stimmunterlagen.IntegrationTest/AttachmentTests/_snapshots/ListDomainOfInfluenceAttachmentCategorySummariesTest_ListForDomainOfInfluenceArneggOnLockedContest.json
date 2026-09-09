@@ -130,7 +130,8 @@
           "Active": false,
           "EVotingApproved": null
         }
-      ]
+      ],
+      "CanSetRequiredCount": true
     }
   ]
 }

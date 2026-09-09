@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ech0045_6_0;
+using Voting.Lib.Ech.Ech0045_6_0.Converter;
 using Voting.Stimmunterlagen.Data.Models;
 
 namespace Voting.Stimmunterlagen.Ech.Mapping.V6;
@@ -15,14 +16,15 @@ internal static class VoterListMapping
         this VoterList voterList,
         Contest contest,
         DomainOfInfluenceCanton canton,
-        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId)
+        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId,
+        PersonExtensionKind personExtensionKind)
     {
         var voters = voterList.Voters?
             .OrderBy(v => v.Bfs)
             .ThenBy(v => v.Town)
             .ThenBy(v => v.LastName)
             .ThenBy(v => v.FirstName)
-            .Select(v => v.ToEchVoter(voterList.VotingCardType, doiHierarchyByDoiId))
+            .Select(v => v.ToEchVoter(voterList.VotingCardType, doiHierarchyByDoiId, personExtensionKind))
             .ToList()
             ?? new List<VotingPersonType>();
 

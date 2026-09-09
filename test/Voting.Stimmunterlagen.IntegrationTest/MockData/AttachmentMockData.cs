@@ -22,6 +22,7 @@ public static class AttachmentMockData
     public const string BundFutureApprovedStadtGossauDeliveredId = "bdb7c590-c2b5-49fa-9bc7-1a931a714b97";
     public const string BundFutureApprovedKantonStGallenId = "bfbdd65a-6790-43ca-9d0c-e822557bc674";
     public const string BundFutureApprovedGemeindeArneggWithParentPbsId = "45508c30-14fb-4aa7-9532-db2a79e3c90d";
+    public const string BundFutureApprovedSynodalwahlkreisArneggId = "86896df4-e094-40d5-bcae-735bfa5b4288";
     public const string PoliticalAssemblyBundFutureApprovedGemeindeArneggId = "c20c3074-1043-441b-9759-dd017f0bb296";
 
     public static readonly Guid BundArchivedGemeindeArneggGuid = Guid.Parse(BundArchivedGemendeArneggId);
@@ -31,6 +32,7 @@ public static class AttachmentMockData
     public static readonly Guid BundFutureApprovedStadtGossauDeliveredGuid = Guid.Parse(BundFutureApprovedStadtGossauDeliveredId);
     public static readonly Guid BundFutureApprovedKantonStGallenGuid = Guid.Parse(BundFutureApprovedKantonStGallenId);
     public static readonly Guid BundFutureApprovedGemeindeArneggWithParentPbsGuid = Guid.Parse(BundFutureApprovedGemeindeArneggWithParentPbsId);
+    public static readonly Guid BundFutureApprovedSynodalwahlkreisArneggGuid = Guid.Parse(BundFutureApprovedSynodalwahlkreisArneggId);
     public static readonly Guid PoliticalAssemblyBundFutureApprovedGemeindeArneggGuid = Guid.Parse(PoliticalAssemblyBundFutureApprovedGemeindeArneggId);
 
     public static Attachment BundArchivedGemeindeArnegg => new()
@@ -198,6 +200,28 @@ public static class AttachmentMockData
             },
     };
 
+    public static Attachment BundFutureApprovedSynodalwahlkreisArnegg => new()
+    {
+        Id = BundFutureApprovedSynodalwahlkreisArneggGuid,
+        Name = "Synodalwahlkreis Arnegg Büchlein",
+        Category = AttachmentCategory.OtherCh,
+        Format = AttachmentFormat.A5,
+        Color = "Blue",
+        Supplier = "Arnegg Druckerei",
+        DeliveryPlannedOn = MockedClock.GetDate(10).Date,
+        OrderedCount = 2500,
+        DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedSynodalwahlkreisArneggGuid,
+        PoliticalBusinessEntries = new List<PoliticalBusinessAttachmentEntry>
+            {
+                new() { PoliticalBusinessId = VoteMockData.BundFutureApprovedSynodalwahlkreisArneggGuid },
+            },
+        DomainOfInfluenceAttachmentCounts = new List<DomainOfInfluenceAttachmentCount>
+            {
+                new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedSynodalwahlkreisArneggGuid, RequiredCount = 2500 },
+                new() { DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid, RequiredCount = 2500 },
+            },
+    };
+
     public static IEnumerable<Attachment> All
     {
         get
@@ -209,6 +233,7 @@ public static class AttachmentMockData
             yield return BundFutureApprovedStadtGossauDelivered;
             yield return BundFutureApprovedKantonStGallen;
             yield return BundFutureApprovedGemeindeArneggWithParentPbs;
+            yield return BundFutureApprovedSynodalwahlkreisArnegg;
             yield return PoliticalAssemblyBundFutureApprovedGemeindeArnegg;
         }
     }

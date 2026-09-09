@@ -20,6 +20,7 @@ public static class CountingCircleMockData
     public const string SchulgemeindeAndwilArneggId = "044d573c-0460-4e94-bd34-73e923337b3c";
     public const string GemeindeArneggId = "39d5a7af-54a8-49f3-9385-3b7911ef9bc6";
     public const string AuslandschweizerId = "69284b46-24bf-4fd9-bce1-b7f0832e552c";
+    public const string RefKircheArneggId = "1b262435-66c4-4f53-9808-df67d9328586";
 
     public static readonly Guid StadtStGallenGuid = Guid.Parse(StadtStGallenId);
     public static readonly Guid StadtGossauGuid = Guid.Parse(StadtGossauId);
@@ -27,6 +28,7 @@ public static class CountingCircleMockData
     public static readonly Guid SchulgemeindeAndwilArneggGuid = Guid.Parse(SchulgemeindeAndwilArneggId);
     public static readonly Guid GemeindeArneggGuid = Guid.Parse(GemeindeArneggId);
     public static readonly Guid AuslandschweizerGuid = Guid.Parse(AuslandschweizerId);
+    public static readonly Guid RefKircheArneggGuid = Guid.Parse(RefKircheArneggId);
 
     public static readonly Guid ContestBundArchivedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestCountingCircle(ContestMockData.BundArchivedGuid, GemeindeArneggGuid);
     public static readonly Guid ContestBundArchivedNotApprovedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestCountingCircle(ContestMockData.BundArchivedNotApprovedGuid, GemeindeArneggGuid);
@@ -105,6 +107,14 @@ public static class CountingCircleMockData
         SecureConnectId = MockDataSeeder.SecureConnectTenantIds.Auslandschweizer,
     };
 
+    public static CountingCircle RefKircheArnegg => new()
+    {
+        Id = RefKircheArneggGuid,
+        Name = "Ref. Kirche Arnegg",
+        Bfs = "21240",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.GemeindeArnegg,
+    };
+
     public static IEnumerable<CountingCircle> All
     {
         get
@@ -115,6 +125,7 @@ public static class CountingCircleMockData
             yield return GemeindeArnegg;
             yield return SchulgemeindeArneggAndwil;
             yield return Auslandschweizer;
+            yield return RefKircheArnegg;
         }
     }
 

@@ -247,6 +247,7 @@ public class UpdateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
                 {
                     MajorityElectionMockData.BundFutureApprovedGemeindeArnegg1Id,
                     ProportionalElectionMockData.BundFutureApprovedGemeindeArnegg1Id,
+                    VoteMockData.BundFutureApprovedSynodalwahlkreisArneggId,
                 },
             OrderedCount = 4000,
             RequiredCount = 4000,

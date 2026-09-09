@@ -25,6 +25,7 @@ public static class StepMockData
         (DomainOfInfluenceMockData.ContestBundFutureApprovedBundGuid, Step.LayoutVotingCardsDomainOfInfluences),
         (DomainOfInfluenceMockData.ContestBundFutureApprovedBundGuid, Step.ContestApproval),
         (DomainOfInfluenceMockData.ContestBundFutureApprovedStadtUzwilGuid, Step.PoliticalBusinessesApproval),
+        (DomainOfInfluenceMockData.ContestBundFutureApprovedSynodalwahlkreisArneggGuid, Step.PoliticalBusinessesApproval),
     };
 
     public static Task Seed(Func<Func<IServiceProvider, Task>, Task> runScoped)

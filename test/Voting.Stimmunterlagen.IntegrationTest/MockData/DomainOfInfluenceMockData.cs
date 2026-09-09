@@ -24,6 +24,7 @@ public static class DomainOfInfluenceMockData
     public const string AuslandschweizerId = "747b552e-88ad-46be-a472-709c4b7ba996";
     public const string KirchgemeindeArneggId = "7c2726cc-c53f-4c7c-960b-9eb1886beae7";
     public const string ZweckverbandGossauId = "94b5f873-9623-48ed-83f9-72819163b660";
+    public const string SynodalwahlkreisArneggId = "15ed02ba-9f2e-4bad-a3bd-7bb970c82533";
 
     public static readonly Guid BundGuid = Guid.Parse(BundId);
     public static readonly Guid KantonStGallenGuid = Guid.Parse(KantonStGallenId);
@@ -35,6 +36,7 @@ public static class DomainOfInfluenceMockData
     public static readonly Guid AuslandschweizerGuid = Guid.Parse(AuslandschweizerId);
     public static readonly Guid KirchgemeindeArneggGuid = Guid.Parse(KirchgemeindeArneggId);
     public static readonly Guid ZweckverbandGossauGuid = Guid.Parse(ZweckverbandGossauId);
+    public static readonly Guid SynodalwahlkreisArneggGuid = Guid.Parse(SynodalwahlkreisArneggId);
 
     public static readonly Guid ContestBundArchivedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundArchivedGuid, GemeindeArneggGuid);
     public static readonly Guid ContestBundArchivedNotApprovedGemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundArchivedNotApprovedGuid, GemeindeArneggGuid);
@@ -47,6 +49,7 @@ public static class DomainOfInfluenceMockData
     public static readonly Guid ContestBundFutureApprovedAuslandschweizerGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, AuslandschweizerGuid);
     public static readonly Guid ContestBundFutureApprovedKirchgemeindeArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, KirchgemeindeArneggGuid);
     public static readonly Guid ContestBundFutureApprovedZweckverbandGossauGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, ZweckverbandGossauGuid);
+    public static readonly Guid ContestBundFutureApprovedSynodalwahlkreisArneggGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureApprovedGuid, SynodalwahlkreisArneggGuid);
 
     public static readonly Guid ContestBundFutureBundGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, BundGuid);
     public static readonly Guid ContestBundFutureKantonStGallenGuid = StimmunterlagenUuidV5.BuildContestDomainOfInfluence(ContestMockData.BundFutureGuid, KantonStGallenGuid);
@@ -69,6 +72,7 @@ public static class DomainOfInfluenceMockData
     public static readonly string ContestBundFutureApprovedStadtGossauId = ContestBundFutureApprovedStadtGossauGuid.ToString();
     public static readonly string ContestBundFutureApprovedStadtUzwilId = ContestBundFutureApprovedStadtUzwilGuid.ToString();
     public static readonly string ContestBundFutureApprovedGemeindeArneggId = ContestBundFutureApprovedGemeindeArneggGuid.ToString();
+    public static readonly string ContestBundFutureApprovedSynodalwahlkreisArneggId = ContestBundFutureApprovedSynodalwahlkreisArneggGuid.ToString();
 
     public static readonly string ContestBundFutureBundId = ContestBundFutureBundGuid.ToString();
     public static readonly string ContestBundFutureKantonStGallenId = ContestBundFutureKantonStGallenGuid.ToString();
@@ -135,6 +139,11 @@ public static class DomainOfInfluenceMockData
             {
                 CountingCircleId = CountingCircleMockData.AuslandschweizerGuid,
                 SourceDomainOfInfluenceId = AuslandschweizerGuid,
+            },
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.RefKircheArneggGuid,
+                SourceDomainOfInfluenceId = SynodalwahlkreisArneggGuid,
             },
         },
     };
@@ -604,6 +613,55 @@ public static class DomainOfInfluenceMockData
         },
     };
 
+    public static DomainOfInfluence SynodalwahlkreisArnegg => new()
+    {
+        Id = SynodalwahlkreisArneggGuid,
+        Name = "Synodalwahlkreis Arnegg",
+        AuthorityName = "Gemeinde Arnegg",
+        ShortName = "MU-AG",
+        SecureConnectId = MockDataSeeder.SecureConnectTenantIds.GemeindeArnegg,
+        ParentId = BundGuid,
+        RootId = BundGuid,
+        ResponsibleForVotingCards = true,
+        Type = DomainOfInfluenceType.Ki,
+        Canton = DomainOfInfluenceCanton.Sg,
+        CantonDefaults = new DomainOfInfluenceCantonDefaults
+        {
+            VotingDocumentsEVotingEaiMessageType = "EVOT-SG",
+        },
+        ElectoralRegistrationEnabled = true,
+        LogoRef = "synodalwahlkreis_arnegg_logo.png",
+        SapCustomerOrderNumber = "00273199",
+        PrintData = new()
+        {
+            ShippingAway = VotingCardShippingFranking.A,
+            ShippingReturn = VotingCardShippingFranking.A,
+            ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen,
+        },
+        SwissPostData = new()
+        {
+            InvoiceReferenceNumber = "363994573",
+            FrankingLicenceAwayNumber = "76011100",
+            FrankingLicenceReturnNumber = "369302122",
+        },
+        ReturnAddress = new()
+        {
+            AddressLine1 = "Gemeinde Andwil-Arnegg",
+            Street = "Lätschenstrasse 7",
+            ZipCode = "9204",
+            City = "Andwil",
+            Country = "Schweiz",
+        },
+        CountingCircles = new List<DomainOfInfluenceCountingCircle>
+        {
+            new()
+            {
+                CountingCircleId = CountingCircleMockData.RefKircheArneggGuid,
+                SourceDomainOfInfluenceId = SynodalwahlkreisArneggGuid,
+            },
+        },
+    };
+
     public static IEnumerable<DomainOfInfluence> All
     {
         get
@@ -618,6 +676,7 @@ public static class DomainOfInfluenceMockData
             yield return Auslandschweizer;
             yield return KirchgemeindeArnegg;
             yield return ZweckverbandGossau;
+            yield return SynodalwahlkreisArnegg;
         }
     }
 

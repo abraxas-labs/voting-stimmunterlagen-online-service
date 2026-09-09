@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Voting.Stimmunterlagen.Core.Managers;
 using Voting.Stimmunterlagen.Data;
 using Voting.Stimmunterlagen.Data.Models;
 using Voting.Stimmunterlagen.Data.QueryableExtensions;
@@ -19,17 +20,20 @@ public class PoliticalBusinessPermissionBuilder
     private readonly IDbRepository<PoliticalBusiness> _politicalBusinessRepo;
     private readonly IDbRepository<Contest> _contestRepo;
     private readonly IDbRepository<ContestDomainOfInfluence> _domainOfInfluenceRepo;
+    private readonly DomainOfInfluenceManager _doiManager;
 
     public PoliticalBusinessPermissionBuilder(
         DataContext dbContext,
         IDbRepository<PoliticalBusiness> politicalBusinessRepo,
         IDbRepository<Contest> contestRepo,
-        IDbRepository<ContestDomainOfInfluence> domainOfInfluenceRepo)
+        IDbRepository<ContestDomainOfInfluence> domainOfInfluenceRepo,
+        DomainOfInfluenceManager doiManager)
     {
         _dbContext = dbContext;
         _politicalBusinessRepo = politicalBusinessRepo;
         _contestRepo = contestRepo;
         _domainOfInfluenceRepo = domainOfInfluenceRepo;
+        _doiManager = doiManager;
     }
 
     internal async Task UpdatePermissionsForPoliticalBusinessesInTestingPhase()
@@ -50,7 +54,7 @@ public class PoliticalBusinessPermissionBuilder
             return;
         }
 
-        var mainVotingCardsDoisByContestId = await GetMainVotingCardsDomainOfInfluencesByContestId();
+        var mainVotingCardsDoisByContestId = await _doiManager.GetMainVotingCardsDomainOfInfluencesByContestId();
 
         foreach (var politicalBusiness in politicalBusinesses)
         {
@@ -74,7 +78,7 @@ public class PoliticalBusinessPermissionBuilder
             .Include(x => x.DomainOfInfluence!.CountingCircles!).ThenInclude(x => x.CountingCircle)
             .FirstAsync(x => x.Id == id);
 
-        var mainVotingCardsDoisByContestId = await GetMainVotingCardsDomainOfInfluencesByContestId(politicalBusiness.ContestId);
+        var mainVotingCardsDoisByContestId = await _doiManager.GetMainVotingCardsDomainOfInfluencesByContestId(politicalBusiness.ContestId);
         UpdatePermissionsForPoliticalBusiness(politicalBusiness, mainVotingCardsDoisByContestId.GetValueOrDefault(politicalBusiness.ContestId) ?? new());
 
         // save changes, to have up to date data for the single attendee query
@@ -114,27 +118,8 @@ public class PoliticalBusinessPermissionBuilder
     {
         var pbSecureConnectId = politicalBusiness.DomainOfInfluence!.SecureConnectId;
 
-        var pbCcSecureConnectIds = politicalBusiness.DomainOfInfluence.CountingCircles!
-            .Select(doiCc => doiCc.CountingCircle!.SecureConnectId)
-            .ToHashSet();
-
-        var hierarchyAttendeeIds = politicalBusiness.DomainOfInfluence!.ParentHierarchyEntries!
-            .Where(x => x.DomainOfInfluence!.ResponsibleForVotingCards)
-            .Select(x => new { x.DomainOfInfluence!.SecureConnectId, x.DomainOfInfluenceId })
-            .Distinct()
-            .ToList();
-
-        var mainVotingCardsAttendeeIds = mainVotingCardsDomainOfInfluences
-            .Where(x => x.ResponsibleForVotingCards
-                && x.Id != politicalBusiness.DomainOfInfluenceId
-                && x.Role != ContestRole.None
-                && (x.SecureConnectId == pbSecureConnectId || pbCcSecureConnectIds.Contains(x.SecureConnectId)))
-            .Select(x => new { x.SecureConnectId, DomainOfInfluenceId = x.Id })
-            .ToList();
-
-        var attendeeIds = hierarchyAttendeeIds.Concat(mainVotingCardsAttendeeIds)
-            .Distinct()
-            .ToList();
+        var attendees = _doiManager
+            .ListAttendees(politicalBusiness.DomainOfInfluence, mainVotingCardsDomainOfInfluences);
 
         politicalBusiness.PermissionEntries!.Clear();
         politicalBusiness.PermissionEntries.Add(new PoliticalBusinessPermissionEntry
@@ -154,21 +139,11 @@ public class PoliticalBusinessPermissionBuilder
             });
         }
 
-        politicalBusiness.PermissionEntries.AddRange(attendeeIds.Select(x => new PoliticalBusinessPermissionEntry
+        politicalBusiness.PermissionEntries.AddRange(attendees.Select(x => new PoliticalBusinessPermissionEntry
         {
             SecureConnectId = x.SecureConnectId,
-            DomainOfInfluenceId = x.DomainOfInfluenceId,
+            DomainOfInfluenceId = x.Id,
             Role = PoliticalBusinessRole.Attendee,
         }));
-    }
-
-    private async Task<Dictionary<Guid, List<ContestDomainOfInfluence>>> GetMainVotingCardsDomainOfInfluencesByContestId(Guid? contestId = null)
-    {
-        return await _domainOfInfluenceRepo.Query()
-            .WhereContestInTestingPhase()
-            .Where(doi => doi.IsMainVotingCardsDomainOfInfluence
-                && (contestId == null || doi.ContestId == contestId))
-            .GroupBy(x => x.ContestId)
-            .ToDictionaryAsync(x => x.Key, x => x.ToList());
     }
 }

@@ -43,7 +43,7 @@ public class ContestEVotingExportJobBuilder
         var canton = contest.DomainOfInfluence!.Canton.ToString().ToUpper();
         var description = contest.Translations!.FirstOrDefault(t => t.Language.Equals(Languages.German))?.Description;
 
-        var ech0045VersionString = ech0045Version == Ech0045Version.V6
+        var ech0045VersionString = ech0045Version is Ech0045Version.V6 or Ech0045Version.V6WithEVotingVoterExtension
             ? Ech0045V6VersionString
             : Ech0045V4VersionString;
 

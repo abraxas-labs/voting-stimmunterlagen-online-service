@@ -34,8 +34,14 @@ public class Ech0045_4_0_Converter : IEch0045Converter
         Contest contest,
         VoterList voterList,
         DomainOfInfluenceCanton canton,
-        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId)
+        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId,
+        bool useEVotingVoterExtension)
     {
+        if (useEVotingVoterExtension)
+        {
+            throw new ArgumentException("Only person extension kind VOTING voter is allowed for Ech0045 V4");
+        }
+
         var delivery = ToDelivery(contest, voterList, canton, doiHierarchyByDoiId);
         return _ech0045Serializer.ToXmlBytes(delivery);
     }

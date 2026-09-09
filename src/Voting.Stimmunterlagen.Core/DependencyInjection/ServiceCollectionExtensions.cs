@@ -3,6 +3,7 @@
 
 using Voting.Stimmunterlagen.Core.Configuration;
 using Voting.Stimmunterlagen.Core.EventProcessors;
+using Voting.Stimmunterlagen.Core.Managers;
 using Voting.Stimmunterlagen.Core.Managers.EVoting;
 
 namespace Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ public static class ServiceCollectionExtensions
             .AddScoped<ContestEVotingExportJobBuilder>()
             .AddScoped<AttachmentBuilder>()
             .AddScoped<VoterListBuilder>()
+            .AddScoped<DomainOfInfluenceManager>()
             .AddEventProcessorServices(config)
             .AddApiServices(config);
     }

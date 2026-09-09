@@ -50,6 +50,12 @@ public class DomainOfInfluenceService : Proto.V1.DomainOfInfluenceService.Domain
         return _mapper.Map<DomainOfInfluences>(dois);
     }
 
+    public override async Task<DomainOfInfluences> ListPoliticalBusinessAttendees(ListDomainOfInfluencePoliticalBusinessAttendeesRequest request, ServerCallContext context)
+    {
+        var dois = await _domainOfInfluenceManager.ListPoliticalBusinessAttendees(GuidParser.Parse(request.DomainOfInfluenceId));
+        return _mapper.Map<DomainOfInfluences>(dois);
+    }
+
     public override async Task<Empty> UpdateSettings(UpdateDomainOfInfluenceSettingsRequest request, ServerCallContext context)
     {
         await _domainOfInfluenceManager.UpdateSettings(GuidParser.Parse(request.DomainOfInfluenceId), request.AllowManualVoterListUpload);

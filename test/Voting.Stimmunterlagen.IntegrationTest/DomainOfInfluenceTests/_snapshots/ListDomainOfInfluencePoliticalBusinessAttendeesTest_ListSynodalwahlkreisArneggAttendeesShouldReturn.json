@@ -1,0 +1,35 @@
+{
+  "DomainOfInfluences_": [
+    {
+      "Id": "edf7d7e5-bf66-5ce4-a153-76c18d694fc8",
+      "Name": "Gemeinde Arnegg",
+      "ShortName": "MU-AG",
+      "AuthorityName": "Gemeinde Arnegg",
+      "Type": 4,
+      "SecureConnectId": "SC-MU-AG",
+      "ResponsibleForVotingCards": true,
+      "ExternalPrintingCenter": false,
+      "ExternalPrintingCenterEaiMessageType": "",
+      "PrintData": {
+        "ShippingAway": 3,
+        "ShippingReturn": 3,
+        "ShippingMethod": 3
+      },
+      "ElectoralRegistrationEnabled": true,
+      "AllowManualVoterListUpload": true,
+      "CanManuallyUploadVoterList": true,
+      "LatestVoterListImportsLastUpdate": null,
+      "GenerateVotingCardsTriggered": null,
+      "EVoting": null,
+      "ElectoralRegisterMultipleEnabled": false,
+      "StistatMunicipality": true,
+      "Bfs": "3441",
+      "HasEmptyVotingCards": true,
+      "CountOfEmptyVotingCards": 2,
+      "LastCountOfEmptyVotingCardsUpdate": {
+        "Seconds": 1591013700,
+        "Nanos": 0
+      }
+    }
+  ]
+}

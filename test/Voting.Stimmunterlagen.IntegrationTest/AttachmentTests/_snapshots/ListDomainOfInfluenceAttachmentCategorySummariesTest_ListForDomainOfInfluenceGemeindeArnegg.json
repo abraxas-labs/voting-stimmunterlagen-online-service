@@ -267,7 +267,8 @@
           "Active": false,
           "EVotingApproved": null
         }
-      ]
+      ],
+      "CanSetRequiredCount": true
     },
     {
       "DomainOfInfluence": {
@@ -420,7 +421,273 @@
           "Active": true,
           "EVotingApproved": null
         }
-      ]
+      ],
+      "CanSetRequiredCount": true
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "128e4c2d-1e70-5bc7-978c-da2453e27753",
+        "Name": "Synodalwahlkreis Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LatestVoterListImportsLastUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "AttachmentCategorySummaries": [
+        {
+          "Category": 10,
+          "Attachments": [
+            {
+              "Id": "86896df4-e094-40d5-bcae-735bfa5b4288",
+              "Name": "Synodalwahlkreis Arnegg Büchlein",
+              "Format": 2,
+              "Color": "Blue",
+              "Supplier": "Arnegg Druckerei",
+              "DeliveryPlannedOn": {
+                "Seconds": 1579478400,
+                "Nanos": 0
+              },
+              "DeliveryReceivedOn": null,
+              "DomainOfInfluence": {
+                "Id": "128e4c2d-1e70-5bc7-978c-da2453e27753",
+                "Name": "Synodalwahlkreis Arnegg",
+                "ShortName": "MU-AG",
+                "AuthorityName": "Gemeinde Arnegg",
+                "Type": 7,
+                "SecureConnectId": "SC-MU-AG",
+                "ResponsibleForVotingCards": true,
+                "ExternalPrintingCenter": false,
+                "ExternalPrintingCenterEaiMessageType": "",
+                "PrintData": {
+                  "ShippingAway": 3,
+                  "ShippingReturn": 3,
+                  "ShippingMethod": 1
+                },
+                "ElectoralRegistrationEnabled": true,
+                "AllowManualVoterListUpload": false,
+                "CanManuallyUploadVoterList": false,
+                "LatestVoterListImportsLastUpdate": null,
+                "GenerateVotingCardsTriggered": null,
+                "EVoting": null,
+                "ElectoralRegisterMultipleEnabled": false,
+                "StistatMunicipality": false,
+                "Bfs": "",
+                "HasEmptyVotingCards": false,
+                "CountOfEmptyVotingCards": 0,
+                "LastCountOfEmptyVotingCardsUpdate": null
+              },
+              "PoliticalBusinessIds": [
+                "84a3b8eb-2326-4b36-bdda-0d687d1ecf58"
+              ],
+              "State": 1,
+              "DomainOfInfluenceAttachmentRequiredCount": 2500,
+              "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+              "TotalRequiredCount": 5000,
+              "TotalRequiredForVoterListsCount": 0,
+              "Station": null,
+              "OrderedCount": 2500,
+              "Category": 10,
+              "SendOnlyToHouseholder": false,
+              "DelayedDeliveryDate": null
+            }
+          ],
+          "TotalOrderedCount": 2500,
+          "TotalRequiredCount": 2500,
+          "TotalRequiredForVoterListsCount": 0
+        }
+      ],
+      "PoliticalBusinesses": [
+        {
+          "Id": "0a6f0b72-bd98-4068-a339-284e7bdd37ab",
+          "PoliticalBusinessNumber": "101",
+          "OfficialDescription": "bund future approved MajorityElection 101 (official) de",
+          "ShortDescription": "bund future approved MajorityElection 101 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1000",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessType": 2,
+          "Active": true,
+          "EVotingApproved": null
+        },
+        {
+          "Id": "8c3f98aa-46ec-4b7a-9c99-c557f40ae592",
+          "PoliticalBusinessNumber": "P001",
+          "OfficialDescription": "bund future approved ProportionalElection P001 (official) de",
+          "ShortDescription": "bund future approved ProportionalElection P001 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1000",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessType": 3,
+          "Active": true,
+          "EVotingApproved": null
+        },
+        {
+          "Id": "fa3834c8-dd4a-4d75-80ba-fe66f0f46d30",
+          "PoliticalBusinessNumber": "V001",
+          "OfficialDescription": "bund future approved vote V001 (official) de",
+          "ShortDescription": "bund future approved vote V001 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1000",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": true,
+          "EVotingApproved": null
+        },
+        {
+          "Id": "b17c5b4a-e9e9-4a6a-8083-352426a528f9",
+          "PoliticalBusinessNumber": "V002",
+          "OfficialDescription": "bund future approved vote V002 (official) de",
+          "ShortDescription": "bund future approved vote V002 (short) de",
+          "DomainOfInfluence": {
+            "Id": "b71a5a33-a224-5ec0-bac1-66b07e0adba0",
+            "Name": "Bund",
+            "ShortName": "CH",
+            "AuthorityName": "Abraxas Informatik AG",
+            "Type": 1,
+            "SecureConnectId": "SC-ABX",
+            "ResponsibleForVotingCards": false,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": null,
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "1000",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": false,
+          "EVotingApproved": null
+        },
+        {
+          "Id": "84a3b8eb-2326-4b36-bdda-0d687d1ecf58",
+          "PoliticalBusinessNumber": "VSYN",
+          "OfficialDescription": "bund future approved vote VSYN (official) de",
+          "ShortDescription": "bund future approved vote VSYN (short) de",
+          "DomainOfInfluence": {
+            "Id": "128e4c2d-1e70-5bc7-978c-da2453e27753",
+            "Name": "Synodalwahlkreis Arnegg",
+            "ShortName": "MU-AG",
+            "AuthorityName": "Gemeinde Arnegg",
+            "Type": 7,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": false,
+          "EVotingApproved": null
+        }
+      ],
+      "CanSetRequiredCount": true
     },
     {
       "DomainOfInfluence": {
@@ -941,6 +1208,43 @@
           "EVotingApproved": null
         },
         {
+          "Id": "84a3b8eb-2326-4b36-bdda-0d687d1ecf58",
+          "PoliticalBusinessNumber": "VSYN",
+          "OfficialDescription": "bund future approved vote VSYN (official) de",
+          "ShortDescription": "bund future approved vote VSYN (short) de",
+          "DomainOfInfluence": {
+            "Id": "128e4c2d-1e70-5bc7-978c-da2453e27753",
+            "Name": "Synodalwahlkreis Arnegg",
+            "ShortName": "MU-AG",
+            "AuthorityName": "Gemeinde Arnegg",
+            "Type": 7,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessType": 1,
+          "Active": false,
+          "EVotingApproved": null
+        },
+        {
           "Id": "5ef5651c-6662-4221-b073-1cd8b4d42237",
           "PoliticalBusinessNumber": "VZW",
           "OfficialDescription": "bund future approved vote VZW (official) de",
@@ -977,7 +1281,8 @@
           "Active": false,
           "EVotingApproved": null
         }
-      ]
+      ],
+      "CanSetRequiredCount": true
     }
   ]
 }

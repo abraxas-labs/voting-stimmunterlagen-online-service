@@ -107,6 +107,32 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
     }
 
     [Fact]
+    public async Task ShouldCreateWithMainDoiCounts()
+    {
+        var req = NewValidRequest(x =>
+        {
+            x.DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedSynodalwahlkreisArneggId;
+            x.PoliticalBusinessIds.Clear();
+            x.PoliticalBusinessIds.Add(VoteMockData.BundFutureApprovedSynodalwahlkreisArneggId);
+        });
+        var response = await GemeindeArneggElectionAdminClient.CreateAsync(req);
+
+        var id = Guid.Parse(response.Id);
+        var attachment = await RunOnDb(db => db.Attachments
+            .Include(x => x.DomainOfInfluenceAttachmentCounts!.OrderBy(y => y.DomainOfInfluence!.Name))
+            .ThenInclude(x => x.DomainOfInfluence)
+            .SingleAsync(x => x.Id == id));
+
+        attachment.DomainOfInfluenceAttachmentCounts!
+            .Any(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggGuid)
+            .Should().BeTrue();
+
+        attachment.DomainOfInfluenceAttachmentCounts!
+            .Select(x => new { x.DomainOfInfluence!.Name })
+            .ShouldMatchSnapshot();
+    }
+
+    [Fact]
     public async Task ShouldThrowIfNonZeroRequiredCountOnPoliticalParentType()
     {
         await AssertStatus(
@@ -331,6 +357,7 @@ public class CreateAttachmentTest : BaseWriteableDbGrpcTest<AttachmentService.At
                 {
                     VoteMockData.BundFutureApprovedGemeindeArnegg1Id,
                     ProportionalElectionMockData.BundFutureApprovedGemeindeArnegg1Id,
+                    VoteMockData.BundFutureApprovedSynodalwahlkreisArneggId,
                 },
             OrderedCount = 2000,
             RequiredCount = 2000,

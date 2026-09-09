@@ -34,10 +34,15 @@ public class Ech0045_6_0_Converter : IEch0045Converter
         Contest contest,
         VoterList voterList,
         DomainOfInfluenceCanton canton,
-        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId)
+        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId,
+        bool useEVotingVoterExtension)
     {
-        var delivery = ToDelivery(contest, voterList, canton, doiHierarchyByDoiId);
-        return _ech0045Serializer.ToXmlBytes(delivery);
+        var personExtensionKind = useEVotingVoterExtension
+            ? PersonExtensionKind.EVotingVoterExtension_1_0
+            : PersonExtensionKind.VotingVoterExtension;
+
+        var delivery = ToDelivery(contest, voterList, canton, doiHierarchyByDoiId, personExtensionKind);
+        return _ech0045Serializer.ToXmlBytes(delivery, personExtensionKind);
     }
 
     public XmlReader GetEch0045Reader(Stream stream)
@@ -67,12 +72,13 @@ public class Ech0045_6_0_Converter : IEch0045Converter
         Contest contest,
         VoterList voterList,
         DomainOfInfluenceCanton canton,
-        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId)
+        Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId,
+        PersonExtensionKind personExtensionKind)
     {
         return new VoterDelivery
         {
             DeliveryHeader = _deliveryHeaderProvider.BuildHeader(!contest.TestingPhaseEnded),
-            VoterList = voterList.ToEchVoterList(contest, canton, doiHierarchyByDoiId),
+            VoterList = voterList.ToEchVoterList(contest, canton, doiHierarchyByDoiId, personExtensionKind),
         };
     }
 }

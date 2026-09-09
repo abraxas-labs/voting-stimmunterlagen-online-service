@@ -180,7 +180,7 @@ public class SetDomainOfInfluenceAttachmentRequiredCountTest : BaseWriteableDbGr
                     RequiredCount = 10,
                 }),
             StatusCode.PermissionDenied,
-            "cannot set attachment count when not responsible for voting cards");
+            "cannot set attachment required count on a self created attachment when not responsible for voting cards");
     }
 
     [Fact]

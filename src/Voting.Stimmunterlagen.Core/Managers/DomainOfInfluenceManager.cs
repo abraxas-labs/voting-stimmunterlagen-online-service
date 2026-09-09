@@ -72,6 +72,32 @@ public class DomainOfInfluenceManager
             .ToListAsync();
     }
 
+    public async Task<List<ContestDomainOfInfluence>> ListPoliticalBusinessAttendees(Guid domainOfInfluenceId)
+    {
+        var doi = await _doiRepo.Query()
+            .Include(doi => doi.CountingCircles!)
+                .ThenInclude(doiCc => doiCc.CountingCircle)
+            .Include(doi => doi.ParentHierarchyEntries!)
+                .ThenInclude(x => x.DomainOfInfluence!.PoliticalBusinessPermissionEntries)
+            .Include(doi => doi.ParentHierarchyEntries!)
+                .ThenInclude(x => x.DomainOfInfluence!.Contest)
+            .WhereIsManager(_auth.Tenant.Id)
+            .FirstOrDefaultAsync(x => x.Id == domainOfInfluenceId);
+
+        if (doi == null)
+        {
+            return new();
+        }
+
+        var mainVotingCardsDois = await GetMainVotingCardsDomainOfInfluencesByContestId(doi.ContestId);
+        var attendees = ListPoliticalBusinessAttendees(doi, mainVotingCardsDois.GetValueOrDefault(doi.ContestId) ?? new());
+
+        return attendees
+            .DistinctBy(doi => doi!.Id)
+            .OrderBy(doi => doi.Name)
+            .ToList()!;
+    }
+
     public async Task<ContestDomainOfInfluence> Get(Guid id)
     {
         var tenantId = _auth.Tenant.Id;
@@ -190,6 +216,117 @@ public class DomainOfInfluenceManager
         }
 
         return parentsAndSelfByDoiId;
+    }
+
+    internal List<ContestDomainOfInfluence> ListPoliticalBusinessAttendees(ContestDomainOfInfluence domainOfInfluence, List<ContestDomainOfInfluence> mainVotingCardsDomainOfInfluences)
+    {
+        var doiAttendees = ListAttendees(domainOfInfluence, mainVotingCardsDomainOfInfluences);
+
+        if (doiAttendees.Any(doi => doi.PoliticalBusinessPermissionEntries == null || doi.Contest == null))
+        {
+            throw new InvalidOperationException("To load political business attendees, the fields permission entries and contest must be included");
+        }
+
+        return doiAttendees
+            .Where(doi => doi.UsesVotingCardsInCurrentContest())
+            .ToList();
+    }
+
+    /// <summary>
+    /// Returns a list of attendees of a domain of influence. This includes child domain of influences
+    /// and related main domain of influences (if they are responsible for voting cards).
+    /// </summary>
+    /// <param name="domainOfInfluence">The domain of influence.</param>
+    /// <param name="mainVotingCardsDomainOfInfluences">The main voting card domain of influences of the related contest.</param>
+    /// <returns>A list of attendees.</returns>
+    internal List<ContestDomainOfInfluence> ListAttendees(ContestDomainOfInfluence domainOfInfluence, List<ContestDomainOfInfluence> mainVotingCardsDomainOfInfluences)
+    {
+        var hierarchyAttendees = domainOfInfluence.ParentHierarchyEntries!
+            .Where(x => x.DomainOfInfluence!.ResponsibleForVotingCards)
+            .Select(x => x.DomainOfInfluence)
+            .Distinct()
+            .ToList();
+
+        var mainVotingCardsAttendees = mainVotingCardsDomainOfInfluences
+            .Where(x => IsMainVotingCardsAttendee(x, domainOfInfluence))
+            .ToList();
+
+        return hierarchyAttendees
+            .Concat(mainVotingCardsAttendees)
+            .Where(doi => doi!.Id != domainOfInfluence.Id)
+            .DistinctBy(doi => doi!.Id)
+            .ToList()!;
+    }
+
+    internal Dictionary<Guid, List<ContestDomainOfInfluence>> BuildHostsByAttendeeId(
+        IReadOnlyCollection<ContestDomainOfInfluence> attendees,
+        IReadOnlyCollection<ContestDomainOfInfluence> contestDomainOfInfluences,
+        IReadOnlyCollection<ContestDomainOfInfluence> mainVotingCardsDomainOfInfluences)
+    {
+        var mainVotingCardsDoisBySecureConnectId = mainVotingCardsDomainOfInfluences
+            .ToLookup(x => x.SecureConnectId);
+
+        var hostsByAttendeeId = new Dictionary<Guid, List<ContestDomainOfInfluence>>();
+
+        foreach (var hostCandidate in contestDomainOfInfluences)
+        {
+            var hostCandidateSecureConnectIds = hostCandidate.CountingCircles!
+                .Select(doiCc => doiCc.CountingCircle!.SecureConnectId)
+                .Prepend(hostCandidate.SecureConnectId)
+                .Distinct();
+
+            foreach (var hostCandidateSecureConnectId in hostCandidateSecureConnectIds)
+            {
+                foreach (var mainVotingCardDoi in mainVotingCardsDoisBySecureConnectId[hostCandidateSecureConnectId])
+                {
+                    if (!IsMainVotingCardsAttendee(mainVotingCardDoi, hostCandidate))
+                    {
+                        continue;
+                    }
+
+                    if (!hostsByAttendeeId.TryGetValue(mainVotingCardDoi.Id, out var hosts))
+                    {
+                        hostsByAttendeeId[mainVotingCardDoi.Id] = hosts = new();
+                    }
+
+                    hosts.Add(hostCandidate);
+                }
+            }
+        }
+
+        foreach (var attendee in attendees)
+        {
+            var parentHosts = attendee.HierarchyEntries!.Select(x => x.ParentDomainOfInfluence!);
+            var mainVotingCardsHosts = hostsByAttendeeId.GetValueOrDefault(attendee.Id) ?? new();
+            hostsByAttendeeId[attendee.Id] = parentHosts.Concat(mainVotingCardsHosts).DistinctBy(x => x.Id).ToList();
+        }
+
+        return hostsByAttendeeId;
+    }
+
+    internal Task<Dictionary<Guid, List<ContestDomainOfInfluence>>> GetMainVotingCardsDomainOfInfluencesByContestId(Guid contestId)
+        => GetMainVotingCardsDomainOfInfluencesByContestId(new[] { contestId });
+
+    internal async Task<Dictionary<Guid, List<ContestDomainOfInfluence>>> GetMainVotingCardsDomainOfInfluencesByContestId(IReadOnlyCollection<Guid>? contestIds = null)
+    {
+        return await _doiRepo.Query()
+            .Include(doi => doi.PoliticalBusinessPermissionEntries)
+            .Include(doi => doi.Contest)
+            .WhereContestInTestingPhase()
+            .Where(doi => doi.IsMainVotingCardsDomainOfInfluence
+                && (contestIds == null || contestIds.Contains(doi.ContestId)))
+            .GroupBy(x => x.ContestId)
+            .ToDictionaryAsync(x => x.Key, x => x.ToList());
+    }
+
+    private static bool IsMainVotingCardsAttendee(ContestDomainOfInfluence mainVotingCardDoi, ContestDomainOfInfluence host)
+    {
+        return mainVotingCardDoi.ResponsibleForVotingCards
+            && mainVotingCardDoi.IsMainVotingCardsDomainOfInfluence
+            && mainVotingCardDoi.Id != host.Id
+            && mainVotingCardDoi.Role != ContestRole.None
+            && (mainVotingCardDoi.SecureConnectId == host.SecureConnectId
+                || host.CountingCircles!.Any(doiCc => doiCc.CountingCircle!.SecureConnectId == mainVotingCardDoi.SecureConnectId));
     }
 
     private async Task EnsureAttachmentStepIsApproved(Guid domainOfInfluenceId)

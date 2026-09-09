@@ -164,7 +164,7 @@ internal static class VoterMapping
         voter.Religion = religionSelector(nationality)?.Religion;
 
         var personExtension = personExtensionSelector != null
-            ? SwissPersonExtensionMapping.GetExtension(personExtensionSelector(nationality))
+            ? personExtensionSelector(nationality) as SwissPersonExtension
             : null;
 
         var personIdentification = personIdentificationSelector(nationality);

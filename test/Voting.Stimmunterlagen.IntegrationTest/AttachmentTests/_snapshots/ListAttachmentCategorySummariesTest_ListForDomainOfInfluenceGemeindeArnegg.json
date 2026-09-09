@@ -221,6 +221,67 @@
       "TotalRequiredForVoterListsCount": 5
     },
     {
+      "Category": 10,
+      "Attachments": [
+        {
+          "Id": "86896df4-e094-40d5-bcae-735bfa5b4288",
+          "Name": "Synodalwahlkreis Arnegg Büchlein",
+          "Format": 2,
+          "Color": "Blue",
+          "Supplier": "Arnegg Druckerei",
+          "DeliveryPlannedOn": {
+            "Seconds": 1579478400,
+            "Nanos": 0
+          },
+          "DeliveryReceivedOn": null,
+          "DomainOfInfluence": {
+            "Id": "128e4c2d-1e70-5bc7-978c-da2453e27753",
+            "Name": "Synodalwahlkreis Arnegg",
+            "ShortName": "MU-AG",
+            "AuthorityName": "Gemeinde Arnegg",
+            "Type": 7,
+            "SecureConnectId": "SC-MU-AG",
+            "ResponsibleForVotingCards": true,
+            "ExternalPrintingCenter": false,
+            "ExternalPrintingCenterEaiMessageType": "",
+            "PrintData": {
+              "ShippingAway": 3,
+              "ShippingReturn": 3,
+              "ShippingMethod": 1
+            },
+            "ElectoralRegistrationEnabled": true,
+            "AllowManualVoterListUpload": false,
+            "CanManuallyUploadVoterList": false,
+            "LatestVoterListImportsLastUpdate": null,
+            "GenerateVotingCardsTriggered": null,
+            "EVoting": null,
+            "ElectoralRegisterMultipleEnabled": false,
+            "StistatMunicipality": false,
+            "Bfs": "",
+            "HasEmptyVotingCards": false,
+            "CountOfEmptyVotingCards": 0,
+            "LastCountOfEmptyVotingCardsUpdate": null
+          },
+          "PoliticalBusinessIds": [
+            "84a3b8eb-2326-4b36-bdda-0d687d1ecf58"
+          ],
+          "State": 1,
+          "DomainOfInfluenceAttachmentRequiredCount": 2500,
+          "DomainOfInfluenceAttachmentRequiredForVoterListsCount": 0,
+          "TotalRequiredCount": 5000,
+          "TotalRequiredForVoterListsCount": 0,
+          "Station": null,
+          "OrderedCount": 2500,
+          "Category": 10,
+          "SendOnlyToHouseholder": false,
+          "DelayedDeliveryDate": null
+        }
+      ],
+      "TotalOrderedCount": 2500,
+      "TotalRequiredCount": 2500,
+      "TotalRequiredForVoterListsCount": 0
+    },
+    {
       "Category": 12,
       "Attachments": [
         {

@@ -35,7 +35,12 @@ public class Ech0045Service
         Dictionary<Guid, List<ContestDomainOfInfluence>> doiHierarchyByDoiId)
     {
         var converter = GetConverter(version);
-        return converter.WriteEch0045Xml(contest, voterList, canton, doiHierarchyByDoiId);
+        return converter.WriteEch0045Xml(
+            contest,
+            voterList,
+            canton,
+            doiHierarchyByDoiId,
+            version is Ech0045Version.V6WithEVotingVoterExtension);
     }
 
     public async Task<Ech0045Reader> GetEch0045Reader(Stream stream, CancellationToken ct)

@@ -112,7 +112,8 @@ public class AttachmentManager
             .Include(doi => doi.PoliticalBusinessPermissionEntries!)
             .ThenInclude(x => x.PoliticalBusiness!.DomainOfInfluence)
             .Where(doi => doiIds.Contains(doi.Id) && !doi.ExternalPrintingCenter)
-            .OrderBy(doi => doi.Type)
+            .OrderBy(doi => doi.Id == domainOfInfluenceId)
+            .ThenBy(doi => doi.Type)
             .ThenBy(doi => doi.Name)
             .ToListAsync();
 
@@ -122,15 +123,20 @@ public class AttachmentManager
         }
 
         return dois
-            .ConvertAll(doi => new DomainOfInfluenceAttachmentCategorySummariesEntry(
-                doi,
-                attachmentCategorySummariesByDoiId.GetValueOrDefault(doi.Id) ?? new(),
-                doi.PoliticalBusinessPermissionEntries!
-                    .Select(x => x.PoliticalBusiness!)
-                    .DistinctBy(x => x.Id)
-                    .OrderBy(x => x.PoliticalBusinessNumber)
-                    .ThenBy(x => x.ShortDescription)
-                    .ToList()));
+            .ConvertAll(doi =>
+            {
+                var summaries = attachmentCategorySummariesByDoiId.GetValueOrDefault(doi.Id) ?? new();
+                return new DomainOfInfluenceAttachmentCategorySummariesEntry(
+                    doi,
+                    summaries,
+                    doi.PoliticalBusinessPermissionEntries!
+                        .Select(x => x.PoliticalBusiness!)
+                        .DistinctBy(x => x.Id)
+                        .OrderBy(x => x.PoliticalBusinessNumber)
+                        .ThenBy(x => x.ShortDescription)
+                        .ToList(),
+                    CanSetRequiredCount(doi, domainOfInfluenceId, summaries));
+            });
     }
 
     public async Task<List<AttachmentCategorySummary>> ListCategorySummariesForDomainOfInfluence(Guid domainOfInfluenceId, bool forCurrentTenant)
@@ -304,7 +310,7 @@ public class AttachmentManager
 
         if (!attachment.DomainOfInfluence!.ResponsibleForVotingCards && attachment.DomainOfInfluenceId == domainOfInfluenceId)
         {
-            throw new ForbiddenException("cannot set attachment count when not responsible for voting cards");
+            throw new ForbiddenException("cannot set attachment required count on a self created attachment when not responsible for voting cards");
         }
 
         if (attachment.DomainOfInfluenceId == domainOfInfluenceId)
@@ -512,9 +518,9 @@ public class AttachmentManager
 
     private async Task AddDomainOfInfluenceAttachmentCounts(Attachment attachment, int requiredCount)
     {
-        var doiChildIds = (await _doiManager.ListChildren(attachment.DomainOfInfluenceId)).ConvertAll(x => x.Id);
+        var doiAttendees = (await _doiManager.ListPoliticalBusinessAttendees(attachment.DomainOfInfluenceId)).ConvertAll(x => x.Id);
 
-        attachment.DomainOfInfluenceAttachmentCounts = doiChildIds.ConvertAll(doiId => new DomainOfInfluenceAttachmentCount
+        attachment.DomainOfInfluenceAttachmentCounts = doiAttendees.ConvertAll(doiId => new DomainOfInfluenceAttachmentCount
         {
             DomainOfInfluenceId = doiId,
         });
@@ -605,7 +611,7 @@ public class AttachmentManager
             throw new ValidationException("You cannot set the domain of influence attachment count of the owner");
         }
 
-        var validDoiIds = (await _doiManager.ListChildren(attachment.DomainOfInfluenceId)).ConvertAll(x => x.Id);
+        var validDoiIds = (await _doiManager.ListPoliticalBusinessAttendees(attachment.DomainOfInfluenceId)).ConvertAll(x => x.Id);
         if (domainOfInfluenceIds.Any(doiId => !validDoiIds.Contains(doiId)))
         {
             throw new ValidationException("Invalid domain of influence id found");
@@ -656,5 +662,20 @@ public class AttachmentManager
         {
             throw new ValidationException("The political businesses step is not approved yet.");
         }
+    }
+
+    private bool CanSetRequiredCount(
+    ContestDomainOfInfluence entryDomainOfInfluence,
+    Guid requestingDomainOfInfluenceId,
+    IReadOnlyCollection<AttachmentCategorySummary> summaries)
+    {
+        if (entryDomainOfInfluence.Id == requestingDomainOfInfluenceId)
+        {
+            return entryDomainOfInfluence.ResponsibleForVotingCards;
+        }
+
+        var attachments = summaries.SelectMany(s => s.Attachments).ToList();
+        return attachments.Count > 0
+            && attachments.All(a => a.DomainOfInfluenceAttachmentCounts!.Any(c => c.DomainOfInfluenceId == requestingDomainOfInfluenceId));
     }
 }

@@ -43,7 +43,6 @@ internal static class ApiServiceCollection
             .AddSingleton(config.Api)
             .AddSingleton<AttributeValidator>()
             .AddScoped<UserManager>()
-            .AddScoped<DomainOfInfluenceManager>()
             .AddScoped<PoliticalBusinessManager>()
             .AddScoped<AttachmentManager>()
             .AddScoped<VoterListManager>()

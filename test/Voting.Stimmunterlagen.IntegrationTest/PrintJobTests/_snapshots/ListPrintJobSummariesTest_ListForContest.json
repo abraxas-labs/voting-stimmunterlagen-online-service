@@ -76,7 +76,7 @@
       "ProcessStartedOn": null,
       "ProcessEndedOn": null,
       "DoneOn": null,
-      "AttachmentsDefinedCount": 5,
+      "AttachmentsDefinedCount": 6,
       "AttachmentsDeliveredCount": 0,
       "GenerateVotingCardsTriggered": null,
       "HasCommunalPoliticalBusinesses": true,
@@ -202,6 +202,46 @@
       "HasCommunalPoliticalBusinesses": true,
       "TemplateName": "template-001-swiss",
       "LastConfirmedStep": 0
+    },
+    {
+      "DomainOfInfluence": {
+        "Id": "128e4c2d-1e70-5bc7-978c-da2453e27753",
+        "Name": "Synodalwahlkreis Arnegg",
+        "ShortName": "MU-AG",
+        "AuthorityName": "Gemeinde Arnegg",
+        "Type": 7,
+        "SecureConnectId": "SC-MU-AG",
+        "ResponsibleForVotingCards": true,
+        "ExternalPrintingCenter": false,
+        "ExternalPrintingCenterEaiMessageType": "",
+        "PrintData": {
+          "ShippingAway": 3,
+          "ShippingReturn": 3,
+          "ShippingMethod": 1
+        },
+        "ElectoralRegistrationEnabled": true,
+        "AllowManualVoterListUpload": false,
+        "CanManuallyUploadVoterList": false,
+        "LatestVoterListImportsLastUpdate": null,
+        "GenerateVotingCardsTriggered": null,
+        "EVoting": null,
+        "ElectoralRegisterMultipleEnabled": false,
+        "StistatMunicipality": false,
+        "Bfs": "",
+        "HasEmptyVotingCards": false,
+        "CountOfEmptyVotingCards": 0,
+        "LastCountOfEmptyVotingCardsUpdate": null
+      },
+      "State": 1,
+      "ProcessStartedOn": null,
+      "ProcessEndedOn": null,
+      "DoneOn": null,
+      "AttachmentsDefinedCount": 3,
+      "AttachmentsDeliveredCount": 0,
+      "GenerateVotingCardsTriggered": null,
+      "HasCommunalPoliticalBusinesses": true,
+      "TemplateName": "template-001-swiss",
+      "LastConfirmedStep": 1
     },
     {
       "DomainOfInfluence": {

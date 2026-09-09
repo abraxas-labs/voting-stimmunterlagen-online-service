@@ -16,4 +16,9 @@ public enum Ech0045Version
     /// eCH 0045 V4.2 (Semantic 6.0).
     /// </summary>
     V6,
+
+    /// <summary>
+    /// eCH 0045 V4.2 (Semantic 6.0) including the eCH-0045 e-voting voter extension.
+    /// </summary>
+    V6WithEVotingVoterExtension,
 }

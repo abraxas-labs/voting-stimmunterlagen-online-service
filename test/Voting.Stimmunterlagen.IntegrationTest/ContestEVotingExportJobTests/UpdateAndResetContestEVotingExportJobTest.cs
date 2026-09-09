@@ -46,7 +46,7 @@ public class UpdateAndResetContestEVotingExportJobTest : BaseWriteableDbGrpcTest
     {
         await SetState(ExportJobState.Failed);
 
-        await AbraxasElectionAdminClient.UpdateAndResetJobAsync(NewRequest(x => x.Ech0045Version = Proto.V1.Models.Ech0045Version._6));
+        await AbraxasElectionAdminClient.UpdateAndResetJobAsync(NewRequest(x => x.Ech0045Version = Proto.V1.Models.Ech0045Version.V6));
         var job = await FindDbEntity<ContestEVotingExportJob>(x => x.ContestId == DefaultContestGuid);
         job.Id = Guid.Empty;
         job.State.Should().Be(ExportJobState.Pending);
@@ -99,7 +99,7 @@ public class UpdateAndResetContestEVotingExportJobTest : BaseWriteableDbGrpcTest
         var req = new UpdateAndResetContestEVotingExportJobRequest
         {
             ContestId = DefaultContestId,
-            Ech0045Version = Proto.V1.Models.Ech0045Version._4,
+            Ech0045Version = Proto.V1.Models.Ech0045Version.V4,
         };
 
         customizer?.Invoke(req);
