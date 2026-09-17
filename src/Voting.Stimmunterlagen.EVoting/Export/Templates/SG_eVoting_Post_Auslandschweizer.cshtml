@@ -56,14 +56,10 @@
             }
 
             /* style */
-            .color-green{
-                background-color: rgba(0, 153, 51, 0.2);
-            }
             .content{
                 padding:5px;
             }
             .title{
-                background-color: rgba(0, 153, 51, 0.2);
                 padding:5px;
                 font-weight:bold;
             }
@@ -136,7 +132,7 @@
                 left: 108mm;
                 padding-left: 18mm;
                 padding-top:26mm;
-                border-top-color: rgba(0, 153, 51, 0.2);
+                border-top-color: rgb(160, 240, 160);
                 border-top-width: 2.5mm;
                 border-style: solid none none none;
                 width:71mm;
@@ -322,14 +318,6 @@
                 border-bottom: solid 1px black;
                 font-weight:bold;
             }
-            .turn-icon{
-                width:7mm;
-                height:7mm;
-                background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8IS0tIENyZWF0b3I6IENvcmVsRFJBVyAtLT4NCjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iNjRweCIgaGVpZ2h0PSI2NHB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiDQp2aWV3Qm94PSIwIDAgNjQwIDY0MCINCiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+DQogPGRlZnM+DQogIDxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQogICA8IVtDREFUQVsNCiAgICAuZmlsMCB7ZmlsbDpyZ2JhKDAsIDE1MywgNTEsIDAuMil9DQogICBdXT4NCiAgPC9zdHlsZT4NCiA8L2RlZnM+DQogPGcgaWQ9IkxheWVyX3gwMDIwXzEiPg0KICA8bWV0YWRhdGEgaWQ9IkNvcmVsQ29ycElEXzBDb3JlbC1MYXllciIvPg0KICA8cG9seWdvbiBjbGFzcz0iZmlsMCIgcG9pbnRzPSI2NDAuMDEyLDMxOS45NTMgMzk0LjcyOSw3NC43ODgzIDE2My4yNjYsNzQuNzg4MyAzMjYuNjI2LDIzOC4xNDkgLTAuMDExODExMiwyMzguMTQ5IC0wLjAxMTgxMTIsNDAxLjg1MSAzMjYuNjI2LDQwMS44NTEgMTYzLjI2Niw1NjUuMjEyIDM5NC43MjksNTY1LjIxMiAiLz4NCiA8L2c+DQo8L3N2Zz4NCg==');
-                background-position: center center;
-                background-repeat: no-repeat;
-                background-size: contain;
-            }
 
             /***proporz ***/
             .proporz-item{
@@ -380,7 +368,6 @@
                         <div style="width:50%;"> </div>
                         <div  class="arrow-structur" style="width:50%;"> 
                             <div class="arrow-down"></div>
-                            <div class="turn-icon"></div>
                         </div>
                     </div>
                 </div>
@@ -388,6 +375,7 @@
                     @{
                         var personId = "";
                         var languageMap = new[] {"de", "fr", "it", "rm"};
+                        var themeColor = "rgb(217, 255, 217)";
                         dynamic nationality = null;
                         dynamic municipality = null;
 
@@ -405,6 +393,9 @@
                         }
                         if(nationality != null) {
                             personId = nationality.personIdentification.localPersonId.personId.ToString().PadLeft(11, '0');
+                        }
+                        if(municipality != null && municipality.color != null) {
+                            themeColor = $"rgb({municipality.color.red}, {municipality.color.green}, {municipality.color.blue})";
                         }
                     }
                     @if(nationality != null && municipality != null){
@@ -458,7 +449,7 @@
                         <div><h2>Carta di legittimazione di voto</h2></div>
                     </div>
                     <div class="sign">
-                        <div class="color-green content sign-content">
+                        <div class="content sign-content" style="background-color: @themeColor">
                             <h3>Erklärung:</h3>
                             <div>Ich stimme brieflich. Die Stimmabgabe entspricht meinem Willen.</div>
                             <div>Je vote par correspondance. Ce vote correspond à ma volonté.</div>
@@ -473,9 +464,9 @@
                 @if(municipality != null && municipality.eTextBlocks != null){
                     @if(Model.votingCardDelivery.contestData != null && Model.votingCardDelivery.contestData.contest != null){
                         <div class="poll-date-title">
-                            <div class="title">Urnengang vom @Model.votingCardDelivery.contestData.contest.contestDate.ToString().Split(' ')[0]</div>
-                            <div class="title">Scrutin du @Model.votingCardDelivery.contestData.contest.contestDate.ToString().Split(' ')[0]</div>
-                            <div class="title">Votazione del @Model.votingCardDelivery.contestData.contest.contestDate.ToString().Split(' ')[0]</div>
+                            <div class="title" style="background-color: @themeColor">Urnengang vom @Model.votingCardDelivery.contestData.contest.contestDate.ToString().Split(' ')[0]</div>
+                            <div class="title" style="background-color: @themeColor">Scrutin du @Model.votingCardDelivery.contestData.contest.contestDate.ToString().Split(' ')[0]</div>
+                            <div class="title" style="background-color: @themeColor">Votazione del @Model.votingCardDelivery.contestData.contest.contestDate.ToString().Split(' ')[0]</div>
                         </div>
                     }
                     <div class="text-blocks  c@(municipality.eTextBlocks.columnQuantity)">
@@ -485,7 +476,7 @@
                                 @foreach (var block in blocks.Split('_')){
                                     <div>
                                         @if(municipality.eTextBlocks.values.Count > textIndex){
-                                            <div class="title">
+                                            <div class="title" style="background-color: @themeColor">
                                                 @municipality.eTextBlocks.values[textIndex].title
                                             </div>
                                             <div class="content">
@@ -505,7 +496,7 @@
                 <!-- e-Voting -->
                 @if(voteElement.votingCardIndividualCodes != null){
                     <div class="content e-voting no-page-break-inside">
-                        <div class="title">E-Voting / Vote électronique / Voto elettronico</div>
+                        <div class="title" style="background-color: @themeColor">E-Voting / Vote électronique / Voto elettronico</div>
 
                         <div class="content">
                             @if (Model.votingCardDelivery != null && Model.votingCardDelivery.contestData != null && Model.votingCardDelivery.contestData.contest.eVotingPeriod != null)
@@ -604,7 +595,7 @@
                         </div>
                     </div>
                     <div class="content e-voting">
-                        <div class="title fingerprint">
+                        <div class="title fingerprint" style="background-color: @themeColor">
                             <div>
                                 <label> <b>Fingerprint (SHA-256) des Zertifikats von https://sg.evoting.ch:</b></label>
                                 <label> <b>Empreinte numérique (SHA-256) du certificat de https://sg.evoting.ch:</b></label>
@@ -617,7 +608,7 @@
                             </div>
                             }
                         </div>
-                        <div class="poll-title title">
+                        <div class="poll-title title" style="background-color: @themeColor">
                             <h3>Prüfcodes / Codes de vérification / Codici di verifica @if(voteElement.poll != null && voteElement.poll.election != null){<text>Abstimmung</text>} <span class="rhombus">&#9670;</span></h3>
                         </div>
                         @if(voteElement.votingCardIndividualCodes != null && voteElement.votingCardIndividualCodes.vote != null && voteElement.votingCardIndividualCodes.vote.ToString().Length > 5){
@@ -693,7 +684,7 @@
                             @foreach (var electionGroupBallot in voteElement.votingCardIndividualCodes.electionGroupBallot){
                                 @foreach (var electionInformation in electionGroupBallot.electionInformation){
                                     @if (electionInformation.candidate.Count > 0 && electionInformation.list.Count == 0){
-                                        <div class="poll-title title">
+                                        <div class="poll-title title" style="background-color: @themeColor">
                                             @electionInformation.election.electionDescription[0].electionDescription
                                         </div>
                                         <div class="content">
@@ -723,7 +714,7 @@
                                 @foreach (var electionInformation in electionGroupBallot.electionInformation){
                                     @if (electionInformation.list.Count > 0 && electionInformation.candidate.Count == 0){
                                         @if (electionInformation.election != null && electionInformation.election.electionDescription != null){
-                                            <div class="poll-title title ">
+                                            <div class="poll-title title " style="background-color: @themeColor">
                                                 @electionInformation.election.electionDescription[0].electionDescription
                                             </div>
                                         }
@@ -739,7 +730,7 @@
                                             @foreach (var list in electionInformation.list){
                                                 <div class="proporz-item">
                                                     <table>
-                                                        <tr class="color-green content">
+                                                        <tr class="content" style="background-color: @themeColor">
                                                             <td>Liste</td>
                                                             <td></td>
                                                             <td class="code">Code</td>
@@ -749,7 +740,7 @@
                                                             <td></td>
                                                             <td class="code"><b>@list.individualListVerificationCodes[0].codeValue</b></td>
                                                         </tr>
-                                                        <tr class="color-green content">
+                                                        <tr class="content" style="background-color: @themeColor">
                                                             <td>Kand.Nr</td>
                                                             <td  class="code">1x</td>
                                                             <td  class="code">2x</td>

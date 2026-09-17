@@ -156,6 +156,8 @@ public class ContestEVotingExportGenerator
                 .ThenBy(doi => doi.Name))
                 .ThenInclude(x => x.CountingCircles!)
                 .ThenInclude(x => x.CountingCircle)
+            .Include(x => x.Contest!.ContestDomainOfInfluences!)
+                .ThenInclude(x => x.VotingCardLayouts)
             .Include(x => x.Contest!.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, ct)
             ?? throw new EntityNotFoundException(nameof(ContestEVotingExportGenerator), id);

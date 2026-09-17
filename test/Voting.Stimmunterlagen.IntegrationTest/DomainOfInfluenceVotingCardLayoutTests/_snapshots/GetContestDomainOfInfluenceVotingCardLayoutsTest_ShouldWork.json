@@ -171,10 +171,10 @@
             "IncludeDomainOfInfluenceChurch": false,
             "IncludeDomainOfInfluenceSchool": false
           },
-          "ContestColor": 0,
-          "DomainOfInfluenceColor": 0,
-          "OverriddenColor": 0,
-          "EffectiveColor": 0
+          "ContestColor": 8,
+          "DomainOfInfluenceColor": 8,
+          "OverriddenColor": 8,
+          "EffectiveColor": 8
         }
       ]
     },
@@ -347,9 +347,9 @@
             "IncludeDomainOfInfluenceSchool": false
           },
           "ContestColor": 0,
-          "DomainOfInfluenceColor": 0,
+          "DomainOfInfluenceColor": 8,
           "OverriddenColor": 0,
-          "EffectiveColor": 0
+          "EffectiveColor": 8
         }
       ]
     },

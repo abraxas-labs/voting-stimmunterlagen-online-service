@@ -25,10 +25,10 @@
         "IncludeDomainOfInfluenceChurch": false,
         "IncludeDomainOfInfluenceSchool": false
       },
-      "ContestColor": 0,
+      "ContestColor": 8,
       "DomainOfInfluenceColor": 0,
-      "OverriddenColor": 0,
-      "EffectiveColor": 0
+      "OverriddenColor": 8,
+      "EffectiveColor": 8
     }
   ]
 }

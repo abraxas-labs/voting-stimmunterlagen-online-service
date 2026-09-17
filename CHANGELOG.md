@@ -1,4 +1,4 @@
-# ✨ Changelog (`v2.67.4`)
+# ✨ Changelog (`v2.68.0`)
 
 All notable changes to this project will be documented in this file.
 
@@ -8,11 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Version Info
 
 ```text
-This version -------- v2.67.4
-Previous version ---- v2.66.4
+This version -------- v2.68.0
+Previous version ---- v2.67.4
 Initial version ----- v2.5.1
 Total commits ------- 5
 ```
+
+## [v2.68.0] - 2026-09-16
+
+### 🔄 Changed
+
+- update api to latest proto
+
+### :new: Added
+
+- support custom colors in e-voting voting cards
+- VotingCardColor from basis to event processors ContestVotingCardLayoutBuilder, DomainOfInfluenceVotingCardLayoutBuilder and VotingCardLayoutBuilder
+- made a single util class to creat dummy doi's: including the selected VotingCardColor
+
+### :arrows_counterclockwise: Changed
+
+- ContestVotingCardLayoutService, DomainOfInfluenceVotingCardLayoutService: new param for setting the color of the layout
+- DomainOfInfluneceVotingCardLayoutProfile and ContestVotingCardlayoutProfile: added color propertiy mappings
+- models DomainOfInfluneceVotingCardLayout and VotingCardLayout: added properies for color and generate migrations
+
+### 🆕 Added
+
+- add ech-0045 version with e-voting voter extension
+
+### :arrows_counterclockwise: Changed
+
+- TemplateDataBuilder, VotingCardColor model: accordung new template colors .
 
 ## [v2.67.4] - 2026-09-07
 

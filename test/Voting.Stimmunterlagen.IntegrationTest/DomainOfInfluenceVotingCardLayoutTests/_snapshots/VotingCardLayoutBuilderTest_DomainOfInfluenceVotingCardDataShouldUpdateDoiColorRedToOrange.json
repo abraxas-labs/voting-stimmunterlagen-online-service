@@ -1,0 +1,114 @@
+{
+  "before-update": {
+    "Parent": null,
+    "Root": null,
+    "Children": null,
+    "RootOfChildrenAndSelf": null,
+    "ParentHierarchyEntries": null,
+    "HierarchyEntries": null,
+    "CountingCircles": null,
+    "Name": "Zweckverband ARA Gossau",
+    "ShortName": "MU-GO-ARA",
+    "AuthorityName": "Stadt St. Gossau",
+    "SecureConnectId": "SC-MU-GO",
+    "ResponsibleForVotingCards": true,
+    "Bfs": "",
+    "Type": 10,
+    "Canton": 1,
+    "ReturnAddress": {
+      "AddressLine1": "Stadtverwaltung Gossau",
+      "AddressLine2": "",
+      "Street": "Bahnhofstrasse 25",
+      "AddressAddition": "",
+      "ZipCode": "9200",
+      "City": "Gossau",
+      "Country": "Schweiz"
+    },
+    "PrintData": {
+      "ShippingAway": 3,
+      "ShippingReturn": 6,
+      "ShippingMethod": 1,
+      "ShippingVotingCardsToDeliveryAddress": false
+    },
+    "SwissPostData": {
+      "InvoiceReferenceNumber": "505964478",
+      "FrankingLicenceAwayNumber": "72619210",
+      "FrankingLicenceReturnNumber": "994412387"
+    },
+    "LogoRef": "gossau-ara-logo.png",
+    "VotingCardColor": 0,
+    "ExternalPrintingCenter": false,
+    "ExternalPrintingCenterEaiMessageType": "",
+    "SapCustomerOrderNumber": "00073100",
+    "CantonDefaults": {
+      "VotingDocumentsEVotingEaiMessageType": "EVOT-SG"
+    },
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "RootId": "00000000-0000-0000-0000-000000000000",
+    "ElectoralRegistrationEnabled": true,
+    "ElectoralRegisterMultipleEnabled": false,
+    "StistatMunicipality": false,
+    "StistatExportEaiMessageType": "",
+    "StistatExportEnabled": false,
+    "VotingCardFlatRateDisabled": false,
+    "IsMainVotingCardsDomainOfInfluence": false,
+    "HasEmptyVotingCards": false,
+    "Id": "00000000-0000-0000-0000-000000000000"
+  },
+  "after-update": {
+    "Parent": null,
+    "Root": null,
+    "Children": null,
+    "RootOfChildrenAndSelf": null,
+    "ParentHierarchyEntries": null,
+    "HierarchyEntries": null,
+    "CountingCircles": null,
+    "Name": "Zweckverband ARA Gossau",
+    "ShortName": "MU-GO-ARA",
+    "AuthorityName": "Stadt St. Gossau",
+    "SecureConnectId": "SC-MU-GO",
+    "ResponsibleForVotingCards": true,
+    "Bfs": "",
+    "Type": 10,
+    "Canton": 1,
+    "ReturnAddress": {
+      "AddressLine1": "Stadtverwaltung Gossau",
+      "AddressLine2": "",
+      "Street": "Bahnhofstrasse 25",
+      "AddressAddition": "",
+      "ZipCode": "9200",
+      "City": "Gossau",
+      "Country": "Schweiz"
+    },
+    "PrintData": {
+      "ShippingAway": 1,
+      "ShippingReturn": 2,
+      "ShippingMethod": 2,
+      "ShippingVotingCardsToDeliveryAddress": true
+    },
+    "SwissPostData": {
+      "InvoiceReferenceNumber": "505964478",
+      "FrankingLicenceAwayNumber": "72619210",
+      "FrankingLicenceReturnNumber": "994412387"
+    },
+    "LogoRef": "gossau-ara-logo.png",
+    "VotingCardColor": 9,
+    "ExternalPrintingCenter": false,
+    "ExternalPrintingCenterEaiMessageType": "",
+    "SapCustomerOrderNumber": "",
+    "CantonDefaults": {
+      "VotingDocumentsEVotingEaiMessageType": "EVOT-SG"
+    },
+    "ParentId": "00000000-0000-0000-0000-000000000000",
+    "RootId": "00000000-0000-0000-0000-000000000000",
+    "ElectoralRegistrationEnabled": true,
+    "ElectoralRegisterMultipleEnabled": false,
+    "StistatMunicipality": false,
+    "StistatExportEaiMessageType": "",
+    "StistatExportEnabled": false,
+    "VotingCardFlatRateDisabled": false,
+    "IsMainVotingCardsDomainOfInfluence": false,
+    "HasEmptyVotingCards": false,
+    "Id": "00000000-0000-0000-0000-000000000000"
+  }
+}

@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Voting.Lib.ImageProcessing;
@@ -57,6 +58,13 @@ public class EVotingContestBuilder
         var eVotingDoi = _mapper.Map<EVotingModels.DomainOfInfluence>(doi);
         eVotingDoi.Logo = CompressLogo(await _logoStorage.TryFetchAsBase64(doi));
         eVotingDoi.AttachmentStations = attachmentStations;
+
+        // The color is always set on the swiss voting card layout.
+        eVotingDoi.Color = doi.VotingCardLayouts?
+            .FirstOrDefault(vl => vl.VotingCardType is VotingCardType.Swiss)?
+            .EffectiveVotingCardColor
+            ?? VotingCardColor.Green;
+
         return eVotingDoi;
     }
 

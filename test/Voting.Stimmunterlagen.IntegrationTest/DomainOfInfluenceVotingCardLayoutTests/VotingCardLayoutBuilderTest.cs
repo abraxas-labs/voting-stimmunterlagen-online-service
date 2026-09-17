@@ -40,6 +40,7 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
                 ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
                 ShippingVotingCardsToDeliveryAddress = true,
             },
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Green,
         });
 
         var contestDomainOfInfluencesAfterUpdate = await RunOnDb(
@@ -49,8 +50,120 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
     }
 
     [Fact]
+    public async Task DomainOfInfluenceVotingCardDataShouldUpdateDoiColorRedToOrange()
+    {
+        var id = Guid.Parse("94b5f873-9623-48ed-83f9-72819163b660");
+        var domainOfInfluence = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluence!);
+        domainOfInfluence.MatchSnapshot("before-update");
 
-    public async Task DomainOfInfluenceVotingCardDataShouldUpdateContestLayout()
+        await TestEventPublisher.Publish(new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = id.ToString(),
+            PrintData = new Abraxas.Voting.Basis.Events.V1.Data.DomainOfInfluenceVotingCardPrintDataEventData
+            {
+                ShippingAway = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B1,
+                ShippingMethod = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingMethod.PrintingPackagingShippingToMunicipality,
+                ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
+                ShippingVotingCardsToDeliveryAddress = true,
+            },
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Red,
+        });
+
+        var domainOfInfluenceUpdate = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluenceUpdate!);
+        domainOfInfluenceUpdate.MatchSnapshot("after-update");
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceVotingCardDataShouldUpdateDoiColorGreyToPurple()
+    {
+        var id = Guid.Parse("94b5f873-9623-48ed-83f9-72819163b660");
+        var domainOfInfluence = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluence!);
+        domainOfInfluence.MatchSnapshot("before-update");
+
+        await TestEventPublisher.Publish(new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = id.ToString(),
+            PrintData = new Abraxas.Voting.Basis.Events.V1.Data.DomainOfInfluenceVotingCardPrintDataEventData
+            {
+                ShippingAway = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B1,
+                ShippingMethod = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingMethod.PrintingPackagingShippingToMunicipality,
+                ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
+                ShippingVotingCardsToDeliveryAddress = true,
+            },
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Grey,
+        });
+
+        var domainOfInfluenceUpdate = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluenceUpdate!);
+        domainOfInfluenceUpdate.MatchSnapshot("after-update");
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceVotingCardDataShouldUpdateDoiColorGoldToDefault()
+    {
+        var id = Guid.Parse("94b5f873-9623-48ed-83f9-72819163b660");
+        var domainOfInfluence = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluence!);
+        domainOfInfluence.MatchSnapshot("before-update");
+
+        await TestEventPublisher.Publish(new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = id.ToString(),
+            PrintData = new Abraxas.Voting.Basis.Events.V1.Data.DomainOfInfluenceVotingCardPrintDataEventData
+            {
+                ShippingAway = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B1,
+                ShippingMethod = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingMethod.PrintingPackagingShippingToMunicipality,
+                ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
+                ShippingVotingCardsToDeliveryAddress = true,
+            },
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Gold,
+        });
+
+        var domainOfInfluenceUpdate = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluenceUpdate!);
+        domainOfInfluenceUpdate.MatchSnapshot("after-update");
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceVotingCardDataShouldUpdateDoiColorChamoisToDefault()
+    {
+        var id = Guid.Parse("94b5f873-9623-48ed-83f9-72819163b660");
+        var domainOfInfluence = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluence!);
+        domainOfInfluence.MatchSnapshot("before-update");
+
+        await TestEventPublisher.Publish(new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = id.ToString(),
+            PrintData = new Abraxas.Voting.Basis.Events.V1.Data.DomainOfInfluenceVotingCardPrintDataEventData
+            {
+                ShippingAway = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B1,
+                ShippingMethod = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingMethod.PrintingPackagingShippingToMunicipality,
+                ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
+                ShippingVotingCardsToDeliveryAddress = true,
+            },
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Chamois,
+        });
+
+        var domainOfInfluenceUpdate = await RunOnDb(
+            db => db.DomainOfInfluences.Where(x => x.Id == id).FirstOrDefaultAsync());
+        SetDoiGuidsToNull(domainOfInfluenceUpdate!);
+        domainOfInfluenceUpdate.MatchSnapshot("after-update");
+    }
+
+    [Fact]
+
+    public async Task Should_UpdateContestLayout_WithoutChangingColor()
     {
         var id = Guid.Parse("d59da8b8-8af3-4082-afe1-db133bc21897");
         var contestVotingCardLayouts =
@@ -77,6 +190,7 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
                 ShippingReturn = Abraxas.Voting.Basis.Shared.V1.VotingCardShippingFranking.B2,
                 ShippingVotingCardsToDeliveryAddress = true,
             },
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Yellow,
         });
 
         var contestVotingCardLayoutsAfterUpdate =
@@ -159,5 +273,12 @@ public class VotingCardLayoutBuilderTest : BaseWriteableDbTest
         {
             contestLayout.Id = Guid.Empty;
         }
+    }
+
+    private void SetDoiGuidsToNull(DomainOfInfluence doi)
+    {
+        doi.Id = Guid.Empty;
+        doi.ParentId = Guid.Empty;
+        doi.RootId = Guid.Empty;
     }
 }

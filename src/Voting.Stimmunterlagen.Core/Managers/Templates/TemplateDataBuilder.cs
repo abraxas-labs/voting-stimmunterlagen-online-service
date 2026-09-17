@@ -74,20 +74,6 @@ public class TemplateDataBuilder
         }
     }
 
-    internal ContestDomainOfInfluence GetDummyDomainOfInfluence(string tennantId)
-    {
-        return new ContestDomainOfInfluence()
-        {
-            Name = "Test-Gemeinde XY",
-            ShortName = "XY",
-            SecureConnectId = tennantId,
-            ReturnAddress = new() { AddressLine1 = "Gemeindeverwaltung XY", AddressLine2 = "Adresszeile 2", Street = "Strasse 99", AddressAddition = "Adress Zusatz", ZipCode = "9999", City = "XY", Country = "SWITZERLAND" },
-            PrintData = new() { ShippingAway = VotingCardShippingFranking.A, ShippingReturn = VotingCardShippingFranking.GasA, ShippingMethod = VotingCardShippingMethod.PrintingPackagingShippingToCitizen, ShippingVotingCardsToDeliveryAddress = false },
-            SwissPostData = new() { InvoiceReferenceNumber = "000000000", FrankingLicenceReturnNumber = "000000000" },
-            LogoRef = string.Empty,
-        };
-    }
-
     internal IEnumerable<TemplateDataFieldValue> BuildUserEnteredValues(
         IEnumerable<TemplateDataContainer> containers,
         IEnumerable<TemplateDataFieldValue>? existingValues)
@@ -204,10 +190,10 @@ public class TemplateDataBuilder
         {
             Data.Models.VotingCardColor.Blue => new VotingCardColor(20, 0, 0, 0),
             Data.Models.VotingCardColor.Yellow => new VotingCardColor(0, 0, 20, 0),
-            Data.Models.VotingCardColor.Grey => new VotingCardColor(0, 0, 0, 10),
             Data.Models.VotingCardColor.Pink => new VotingCardColor(0, 10, 0, 0),
-            Data.Models.VotingCardColor.Red => new VotingCardColor(0, 21, 24, 0),
             Data.Models.VotingCardColor.Green => new VotingCardColor(15, 0, 15, 0),
+            Data.Models.VotingCardColor.Orange => new VotingCardColor(0, 10, 15, 0),
+            Data.Models.VotingCardColor.Purple => new VotingCardColor(5, 10, 0, 10),
             Data.Models.VotingCardColor.Unspecified => null,
             _ => throw new InvalidOperationException($"{doi.VotingCardColor} is not supported"),
         };

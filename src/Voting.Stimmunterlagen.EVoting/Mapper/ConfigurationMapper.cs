@@ -91,6 +91,7 @@ internal static class ConfigurationMapper
             ETextBlocks = eTextBlocks,
             Stistat = eVotingDomainOfInfluenceConfig?.Stistat != null ? eVotingDomainOfInfluenceConfig.Stistat.Value : domainOfInfluence.StistatMunicipality,
             AttachmentStations = domainOfInfluence.AttachmentStations,
+            Color = ConvertColor(domainOfInfluence.Color),
         };
 
         static List<Value>? GetVotingDomainOfInfluenceValues(DomainOfInfluence domainOfInfluence, Dictionary<string, List<Value>> bfsETextBlockValuesDict, EVotingDomainOfInfluenceConfig? eVotingDomainOfInfluenceConfig)
@@ -153,6 +154,26 @@ internal static class ConfigurationMapper
             VotingCardShippingFranking.GasB => "B",
             VotingCardShippingFranking.WithoutFranking => "F",
             _ => franking.ToString(),
+        };
+    }
+
+    private static VotingCardColor? ConvertColor(Data.Models.VotingCardColor? color)
+    {
+        if (color == null)
+        {
+            return null;
+        }
+
+        return color switch
+        {
+            Data.Models.VotingCardColor.Blue => new VotingCardColor(204, 255, 255),
+            Data.Models.VotingCardColor.Yellow => new VotingCardColor(255, 255, 204),
+            Data.Models.VotingCardColor.Pink => new VotingCardColor(255, 230, 255),
+            Data.Models.VotingCardColor.Green => new VotingCardColor(217, 255, 217),
+            Data.Models.VotingCardColor.Orange => new VotingCardColor(255, 230, 208),
+            Data.Models.VotingCardColor.Purple => new VotingCardColor(225, 214, 235),
+            Data.Models.VotingCardColor.Unspecified => null,
+            _ => throw new InvalidOperationException($"{color} is not supported"),
         };
     }
 }

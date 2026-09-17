@@ -122,7 +122,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             .Where(x => x.DomainOfInfluence!.BasisDomainOfInfluenceId == id)
             .OrderBy(x => x.DomainOfInfluence!.ContestId)
             .ThenBy(x => x.VotingCardType)
-            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom })
+            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
             .ToListAsync());
         doiLayouts.ShouldMatchChildSnapshot("doi-layouts");
 
@@ -297,7 +297,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             .Where(x => x.DomainOfInfluence!.BasisDomainOfInfluenceId == id)
             .OrderBy(x => x.DomainOfInfluence!.ContestId)
             .ThenBy(x => x.VotingCardType)
-            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom })
+            .Select(x => new { x.DomainOfInfluence!.Name, x.VotingCardType, x.TemplateId, x.AllowCustom, x.VotingCardColor })
             .ToListAsync());
         doiLayouts.ShouldMatchChildSnapshot("doi-layouts");
 
@@ -633,6 +633,7 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             VotingCardFlatRateDisabled = false,
             IsMainVotingCardsDomainOfInfluence = false,
             HasEmptyVotingCards = false,
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Yellow,
         };
 
         // publish two events to test idempotency
@@ -651,9 +652,17 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         doi.VotingCardFlatRateDisabled.Should().BeFalse();
         doi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
         doi.HasEmptyVotingCards.Should().BeFalse();
+        doi.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
 
         // StistatExportEaiMessageType should not be updated, since it is deprecated on this event
         doi.StistatExportEaiMessageType.Should().Be("1234567");
+        var doiLayouts = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
+            .Where(x => x.DomainOfInfluence!.BasisDomainOfInfluenceId == guid)
+            .ToListAsync());
+        foreach (var doiLayout in doiLayouts)
+        {
+            doiLayout.VotingCardColor.Should().NotBe(Data.Models.VotingCardColor.Yellow);
+        }
 
         var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
             .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
@@ -670,9 +679,17 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
             contestDoi.VotingCardFlatRateDisabled.Should().BeFalse();
             contestDoi.IsMainVotingCardsDomainOfInfluence.Should().BeFalse();
             contestDoi.HasEmptyVotingCards.Should().BeFalse();
+            contestDoi.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
 
             // StistatExportEaiMessageType should not be updated, since it is deprecated on this event
             contestDoi.StistatExportEaiMessageType.Should().Be("1234567");
+            var contestVotingCardLayouts = await RunOnDb(db => db.ContestVotingCardLayouts
+                .Where(x => x.ContestId == contestDoi.ContestId)
+                .ToListAsync());
+            foreach (var contestLayout in contestVotingCardLayouts)
+            {
+                contestLayout.VotingCardColor.Should().NotBe(Data.Models.VotingCardColor.Yellow);
+            }
         }
 
         contestDois.Select(x => x.PrintJob).WhereNotNull().Any().Should().BeTrue();
@@ -830,6 +847,70 @@ public class DomainOfInfluenceProcessorTest : BaseWriteableDbTest
         foreach (var contestDoi in contestDois)
         {
             contestDoi.StistatExportEaiMessageType.Should().Be("7777777");
+        }
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceVotingCardColorGoldUpdated()
+    {
+        var guid = DomainOfInfluenceMockData.StadtGossauGuid;
+
+        var prevPbPermissionsCount = await RunOnDb(db => db.PoliticalBusinessPermissions
+            .Where(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid)
+            .CountAsync());
+
+        var eventData = new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = guid.ToString(),
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Gold,
+        };
+
+        // publish two events to test idempotency
+        await TestEventPublisher.Publish(eventData);
+
+        var doi = await RunOnDb(db => db.DomainOfInfluences.SingleAsync(x => x.Id == DomainOfInfluenceMockData.StadtGossauGuid));
+        doi.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
+
+        var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
+            .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
+            .Include(x => x.PrintJob)
+            .ToListAsync());
+
+        foreach (var contestDoi in contestDois)
+        {
+            contestDoi.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
+        }
+    }
+
+    [Fact]
+    public async Task DomainOfInfluenceVotingCardColorChamoisUpdated()
+    {
+        var guid = DomainOfInfluenceMockData.StadtGossauGuid;
+
+        var prevPbPermissionsCount = await RunOnDb(db => db.PoliticalBusinessPermissions
+            .Where(x => x.DomainOfInfluenceId == DomainOfInfluenceMockData.ContestBundFutureApprovedStadtGossauGuid)
+            .CountAsync());
+
+        var eventData = new DomainOfInfluenceVotingCardDataUpdated
+        {
+            DomainOfInfluenceId = guid.ToString(),
+            VotingCardColor = Abraxas.Voting.Basis.Shared.V1.VotingCardColor.Chamois,
+        };
+
+        // publish two events to test idempotency
+        await TestEventPublisher.Publish(eventData);
+
+        var doi = await RunOnDb(db => db.DomainOfInfluences.SingleAsync(x => x.Id == DomainOfInfluenceMockData.StadtGossauGuid));
+        doi.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
+
+        var contestDois = await RunOnDb(db => db.ContestDomainOfInfluences
+            .Where(x => x.BasisDomainOfInfluenceId == guid && x.Contest!.State <= ContestState.TestingPhase)
+            .Include(x => x.PrintJob)
+            .ToListAsync());
+
+        foreach (var contestDoi in contestDois)
+        {
+            contestDoi.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
         }
     }
 

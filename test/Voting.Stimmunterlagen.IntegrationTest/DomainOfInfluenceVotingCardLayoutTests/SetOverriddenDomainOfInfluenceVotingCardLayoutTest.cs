@@ -51,6 +51,10 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
         layout.DomainOfInfluenceTemplateId.Should().BeNull();
         layout.OverriddenTemplateId.Should().Be(DmDocServiceMock.TemplateSwissArneggNotSeeded.Id);
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwissArneggNotSeeded.Id);
+        layout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
+        layout.DomainOfInfluenceVotingCardColor.Should().BeNull();
+        layout.OverriddenVotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
+        layout.EffectiveVotingCardColor.Should().Be(Data.Models.VotingCardColor.Yellow);
     }
 
     [Fact]
@@ -62,6 +66,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
             VotingCardType = VotingCardType.Swiss,
             DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
             DataConfiguration = new(),
+            Color = VotingCardColor.Yellow,
         });
 
         var layout = await RunOnDb(db => db.DomainOfInfluenceVotingCardLayouts
@@ -91,6 +96,10 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
         layout.DomainOfInfluenceTemplateId.Should().BeNull();
         layout.OverriddenTemplateId.Should().BeNull();
         layout.EffectiveTemplateId.Should().Be(DmDocServiceMock.TemplateSwiss.Id);
+        layout.VotingCardColor.Should().Be(Data.Models.VotingCardColor.Green);
+        layout.DomainOfInfluenceVotingCardColor.Should().BeNull();
+        layout.OverriddenVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
+        layout.EffectiveVotingCardColor.Should().Be(Data.Models.VotingCardColor.Unspecified);
     }
 
     [Fact]
@@ -103,6 +112,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
                 DataConfiguration = new(),
+                Color = VotingCardColor.Green,
             }),
             StatusCode.NotFound);
     }
@@ -120,6 +130,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundFutureApprovedGemeindeArneggId,
                 DataConfiguration = new(),
+                Color = VotingCardColor.Green,
             }),
             StatusCode.InvalidArgument,
             "custom layout is not allowed");
@@ -135,6 +146,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 VotingCardType = VotingCardType.Swiss,
                 DomainOfInfluenceId = DomainOfInfluenceMockData.ContestBundArchivedGemeindeArneggId,
                 DataConfiguration = new(),
+                Color = VotingCardColor.Green,
             }),
             StatusCode.NotFound);
     }
@@ -185,6 +197,7 @@ public class SetOverriddenDomainOfInfluenceVotingCardLayoutTest :
                 IncludeDateOfBirth = true,
                 IncludeReligion = true,
             },
+            Color = VotingCardColor.Yellow,
         };
     }
 }

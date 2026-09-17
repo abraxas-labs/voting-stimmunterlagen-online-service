@@ -1,6 +1,8 @@
 ﻿// (c) Copyright by Abraxas Informatik AG
 // For license information see LICENSE file
 
+using Voting.Stimmunterlagen.Data.Models;
+
 namespace Voting.Stimmunterlagen.EVoting.Models;
 
 public class DomainOfInfluence
@@ -22,4 +24,6 @@ public class DomainOfInfluence
     /// Does not consider voter duplicates or whether someone is a householder.
     /// </summary>
     public string AttachmentStations { get; set; } = string.Empty;
+
+    public VotingCardColor? Color { get; set; }
 }
